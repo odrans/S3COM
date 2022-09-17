@@ -36,7 +36,7 @@ F90FLAGS = -module $(mod) -fpp -qopenmp -g -O0 -debug -traceback -check bounds
 
 ## Let's start with some paths
 # ---------------------------------------------------------------------------------------------------------------------------------------
-basedir = $(HOME)/github/Retrievals/S3COM
+basedir = $(HOME)/github/S3COM
 
 src = $(basedir)/src
 obj = $(basedir)/obj
