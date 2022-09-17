@@ -1,5 +1,5 @@
 &order
-    fname_in = "/home/b/b380333/github/Retrievals/S3COM/data/test_input/icon_input_05022013_1340pm_pixel_29_316_liq_cld_only.nc"
+    fname_in = "/home/b/b380333/github/S3COM/data/test_input/icon_input_05022013_1340pm_pixel_29_316_liq_cld_only.nc"
     fname_out = "/home/b/b380333/icon_output_05022013_1340pm_pixel_29_316_liq_cld_only_ZA_0_rayleigh_off.nc"
     month = 5
     flag_retrievals = FALSE
