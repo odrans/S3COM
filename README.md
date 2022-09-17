@@ -28,5 +28,5 @@ After modifications in the code, type the following commands in the terminal bei
 
 License
 --------------------------------------------------------------------------------
-S3CM is available under a BSD 3-clause license.
+S3COM is available under a BSD 3-clause license.
 Please see [LICENSE](LICENSE) for details.
