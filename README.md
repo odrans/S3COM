@@ -6,7 +6,7 @@ S3COM is a satellite simulator and retrieval sandbox tool for cloud studies. It 
 The goals of S3COM are mainly to:
 - provide realistic satellite measurements consistent with model outputs
 - compute the sensitivity of radiative quantities to atmospheric and cloud parameters
-- evaluate and improve retrieval algorithm using model simulations
+- evaluate and improve retrieval algorithm using high resolution model simulations
 
 How to use
 ----------
