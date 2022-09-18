@@ -47,17 +47,23 @@ CONTAINS
     ! Namelist variables
     character(len=256) :: fname_out, fname_in
     logical :: flag_retrievals
-    integer(kind = 4) :: month, npoints_it
+
+    integer(kind = 4) :: month, npoints_it, nchannel
+    integer(kind = 4), DIMENSION(:), ALLOCATABLE :: channels
 
     TYPE(type_nml), intent(out)        :: nml
 
     ! Namelist definition===============================
-    namelist /ORDER/ &
+    namelist /general/ &
          fname_out, &
          fname_in, &
          month, &
          flag_retrievals, &
-         npoints_it
+         npoints_it, &
+         nchannel
+
+         namelist /rttov/ &
+         channels
 
     fname_out = "undefined"
     fname_in = "undefined"
@@ -72,7 +78,10 @@ CONTAINS
        return
     end if
 
-    read (nml=ORDER, iostat=iostat, unit=file_unit)
+    read (nml=general, iostat=iostat, unit=file_unit)
+    allocate(channels(nchannel))
+
+    read (nml=rttov, iostat=iostat, unit=file_unit)
     call close_namelist(file_path, file_unit, iostat)
     if (iostat /= 0) then
        !! write here what to do if reading failed"
@@ -85,6 +94,8 @@ CONTAINS
     nml%month = month
     nml%npoints_it = npoints_it
 
+write(*,*) channels
+stop
   end subroutine read_namelist
 
   !! Namelist helpers

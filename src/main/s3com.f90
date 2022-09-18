@@ -50,6 +50,8 @@ PROGRAM S3COM
   TYPE(type_s3com)        :: atm, oe, oe_ip1, oe_tmp
   TYPE(type_nml)          :: nml
 
+  CHARACTER(LEN = 32), PARAMETER :: fname_nml = "config.nml"
+
   REAL(KIND=wp) :: zenangle, azangle, sunzenangle, sunazangle
 
   INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: idx_iwp, idx_oe
@@ -60,8 +62,8 @@ PROGRAM S3COM
 
   LOGICAL :: flag_oe, dealloc_rttov
 
-  ! Read from file.
-  call read_namelist('config.nml', nml)
+  ! Read namelist file
+  call read_namelist(fname_nml, nml)
   npoints_it = nml%npoints_it
 
   ! Extract the number of vertical levels and grid points in the input files
