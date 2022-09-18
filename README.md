@@ -1,7 +1,12 @@
 Satellite Simulator and Sandbox for Cloud Observation and Modelling (S3COM)
 ================================================================================
 
-S3COM is a satellite simulator and retrieval sandbox tool for cloud studies. It simulates satellite observations and provide consistent cloud products based on high-resolution modelling outputs. 
+S3COM is a satellite simulator and retrieval sandbox tool for cloud studies. It simulates satellite observations and provide consistent cloud products based on high-resolution modelling outputs.
+
+The goal of S3COM are mainly:
+- To provide realistic satellite measurements consistent with model outputs
+- Compute the sensitivity of radiative quantities to atmospheric and cloud parameters
+- To test retrieval algorithm on model simulations to quantify and improve their capabilities and limitations
 
 How to use
 ----------
@@ -18,7 +23,7 @@ Compiling & Requirements
 
 [RTTOV](https://nwp-saf.eumetsat.int/site/software/rttov) v13.1 is the main radiative transfer algorithm used in S3COM. It needs to be installed on your system and its libraries linked in the Makefile via the `RTTOV_PATH` variable. Please refer to the RTTOV documentation. S3COM has not been tested for other versions of RTTOV. Following RTTOV recommandations, it is advised to waive the system ressource limits: `ulimit -s unlimited` 
 
-NetCDF4 (C and Fortran) and HDF5 libraries are required. Edit `PATH_NCDF_C_LIB`, `PATH_NCDF_LIB`, `PATH_NCDF_INC` and `PATH_HDF5_LIB` accordingly in the Makefile. 
+NetCDF4 (C and Fortran) and HDF5 libraries are required. It is advised to link them by editing `PATH_NCDF_C_LIB`, `PATH_NCDF_LIB`, `PATH_NCDF_INC` and `PATH_HDF5_LIB`accordingly in the Makefile. 
 
 The `basedir` variable must also be edited in the Makefile to indicate the repository where S3COM is installed.
 
@@ -29,11 +34,12 @@ Current limitations
 
 - The current S3COM version is only configured to handle inputs from the ICON atmospheric model. Some adjustments from the user will be required to use another model. 
 - S3COM only simulates measurements from passive remote-sensing sensors.
+- Polarization and 3D effects are not yet included.
 
 Caution
 -------
 
-S3COM does not account for sub-grid variability of cloud properties. It should be used on atmospheric model outputs with a spatial resolutions near or higher than that of the selected satellite instruments, ideally CRMs or LES. It is advised against using S3COM on GCM outputs; for such use we advise users to turn to dedicated satellite simulators, such as [COSPv2](https://github.com/CFMIP/COSPv2.0). 
+S3COM does not account for sub-grid variability of cloud properties. It should be used on atmospheric model simulations with a spatial resolutions similar or higher than that of the selected satellite instruments, ideally from CRMs or LES models. It is advised against using S3COM on GCM outputs; for such use we advise more dedicated satellite simulators, such as [COSPv2](https://github.com/CFMIP/COSPv2.0). 
 
 License
 ------
