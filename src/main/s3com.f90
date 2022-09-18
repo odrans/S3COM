@@ -29,7 +29,7 @@
 
 PROGRAM S3COM
 
-  USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_icon, type_s3com
+  USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_icon, type_s3com, type_nml
   USE mod_read_icon,       ONLY: read_icon, construct_icon, map_point_to_ll, extract_coordinates
   USE mod_io_namelist,     ONLY: read_namelist
   USE mod_rttov_interface, ONLY: rttov_init
@@ -48,24 +48,24 @@ PROGRAM S3COM
   TYPE(type_rttov_atm)    :: rttov_atm, rttov_atm_oe
   TYPE(type_rttov_opt)    :: rttov_opt
   TYPE(type_s3com)        :: atm, oe, oe_ip1, oe_tmp
+  TYPE(type_nml)          :: nml
 
   REAL(KIND=wp) :: zenangle, azangle, sunzenangle, sunazangle
 
   INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: idx_iwp, idx_oe
   INTEGER(KIND=4) :: i, loc, j
   INTEGER(KIND=4) :: nchunks, idx_start, idx_end, nPtsPerIt, ichunk
-  INTEGER(KIND=4) :: month, nidx
+  INTEGER(KIND=4) :: nidx
   INTEGER(KIND=4) :: Nlevels, Npoints, npoints_it
 
-  LOGICAL :: flag_retrievals, flag_oe, dealloc_rttov
-
-  CHARACTER(LEN=256) :: fname_out, fname_in, fname
+  LOGICAL :: flag_oe, dealloc_rttov
 
   ! Read from file.
-  call read_namelist('config.nml', fname_out, fname_in, month, flag_retrievals, npoints_it)
+  call read_namelist('config.nml', nml)
+  npoints_it = nml%npoints_it
 
   ! Extract the number of vertical levels and grid points in the input files
-  call extract_coordinates(fname_in, Nlevels, Npoints)
+  call extract_coordinates(nml%fname_in, Nlevels, Npoints)
 
   ! Temporary: setting the viewing and solar angles
   zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
@@ -78,10 +78,10 @@ PROGRAM S3COM
   CALL construct_icon(npoints, nlevels, icon)
 
   ! Read input netcdf file containing ICON outputs
-  CALL read_icon(fname_in, icon)
+  CALL read_icon(nml%fname_in, icon)
 
   ! Setup the RTTOV optics
-  CALL rttov_setup_opt(zenangle, azangle, sunzenangle, sunazangle, month, rttov_opt)
+  CALL rttov_setup_opt(zenangle, azangle, sunzenangle, sunazangle, nml%month, rttov_opt)
 
   ! Initialize RTTOV (load data)
   CALL rttov_init(rttov_opt)
@@ -114,7 +114,7 @@ PROGRAM S3COM
      ! Setup the oe variables
      CALL setup_atm(rttov_atm%idx_start, rttov_atm%idx_end, icon%nlevels, oe, flag_oe)
 
-     IF (flag_retrievals) THEN
+     IF (nml%flag_retrievals) THEN
 
         ! Extract the cloud position for ice and liquid phase and modify rttov_atm
         CALL init_zcloud(rttov_atm_oe,oe)
@@ -146,7 +146,7 @@ PROGRAM S3COM
      oe%y_rad_total = oe%f_rad_total; oe%y_rad_clear = oe%f_rad_clear; oe%y_rad_cloudy = oe%f_rad_cloudy
      oe%iwp_model = oe%iwp
 
-     IF (flag_retrievals) THEN
+     IF (nml%flag_retrievals) THEN
         CALL oe_run(oe, rttov_atm_oe, rttov_opt)
      ENDIF
 
@@ -156,6 +156,6 @@ PROGRAM S3COM
   ENDDO
 
   ! Write output file
-  CALL write_output(fname_out,icon,atm)
+  CALL write_output(nml%fname_out, icon, atm)
 
 END PROGRAM S3COM

@@ -35,7 +35,19 @@ MODULE s3com_types
    INTEGER, PARAMETER :: sp = selected_real_kind(6, 37)
    INTEGER, PARAMETER :: dp = selected_real_kind(12, 307)
    INTEGER, PARAMETER :: wp = sp
-   
+
+   ! Namelist
+   TYPE type_nml
+      CHARACTER(LEN = 256) :: &
+           fname_out, &
+           fname_in
+      INTEGER(KIND=4) :: &
+           npoints_it, &
+           month
+      LOGICAL :: &
+           flag_retrievals
+   END TYPE type_nml
+
    !!Type containing variables used by S3COM for retrievals
    TYPE type_s3com
       INTEGER(KIND=4) :: &

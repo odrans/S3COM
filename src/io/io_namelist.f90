@@ -34,19 +34,22 @@ USE, INTRINSIC :: iso_fortran_env, ONLY: stderr => error_unit
 
 CONTAINS
 
-  subroutine read_namelist(file_path, fname_out, fname_in, month, flag_retrievals, npoints_it)
+  subroutine read_namelist(file_path, nml)
     !! Read some parmeters,  Here we use a namelist
     !! but if you were to change the storage format (TOML,or home-made),
     !! this signature would not change
 
+    USE s3com_types,         ONLY: type_nml
+
     character(len=*),  intent(in)  :: file_path
-    character(len=256), intent(out) :: fname_out
-    character(len=256), intent(out) :: fname_in
-    logical, intent(out) :: flag_retrievals
-
-    integer(kind = 4), intent(out) :: month, npoints_it
-
     integer                        :: file_unit, iostat
+
+    ! Namelist variables
+    character(len=256) :: fname_out, fname_in
+    logical :: flag_retrievals
+    integer(kind = 4) :: month, npoints_it
+
+    TYPE(type_nml), intent(out)        :: nml
 
     ! Namelist definition===============================
     namelist /ORDER/ &
@@ -75,6 +78,13 @@ CONTAINS
        !! write here what to do if reading failed"
        return
     end if
+
+    nml%fname_out = fname_out
+    nml%fname_in = fname_in
+    nml%flag_retrievals = flag_retrievals
+    nml%month = month
+    nml%npoints_it = npoints_it
+
   end subroutine read_namelist
 
   !! Namelist helpers
