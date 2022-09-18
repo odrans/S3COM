@@ -1,10 +1,10 @@
 Satellite Simulator and Sandbox for Cloud Observation and Modelling (S3COM)
 ================================================================================
 
-S3COM is a satellite simulator and sandbox tool for cloud studies. It simulates satellite observations consistent with high-resolution modelling outputs and can also use these simulations to provide cloud retrievals. It currently focuses on passive satellite observations and products. 
+S3COM is a satellite simulator and retrieval sandbox tool for cloud studies. It simulates satellite observations and provide consistent cloud products based on high-resolution modelling outputs. 
 
 How to use
---------------------------------------------------------------------------------
+----------
 
 g-- Section in progress
 
@@ -13,20 +13,29 @@ module purge && module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 openmpi/4
 
 Edit the pathnames to your input ("fname_in") and output ("fname_out") netcdf files in config.nml
 
-In the Makefile:
-- edit the paths to:
-   - netcdf-c library ("path_NCDF_C_LIB")
-   - netcdf-fortran library ("path_NCDF_INC" and "path_NCDF_LIB")
-   - HDF5 library ("HDF5_LIB")
-- edit the path to rttov v13.1 ("RTTOV_PATH").
+Compiling & Requirements
+------------------------
 
-After modifications in the code, type the following commands in the terminal being in "/home/ML_RTTOV_CDNC/":
-- make clean (cleaning the code)
-- make or make install (compiling the code)
-- ulimit -s unlimited
-- ./s3com (running the code)
+[RTTOV](https://nwp-saf.eumetsat.int/site/software/rttov) v13.1 is the main radiative transfer algorithm used in S3COM. It needs to be installed on your system and its libraries linked in the Makefile via the `RTTOV_PATH` variable. Please refer to the RTTOV documentation. S3COM has not been tested for other versions of RTTOV. Following RTTOV recommandations, it is advised to waive the system ressource limits: `ulimit -s unlimited` 
+
+NetCDF4 (C and Fortran) and HDF5 libraries are required. Edit `PATH_NCDF_C_LIB`, `PATH_NCDF_LIB`, `PATH_NCDF_INC` and `PATH_HDF5_LIB` accordingly in the Makefile. 
+
+The `basedir` variable must also be edited in the Makefile to indicate the repository where S3COM is installed.
+
+`make clean` cleans the S3COM repositories from binaries and installed libraries and modules. `make install` (or `make`) compiles the code to create the `s3com` binary.
+
+Current limitations
+-------------------
+
+- The current S3COM version is only configured to handle inputs from the ICON atmospheric model. Some adjustments from the user will be required to use another model. 
+- S3COM only simulates measurements from passive remote-sensing sensors.
+
+Caution
+-------
+
+S3COM does not account for sub-grid variability of cloud properties. It should be used on atmospheric model outputs with a spatial resolutions near or higher than that of the selected satellite instruments, ideally CRMs or LES. It is advised against using S3COM on GCM outputs; for such use we advise users to turn to dedicated satellite simulators, such as [COSPv2](https://github.com/CFMIP/COSPv2.0). 
 
 License
---------------------------------------------------------------------------------
+------
 S3COM is available under a BSD 3-clause license.
 Please see [LICENSE](LICENSE) for details.

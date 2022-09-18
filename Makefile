@@ -43,16 +43,16 @@ obj = $(basedir)/obj
 lib = $(basedir)/lib
 mod = $(basedir)/mod
 
-path_main = $(src)/main
-path_io = $(src)/io
-path_utils = $(src)/utils
-path_rttov = $(src)/rttov
+PATH_main = $(src)/main
+PATH_io = $(src)/io
+PATH_utils = $(src)/utils
+PATH_rttov = $(src)/rttov
 
-path_NCDF_C_LIB = /sw/spack-levante/netcdf-c-4.8.1-2k3cmu/lib
-path_NCDF_INC = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g/include
-path_NCDF_LIB = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g/lib
+PATH_NCDF_C_LIB = /sw/spack-levante/netcdf-c-4.8.1-2k3cmu/lib
+PATH_NCDF_INC = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g/include
+PATH_NCDF_LIB = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g/lib
 
-HDF5_LIB = /sw/spack-levante/hdf5-1.12.1-tvymb5/lib
+PATH_HDF5_LIB = /sw/spack-levante/hdf5-1.12.1-tvymb5/lib
 
 RTTOV_PATH       = /work/bb1036/rttov_share/rttov131
 RTTOV_LIB_PATH   = $(RTTOV_PATH)/lib 
@@ -98,10 +98,10 @@ LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MAIN)
 
 # List of flags related to each libraries + final flag
 # -------------------------------------------------------------------------------------------------------------------------------
-FLAGS_NCDF = -I$(path_NCDF_INC) -L${path_NCDF_LIB} -lnetcdff -L${path_NCDF_C_LIB} -lnetcdf -Wl,-rpath,${path_NCDF_LIB} -Wl,-rpath,${path_NCDF_C_LIB}
+FLAGS_NCDF = -I$(PATH_NCDF_INC) -L${PATH_NCDF_LIB} -lnetcdff -L${PATH_NCDF_C_LIB} -lnetcdf -Wl,-rpath,${PATH_NCDF_LIB} -Wl,-rpath,${PATH_NCDF_C_LIB}
 FLAGS_RTTOV = -I${RTTOV_INC_PATH} -L${RTTOV_LIB_PATH} $(RTTOV_LIBS)
-# FLAG_HDF5= -L${HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -Wl,-rpath,${HDF5_LIB}
-FLAG_HDF5= -L${HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${HDF5_LIB}
+# FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -Wl,-rpath,${PATH_HDF5_LIB}
+FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${PATH_HDF5_LIB}
 FLAGS_LOCAL = -L$(lib) -l_io -lrttovml -lmain -lutils
 
 FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
@@ -114,7 +114,7 @@ install: $(LIST_OBJ)
 	ar r $(LIB_MAIN) $(LIST_OBJ_MAIN)
 	ar r $(LIB_IO) $(LIST_OBJ_IO)
 	ar r $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
-	$(F90) $(F90FLAGS) $(path_main)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
+	$(F90) $(F90FLAGS) $(PATH_main)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
 
 clean:	
 	rm -f $(obj)/*.o $(mod)/*.mod $(lib)/*.a
@@ -123,62 +123,62 @@ clean:
 
 ## Objects for subroutines in ./src/main 
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/setup.o : $(path_main)/setup.f90
+$(obj)/setup.o : $(PATH_main)/setup.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/model_cloud.o : $(path_main)/model_cloud.f90
+$(obj)/model_cloud.o : $(PATH_main)/model_cloud.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/oe_run.o : $(path_main)/oe_run.f90
+$(obj)/oe_run.o : $(PATH_main)/oe_run.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/oe_utils.o : $(path_main)/oe_utils.f90
+$(obj)/oe_utils.o : $(PATH_main)/oe_utils.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 
 ## Objects for subroutines in ./src/io
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/write_output.o : $(path_io)/write_output.f90
-	$(F90) $(F90FLAGS) -I $(path_NCDF_INC) -c $< -o $@
+$(obj)/write_output.o : $(PATH_io)/write_output.f90
+	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
-$(obj)/read_icon.o : $(path_io)/read_icon.f90
-	$(F90) $(F90FLAGS) -I $(path_NCDF_INC) -c $< -o $@
+$(obj)/read_icon.o : $(PATH_io)/read_icon.f90
+	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
-$(obj)/io_namelist.o : $(path_io)/io_namelist.f90
-	$(F90) $(F90FLAGS) -I $(path_NCDF_INC) -c $< -o $@
+$(obj)/io_namelist.o : $(PATH_io)/io_namelist.f90
+	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
-$(obj)/regrid.o : $(path_io)/regrid.f90
+$(obj)/regrid.o : $(PATH_io)/regrid.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 ## Objects for subroutines in ./src/rttov
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/interface_rttov.o : $(path_rttov)/interface_rttov.f90
+$(obj)/interface_rttov.o : $(PATH_rttov)/interface_rttov.f90
 	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
 
-$(obj)/rttov_ml.o : $(path_rttov)/rttov.f90
+$(obj)/rttov_ml.o : $(PATH_rttov)/rttov.f90
 	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
 
-$(obj)/rttov_setup.o : $(path_rttov)/rttov_setup.f90
+$(obj)/rttov_setup.o : $(PATH_rttov)/rttov_setup.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/rttov_utils.o : $(path_rttov)/rttov_utils.f90
+$(obj)/rttov_utils.o : $(PATH_rttov)/rttov_utils.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 ## Objects for subroutines in ./src/utils
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/types.o : $(path_utils)/types.f90
+$(obj)/types.o : $(PATH_utils)/types.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/config.o : $(path_utils)/config.f90
+$(obj)/config.o : $(PATH_utils)/config.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/utils_math.o : $(path_utils)/utils_math.f90
+$(obj)/utils_math.o : $(PATH_utils)/utils_math.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/utils_fort.o : $(path_utils)/utils_fort.f90 #$(path_utils)/config.f90
+$(obj)/utils_fort.o : $(PATH_utils)/utils_fort.f90 #$(PATH_utils)/config.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
