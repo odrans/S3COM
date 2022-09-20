@@ -39,6 +39,7 @@ MODULE s3com_types
    ! Namelist
    TYPE type_nml
       CHARACTER(LEN = 256) :: &
+           path_rttov, &
            fname_out, &
            fname_in
       INTEGER(KIND=4) :: &
@@ -47,11 +48,16 @@ MODULE s3com_types
            platform, &
            satellite, &
            instrument, &
-           nchannels
+           nchannels, &
+           ir_scatt_model, &
+           vis_scatt_model, &
+           dom_nstreams
       INTEGER(KIND = 4), DIMENSION(:), ALLOCATABLE :: &
            channel_list
       LOGICAL :: &
-           flag_retrievals
+           flag_retrievals, &
+           addrefrac, &
+           dom_rayleigh
    END TYPE type_nml
 
    !!Type containing variables used by S3COM for retrievals

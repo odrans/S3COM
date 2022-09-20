@@ -7,6 +7,16 @@ npoints_it = 1
 nchannels = 4
 /
 
+&rttov_init
+path_rttov = "/work/bb1036/rttov_share/rttov131"
+addrefrac = TRUE
+ir_scatt_model = 1
+vis_scatt_model = 1
+dom_nstreams = 12
+dom_rayleigh = FALSE
+
+/
+
 &rttov
 platform = 9
 satellite = 2

@@ -94,7 +94,7 @@ PROGRAM S3COM
   CALL rttov_setup_opt(zenangle, azangle, sunzenangle, sunazangle, rttov_opt, nml)
 
   ! Initialize RTTOV (load data)
-  CALL rttov_init(rttov_opt)
+  CALL rttov_init(rttov_opt, nml)
 
   ! Setup the overall atmospheric model used for radiative transfer
   flag_oe = .FALSE.

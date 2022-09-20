@@ -31,31 +31,31 @@
 MODULE MOD_RTTOV_INTERFACE
    
    USE s3com_config, ONLY: RTTOV_NTHREADS
-   USE s3com_types,  ONLY: wp, type_rttov_opt
-   
+   USE s3com_types,  ONLY: wp, type_rttov_opt, type_nml
+
    USE rttov_const, ONLY: &
-       surftype_sea,      &
-       surftype_land,     &
-       sensor_id_mw,      &
-       sensor_id_po,      &
-       inst_name,         &
-       platform_name
-   
+        surftype_sea,      &
+        surftype_land,     &
+        sensor_id_mw,      &
+        sensor_id_po,      &
+        inst_name,         &
+        platform_name
+
    USE mod_rttov, ONLY: platform, satellite, sensor, nChannels,       &
-       opts, errorstatus_success, rttov_exit, coefs,                  &
-       emis_atlas, brdf_atlas, atlas_type, dosolar, nthreads, imonth, &
-       dosolar, channel_list
-   
+        opts, errorstatus_success, rttov_exit, coefs,                  &
+        emis_atlas, brdf_atlas, atlas_type, dosolar, nthreads, imonth, &
+        dosolar, channel_list
+
    !!The rttov_emis_atlas_data type must be imported separately
    USE mod_rttov_emis_atlas, ONLY:  &
-       rttov_emis_atlas_data,       &
-       atlas_type_ir, atlas_type_mw
-   
+        rttov_emis_atlas_data,       &
+        atlas_type_ir, atlas_type_mw
+
    !!The rttov_brdf_atlas_data type must be imported separately
    USE mod_rttov_brdf_atlas, ONLY : rttov_brdf_atlas_data
-   
+
    IMPLICIT NONE
-   
+
 #include "rttov_direct.interface"
 #include "rttov_parallel_direct.interface"
 #include "rttov_read_coefs.interface"
@@ -66,24 +66,25 @@ MODULE MOD_RTTOV_INTERFACE
 #include "rttov_print_profile.interface"
 #include "rttov_skipcommentline.interface"
 
-!!Use emissivity atlas
+   !!Use emissivity atlas
 #include "rttov_setup_emis_atlas.interface"
 #include "rttov_get_emis.interface"
 #include "rttov_deallocate_emis_atlas.interface"
 
-!!Use BRDF atlas
+   !!Use BRDF atlas
 #include "rttov_setup_brdf_atlas.interface"
 #include "rttov_get_brdf.interface"
 #include "rttov_deallocate_brdf_atlas.interface"
-   
-   CONTAINS
-      
-      SUBROUTINE RTTOV_INIT(rttov_opt)
-      
-      TYPE(type_rttov_opt), INTENT(in) :: rttov_opt
-      
+
+ CONTAINS
+
+   SUBROUTINE RTTOV_INIT(rttov_opt, nml)
+
+     TYPE(type_rttov_opt), INTENT(in) :: rttov_opt
+     TYPE(type_nml), intent(IN) :: nml
+
       !!Local variables
-      CHARACTER(len=256) :: coef_filename, cld_coef_filename, sat
+      CHARACTER(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2
       INTEGER :: errorstatus
       
       nthreads  = RTTOV_NTHREADS
@@ -94,63 +95,59 @@ MODULE MOD_RTTOV_INTERFACE
       ALLOCATE(channel_list(nchannels))
       channel_list(1:nchannels)=rttov_opt%channel_list
       
-      sat="_"
       IF (rttov_opt%satellite .NE. 0) THEN
          WRITE(sat,*) rttov_opt%satellite
          sat="_"//trim(adjustl(sat))//"_"
       END IF
-      
-      coef_filename = "/work/bb1036/rttov_share/rttov131/rtcoef_rttov13/rttov13pred54L/rtcoef_"//&
-         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"_o3.dat"
-      
-      cld_coef_filename = "/work/bb1036/rttov_share/rttov131/rtcoef_rttov13/cldaer_visir/sccldcoef_"//&
-         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//".dat"
-      
+
+      coef_filename = trim(nml%path_rttov)//"/rtcoef_rttov13/rttov13pred54L/rtcoef_"//&
+           trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"_o3.dat"
+
+      cld_coef_filename = trim(nml%path_rttov)//"/rtcoef_rttov13/cldaer_visir/sccldcoef_"//&
+           trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//".dat"
+
+      path_emis_atlas = trim(nml%path_rttov)//'/emis_data'
+      path_brdf_atlas = trim(nml%path_rttov)//'/brdf_data'
+
       !!-----------------------------------------------------------------------------------------------------------------------!!
       !! 1. Initialise RTTOV options structure                                                                                 !!
       !!-----------------------------------------------------------------------------------------------------------------------!!
-      
+
       IF (dosolar == 1) THEN
          opts%rt_ir%addsolar = .TRUE.              !Solar radiation included
       ELSE
          opts%rt_ir%addsolar = .FALSE.             !Solar radiation not included (default = false)
       ENDIF
-      
+
       opts%interpolation%addinterp       = .TRUE.  !If true input profiles may be supplied on user-defined levels, and internal
-                                                   !interpolation is used (default = false)
+      !interpolation is used (default = false)
       opts%interpolation%interp_mode     = 1       !Interpolation method
       !opts%interpolation%reg_limit_extrap = .TRUE.
-      
-      opts%rt_all%addrefrac              = .TRUE.  !If true RTTOV calculations accounts for atmospheric refraction
-                                                   !(default = true)
+
+write(*,*) nml%addrefrac, nml%ir_scatt_model, nml%vis_scatt_model, nml%dom_nstreams, nml%dom_rayleigh
+
+      opts%rt_all%addrefrac              =  nml%addrefrac  !If true RTTOV calculations accounts for atmospheric refraction (default = true)
       opts%rt_ir%addaerosl               = .FALSE. !If true accounts for scattering due to aerosols (default = false)
       opts%rt_ir%addclouds               = .TRUE.  !If true accounts for scattering due to clouds (default = false)
-      
-      opts%rt_ir%ir_scatt_model          = 1       !Scattering model for emission source term:
-                                                      !1 => DOM; 2 => Chou-scaling
-      opts%rt_ir%vis_scatt_model         = 1       !Scattering model for solar source term:
-                                                      !1 => DOM; 2 => single-scattering; 3 => MFASIS
-      opts%rt_ir%dom_nstreams            = 8       !Number of streams for Discrete Ordinates (DOM)
-      opts%rt_ir%dom_rayleigh            = .FALSE. !Enables Rayleigh multiple-scattering in solar DOM simulations
-                                                   !(default = false)
-      opts%rt_ir%rayleigh_single_scatt   = .FALSE. !If false disables the Rayleigh single-scattering calculation for UV/visible
-                                                   !channels when addsolar is true (default = true)
-      opts%rt_ir%rayleigh_max_wavelength = 0.      !Rayleigh scattering is active for channels at wavelengths (in microns) below
-                                                   !this value (default = 2µm)
-                                                   !Rayleigh scattering can be turned off entirely for v13 predictor coefficients
-                                                   !by setting this to 0.
-      
+
+      opts%rt_ir%ir_scatt_model          = nml%ir_scatt_model      !Scattering model for emission source term:
+      !1 => DOM; 2 => Chou-scaling
+      opts%rt_ir%vis_scatt_model         = nml%vis_scatt_model       !Scattering model for solar source term:
+      !1 => DOM; 2 => single-scattering; 3 => MFASIS
+      opts%rt_ir%dom_nstreams            = nml%dom_nstreams       !Number of streams for Discrete Ordinates (DOM)
+      opts%rt_ir%dom_rayleigh            = nml%dom_rayleigh !Enables Rayleigh multiple-scattering in solar DOM simulations
+
       opts%rt_all%ozone_data             = .FALSE. !Set the relevant flag to .TRUE. when supplying a profile of the given
       opts%rt_all%co2_data               = .FALSE. !trace gas (ensure the coefficient file supports the gas)
       opts%rt_all%n2o_data               = .FALSE. 
       opts%rt_all%ch4_data               = .FALSE.
       opts%rt_all%co_data                = .FALSE.
       opts%rt_all%so2_data               = .FALSE.
-      
+
       opts%rt_mw%clw_data                = .FALSE.
-      
-      opts%config%verbose                = .TRUE.  !If false only messages for fatal errors are output (default = true)
-      opts%config%do_checkinput          = .FALSE. !If true checks whether input profiles are within both absolute and regression
+
+      opts%config%verbose                = .FALSE.  !If false only messages for fatal errors are output (default = true)
+      opts%config%do_checkinput          = .TRUE. !If true checks whether input profiles are within both absolute and regression
                                                    !limits (default = true)
       
       opts%rt_all%switchrad              = .TRUE.
@@ -192,7 +189,7 @@ MODULE MOD_RTTOV_INTERFACE
            imonth,                                               &
            atlas_type,                                           & !Selects MW (1) or IR (2)
            emis_atlas,                                           &
-           path = '/work/bb1036/rttov_share/rttov131/emis_data', & !Default path to atlas data
+           path = path_emis_atlas, & !Default path to atlas data
            coefs = coefs)                                          !This is mandatory for the CNRM MW atlas, ignored by TELSEM2;
                                                                    !if supplied for IR atlases they are initialised for this 
                                                                    !sensor and this makes the atlas much faster to access
@@ -209,10 +206,10 @@ MODULE MOD_RTTOV_INTERFACE
               opts,                                                &
               imonth,                                              &
               brdf_atlas,                                          &
-              path ='/work/bb1036/rttov_share/rttov131/brdf_data', & !Default path to atlas data
+              path = path_brdf_atlas, & !Default path to atlas data
               coefs = coefs)                                         !If supplied the BRDF atlas is initialised for this sensor
                                                                      !and this makes the atlas much faster to access
-         
+                                                                     !
          IF (errorstatus /= errorstatus_success) THEN
             WRITE(*,*) 'error initialising BRDF atlas'
             CALL rttov_exit(errorstatus)

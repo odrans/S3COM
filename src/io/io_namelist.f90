@@ -45,10 +45,11 @@ CONTAINS
     integer                        :: file_unit, iostat
 
     ! Namelist variables
-    character(len=256) :: fname_out, fname_in
-    logical :: flag_retrievals
+    character(len=256) :: fname_out, fname_in, path_rttov
+    logical :: flag_retrievals, addrefrac, dom_rayleigh
 
-    integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument
+    integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
+         ir_scatt_model, vis_scatt_model, dom_nstreams
     integer(kind = 4), DIMENSION(:), ALLOCATABLE :: channel_list
 
     TYPE(type_nml), intent(out)        :: nml
@@ -62,20 +63,19 @@ CONTAINS
          npoints_it, &
          nchannels
 
-         namelist /rttov/ &
+    namelist /rttov_init/ &
+         path_rttov, &
+         addrefrac, &
+         ir_scatt_model, &
+         vis_scatt_model, &
+         dom_nstreams, &
+         dom_rayleigh
+
+    namelist /rttov/ &
          channel_list, &
          platform, &
          satellite, &
          instrument
-
-    fname_out = "undefined"
-    fname_in = "undefined"
-    month = -999
-    npoints_it = 1
-    flag_retrievals = .FALSE.
-    platform = 1
-    satellite = 1
-    instrument = 1
     ! Namelist definition===============================
 
     call open_namelist(file_path, file_unit, iostat)
@@ -87,13 +87,16 @@ CONTAINS
     read (nml=general, iostat=iostat, unit=file_unit)
     allocate(channel_list(nchannels))
 
+    read (nml=rttov_init, iostat=iostat, unit=file_unit)
     read (nml=rttov, iostat=iostat, unit=file_unit)
+
     call close_namelist(file_path, file_unit, iostat)
     if (iostat /= 0) then
        !! write here what to do if reading failed"
        return
     end if
 
+    nml%path_rttov = path_rttov
     nml%fname_out = fname_out
     nml%fname_in = fname_in
     nml%flag_retrievals = flag_retrievals
@@ -104,6 +107,11 @@ CONTAINS
     nml%platform = platform
     nml%satellite = satellite
     nml%instrument = instrument
+    nml%addrefrac = addrefrac
+    nml%ir_scatt_model = ir_scatt_model
+    nml%vis_scatt_model = vis_scatt_model
+    nml%dom_rayleigh = dom_rayleigh
+    nml%dom_nstreams = dom_nstreams
 
   end subroutine read_namelist
 
