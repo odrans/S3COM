@@ -50,7 +50,7 @@ PROGRAM S3COM
   TYPE(type_s3com)        :: atm, oe, oe_ip1, oe_tmp
   TYPE(type_nml)          :: nml
 
-  CHARACTER(LEN = 32), PARAMETER :: fname_nml = "config.nml"
+  CHARACTER(LEN = 32) :: fname_nml
 
   REAL(KIND=wp) :: zenangle, azangle, sunzenangle, sunazangle
 
@@ -61,6 +61,14 @@ PROGRAM S3COM
   INTEGER(KIND=4) :: Nlevels, Npoints, npoints_it
 
   LOGICAL :: flag_oe, dealloc_rttov
+
+  ! Set the namelist file
+  IF(COMMAND_ARGUMENT_COUNT().NE.1) THEN
+     write(*,*) "Namelist not provided, using config.nml instead"
+     fname_nml = "config.nml"
+  ELSE
+     CALL GET_COMMAND_ARGUMENT(1, fname_nml)
+  ENDIF
 
   ! Read namelist file
   call read_namelist(fname_nml, nml)
