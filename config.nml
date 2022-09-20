@@ -4,9 +4,12 @@ fname_out = "/home/b/b380333/icon_output_05022013_1340pm_pixel_29_316_liq_cld_on
 month = 5
 flag_retrievals = FALSE
 npoints_it = 1
-nchannel = 3
+nchannels = 4
 /
 
 &rttov
-channels = 3, 2, 1
+platform = 9
+satellite = 2
+instrument = 13
+channel_list = 1, 2, 3, 4
 /

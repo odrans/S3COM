@@ -43,7 +43,13 @@ MODULE s3com_types
            fname_in
       INTEGER(KIND=4) :: &
            npoints_it, &
-           month
+           month, &
+           platform, &
+           satellite, &
+           instrument, &
+           nchannels
+      INTEGER(KIND = 4), DIMENSION(:), ALLOCATABLE :: &
+           channel_list
       LOGICAL :: &
            flag_retrievals
    END TYPE type_nml

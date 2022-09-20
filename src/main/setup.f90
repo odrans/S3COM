@@ -29,8 +29,8 @@
 
 MODULE mod_setup_atm
    
-   USE s3com_types,  ONLY: type_s3com, wp
-   USE s3com_config, ONLY: nstates, apriori_iwp, rttov_nchannels
+   USE s3com_types,  ONLY: type_s3com, wp, type_nml
+   USE s3com_config, ONLY: nstates, apriori_iwp
    
    IMPLICIT NONE
    
@@ -60,26 +60,29 @@ MODULE mod_setup_atm
          
       END SUBROUTINE update_atm
       
-      SUBROUTINE setup_atm(idx_start,idx_end,nlevels,y,flag_oe)
-         
-         INTEGER(kind=4), PARAMETER :: nchannels = rttov_nchannels
-         
-         ! Input variables
-         INTEGER(kind=4), INTENT(IN) :: nlevels, idx_start, idx_end
-         LOGICAL :: flag_oe
-         
-         ! Output variables
-         TYPE(type_s3com), INTENT(OUT) :: y
-         
-         ! Internal variables
-         INTEGER(KIND=4) :: npoints, ipoint
-         
+      SUBROUTINE setup_atm(idx_start, idx_end, nlevels, y, flag_oe, nml)
+
+        INTEGER(kind=4) :: nchannels
+
+        ! Input variables
+        INTEGER(kind=4), INTENT(IN) :: nlevels, idx_start, idx_end
+        LOGICAL :: flag_oe
+
+        ! Output variables
+        TYPE(type_s3com), INTENT(OUT)   :: y
+        TYPE(type_nml), INTENT(IN)      :: nml
+
+        ! Internal variables
+        INTEGER(KIND=4) :: npoints, ipoint
+
+         nchannels = nml%nchannels
+
          npoints = idx_end - idx_start + 1
          
          y%npoints = npoints
          y%nstates = nstates
-         y%nmeas = rttov_nchannels
-         
+         y%nmeas = nml%nchannels
+
          ALLOCATE(y%y_rad_total(npoints,nchannels)); y%y_rad_total = 0._wp
          ALLOCATE(y%f_rad_total(npoints,nchannels)); y%f_rad_total = 0._wp
          ALLOCATE(y%y_rad_clear(npoints,nchannels)); y%y_rad_clear = 0._wp

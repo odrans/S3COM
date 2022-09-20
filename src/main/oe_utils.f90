@@ -32,7 +32,7 @@ MODULE MOD_OE_UTILS
    USE s3com_types,        ONLY: wp, type_rttov_atm, type_rttov_opt, type_s3com
    USE mod_model_cloud, ONLY: init_cloudprof
    USE mod_rttov,       ONLY: run_rttov
-   USE s3com_config,       ONLY: rttov_nchannels, nstates, apriori_iwp_error
+   USE s3com_config,       ONLY: nstates, apriori_iwp_error
    USE mod_utils_math,  ONLY: inverse
    
    IMPLICIT NONE
@@ -184,7 +184,7 @@ MODULE MOD_OE_UTILS
     INTEGER(KIND=4) :: &
          ichannel, istate
 
-    DO ichannel=1,rttov_nchannels
+    DO ichannel=1, oe%nmeas
        oe%Sy(:,ichannel,ichannel) = (oe%y(:,ichannel) * 1E-2)**2
     END DO
 

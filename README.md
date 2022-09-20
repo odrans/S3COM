@@ -1,29 +1,28 @@
 Satellite Simulator and Sandbox for Cloud Observation and Modelling (S3COM)
 ================================================================================
 
-S3COM is a satellite simulator and retrieval sandbox tool for cloud studies. It simulates satellite observations and provide consistent cloud products based on high-resolution modelling outputs.
+S3COM is a satellite simulator and retrieval sandbox tool for cloud studies. It provides satellite observations and cloud products based on high-resolution modelling outputs.
 
-The goals of S3COM are mainly to:
-- provide realistic satellite measurements consistent with model outputs
-- compute the sensitivity of radiative quantities to atmospheric and cloud parameters
-- evaluate and improve retrieval algorithm using high resolution model simulations
+The main goals of S3COM are:
+- providing realistic satellite measurements consistent with model outputs
+- computing the sensitivity of radiative quantities to cloud parameters
+- evaluating and improving retrieval algorithms using output fields from high-resolution models
 
 How to use
 ----------
 
-g-- Section in progress
+- Section in progress
 
-Environment on DKRZ/Levante:
-module purge && module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 openmpi/4.1.2-intel-2021.5.0 netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0
+Environment on DKRZ/Levante: module purge && module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 openmpi/4.1.2-intel-2021.5.0 netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0
 
 Edit the pathnames to your input ("fname_in") and output ("fname_out") netcdf files in config.nml
 
 Compiling & Requirements
 ------------------------
 
-[RTTOV](https://nwp-saf.eumetsat.int/site/software/rttov) v13.1 is the main radiative transfer algorithm used in S3COM. It needs to be installed on your system and its libraries linked in the Makefile via the `RTTOV_PATH` variable. Please refer to the RTTOV documentation. S3COM has not been tested for other versions of RTTOV. Following RTTOV recommandations, it is advised to waive the system ressource limits: `ulimit -s unlimited` 
+[RTTOV](https://nwp-saf.eumetsat.int/site/software/rttov) v13.1 is the main radiative transfer algorithm used in S3COM. It needs to be installed on your system and its libraries linked in the Makefile via the `RTTOV_PATH` variable. Please refer to the RTTOV documentation. S3COM has not been tested for other versions of RTTOV. Following RTTOV recommendations, it is advised to raise the system stack size, e.g.: `ulimit -s unlimited` 
 
-NetCDF4 (C and Fortran) and HDF5 libraries are required. It is advised to link them by editing `PATH_NCDF_C_LIB`, `PATH_NCDF_LIB`, `PATH_NCDF_INC` and `PATH_HDF5_LIB`accordingly in the Makefile. 
+NetCDF4 (C and Fortran) and HDF5 libraries are required. It is advised to link them by editing `PATH_NCDF_C_LIB`, `PATH_NCDF_LIB`, `PATH_NCDF_INC` and `PATH_HDF5_LIB` accordingly in the Makefile. 
 
 The `basedir` variable must also be edited in the Makefile to indicate the repository where S3COM is installed.
 
@@ -32,7 +31,7 @@ The `basedir` variable must also be edited in the Makefile to indicate the repos
 Current limitations
 -------------------
 
-- The current S3COM version is only configured to handle inputs from the ICON atmospheric model. Some adjustments from the user will be required to use another model. 
+- The current version is only configured to handle simulations from the ICON model. Some adjustments will be necessary to use outputs from another model. 
 - S3COM only simulates measurements from passive remote-sensing sensors.
 - Polarization and 3D effects are not yet included.
 

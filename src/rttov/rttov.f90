@@ -29,7 +29,6 @@
 
 MODULE MOD_RTTOV
    
-   USE s3com_config,       ONLY: RTTOV_NCHANNELS
    USE s3com_types,        ONLY: wp, type_rttov_atm, type_rttov_opt, type_s3com
    USE mod_rttov_utils, ONLY: idx_rttov
    

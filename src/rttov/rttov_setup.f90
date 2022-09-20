@@ -35,31 +35,29 @@ MODULE MOD_RTTOV_SETUP
    
    CONTAINS
    
-      SUBROUTINE RTTOV_SETUP_OPT(zenangle,azangle,sunzenangle,sunazangle,month,rttov_opt)
+      SUBROUTINE RTTOV_SETUP_OPT(zenangle,azangle,sunzenangle,sunazangle,rttov_opt, nml)
          
-         USE s3com_types,  ONLY: type_rttov_opt
+         USE s3com_types,  ONLY: type_rttov_opt, type_nml
          USE s3com_config, ONLY:                                 &
-            RTTOV_PLATFORM, RTTOV_PLATFORM, RTTOV_SATELLITE,  &
-            RTTOV_INSTRUMENT, RTTOV_DOSOLAR, RTTOV_NCHANNELS, &
-            RTTOV_CHANNEL_LIST
+             RTTOV_DOSOLAR
       
             !!Input variables
-            INTEGER, INTENT(IN)  :: month
             REAL(wp), INTENT(IN) :: zenangle, azangle, sunzenangle, sunazangle
             
             !!Output variables
             TYPE(type_rttov_opt), INTENT(OUT) :: rttov_opt
-            
-            rttov_opt%platform   = RTTOV_PLATFORM
-            rttov_opt%satellite  = RTTOV_SATELLITE
-            rttov_opt%instrument = RTTOV_INSTRUMENT
+            TYPE(type_nml), INTENT(IN) :: nml
+
+            rttov_opt%platform   = nml%platform
+            rttov_opt%satellite  = nml%satellite
+            rttov_opt%instrument = nml%instrument
             rttov_opt%dosolar    = RTTOV_DOSOLAR
-            rttov_opt%nchannels  = RTTOV_NCHANNELS
+            rttov_opt%nchannels  = nml%nchannels
             
             ALLOCATE(rttov_opt%channel_list(rttov_opt%nchannels))
             
-            rttov_opt%channel_list = RTTOV_CHANNEL_LIST
-            rttov_opt%month        = month
+            rttov_opt%channel_list = nml%channel_list
+            rttov_opt%month        = nml%month
             rttov_opt%zenangle     = zenangle
             rttov_opt%azangle      = azangle
             rttov_opt%sunzenangle  = sunzenangle

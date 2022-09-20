@@ -30,7 +30,7 @@
 MODULE s3com_types
 
   IMPLICIT NONE
-  
+
   integer, parameter :: sp = selected_real_kind(6, 37)
   integer, parameter :: dp = selected_real_kind(12, 307)
   integer, parameter :: wp = sp
@@ -38,9 +38,11 @@ MODULE s3com_types
   TYPE type_s3com
      REAL(kind=wp), DIMENSION(:,:) :: &
           OE_Y          ! Measurement vector from the optimal estimation method
+     INTEGER(kind = 4) :: &
+          nchannels
   END TYPE type_s3com
 
-  
+
   type type_icon
      integer(kind=4) :: &
           Nlevels, Npoints, Nhydro, Nlat, Nlon, mode! Dimensions 
@@ -94,7 +96,7 @@ MODULE s3com_types
           dem_c,     & ! 11microm emissivity (convective cloud)
           lwc,       & ! Liquid water content (kg/m3)
           iwc          ! Ice water content (kg/m3)
-     
+
      real(wp),dimension(:,:,:),allocatable :: &
           Reff         ! Subcolumn effective radius
   end type type_icon
@@ -102,7 +104,8 @@ MODULE s3com_types
   type type_rttov_atm
      integer,pointer :: &
           nPoints,      & ! Number of profiles to simulate
-          nLevels         ! Number of levels
+          nLevels,      &   ! Number of levels
+          nchannels
      real(wp),pointer :: &
           co2,          & ! Carbon dioxide 
           ch4,          & ! Methane 

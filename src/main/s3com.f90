@@ -83,14 +83,14 @@ PROGRAM S3COM
   CALL read_icon(nml%fname_in, icon)
 
   ! Setup the RTTOV optics
-  CALL rttov_setup_opt(zenangle, azangle, sunzenangle, sunazangle, nml%month, rttov_opt)
+  CALL rttov_setup_opt(zenangle, azangle, sunzenangle, sunazangle, rttov_opt, nml)
 
   ! Initialize RTTOV (load data)
   CALL rttov_init(rttov_opt)
 
   ! Setup the overall atmospheric model used for radiative transfer
   flag_oe = .FALSE.
-  CALL setup_atm(1, icon%npoints, icon%nlevels, atm, flag_oe)
+  CALL setup_atm(1, icon%npoints, icon%nlevels, atm, flag_oe, nml)
 
   nChunks = icon%nPoints/nPoints_it
   IF (MOD(icon%npoints,npoints_it)/=0) nchunks = nchunks + 1
@@ -114,7 +114,7 @@ PROGRAM S3COM
      CALL rttov_setup_atm(idx_start, idx_end, icon, rttov_atm_oe)
 
      ! Setup the oe variables
-     CALL setup_atm(rttov_atm%idx_start, rttov_atm%idx_end, icon%nlevels, oe, flag_oe)
+     CALL setup_atm(rttov_atm%idx_start, rttov_atm%idx_end, icon%nlevels, oe, flag_oe, nml)
 
      IF (nml%flag_retrievals) THEN
 
@@ -158,6 +158,6 @@ PROGRAM S3COM
   ENDDO
 
   ! Write output file
-  CALL write_output(nml%fname_out, icon, atm)
+  CALL write_output(icon, atm, nml)
 
 END PROGRAM S3COM

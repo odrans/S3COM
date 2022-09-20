@@ -29,25 +29,24 @@
 
 MODULE MOD_WRITE_OUTPUT
    
-   USE s3com_types,  ONLY: type_s3com, type_icon, wp
-   USE s3com_config, ONLY: rttov_nchannels, rttov_channel_list
+   USE s3com_types,  ONLY: type_s3com, type_icon, wp, type_nml
    USE netcdf
    
    IMPLICIT NONE
    
    CONTAINS
       
-      SUBROUTINE write_output(fname_out, icon, oe)
+      SUBROUTINE write_output(icon, oe, nml)
          
          USE mod_read_icon, ONLY: map_point_to_ll
          
          ! Input variables
-         CHARACTER(len=256), INTENT(IN) :: fname_out
          TYPE(type_icon),    INTENT(IN) :: icon
          TYPE(type_s3com),      INTENT(IN) :: oe
-         
+         TYPE(type_nml),      INTENT(IN) :: nml
+
          ! Local variables
-         REAL(KIND=wp), DIMENSION(icon%Nlon, icon%Nlat, rttov_nchannels) :: &
+         REAL(KIND=wp), DIMENSION(icon%Nlon, icon%Nlat, nml%nchannels) :: &
             gridded_y_refl_total, gridded_y_refl_clear,                     &
             gridded_y_bt_total, gridded_y_bt_clear,                         &
             gridded_y_rad_total, gridded_y_rad_clear, gridded_y_rad_cloudy, &
@@ -82,11 +81,11 @@ MODULE MOD_WRITE_OUTPUT
          CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%iwp_model(:), y2=gridded_iwp_model)
          CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%gip1(:),      y2=gridded_g)   
          
-         errst = nf90_create(fname_out,NF90_CLOBBER,ncid)
+         errst = nf90_create(nml%fname_out,NF90_CLOBBER,ncid)
          
          errst = nf90_def_dim(ncid, "Longitude", icon%Nlon,       dimid_lon)
          errst = nf90_def_dim(ncid, "Latitude",  icon%Nlat,       dimid_lat)
-         errst = nf90_def_dim(ncid, "Channel",   rttov_nchannels, dimid_chan)
+         errst = nf90_def_dim(ncid, "Channel",   nml%nchannels, dimid_chan)
          
          dimid_latlon     = (/dimid_lon, dimid_lat/)
          dimid_latlonchan = (/dimid_lon, dimid_lat, dimid_chan/)
@@ -105,8 +104,7 @@ MODULE MOD_WRITE_OUTPUT
          errst = nf90_def_var(ncid, "Emissivity",      NF90_REAL, dimid_latlonchan, varid_emiss)
          errst = nf90_def_var(ncid, "iwp_ret",         NF90_REAL, dimid_latlon,     varid_iwp_ret)
          errst = nf90_def_var(ncid, "iwp_model",       NF90_REAL, dimid_latlon,     varid_iwp_mod)
-         !errst = nf90_def_var(ncid, "g",               NF90_REAL, dimid_latlon,     varid_g)
-         
+
          errst = nf90_put_att(ncid, varid_lon,        "units", "degrees_east")
          errst = nf90_put_att(ncid, varid_lat,        "units", "degrees_north")
          errst = nf90_put_att(ncid, varid_chan,       "units", "")
@@ -121,13 +119,12 @@ MODULE MOD_WRITE_OUTPUT
          errst = nf90_put_att(ncid, varid_emiss,      "units", "")
          errst = nf90_put_att(ncid, varid_iwp_ret,    "units", "kg/m2")
          errst = nf90_put_att(ncid, varid_iwp_mod,    "units", "kg/m2")
-         !errst = nf90_put_att(ncid, varid_g)
-         
+
          errst = nf90_enddef(ncid)
          
          errst = nf90_put_var(ncid, varid_lon,        icon%lon_orig)
          errst = nf90_put_var(ncid, varid_lat,        icon%lat_orig)
-         errst = nf90_put_var(ncid, varid_chan,       rttov_channel_list)
+         errst = nf90_put_var(ncid, varid_chan,       nml%channel_list)
          errst = nf90_put_var(ncid, varid_refl_total, gridded_y_refl_total(:,:,:))
          errst = nf90_put_var(ncid, varid_refl_clear, gridded_y_refl_clear(:,:,:))
          errst = nf90_put_var(ncid, varid_bt_total,   gridded_y_bt_total(:,:,:))
@@ -139,8 +136,7 @@ MODULE MOD_WRITE_OUTPUT
          errst = nf90_put_var(ncid, varid_emiss,      gridded_emiss(:,:,:))
          errst = nf90_put_var(ncid, varid_iwp_ret,    gridded_iwp_ret(:,:))
          errst = nf90_put_var(ncid, varid_iwp_mod,    gridded_iwp_model(:,:))
-         !errst = nf90_put_var(ncid, varid_g,          gridded_g(:,:))
-         
+
          errst = nf90_close(ncid)
          
          write(*,*) "Done writting"

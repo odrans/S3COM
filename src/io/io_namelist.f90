@@ -48,8 +48,8 @@ CONTAINS
     character(len=256) :: fname_out, fname_in
     logical :: flag_retrievals
 
-    integer(kind = 4) :: month, npoints_it, nchannel
-    integer(kind = 4), DIMENSION(:), ALLOCATABLE :: channels
+    integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument
+    integer(kind = 4), DIMENSION(:), ALLOCATABLE :: channel_list
 
     TYPE(type_nml), intent(out)        :: nml
 
@@ -60,16 +60,22 @@ CONTAINS
          month, &
          flag_retrievals, &
          npoints_it, &
-         nchannel
+         nchannels
 
          namelist /rttov/ &
-         channels
+         channel_list, &
+         platform, &
+         satellite, &
+         instrument
 
     fname_out = "undefined"
     fname_in = "undefined"
     month = -999
     npoints_it = 1
     flag_retrievals = .FALSE.
+    platform = 1
+    satellite = 1
+    instrument = 1
     ! Namelist definition===============================
 
     call open_namelist(file_path, file_unit, iostat)
@@ -79,7 +85,7 @@ CONTAINS
     end if
 
     read (nml=general, iostat=iostat, unit=file_unit)
-    allocate(channels(nchannel))
+    allocate(channel_list(nchannels))
 
     read (nml=rttov, iostat=iostat, unit=file_unit)
     call close_namelist(file_path, file_unit, iostat)
@@ -93,9 +99,12 @@ CONTAINS
     nml%flag_retrievals = flag_retrievals
     nml%month = month
     nml%npoints_it = npoints_it
+    nml%nchannels = nchannels
+    nml%channel_list = channel_list
+    nml%platform = platform
+    nml%satellite = satellite
+    nml%instrument = instrument
 
-write(*,*) channels
-stop
   end subroutine read_namelist
 
   !! Namelist helpers
