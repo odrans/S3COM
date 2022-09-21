@@ -139,7 +139,7 @@ write(*,*) nml%addrefrac, nml%ir_scatt_model, nml%vis_scatt_model, nml%dom_nstre
 
       opts%rt_all%ozone_data             = .FALSE. !Set the relevant flag to .TRUE. when supplying a profile of the given
       opts%rt_all%co2_data               = .FALSE. !trace gas (ensure the coefficient file supports the gas)
-      opts%rt_all%n2o_data               = .FALSE. 
+      opts%rt_all%n2o_data               = .FALSE.
       opts%rt_all%ch4_data               = .FALSE.
       opts%rt_all%co_data                = .FALSE.
       opts%rt_all%so2_data               = .FALSE.

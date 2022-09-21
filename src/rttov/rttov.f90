@@ -268,8 +268,6 @@ CONTAINS
        profiles(iprof)%skin%salinity = 0.0                        !tmp, use other typical value
        profiles(iprof)%skin%fastem = (/3.0, 5.0, 15.0, 0.1, 0.3/) !Typical RTTOV default for land
 
-
-
        !!Surface type and water type
        IF (rttov_atm%lsmask(iprof) < 0.5) THEN
           profiles(iprof)%skin%surftype = surftype_sea
@@ -297,14 +295,14 @@ CONTAINS
 
        !!Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
        profiles(iprof)%cfrac = rttov_atm%tca(idx_prof,:)
-       profiles(iprof)%cloud(1,5:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)
+       profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)
 
        !!Ice cloud input profiles
        profiles(iprof)%ice_scheme = 3 !Cloud ice water scheme: 1=Baum; 2=Baran 2014; 3=Baran 2018
        profiles(iprof)%cloud(6,:) = rttov_atm%iwc(idx_prof,:)*1E3 !(kg/m3)
 
        !!Liquid cloud input profiles
-       profiles(:)%clw_scheme = 1 !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
+       profiles(:)%clw_scheme = 2 !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
        profiles(iprof)%clwde(:) = rttov_atm%Deff(idx_prof,:)*1E6 !(µm)
 
     ENDDO
