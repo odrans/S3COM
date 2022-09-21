@@ -1,4 +1,4 @@
-Below are example of environments for specific servers
+## Some Example of environments for specific servers
 
 Levante
 ------
@@ -9,7 +9,7 @@ To run S3COM interactively the following modules should be loaded:
 
 Example of job script:
 
-`
+```
 #!/bin/bash
 #SBATCH -J S3COM                                  # Specify job name
 #SBATCH -p shared                                 # Use partition shared
@@ -40,4 +40,4 @@ ulimit -c 0
 
 # Execute OpenMP programs
 srun ./ml_rttov
-`
+```
