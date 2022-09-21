@@ -1,3 +1,4 @@
+
 # Satellite Simulator and Sandbox for Cloud Observation and Modelling (S3COM)
 
 #### A satellite simulator and retrieval sandbox tool for cloud studies. 
@@ -9,7 +10,7 @@ S3COM aims to make cloud studies a little easier by
 
 ## How to use
 
-To be continued
+Important parameters to run S3COM are stored in a namelist file. The default namelist is `config_default.nml`. Some path must be edited before running S3COM for the first time. See the [namelist section](namelist.md) for details.
 
 ## Environment & Compiling
 
