@@ -33,7 +33,12 @@ Current limitations
 
 - The current version is only configured to handle simulations from the ICON model. Some adjustments will be necessary to use outputs from another model. 
 - S3COM only simulates measurements from passive remote-sensing sensors.
-- Polarization and 3D effects are not yet included.
+- Polarization and 3D effects are not included.
+
+R package
+---------
+
+The [Rs3com](https://github.com/odrans/Rs3com) package was developed to conveniently create namelist files, run the algorithm, read its input and output and create basic figures.
 
 Caution
 -------
