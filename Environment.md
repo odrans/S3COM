@@ -2,11 +2,15 @@
 
 ## Levante
 
-To run S3COM interactively the following modules should be loaded:
+The following modules can be loaded to run S3COM interactively:
 
 ```bash
 module purge
-module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 openmpi/4.1.2-intel-2021.5.0 netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0
+module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 \
+    openmpi/4.1.2-intel-2021.5.0 \
+    netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 \
+    netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 \
+    hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0
 ```
 
 Example of job script (edit project number and email):
