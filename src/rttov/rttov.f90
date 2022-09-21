@@ -295,6 +295,8 @@ CONTAINS
 
        !!Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
        profiles(iprof)%cfrac = rttov_atm%tca(idx_prof,:)
+
+       !! Used by OPAC
        profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)
 
        !!Ice cloud input profiles
