@@ -1,4 +1,4 @@
-# Some Example of environments for specific servers
+# Environments and job scripts for specific servers
 
 ## Levante
 
@@ -13,18 +13,16 @@ module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 \
     hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0
 ```
 
-Example of job script (edit project number and email):
+Example of job script (edit project number):
 
 ```bash
 #!/bin/bash
 #SBATCH -J S3COM                                  # Specify job name
 #SBATCH -p shared                                 # Use partition shared
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=21
+#SBATCH --nodes=1                                 # Number of requested nodes
+#SBATCH --ntasks-per-node=48                      # Tasks per nodes
 #SBATCH -A PROJECT_NUMBER                         # Charge resources on this project account
-#SBATCH -o ml_s3com.o%j                           # File name for standard and error output
-#SBATCH --mail-user=EMAIL                         # Email address for notifications
-#SBATCH --mail-type=ALL
+#SBATCH -o s3com.o%j                              # File name for standard and error output
 
 # Environment settings to run a MPI parallel program
 module purge
