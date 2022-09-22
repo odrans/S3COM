@@ -166,6 +166,6 @@ PROGRAM S3COM
   ENDDO
 
   ! Write output file
-  CALL write_output(icon, atm, nml)
+  CALL write_output(icon, atm, nml, rttov_atm)
 
 END PROGRAM S3COM

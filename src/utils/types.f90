@@ -41,7 +41,9 @@ MODULE s3com_types
       CHARACTER(LEN = 256) :: &
            path_rttov, &
            fname_out, &
-           fname_in
+           fname_in, &
+           path_out, &
+           suffix_out
       INTEGER(KIND=4) :: &
            npoints_it, &
            month, &

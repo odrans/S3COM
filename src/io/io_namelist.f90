@@ -45,7 +45,7 @@ CONTAINS
     integer                        :: file_unit, iostat
 
     ! Namelist variables
-    character(len=256) :: fname_out, fname_in, path_rttov
+    character(len=256) :: fname_out, fname_in, path_rttov, path_out, suffix_out
     logical :: flag_retrievals, addrefrac, dom_rayleigh
 
     integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
@@ -58,6 +58,8 @@ CONTAINS
     namelist /general/ &
          fname_out, &
          fname_in, &
+         path_out, &
+         suffix_out, &
          month, &
          flag_retrievals, &
          npoints_it, &
@@ -98,6 +100,8 @@ CONTAINS
 
     nml%path_rttov = path_rttov
     nml%fname_out = fname_out
+    nml%path_out = path_out
+    nml%suffix_out = suffix_out
     nml%fname_in = fname_in
     nml%flag_retrievals = flag_retrievals
     nml%month = month
@@ -114,6 +118,7 @@ CONTAINS
     nml%dom_nstreams = dom_nstreams
 
   end subroutine read_namelist
+
 
   !! Namelist helpers
 
