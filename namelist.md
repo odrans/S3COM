@@ -7,10 +7,11 @@ The default configuration namelist file is `config_default.nml`. Fields with `NA
 | Parameter Name | Description | Default |
 | --- | --- | --- | 
 | fname_in | Input file name | NA |
-| fname_out | Output file name | NA |
+| path_out | Path for output files | "./" |
+| suffix | suffix to be used in output files | "" |
 | month | Month of the simulations | 1 |
-| flag_retrievals | Perform cloud retrievals (TRUE) / Only simulate satellite data (FALSE) | FALSE |
-| npoints_it | Number of data point to grouped for parallelization | 1 |
+| flag_retrievals | Turn on cloud retrievals (otherwise only simulate measurements)  | FALSE |
+| npoints_it | Number of simultaneous data points sent to RTTOV | 1 |
 | nchannels | Number of satellite channels | 2 |
 
 #### RTTOV initialization
