@@ -5,12 +5,19 @@
 
 **S3COM** aims to make cloud studies a little easier by
 - Providing realistic satellite measurements and cloud products consistent with model outputs
-- Computing the sensitivity of radiative quantities to cloud parameters
-- Assisting the development of retrieval algorithms using output fields from high-resolution models
+- Computing the sensitivity of radiative quantities to cloud parameters (in progress)
+- Assisting the development of retrieval algorithms using output fields from high-resolution models (in progress)
 
 ## How to use
 
-Important parameters to run **S3COM** are stored in a namelist file. The default namelist is `config_default.nml`. Some path must be edited before running S3COM for the first time. See the [namelist section](namelist.md) for details.
+Important parameters to run **S3COM** are stored in a namelist file. The default namelist lie is `config_default.nml`. The input model file must be edited before running S3COM for the first time. See the [namelist section](namelist.md) for details.
+
+S3COM can then be executed using the namelist file
+```
+./s3com config_default.nml
+```
+
+Three output files containing satellite radiation data, retrievals and atmospheric fields are then created. See [this description](output.md) for more detail.
 
 ## Environment & Compiling
 
