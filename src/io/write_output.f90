@@ -69,8 +69,7 @@ CONTAINS
          gridded_y_rad_total, &
          gridded_y_rad_clear, &
          gridded_y_rad_cloudy, &
-         gridded_brdf, &
-         gridded_emiss
+         gridded_brdf
 
     INTEGER(KIND=4) :: ncid, errst
 
@@ -83,7 +82,6 @@ CONTAINS
          varid_bt_total, &
          varid_bt_clear, &
          varid_brdf, &
-         varid_emiss, &
          varid_g, &
          varid_rad_total, &
          varid_rad_clear, &
@@ -111,7 +109,6 @@ CONTAINS
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=oe%y_rad_clear,  y3=gridded_y_rad_clear)
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=oe%y_rad_cloudy, y3=gridded_y_rad_cloudy)
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=oe%brdf,         y3=gridded_brdf)
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=oe%emissivity,   y3=gridded_emiss)
 
     errst = nf90_create(fn_out_rad, NF90_CLOBBER, ncid)
 
@@ -133,7 +130,6 @@ CONTAINS
     errst = nf90_def_var(ncid, "Radiance_clear",  NF90_REAL, dimid_latlonchan, varid_rad_clear)
     errst = nf90_def_var(ncid, "Radiance_cloudy", NF90_REAL, dimid_latlonchan, varid_rad_cloudy)
     errst = nf90_def_var(ncid, "BRDF",            NF90_REAL, dimid_latlonchan, varid_brdf)
-    errst = nf90_def_var(ncid, "Emissivity",      NF90_REAL, dimid_latlonchan, varid_emiss)
 
     errst = nf90_put_att(ncid, varid_lon,        "units", "degrees_east")
     errst = nf90_put_att(ncid, varid_lat,        "units", "degrees_north")
@@ -146,7 +142,6 @@ CONTAINS
     errst = nf90_put_att(ncid, varid_rad_clear,  "units", "W/m2/sr/um")
     errst = nf90_put_att(ncid, varid_rad_cloudy, "units", "W/m2/sr/um")
     errst = nf90_put_att(ncid, varid_brdf,       "units", "sr-1")
-    errst = nf90_put_att(ncid, varid_emiss,      "units", "")
 
     errst = nf90_enddef(ncid)
 
@@ -161,7 +156,6 @@ CONTAINS
     errst = nf90_put_var(ncid, varid_rad_clear,  gridded_y_rad_clear(:,:,:))
     errst = nf90_put_var(ncid, varid_rad_cloudy, gridded_y_rad_cloudy(:,:,:))
     errst = nf90_put_var(ncid, varid_brdf,       gridded_brdf(:,:,:))
-    errst = nf90_put_var(ncid, varid_emiss,      gridded_emiss(:,:,:))
 
     errst = nf90_close(ncid)
 
