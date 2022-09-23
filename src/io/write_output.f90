@@ -101,7 +101,7 @@ CONTAINS
     suffix = trim(nml%suffix_out)
     IF(trim(suffix) .NE. "") suffix = "_"//trim(suffix)//"_"
 
-    fn_out_rad = trim(nml%path_out)//"S3COM"//trim(suffix)//"_RAD.nc"
+    fn_out_rad = trim(nml%path_out)//"S3COM"//trim(suffix)//"_rad.nc"
 
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=oe%y_refl_total, y3=gridded_y_refl_total)
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=oe%y_refl_clear, y3=gridded_y_refl_clear)
@@ -203,7 +203,7 @@ CONTAINS
     suffix = trim(nml%suffix_out)
     IF(trim(suffix) .NE. "") suffix = "_"//trim(suffix)//"_"
 
-    fn_out_atm = trim(nml%path_out)//"S3COM"//trim(suffix)//"_ATM.nc"
+    fn_out_atm = trim(nml%path_out)//"S3COM"//trim(suffix)//"_atm.nc"
 
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%t,     y3=gridded_atm_t)
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%z,     y3=gridded_atm_z)
@@ -289,7 +289,7 @@ CONTAINS
     suffix = trim(nml%suffix_out)
     IF(trim(suffix) .NE. "") suffix = "_"//trim(suffix)//"_"
 
-    fn_out_ret = trim(nml%path_out)//"S3COM"//trim(suffix)//"_RET.nc"
+    fn_out_ret = trim(nml%path_out)//"S3COM"//trim(suffix)//"_ret.nc"
 
     ! Retrieval parameters
     !  ----------------------------------------------------------------------------------------------------
