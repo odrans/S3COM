@@ -37,30 +37,28 @@ MODULE MOD_WRITE_OUTPUT
 
 CONTAINS
 
-  SUBROUTINE write_output(icon, oe, nml, rttov_atm)
+  SUBROUTINE write_output(icon, oe, nml, atm)
 
     ! Input variables
     TYPE(type_icon),       INTENT(IN) :: icon
-    TYPE(type_s3com),      INTENT(IN) :: oe
+    TYPE(type_s3com),      INTENT(IN) :: oe, atm
     TYPE(type_nml),        INTENT(IN) :: nml
-    TYPE(type_rttov_atm),  INTENT(IN) :: rttov_atm
 
-    CALL write_output_rad(icon, oe, nml, rttov_atm)
+    CALL write_output_rad(icon, oe, nml)
 
-    CALL write_output_atm(icon, oe, nml, rttov_atm)
+    CALL write_output_atm(icon, oe, nml, atm)
 
-    CALL write_output_ret(icon, oe, nml, rttov_atm)
+    CALL write_output_ret(icon, oe, nml)
 
   END SUBROUTINE write_output
 
 
-  SUBROUTINE write_output_rad(icon, oe, nml, rttov_atm)
+  SUBROUTINE write_output_rad(icon, oe, nml)
 
     ! Input variables
     TYPE(type_icon),       INTENT(IN) :: icon
     TYPE(type_s3com),      INTENT(IN) :: oe
     TYPE(type_nml),        INTENT(IN) :: nml
-    TYPE(type_rttov_atm),  INTENT(IN) :: rttov_atm
 
     ! Local variables
     REAL(KIND=wp), DIMENSION(icon%Nlon, icon%Nlat, nml%nchannels) :: &
@@ -170,23 +168,33 @@ CONTAINS
   END SUBROUTINE write_output_rad
 
 
-  SUBROUTINE write_output_atm(icon, oe, nml, rttov_atm)
+  SUBROUTINE write_output_atm(icon, oe, nml, atm)
 
     ! Input variables
     TYPE(type_icon),       INTENT(IN) :: icon
     TYPE(type_s3com),      INTENT(IN) :: oe
     TYPE(type_nml),        INTENT(IN) :: nml
-    TYPE(type_rttov_atm),  INTENT(IN) :: rttov_atm
+    TYPE(type_s3com),      INTENT(IN) :: atm
 
     REAL(KIND=wp), DIMENSION(icon%Nlon, icon%Nlat, icon%Nlevels) :: &
-         gridded_atm_t
+         gridded_atm_t, &
+         gridded_atm_z, &
+         gridded_atm_clc, &
+         gridded_atm_cdnc, &
+         gridded_atm_reff, &
+         gridded_atm_lwc
 
     INTEGER(KIND=4) :: ncid, errst
-    INTEGER(KIND=4) ::                     &
+    INTEGER(KIND=4) :: &
          varid_lon, &
          varid_lat, &
          varid_lev, &
-         varid_atm_t
+         varid_atm_t, &
+         varid_atm_z, &
+         varid_atm_clc, &
+         varid_atm_cdnc, &
+         varid_atm_reff, &
+         varid_atm_lwc
 
     INTEGER(KIND=4) :: dimid_lon, dimid_lat, dimid_lev, dimid_latlonlev(3)
 
@@ -197,27 +205,56 @@ CONTAINS
 
     fn_out_atm = trim(nml%path_out)//"S3COM"//trim(suffix)//"_ATM.nc"
 
-
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=rttov_atm%t,     y3=gridded_atm_t)
+    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%t,     y3=gridded_atm_t)
+    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%z,     y3=gridded_atm_z)
+    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%clc,   y3=gridded_atm_clc)
+    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%cdnc,  y3=gridded_atm_cdnc)
+    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%reff,  y3=gridded_atm_reff)
+    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%lwc,   y3=gridded_atm_lwc)
 
     errst = nf90_create(fn_out_atm, NF90_CLOBBER, ncid)
 
     errst = nf90_def_dim(ncid, "Longitude", icon%Nlon,       dimid_lon)
     errst = nf90_def_dim(ncid, "Latitude",  icon%Nlat,       dimid_lat)
-    errst = nf90_def_dim(ncid, "Height",     icon%Nlevels,    dimid_lev)
+    errst = nf90_def_dim(ncid, "height",    icon%Nlevels,    dimid_lev)
 
     dimid_latlonlev = (/dimid_lon, dimid_lat, dimid_lev/)
 
     errst = nf90_def_var(ncid, "Longitude",       NF90_REAL, dimid_lon,        varid_lon)
     errst = nf90_def_var(ncid, "Latitude",        NF90_REAL, dimid_lat,        varid_lat)
+    errst = nf90_def_var(ncid, "height",          NF90_REAL, dimid_lev,        varid_lev)
     errst = nf90_def_var(ncid, "ta",              NF90_REAL, dimid_latlonlev,  varid_atm_t)
+    errst = nf90_def_var(ncid, "z",               NF90_REAL, dimid_latlonlev,  varid_atm_z)
+    errst = nf90_def_var(ncid, "clc",             NF90_REAL, dimid_latlonlev,  varid_atm_clc)
+    errst = nf90_def_var(ncid, "cdnc",            NF90_REAL, dimid_latlonlev,  varid_atm_cdnc)
+    errst = nf90_def_var(ncid, "lwc",             NF90_REAL, dimid_latlonlev,  varid_atm_lwc)
+    errst = nf90_def_var(ncid, "reff",            NF90_REAL, dimid_latlonlev,  varid_atm_reff)
+
+    errst = nf90_def_var_fill(ncid, varid_atm_reff, 0, 0)
+    errst = nf90_def_var_fill(ncid, varid_atm_cdnc, 0, 0)
+    errst = nf90_def_var_fill(ncid, varid_atm_lwc, 0, 0)
 
     errst = nf90_put_att(ncid, varid_lon,        "units", "degrees_east")
     errst = nf90_put_att(ncid, varid_lat,        "units", "degrees_north")
+    errst = nf90_put_att(ncid, varid_lev,        "units", "")
+    errst = nf90_put_att(ncid, varid_atm_z,      "units", "m")
+    errst = nf90_put_att(ncid, varid_atm_t,      "units", "K")
+    errst = nf90_put_att(ncid, varid_atm_clc,    "units", "K")
+    errst = nf90_put_att(ncid, varid_atm_cdnc,   "units", "m-3")
+    errst = nf90_put_att(ncid, varid_atm_lwc,    "units", "kg m-3")
+    errst = nf90_put_att(ncid, varid_atm_reff,   "units", "um")
 
     errst = nf90_enddef(ncid)
 
-    errst = nf90_put_var(ncid, varid_atm_t,    gridded_atm_t(:,:,:))
+    errst = nf90_put_var(ncid, varid_lon,        icon%lon_orig)
+    errst = nf90_put_var(ncid, varid_lat,        icon%lat_orig)
+    errst = nf90_put_var(ncid, varid_lev,        icon%height)
+    errst = nf90_put_var(ncid, varid_atm_t,      gridded_atm_t(:,:,:))
+    errst = nf90_put_var(ncid, varid_atm_z,      gridded_atm_z(:,:,:))
+    errst = nf90_put_var(ncid, varid_atm_clc,    gridded_atm_clc(:,:,:))
+    errst = nf90_put_var(ncid, varid_atm_cdnc,   gridded_atm_cdnc(:,:,:))
+    errst = nf90_put_var(ncid, varid_atm_lwc ,   gridded_atm_lwc(:,:,:))
+    errst = nf90_put_var(ncid, varid_atm_reff,   gridded_atm_reff(:,:,:))
 
     errst = nf90_close(ncid)
 
@@ -225,13 +262,12 @@ CONTAINS
 
 
 
-  SUBROUTINE write_output_ret(icon, oe, nml, rttov_atm)
+  SUBROUTINE write_output_ret(icon, oe, nml)
 
     ! Input variables
     TYPE(type_icon),       INTENT(IN) :: icon
     TYPE(type_s3com),      INTENT(IN) :: oe
     TYPE(type_nml),        INTENT(IN) :: nml
-    TYPE(type_rttov_atm),  INTENT(IN) :: rttov_atm
 
     REAL(KIND=wp), DIMENSION(icon%Nlon, icon%Nlat) :: &
          gridded_iwp_model, &

@@ -105,7 +105,8 @@ MODULE MOD_RTTOV_SETUP
          rttov_atm%tca       => icon%tca(idx_start:idx_end,:)
          rttov_atm%iwc       => icon%iwc(idx_start:idx_end,:)
          rttov_atm%lwc       => icon%lwc(idx_start:idx_end,:)
-         rttov_atm%Deff      => icon%Deff(idx_start:idx_end,:)
+         rttov_atm%reff      => icon%reff(idx_start:idx_end,:)
+         rttov_atm%cdnc      => icon%cdnc(idx_start:idx_end,:)
          
       END SUBROUTINE rttov_setup_atm
 

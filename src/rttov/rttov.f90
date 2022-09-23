@@ -305,7 +305,7 @@ CONTAINS
 
        !!Liquid cloud input profiles
        profiles(:)%clw_scheme = 2 !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
-       profiles(iprof)%clwde(:) = rttov_atm%Deff(idx_prof,:)*1E6 !(µm)
+       profiles(iprof)%clwde(:) = rttov_atm%reff(idx_prof,:)*2.0 ! Need the diameter
 
     ENDDO
 

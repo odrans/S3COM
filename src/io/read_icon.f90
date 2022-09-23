@@ -96,37 +96,37 @@ MODULE MOD_READ_ICON
       INTEGER(KIND=4)                    :: npoints, nlevels
       INTEGER, DIMENSION(:), ALLOCATABLE :: plon, plat
       
-      REAL(wp), DIMENSION(:), ALLOCATABLE :: lat, lon, ll
+      REAL(wp), DIMENSION(:), ALLOCATABLE :: lat, lon, ll, height
       REAL(wp), ALLOCATABLE               :: x1(:), x2(:,:), x3(:,:,:), x4(:,:,:,:), x5(:,:,:,:,:) ! Temporary arrays
       
       LOGICAL :: Llat, Llon, Lpoint
       
       npoints = icon%npoints; nlevels = icon%nlevels
-      
+
       !!========================================================================================================================!!
       !! Checking the opening of the ICON input NetCDF file                                                                     !!
       !!========================================================================================================================!!
-      
+
       errst = nf90_open(fname, nf90_nowrite, ncid)
       IF (errst/=0)  THEN
          errmsg = "Couldn't open "//trim(fname)
          CALL s3com_error(routine_name,errmsg)
       ENDIF
-      
+
       !!========================================================================================================================!!
-      
+
       !!========================================================================================================================!!
       !! Checking the dimensions (track or lat-lon)                                                                             !!
       !!========================================================================================================================!!
-      
+
       errst = nf90_inquire(ncid, ndims, nvars, ngatts, recdim)
       IF (errst /= 0) THEN
          errmsg = "Error in nf90_inquire"
          CALL s3com_error(routine_name, errmsg, errcode=errst)
       ENDIF
-      
+
       Llat = .FALSE.; Llon = .FALSE.; Lpoint = .FALSE.
-      
+
       DO idim = 1,ndims
          errst = nf90_Inquire_Dimension(ncid, idim, NAME=dimname(idim), LEN=dimsize(idim))
          IF (errst /= 0) THEN
@@ -134,12 +134,12 @@ MODULE MOD_READ_ICON
             errmsg = "Error in nf90_Inquire_Dimension, idim: "//trim(straux)
             CALL s3com_error(routine_name, errmsg)
          ENDIF
-         
+
          IF ((trim(dimname(idim)) .EQ. 'height') .AND. (nlevels > dimsize(idim))) THEN
             errmsg = 'Number of levels selected is greater than in input file '//trim(fname)
             CALL s3com_error(routine_name, errmsg)
          ENDIF
-         
+
          IF (trim(dimname(idim)) .EQ. 'point') THEN
             Lpoint = .TRUE.
             IF (npoints /= dimsize(idim)) THEN
@@ -147,16 +147,16 @@ MODULE MOD_READ_ICON
                CALL s3com_error(routine_name,errmsg)
             ENDIF
          ENDIF
-         
+
          IF (trim(dimname(idim)) .EQ. 'lon') THEN
             Llon = .TRUE.; icon%nlon = dimsize(idim)
          ENDIF
-         
+
          IF (trim(dimname(idim)) .EQ. 'lat') THEN
             Llat = .TRUE.; icon%nlat = dimsize(idim)
          ENDIF
       ENDDO
-      
+
       ALLOCATE(lon(icon%nlon), lat(icon%nlat), icon%lon_orig(icon%nlon), icon%lat_orig(icon%nlat))
       
       !!========================================================================================================================!!
@@ -204,7 +204,14 @@ MODULE MOD_READ_ICON
          errmsg = "Error in nf90_get_var, var: lat"
          CALL s3com_error(routine_name,errmsg,errcode=errst)
       ENDIF
-      
+
+      errst = nf90_inq_varid(ncid, 'height', vid)
+      errst = nf90_get_var(ncid, vid, icon%height, start = (/1/), count = (/icon%nlevels/))
+      IF (errst /= 0) THEN
+         errmsg = "Error in nf90_get_var, var: height"
+         CALL s3com_error(routine_name,errmsg,errcode=errst)
+      ENDIF
+
       icon%lon_orig = lon; icon%lat_orig = lat
       
       !!========================================================================================================================!!
@@ -482,13 +489,17 @@ MODULE MOD_READ_ICON
       !!Cloud liquid water content (kg/m3)
       icon%lwc = icon%clw*icon%rho
       !!Cloud droplet number concentration (particules/m3)
-      icon%cdnc = icon%rho*icon%qnc
+      icon%cdnc = icon%rho * icon%qnc
       !!Cloud liquid water effective radius (m)
-      icon%Reff = (a/2._wp)*(gamma((nu+1._wp+3._wp*b)/mu)/gamma((nu+1._wp+2._wp*b)/mu))*(icon%lwc/icon%cdnc)**b*&
-                  (gamma((nu+1._wp)/mu)/gamma((nu+2._wp)/mu))**b
-      !!Cloud liquid water effective diameter (m)
-      icon%Deff = icon%Reff*2._wp
-      
+      DO i = 1, Npoints
+         DO j = 1, Nlevels
+            IF(icon%cdnc(i,j) .GT. 0) THEN
+               icon%Reff(i,j) = (a/2._wp)*(gamma((nu+1._wp+3._wp*b)/mu)/gamma((nu+1._wp+2._wp*b)/mu))*(icon%lwc(i,j) / icon%cdnc(i,j))**b*&
+                    (gamma((nu+1._wp)/mu)/gamma((nu+2._wp)/mu))**b
+            END IF
+         END DO
+      END DO
+      icon%Reff = icon%Reff * 1E6 !! m to um (default input in RTTOV)
       !!=======================================================================================================================!!
       
       !!=======================================================================================================================!!
@@ -512,7 +523,7 @@ MODULE MOD_READ_ICON
          
          TYPE(type_icon) :: y
          INTEGER(KIND=4), INTENT(IN) :: npoints, nlevels
-         
+
          ALLOCATE(y%lon(Npoints),         &
             y%lat(Npoints),               &
             y%orography(Npoints),         &
@@ -550,7 +561,8 @@ MODULE MOD_READ_ICON
             y%beta_ext(Npoints,Nlevels),  &
             y%tv(Npoints,Nlevels),        &
             y%dz_cod(Npoints,Nlevels),    &
-            y%cod(Npoints,Nlevels))
+            y%cod(Npoints,Nlevels),      &
+            y%height(Nlevels))
             
          y%nlevels = Nlevels; y%npoints = Npoints
          

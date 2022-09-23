@@ -1,11 +1,11 @@
 &general
-fname_in = "/home/b/b380333/github/S3COM/data/test_input/icon_input_05022013_1340pm_pixel_29_316_liq_cld_only.nc"
-fname_out = "/home/b/b380333/icon_output_05022013_1340pm_pixel_29_316_liq_cld_only_ZA_0_rayleigh_off.nc"
+fname_in = "/home/b/b380333/ICON_test_2D.nc"
+fname_out = ""
 path_out = "/home/b/b380333/"
 suffix_out = ""
 month = 5
 flag_retrievals = FALSE
-npoints_it = 1
+npoints_it = 4000
 nchannels = 2
 /
 

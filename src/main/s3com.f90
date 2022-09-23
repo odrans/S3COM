@@ -81,9 +81,6 @@ PROGRAM S3COM
   zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
   sunzenangle = 0._wp; sunazangle = 0._wp !Viewing solar angles
 
-  !zenangle = 30._wp; azangle = 0._wp
-  !sunzenangle = 37._wp; sunazangle = 0._wp
-
   ! Construct the icon pointer
   CALL construct_icon(npoints, nlevels, icon)
 
@@ -155,6 +152,12 @@ PROGRAM S3COM
      oe%y_bt_total = oe%f_bt_total; oe%y_bt_clear = oe%f_bt_clear
      oe%y_rad_total = oe%f_rad_total; oe%y_rad_clear = oe%f_rad_clear; oe%y_rad_cloudy = oe%f_rad_cloudy
      oe%iwp_model = oe%iwp
+     oe%t = rttov_atm%t
+     oe%z = rttov_atm%z
+     oe%clc = rttov_atm%tca
+     oe%cdnc = rttov_atm%cdnc
+     oe%lwc = rttov_atm%lwc
+     oe%reff = rttov_atm%reff
 
      IF (nml%flag_retrievals) THEN
         CALL oe_run(oe, rttov_atm_oe, rttov_opt)
@@ -163,9 +166,10 @@ PROGRAM S3COM
      ! Update the final atmosperic model
      CALL update_atm(idx_start, idx_end, oe, atm)
 
+
   ENDDO
 
   ! Write output file
-  CALL write_output(icon, atm, nml, rttov_atm)
+  CALL write_output(icon, atm, nml, atm)
 
 END PROGRAM S3COM
