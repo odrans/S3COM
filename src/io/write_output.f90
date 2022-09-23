@@ -37,6 +37,7 @@ MODULE MOD_WRITE_OUTPUT
 
 CONTAINS
 
+  ! Write all S3COM outputs
   SUBROUTINE write_output(icon, oe, nml, atm)
 
     ! Input variables
@@ -53,6 +54,7 @@ CONTAINS
   END SUBROUTINE write_output
 
 
+  ! Write radiation outputs, mainly satellite measurements simulated by RTTOV
   SUBROUTINE write_output_rad(icon, oe, nml)
 
     ! Input variables
@@ -148,20 +150,20 @@ CONTAINS
     errst = nf90_put_var(ncid, varid_lon,        icon%lon_orig)
     errst = nf90_put_var(ncid, varid_lat,        icon%lat_orig)
     errst = nf90_put_var(ncid, varid_chan,       nml%channel_list)
-    errst = nf90_put_var(ncid, varid_refl_total, gridded_y_refl_total(:,:,:))
-    errst = nf90_put_var(ncid, varid_refl_clear, gridded_y_refl_clear(:,:,:))
-    errst = nf90_put_var(ncid, varid_bt_total,   gridded_y_bt_total(:,:,:))
-    errst = nf90_put_var(ncid, varid_bt_clear,   gridded_y_bt_clear(:,:,:))
-    errst = nf90_put_var(ncid, varid_rad_total,  gridded_y_rad_total(:,:,:))
-    errst = nf90_put_var(ncid, varid_rad_clear,  gridded_y_rad_clear(:,:,:))
-    errst = nf90_put_var(ncid, varid_rad_cloudy, gridded_y_rad_cloudy(:,:,:))
-    errst = nf90_put_var(ncid, varid_brdf,       gridded_brdf(:,:,:))
+    errst = nf90_put_var(ncid, varid_refl_total, gridded_y_refl_total)
+    errst = nf90_put_var(ncid, varid_refl_clear, gridded_y_refl_clear)
+    errst = nf90_put_var(ncid, varid_bt_total,   gridded_y_bt_total)
+    errst = nf90_put_var(ncid, varid_bt_clear,   gridded_y_bt_clear)
+    errst = nf90_put_var(ncid, varid_rad_total,  gridded_y_rad_total)
+    errst = nf90_put_var(ncid, varid_rad_clear,  gridded_y_rad_clear)
+    errst = nf90_put_var(ncid, varid_rad_cloudy, gridded_y_rad_cloudy)
+    errst = nf90_put_var(ncid, varid_brdf,       gridded_brdf)
 
     errst = nf90_close(ncid)
 
   END SUBROUTINE write_output_rad
 
-
+  ! Write atmospheric outputs
   SUBROUTINE write_output_atm(icon, oe, nml, atm)
 
     ! Input variables
@@ -243,19 +245,19 @@ CONTAINS
     errst = nf90_put_var(ncid, varid_lon,        icon%lon_orig)
     errst = nf90_put_var(ncid, varid_lat,        icon%lat_orig)
     errst = nf90_put_var(ncid, varid_lev,        icon%height)
-    errst = nf90_put_var(ncid, varid_atm_t,      gridded_atm_t(:,:,:))
-    errst = nf90_put_var(ncid, varid_atm_z,      gridded_atm_z(:,:,:))
-    errst = nf90_put_var(ncid, varid_atm_clc,    gridded_atm_clc(:,:,:))
-    errst = nf90_put_var(ncid, varid_atm_cdnc,   gridded_atm_cdnc(:,:,:))
-    errst = nf90_put_var(ncid, varid_atm_lwc ,   gridded_atm_lwc(:,:,:))
-    errst = nf90_put_var(ncid, varid_atm_reff,   gridded_atm_reff(:,:,:))
+    errst = nf90_put_var(ncid, varid_atm_t,      gridded_atm_t)
+    errst = nf90_put_var(ncid, varid_atm_z,      gridded_atm_z)
+    errst = nf90_put_var(ncid, varid_atm_clc,    gridded_atm_clc)
+    errst = nf90_put_var(ncid, varid_atm_cdnc,   gridded_atm_cdnc)
+    errst = nf90_put_var(ncid, varid_atm_lwc ,   gridded_atm_lwc)
+    errst = nf90_put_var(ncid, varid_atm_reff,   gridded_atm_reff)
 
     errst = nf90_close(ncid)
 
   END SUBROUTINE write_output_atm
 
 
-
+! Write retrieval outputs
   SUBROUTINE write_output_ret(icon, oe, nml)
 
     ! Input variables
@@ -285,8 +287,6 @@ CONTAINS
 
     fn_out_ret = trim(nml%path_out)//"S3COM"//trim(suffix)//"_ret.nc"
 
-    ! Retrieval parameters
-    !  ----------------------------------------------------------------------------------------------------
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%Xip1(:,1),    y2=gridded_iwp_ret)
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%iwp_model(:), y2=gridded_iwp_model)
     CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%gip1(:),      y2=gridded_g)
@@ -312,12 +312,10 @@ CONTAINS
 
     errst = nf90_put_var(ncid, varid_lon,        icon%lon_orig)
     errst = nf90_put_var(ncid, varid_lat,        icon%lat_orig)
-    errst = nf90_put_var(ncid, varid_iwp_ret,    gridded_iwp_ret(:,:))
-    errst = nf90_put_var(ncid, varid_iwp_mod,    gridded_iwp_model(:,:))
+    errst = nf90_put_var(ncid, varid_iwp_ret,    gridded_iwp_ret)
+    errst = nf90_put_var(ncid, varid_iwp_mod,    gridded_iwp_model)
 
     errst = nf90_close(ncid)
-    !  ----------------------------------------------------------------------------------------------------
-
 
   END SUBROUTINE write_output_ret
 
