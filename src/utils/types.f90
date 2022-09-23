@@ -40,7 +40,6 @@ MODULE s3com_types
   TYPE type_nml
      CHARACTER(LEN = 256) :: &
           path_rttov, &
-          fname_out, &
           fname_in, &
           path_out, &
           suffix_out

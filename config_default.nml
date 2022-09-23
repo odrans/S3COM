@@ -1,6 +1,5 @@
 &general
 fname_in = "/home/b/b380333/ICON_test_2D.nc"
-fname_out = ""
 path_out = "/home/b/b380333/"
 suffix_out = ""
 month = 5
