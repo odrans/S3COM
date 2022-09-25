@@ -15,7 +15,7 @@ S3COM should be executed using a namelist file as an argument:
 ./s3com config_default.nml
 ```
 
-The namelist contains information on input and output files as well as important options to run S3COM. See this [namelist description](output.md) for more detail.
+The namelist contains information on input and output files as well as important options to run S3COM. See this [namelist description](output.md) for more details.
 
 ## Environment & Compiling
 
