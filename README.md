@@ -15,7 +15,9 @@ S3COM should be executed using a namelist file as an argument:
 ./s3com config_default.nml
 ```
 
-The namelist contains information on input and output files as well as important options to run S3COM. See this [namelist description](output.md) for more details.
+The namelist contains information on input and output files as well as important options to run S3COM. Refer to the [namelist section](namelist.md) for a detailed description.
+
+S3COM creates 3 files containing satellite simulations, retrievals and atmospheric data. These are described in the [output section](output.md).
 
 ## Environment & Compiling
 
