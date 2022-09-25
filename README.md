@@ -10,7 +10,7 @@ S3COM aims to make cloud studies a little easier by
 
 ## How to use
 
-S3COM can then be executed using a namelist file as an argument:
+S3COM should be executed using a namelist file as an argument:
 ```
 ./s3com config_default.nml
 ```
