@@ -3,38 +3,35 @@
 
 **A satellite simulator and retrieval sandbox tool for cloud studies.**
 
-**S3COM** aims to make cloud studies a little easier by
+S3COM aims to make cloud studies a little easier by
 - Providing realistic satellite measurements and cloud products consistent with model outputs
 - Computing the sensitivity of radiative quantities to cloud parameters (in progress)
 - Assisting the development of retrieval algorithms using output fields from high-resolution models (in progress)
 
 ## How to use
 
-Important parameters to run **S3COM** are stored in a namelist file. The default namelist lie is `config_default.nml`. The input model file must be edited before running S3COM for the first time. See the [namelist section](namelist.md) for details.
-
-S3COM can then be executed using the namelist file
+S3COM can then be executed using a namelist file as an argument:
 ```
 ./s3com config_default.nml
 ```
 
-Three output files containing satellite radiation data, retrievals and atmospheric fields are then created. See [this description](output.md) for more detail.
+The namelist contains information on input and output files as well as important options to run S3COM. See this [namelist description](output.md) for more detail.
 
 ## Environment & Compiling
 
-[RTTOV](https://nwp-saf.eumetsat.int/site/software/rttov) v13.1 is the main radiative transfer algorithm used in **S3COM**. It needs to be installed on your system and its libraries linked in the Makefile via the `RTTOV_PATH` variable. Please refer to the RTTOV documentation. **S3COM** has not been tested for other versions of **RTTOV**. Following RTTOV recommendations, it is advised to raise the system stack size, e.g.: `ulimit -s unlimited` 
+S3COM can be compiled via its `Makefile` after adjusting a few dependencies:
+- [**RTTOV**](https://nwp-saf.eumetsat.int/site/software/rttov) libraries must be linked via `RTTOV_PATH`. Please refer to the RTTOV documentation for its installation. S3COM is currently tested for RTTOV v13.1. 
+- **NetCDF4** (C and Fortran) and **HDF5** libraries are required. It is advised to link them by editing `PATH_NCDF_C_LIB`, `PATH_NCDF_LIB`, `PATH_NCDF_INC` and `PATH_HDF5_LIB` accordingly. 
+- `basedir`  must be set to the repository where S3COM is installed.
 
-**NetCDF4** (C and Fortran) and **HDF5** libraries are required. It is advised to link them by editing `PATH_NCDF_C_LIB`, `PATH_NCDF_LIB`, `PATH_NCDF_INC` and `PATH_HDF5_LIB` accordingly in the Makefile. 
+`make install` (or `make`) compiles the code and creates the `s3com` binary. `make clean` cleans all repositories. Note that, following RTTOV recommendations, it is advised to raise the system stack size: `ulimit -s unlimited`.
 
-The `basedir` variable must also be edited in the Makefile to indicate the repository where **S3COM** is installed.
-
- `make install` (or just `make`) compiles the code to create the `s3com` binary. `make clean` cleans all repositories.
-
-Advised environments for specific supercomputers can be found [here](Environment.md).
+Please refer to [the environment section](Environment.md) for advised settings on specific supercomputers.
 
 ## Current limitations
 
 - The current version is only configured to handle simulations from the **ICON** model. Some adjustments will be necessary to use outputs from another model. 
-- **S3COM** only simulates measurements from passive remote-sensing sensors.
+- S3COM only simulates measurements from passive remote-sensing sensors.
 - Polarization and 3D effects are not included.
 
 ## R package
@@ -43,9 +40,9 @@ The [Rs3com](https://github.com/odrans/Rs3com) package was developed to convenie
 
 ## Caution
 
-**S3COM** does not account for sub-grid variability of cloud properties. It should be used on atmospheric model simulations with a spatial resolutions similar or higher than that of the selected satellite instruments, ideally from CRMs or LES models. It is advised against using **S3COM** on GCM outputs; for such use we advise more dedicated satellite simulators, such as [COSPv2](https://github.com/CFMIP/COSPv2.0). 
+S3COM does not account for sub-grid variability of cloud properties. It should be used on atmospheric model simulations with a spatial resolutions similar or higher than that of the selected satellite instruments, ideally from CRMs or LES models. It is advised against using S3COM on GCM outputs; for such use we advise more dedicated satellite simulators, such as [COSPv2](https://github.com/CFMIP/COSPv2.0). 
 
 ## License
 
-**S3COM** is available under a BSD 3-clause license.
+S3COM is available under a BSD 3-clause license.
 Please see [LICENSE](LICENSE) for details.
