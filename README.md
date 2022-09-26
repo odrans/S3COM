@@ -15,21 +15,21 @@ git clone git@github.com:odrans/S3COM.git
 cd S3COM
 make
 ```
-Note: Run `make clean` to remove all installed binaries, libraries and objects.
+Note: Run `make clean` to remove all built binaries, libraries and objects.
 
 ### Dependencies
 
 The following dependencies are required and should be adjusted in the Makefile:
 - [RTTOV](https://nwp-saf.eumetsat.int/site/software/rttov)
   - RTTOV v13.1 is the main radiative transfer code in S3COM. Please carefuly refer its documentation for the installation.
-  - **Makefile variables:** `PATH_RTTOV`
+  - **Makefile path:** `PATH_RTTOV`
   - **Notes:** 
     - Following RTTOV recommendations, it is advised to raise the system stack size: `ulimit -s unlimited`.
     - Depending on the spectrum of simulated instruments, adequate [coefficient files](https://nwp-saf.eumetsat.int/site/software/rttov/download/coefficients/coefficient-download/) and [BRDF / emissivity atlases](https://nwp-saf.eumetsat.int/site/software/rttov/download/#Emissivity_BRDF_atlas_data) should be downloaded and added to the RTTOV repository.
 - [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/) (C and Fortran)
-  - **Makefile variables:** `PATH_NETCDF_C`, `PATH_NETCDF_F`
+  - **Makefile path:** `PATH_NETCDF_C`, `PATH_NETCDF_F`
 - [HDF5](https://www.hdfgroup.org/solutions/hdf5/)
-  - **Makefile variables:** `PATH_HDF5`
+  - **Makefile path:** `PATH_HDF5`
   
 All Makefile paths refer to base repositories, giving access to libraries, objects and binaries.
 
