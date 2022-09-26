@@ -8,27 +8,43 @@ S3COM aims to make cloud studies a little easier by
 - Computing the sensitivity of radiative quantities to cloud parameters (in progress)
 - Helping the development of retrieval algorithms using output fields from high-resolution models (in progress)
 
-## How to use
+## Install
 
-S3COM should be executed using a namelist file as an argument:
+```bash
+git clone git@github.com:odrans/S3COM.git
+cd S3COM
+make
 ```
-./s3com config_default.nml
-```
 
-The namelist contains information on input and output files as well as important options to run S3COM. Refer to the [namelist section](namelist.md) for a detailed description.
+### Dependencies
 
-S3COM creates 3 files containing satellite simulations, retrievals and atmospheric data. These are described in the [output section](output.md).
-
-## Environment & Compiling
-
-S3COM can be compiled via its `Makefile` after adjusting a few dependencies:
-- [**RTTOV**](https://nwp-saf.eumetsat.int/site/software/rttov) libraries must be linked via `RTTOV_PATH`. Please refer to the RTTOV documentation for its installation. S3COM is currently tested for RTTOV v13.1. 
-- **NetCDF4** (C and Fortran) and **HDF5** libraries are required. It is advised to link them by editing `PATH_NCDF_C_LIB`, `PATH_NCDF_LIB`, `PATH_NCDF_INC` and `PATH_HDF5_LIB` accordingly. 
-- `basedir`  must be set to the repository where S3COM is installed.
+The following dependencies are required and should be adjusted in the Makefile:
+- [**RTTOV**](https://nwp-saf.eumetsat.int/site/software/rttov)
+  - RTTOV v13.1 is the main radiative transfer code for S3COM. Please refer to the RTTOV documentation for its installation.
+  - **Makefile variables:** `RTTOV_PATH`.
+- **NetCDF4** (C and Fortran) and **HDF5** 
+  - **Makefile variables:** `PATH_NCDF_C_LIB`, `PATH_NCDF_LIB`, `PATH_NCDF_INC` and `PATH_HDF5_LIB`.
+  
+### Environments  
+  
+`basedir` must be set in the Makefile to indicate where S3COM is installed.
 
 `make install` (or `make`) compiles the code and creates the `s3com` binary. `make clean` cleans all repositories. Note that, following RTTOV recommendations, it is advised to raise the system stack size: `ulimit -s unlimited`.
 
 Please refer to [the environment section](Environment.md) for advised settings on specific supercomputers.
+
+## Usage
+
+S3COM should be executed using a namelist file as an argument:
+
+```bash
+./s3com config_default.nml
+```
+The namelist contains information on input and output files as well as important options to run S3COM. Refer to the [namelist section](namelist.md) for a detailed description.
+
+
+S3COM creates 3 files containing satellite simulations, retrievals and atmospheric data. These are described in the [output section](output.md).
+
 
 ## Current limitations
 

@@ -11,7 +11,7 @@ The default configuration namelist file is `config_default.nml`. Fields with `NA
 | suffix | suffix to be used in output files | "" |
 | month | Month of the simulations | 1 |
 | flag_retrievals | Turn on cloud retrievals (otherwise only simulate measurements)  | FALSE |
-| npoints_it | Number of simultaneous data points sent to RTTOV | 1 |
+| npoints_it | Number of simultaneous data points sent to RTTOV | 100 |
 | nchannels | Number of satellite channels | 2 |
 
 #### RTTOV initialization
@@ -22,8 +22,9 @@ The default configuration namelist file is `config_default.nml`. Fields with `NA
 | addrefrac | Atmospheric refraction | TRUE |
 | ir_scatt_model | Thermal infrared scattering model | 1 |
 | vis_scatt_model | Visible scattering model | 1 |
-| dom_nstreams | Number of streams in DOM | 8 |
+| dom_nstreams | Number of streams used in DOM | 8 |
 | dom_rayleigh | Rayleigh multiple scattering | TRUE |
+| rttov_nthreads | Number of threads in RTTOV (MPI required) | 1 |
 
 #### RTTOV instruments
 
