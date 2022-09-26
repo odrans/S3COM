@@ -26,7 +26,6 @@
 #  History
 #  Jan 2022 - O. Sourdeval - Original version
 
-
 prog = s3com
 
 F90      = ifort
@@ -34,29 +33,36 @@ F90FLAGS = -module $(mod) -fpp -qopenmp -g -O0 -debug -traceback -check bounds
 # F90FLAGS = -module $(mod) -fpp -qopenmp -march=core-avx2 -g -O3 -debug -traceback -check bounds
 # F90FLAGS = -module $(mod) -fp-model source -qopenmp -g -O3 -debug -traceback -check bounds
 
-## Let's start with some paths
+# Let's start with setting up some paths
 # ---------------------------------------------------------------------------------------------------------------------------------------
-basedir = $(HOME)/github/S3COM
+PATH_S3COM = $(HOME)/github/S3COM
+PATH_RTTOV = /work/bb1036/rttov_share/rttov131
+PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-2k3cmu
+PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g
+PATH_HDF5 = /sw/spack-levante/hdf5-1.12.1-tvymb5
+# ---------------------------------------------------------------------------------------------------------------------------------------
 
-src = $(basedir)/src
-obj = $(basedir)/obj
-lib = $(basedir)/lib
-mod = $(basedir)/mod
+## Following up paths (do not edit!)
+# ---------------------------------------------------------------------------------------------------------------------------------------
+src = $(PATH_S3COM)/src
+obj = $(PATH_S3COM)/obj
+lib = $(PATH_S3COM)/lib
+mod = $(PATH_S3COM)/mod
 
 PATH_main = $(src)/main
 PATH_io = $(src)/io
 PATH_utils = $(src)/utils
 PATH_rttov = $(src)/rttov
 
-PATH_NCDF_C_LIB = /sw/spack-levante/netcdf-c-4.8.1-2k3cmu/lib
-PATH_NCDF_INC = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g/include
-PATH_NCDF_LIB = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g/lib
+PATH_NCDF_C_LIB = $(PATH_NETCDF_C)/lib
+PATH_NCDF_INC = $(PATH_NETCDF_F)/include
+PATH_NCDF_LIB = $(PATH_NETCDF_F)/lib
 
-PATH_HDF5_LIB = /sw/spack-levante/hdf5-1.12.1-tvymb5/lib
+PATH_HDF5_LIB = $(PATH_HDF5)/lib
 
-RTTOV_PATH       = /work/bb1036/rttov_share/rttov131
-RTTOV_LIB_PATH   = $(RTTOV_PATH)/lib 
-RTTOV_INC_PATH   = $(RTTOV_PATH)/include 
+RTTOV_PATH       = $(PATH_RTTOV)
+RTTOV_LIB_PATH   = $(RTTOV_PATH)/lib
+RTTOV_INC_PATH   = $(RTTOV_PATH)/include
 RTTOV_MOD_PATH   = $(RTTOV_PATH)/mod
 RTTOV_LIBS       = -lrttov13_wrapper -lrttov13_mw_scatt -lrttov13_brdf_atlas -lrttov13_emis_atlas -lrttov13_other \
                    -lrttov13_parallel -lrttov13_coef_io -lrttov13_hdf -lrttov13_main -lhdf5_hl_fortran -lhdf5_hl \
@@ -93,7 +99,7 @@ LIST_OBJ_RTTOVML = $(obj)/rttov_utils.o \
 		   $(obj)/interface_rttov.o \
 		   $(obj)/rttov_setup.o
 
-LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MAIN) 
+LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MAIN)
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of flags related to each libraries + final flag
@@ -116,12 +122,12 @@ install: $(LIST_OBJ)
 	ar r $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
 	$(F90) $(F90FLAGS) $(PATH_main)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
 
-clean:	
+clean:
 	rm -f $(obj)/*.o $(mod)/*.mod $(lib)/*.a
 # -------------------------------------------------------------------------------------------------------------------------------
 
 
-## Objects for subroutines in ./src/main 
+## Objects for subroutines in ./src/main
 # -------------------------------------------------------------------------------------------------------------------------------
 $(obj)/setup.o : $(PATH_main)/setup.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
@@ -181,4 +187,3 @@ $(obj)/utils_math.o : $(PATH_utils)/utils_math.f90
 $(obj)/utils_fort.o : $(PATH_utils)/utils_fort.f90 #$(PATH_utils)/config.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
-

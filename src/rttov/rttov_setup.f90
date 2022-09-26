@@ -53,7 +53,8 @@ MODULE MOD_RTTOV_SETUP
             rttov_opt%instrument = nml%instrument
             rttov_opt%dosolar    = RTTOV_DOSOLAR
             rttov_opt%nchannels  = nml%nchannels
-            
+            rttov_opt%nthreads = nml%rttov_nthreads
+
             ALLOCATE(rttov_opt%channel_list(rttov_opt%nchannels))
             
             rttov_opt%channel_list = nml%channel_list

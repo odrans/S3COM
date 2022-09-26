@@ -172,7 +172,7 @@ CONTAINS
 
     errorstatus = 0_jpim
 
-    nthreads = 36 !35
+    nthreads = rttov_opt%nthreads
 
     list_points = idx_rttov(oe)
     nprof = size(list_points); nlevels = rttov_atm%nlevels

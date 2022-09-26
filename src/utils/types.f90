@@ -52,7 +52,8 @@ MODULE s3com_types
           nchannels, &
           ir_scatt_model, &
           vis_scatt_model, &
-          dom_nstreams
+          dom_nstreams, &
+          rttov_nthreads
      INTEGER(KIND = 4), DIMENSION(:), ALLOCATABLE :: &
           channel_list
      LOGICAL :: &
@@ -232,6 +233,7 @@ MODULE s3com_types
      INTEGER ::     &
           dosolar,    &
           nchannels,  &
+          manthreads,   &
           platform,   &
           satellite,  &
           instrument, &

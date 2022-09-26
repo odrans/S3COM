@@ -49,7 +49,7 @@ CONTAINS
     logical :: flag_retrievals, addrefrac, dom_rayleigh
 
     integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
-         ir_scatt_model, vis_scatt_model, dom_nstreams
+         ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads
     integer(kind = 4), DIMENSION(:), ALLOCATABLE :: channel_list
 
     TYPE(type_nml), intent(out)        :: nml
@@ -70,7 +70,8 @@ CONTAINS
          ir_scatt_model, &
          vis_scatt_model, &
          dom_nstreams, &
-         dom_rayleigh
+         dom_rayleigh, &
+         rttov_nthreads
 
     namelist /rttov/ &
          channel_list, &
@@ -114,6 +115,7 @@ CONTAINS
     nml%vis_scatt_model = vis_scatt_model
     nml%dom_rayleigh = dom_rayleigh
     nml%dom_nstreams = dom_nstreams
+    nml%rttov_nthreads = rttov_nthreads
 
   end subroutine read_namelist
 
