@@ -8,7 +8,7 @@ The default configuration namelist file is `config_default.nml`. Fields with `NA
 | --- | --- | --- | 
 | fname_in | Input file name | NA |
 | path_out | Path for output files | "./" |
-| suffix | suffix to be used in output files | "" |
+| suffix_out | suffix to be used in output files | "" |
 | month | Month of the simulations | 1 |
 | flag_retrievals | Turn on cloud retrievals (otherwise only simulate measurements)  | FALSE |
 | npoints_it | Number of simultaneous data points sent to RTTOV | 100 |
