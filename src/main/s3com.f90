@@ -64,10 +64,11 @@ PROGRAM S3COM
 
   ! Set the namelist file
   IF(COMMAND_ARGUMENT_COUNT().NE.1) THEN
-     write(*,*) "Namelist not provided, using config.nml instead"
-     fname_nml = "config.nml"
+     write(*,*) "Namelist not provided"
+     stop
   ELSE
      CALL GET_COMMAND_ARGUMENT(1, fname_nml)
+     write(*,*) "Namelist file: ", fname_nml
   ENDIF
 
   ! Read namelist file

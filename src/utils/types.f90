@@ -230,10 +230,11 @@ MODULE s3com_types
   END TYPE type_rttov_atm
 
   TYPE type_rttov_opt
-     INTEGER ::     &
+     INTEGER ::       &
           dosolar,    &
           nchannels,  &
-          manthreads,   &
+          nthreads,   &
+          manthreads, &
           platform,   &
           satellite,  &
           instrument, &
