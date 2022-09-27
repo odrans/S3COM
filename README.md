@@ -56,7 +56,7 @@ S3COM requires the path to a namelist file as main argument:
 The namelist contains information on input and output files as well as important options to run S3COM. Refer to the [namelist section](doc/namelist.md) for a detailed description.
 
 
-**S3COM outputs** are 3 files containing satellite simulations, retrievals and atmospheric data. See the [output section](doc/output.md).
+**S3COM outputs** are 3 files containing satellite simulations, retrievals and atmospheric data. See the [output section](doc/outputs.md).
 
 
 ## Current limitations
