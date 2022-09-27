@@ -1,4 +1,4 @@
-## S3COM outputs
+## Output files
 
 Up to three files are created by S3COM:
 - `S3COM_[_prefix_]rad.nc` for radiation outputs
