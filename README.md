@@ -40,7 +40,7 @@ All Makefile paths refer to base repositories, giving access to libraries, objec
   
 `PATH_S3COM` should be set in Makefile to indicate where S3COM is installed.
 
-[The environment section](Environment.md) provides advised settings on specific supercomputers.
+[The environment section](doc/environment.md) provides advised settings on specific supercomputers.
 
 </details>
 
@@ -53,10 +53,10 @@ S3COM requires the path to a namelist file as main argument:
 ```bash
 ./s3com config_default.nml
 ```
-The namelist contains information on input and output files as well as important options to run S3COM. Refer to the [namelist section](namelist.md) for a detailed description.
+The namelist contains information on input and output files as well as important options to run S3COM. Refer to the [namelist section](doc/namelist.md) for a detailed description.
 
 
-**S3COM outputs** are 3 files containing satellite simulations, retrievals and atmospheric data. See the [output section](output.md).
+**S3COM outputs** are 3 files containing satellite simulations, retrievals and atmospheric data. See the [output section](doc/output.md).
 
 
 ## Current limitations
