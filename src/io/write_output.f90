@@ -47,9 +47,13 @@ CONTAINS
 
     CALL write_output_rad(icon, oe, nml)
 
-    CALL write_output_atm(icon, oe, nml, atm)
+    IF(nml%flag_output_atm) THEN
+       CALL write_output_atm(icon, oe, nml, atm)
+    END IF
 
-    CALL write_output_ret(icon, oe, nml)
+    IF(nml%flag_retrievals) THEN
+       CALL write_output_ret(icon, oe, nml)
+    END IF
 
   END SUBROUTINE write_output
 

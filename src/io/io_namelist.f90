@@ -46,7 +46,7 @@ CONTAINS
 
     ! Namelist variables
     character(len=256) :: fname_in, path_rttov, path_out, suffix_out
-    logical :: flag_retrievals, addrefrac, dom_rayleigh
+    logical :: flag_retrievals, addrefrac, dom_rayleigh, flag_output_atm
 
     integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
          ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads
@@ -61,6 +61,7 @@ CONTAINS
          suffix_out, &
          month, &
          flag_retrievals, &
+         flag_output_atm, &
          npoints_it, &
          nchannels
 
@@ -116,6 +117,7 @@ CONTAINS
     nml%dom_rayleigh = dom_rayleigh
     nml%dom_nstreams = dom_nstreams
     nml%rttov_nthreads = rttov_nthreads
+    nml%flag_output_atm = flag_output_atm
 
   end subroutine read_namelist
 

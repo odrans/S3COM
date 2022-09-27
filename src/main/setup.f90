@@ -117,12 +117,15 @@ CONTAINS
     ALLOCATE(y%iwp_model(npoints)); y%iwp_model = 0._wp
     ALLOCATE(y%xip1(npoints,nstates)); y%xip1 = 0._wp
     ALLOCATE(y%gip1(npoints)); y%gip1 = 0._wp
-    ALLOCATE(y%t(npoints, nlevels)); y%t = 0._wp
-    ALLOCATE(y%z(npoints, nlevels)); y%z = 0._wp
-    ALLOCATE(y%clc(npoints, nlevels)); y%clc = 0._wp
-    ALLOCATE(y%reff(npoints, nlevels)); y%reff = 0._wp
-    ALLOCATE(y%cdnc(npoints, nlevels)); y%cdnc = 0._wp
-    ALLOCATE(y%lwc(npoints, nlevels)); y%lwc = 0._wp
+
+    IF(nml%flag_output_atm) THEN
+       ALLOCATE(y%t(npoints, nlevels)); y%t = 0._wp
+       ALLOCATE(y%z(npoints, nlevels)); y%z = 0._wp
+       ALLOCATE(y%clc(npoints, nlevels)); y%clc = 0._wp
+       ALLOCATE(y%reff(npoints, nlevels)); y%reff = 0._wp
+       ALLOCATE(y%cdnc(npoints, nlevels)); y%cdnc = 0._wp
+       ALLOCATE(y%lwc(npoints, nlevels)); y%lwc = 0._wp
+    END IF
 
     IF(flag_oe) THEN
        ALLOCATE(y%iwc(npoints,nlevels)); y%iwc = 0._wp

@@ -59,7 +59,8 @@ MODULE s3com_types
      LOGICAL :: &
           flag_retrievals, &
           addrefrac, &
-          dom_rayleigh
+          dom_rayleigh, &
+          flag_output_atm
   END TYPE type_nml
 
   !!Type containing variables used by S3COM for retrievals
