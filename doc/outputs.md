@@ -34,6 +34,8 @@ The prefix can optionally be added from the namelist file. Default is empty.
 
 ### Atmospheric parameters
 
+This file is created if the namelist variable `flag_output_atm` is set to `TRUE`
+
 | Name | Description | Units |
 | --- | --- | --- | 
 | ta | Atmospheric Temperature | K | 
@@ -45,6 +47,8 @@ The prefix can optionally be added from the namelist file. Default is empty.
 
 
 ### Atmospheric parameters (To be Completed)
+
+This file is created if the namelist variable `flag_retrievals` is set to `TRUE`
 
 | Name | Description | Units |
 | --- | --- | --- | 
