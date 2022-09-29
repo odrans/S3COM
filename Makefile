@@ -126,7 +126,8 @@ install: $(LIST_OBJ)
 	$(F90) $(F90FLAGS) $(PATH_main)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
 
 clean:
-	rm -f $(obj)/*.o $(mod)/*.mod $(lib)/*.a
+	rm -f $(obj)/*.o $(mod)/*.mod $(lib)/*.a s3com
+	rm -rf $(obj) $(mod) $(lib)
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # Use prerequisite to make sure repositories exist
