@@ -152,7 +152,6 @@ PROGRAM S3COM
      oe%y_refl_total = oe%f_refl_total; oe%y_refl_clear = oe%f_refl_clear
      oe%y_bt_total = oe%f_bt_total; oe%y_bt_clear = oe%f_bt_clear
      oe%y_rad_total = oe%f_rad_total; oe%y_rad_clear = oe%f_rad_clear; oe%y_rad_cloudy = oe%f_rad_cloudy
-     oe%iwp_model = oe%iwp
 
      IF(nml%flag_output_atm) THEN
         oe%t = rttov_atm%t
@@ -164,6 +163,8 @@ PROGRAM S3COM
      END IF
 
      IF (nml%flag_retrievals) THEN
+        oe%iwp_model = oe%iwp
+
         CALL oe_run(oe, rttov_atm_oe, rttov_opt)
      ENDIF
 
