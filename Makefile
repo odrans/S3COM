@@ -49,11 +49,11 @@ obj = $(PATH_S3COM)/obj
 lib = $(PATH_S3COM)/lib
 mod = $(PATH_S3COM)/mod
 
-PATH_main = $(src)/main
-PATH_io = $(src)/io
-PATH_oe = $(src)/oe
-PATH_utils = $(src)/utils
-PATH_rttov = $(src)/rttov
+DIR_MAIN = $(src)/main
+DIR_IO = $(src)/io
+DIR_OE = $(src)/oe
+DIR_UTILS = $(src)/utils
+DIR_RTTOV = $(src)/rttov
 
 PATH_NCDF_C_LIB = $(PATH_NETCDF_C)/lib
 PATH_NCDF_INC = $(PATH_NETCDF_F)/include
@@ -123,7 +123,7 @@ install: $(LIST_OBJ)
 	ar r $(LIB_OE) $(LIST_OBJ_OE)
 	ar r $(LIB_IO) $(LIST_OBJ_IO)
 	ar r $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
-	$(F90) $(F90FLAGS) $(PATH_main)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
+	$(F90) $(F90FLAGS) $(DIR_MAIN)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
 
 clean:
 	rm -f $(obj)/*.o $(mod)/*.mod $(lib)/*.a s3com
@@ -147,66 +147,66 @@ $(mod):
 
 ## Objects for subroutines in ./src/main
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/setup.o : $(PATH_main)/setup.f90
+$(obj)/setup.o : $(DIR_MAIN)/setup.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 
 ## Objects for subroutines in ./src/oe
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/oe_run.o : $(PATH_oe)/oe_run.f90
+$(obj)/oe_run.o : $(DIR_OE)/oe_run.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/model_cloud.o : $(PATH_oe)/model_cloud.f90
+$(obj)/model_cloud.o : $(DIR_OE)/model_cloud.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/oe_utils.o : $(PATH_oe)/oe_utils.f90
+$(obj)/oe_utils.o : $(DIR_OE)/oe_utils.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 
 ## Objects for subroutines in ./src/io
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/write_output.o : $(PATH_io)/write_output.f90
+$(obj)/write_output.o : $(DIR_IO)/write_output.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
-$(obj)/read_icon.o : $(PATH_io)/read_icon.f90
+$(obj)/read_icon.o : $(DIR_IO)/read_icon.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
-$(obj)/io_namelist.o : $(PATH_io)/io_namelist.f90
+$(obj)/io_namelist.o : $(DIR_IO)/io_namelist.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
-$(obj)/regrid.o : $(PATH_io)/regrid.f90
+$(obj)/regrid.o : $(DIR_IO)/regrid.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 ## Objects for subroutines in ./src/rttov
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/interface_rttov.o : $(PATH_rttov)/interface_rttov.f90
+$(obj)/interface_rttov.o : $(DIR_RTTOV)/interface_rttov.f90
 	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
 
-$(obj)/rttov_ml.o : $(PATH_rttov)/rttov.f90
+$(obj)/rttov_ml.o : $(DIR_RTTOV)/rttov.f90
 	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
 
-$(obj)/rttov_setup.o : $(PATH_rttov)/rttov_setup.f90
+$(obj)/rttov_setup.o : $(DIR_RTTOV)/rttov_setup.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/rttov_utils.o : $(PATH_rttov)/rttov_utils.f90
+$(obj)/rttov_utils.o : $(DIR_RTTOV)/rttov_utils.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 ## Objects for subroutines in ./src/utils
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/types.o : $(PATH_utils)/types.f90
+$(obj)/types.o : $(DIR_UTILS)/types.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/config.o : $(PATH_utils)/config.f90
+$(obj)/config.o : $(DIR_UTILS)/config.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/utils_math.o : $(PATH_utils)/utils_math.f90
+$(obj)/utils_math.o : $(DIR_UTILS)/utils_math.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/utils_fort.o : $(PATH_utils)/utils_fort.f90 #$(PATH_utils)/config.f90
+$(obj)/utils_fort.o : $(DIR_UTILS)/utils_fort.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
