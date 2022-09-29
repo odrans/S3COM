@@ -51,6 +51,7 @@ mod = $(PATH_S3COM)/mod
 
 PATH_main = $(src)/main
 PATH_io = $(src)/io
+PATH_oe = $(src)/oe
 PATH_utils = $(src)/utils
 PATH_rttov = $(src)/rttov
 
@@ -73,21 +74,23 @@ RTTOV_LIBS       = -lrttov13_wrapper -lrttov13_mw_scatt -lrttov13_brdf_atlas -lr
 # -------------------------------------------------------------------------------------------------------------------------------
 LIB_MAIN = $(lib)/libmain.a
 LIB_IO = $(lib)/lib_io.a
+LIB_OE = $(lib)/lib_oe.a
 LIB_UTILS = $(lib)/libutils.a
 LIB_RTTOVML = $(lib)/librttovml.a
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of object files in each library
 # -------------------------------------------------------------------------------------------------------------------------------
-LIST_OBJ_MAIN = $(obj)/model_cloud.o \
-		$(obj)/setup.o \
-		$(obj)/oe_utils.o \
-		$(obj)/oe_run.o
+LIST_OBJ_MAIN = $(obj)/setup.o
 
-LIST_OBJ_IO =   $(obj)/regrid.o \
+LIST_OBJ_IO = $(obj)/regrid.o \
         $(obj)/io_namelist.o \
 		$(obj)/read_icon.o \
 		$(obj)/write_output.o
+
+LIST_OBJ_OE = $(obj)/model_cloud.o \
+        $(obj)/oe_utils.o \
+		$(obj)/oe_run.o
 
 LIST_OBJ_UTILS = $(obj)/types.o \
 		 $(obj)/config.o \
@@ -99,7 +102,7 @@ LIST_OBJ_RTTOVML = $(obj)/rttov_utils.o \
 		   $(obj)/interface_rttov.o \
 		   $(obj)/rttov_setup.o
 
-LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MAIN)
+LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_OE) $(LIST_OBJ_MAIN)
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of flags related to each libraries + final flag
@@ -108,7 +111,7 @@ FLAGS_NCDF = -I$(PATH_NCDF_INC) -L${PATH_NCDF_LIB} -lnetcdff -L${PATH_NCDF_C_LIB
 FLAGS_RTTOV = -I${RTTOV_INC_PATH} -L${RTTOV_LIB_PATH} $(RTTOV_LIBS)
 # FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -Wl,-rpath,${PATH_HDF5_LIB}
 FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${PATH_HDF5_LIB}
-FLAGS_LOCAL = -L$(lib) -l_io -lrttovml -lmain -lutils
+FLAGS_LOCAL = -L$(lib) -l_io -l_oe -lrttovml -lmain -lutils
 
 FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -118,6 +121,7 @@ FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
 install: $(LIST_OBJ)
 	ar r $(LIB_UTILS) $(LIST_OBJ_UTILS)
 	ar r $(LIB_MAIN) $(LIST_OBJ_MAIN)
+	ar r $(LIB_OE) $(LIST_OBJ_OE)
 	ar r $(LIB_IO) $(LIST_OBJ_IO)
 	ar r $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
 	$(F90) $(F90FLAGS) $(PATH_main)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
@@ -131,14 +135,18 @@ clean:
 # -------------------------------------------------------------------------------------------------------------------------------
 $(obj)/setup.o : $(PATH_main)/setup.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
+# -------------------------------------------------------------------------------------------------------------------------------
 
-$(obj)/model_cloud.o : $(PATH_main)/model_cloud.f90
+
+## Objects for subroutines in ./src/oe
+# -------------------------------------------------------------------------------------------------------------------------------
+$(obj)/oe_run.o : $(PATH_oe)/oe_run.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/oe_run.o : $(PATH_main)/oe_run.f90
+$(obj)/model_cloud.o : $(PATH_oe)/model_cloud.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/oe_utils.o : $(PATH_main)/oe_utils.f90
+$(obj)/oe_utils.o : $(PATH_oe)/oe_utils.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
