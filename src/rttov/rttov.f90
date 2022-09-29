@@ -423,7 +423,7 @@ CONTAINS
           oe%emissivity(idx_prof,ichan)   = emissivity(j)%emis_out
           oe%f_rad_total(idx_prof,ichan)  = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
           oe%f_rad_clear(idx_prof,ichan)  = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-          oe%f_rad_cloudy(idx_prof,ichan) = radiance%cloudy(j)
+          oe%f_rad_cloudy(idx_prof,ichan) = radiance%cloudy(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
 
           ichan = ichan + 1
 
