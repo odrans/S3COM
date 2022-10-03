@@ -27,7 +27,7 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE mod_setup_atm
+MODULE mod_atm_init
 
   USE s3com_types,  ONLY: type_s3com, wp, type_nml
   USE s3com_config, ONLY: nstates, apriori_iwp
@@ -36,38 +36,38 @@ MODULE mod_setup_atm
 
 CONTAINS
 
-  SUBROUTINE update_atm(idx_start, idx_end, oe, s3com)
+  SUBROUTINE atm_update(idx_start, idx_end, atm_oe, atm_out)
 
     ! Input variables
     INTEGER(kind=4), INTENT(IN) :: idx_start, idx_end
-    TYPE(type_s3com), INTENT(IN) :: oe
+    TYPE(type_s3com), INTENT(IN) :: atm_oe
 
     ! Output variables
-    TYPE(type_s3com), INTENT(INOUT) :: s3com
+    TYPE(type_s3com), INTENT(INOUT) :: atm_out
 
-    s3com%y_refl_total(idx_start:idx_end,:) = oe%y_refl_total(:,:)
-    s3com%y_refl_clear(idx_start:idx_end,:) = oe%y_refl_clear(:,:)
-    s3com%y_bt_total(idx_start:idx_end,:)   = oe%y_bt_total(:,:)
-    s3com%y_bt_clear(idx_start:idx_end,:)   = oe%y_bt_clear(:,:)
-    s3com%y_rad_total(idx_start:idx_end,:)  = oe%y_rad_total(:,:)
-    s3com%y_rad_clear(idx_start:idx_end,:)  = oe%y_rad_clear(:,:)
-    s3com%y_rad_cloudy(idx_start:idx_end,:) = oe%y_rad_cloudy(:,:)
-    s3com%brdf(idx_start:idx_end,:)         = oe%brdf(:,:)
-    s3com%emissivity(idx_start:idx_end,:)   = oe%emissivity(:,:)
-    s3com%Xip1(idx_start:idx_end,:)         = oe%Xip1(:,:)
-    s3com%iwp_model(idx_start:idx_end)      = oe%iwp_model(:)
-    s3com%Gip1(idx_start:idx_end)           = oe%Gip1(:)
-    s3com%t(idx_start:idx_end,:)            = oe%t(:,:)
-    s3com%z(idx_start:idx_end,:)            = oe%z(:,:)
-    s3com%t(idx_start:idx_end,:)            = oe%t(:,:)
-    s3com%clc(idx_start:idx_end,:)          = oe%clc(:,:)
-    s3com%cdnc(idx_start:idx_end,:)         = oe%cdnc(:,:)
-    s3com%reff(idx_start:idx_end,:)         = oe%reff(:,:)
-    s3com%lwc(idx_start:idx_end,:)          = oe%lwc(:,:)
+    atm_out%y_refl_total(idx_start:idx_end,:) = atm_oe%y_refl_total(:,:)
+    atm_out%y_refl_clear(idx_start:idx_end,:) = atm_oe%y_refl_clear(:,:)
+    atm_out%y_bt_total(idx_start:idx_end,:)   = atm_oe%y_bt_total(:,:)
+    atm_out%y_bt_clear(idx_start:idx_end,:)   = atm_oe%y_bt_clear(:,:)
+    atm_out%y_rad_total(idx_start:idx_end,:)  = atm_oe%y_rad_total(:,:)
+    atm_out%y_rad_clear(idx_start:idx_end,:)  = atm_oe%y_rad_clear(:,:)
+    atm_out%y_rad_cloudy(idx_start:idx_end,:) = atm_oe%y_rad_cloudy(:,:)
+    atm_out%brdf(idx_start:idx_end,:)         = atm_oe%brdf(:,:)
+    atm_out%emissivity(idx_start:idx_end,:)   = atm_oe%emissivity(:,:)
+    atm_out%Xip1(idx_start:idx_end,:)         = atm_oe%Xip1(:,:)
+    atm_out%iwp_model(idx_start:idx_end)      = atm_oe%iwp_model(:)
+    atm_out%Gip1(idx_start:idx_end)           = atm_oe%Gip1(:)
+    atm_out%t(idx_start:idx_end,:)            = atm_oe%t(:,:)
+    atm_out%z(idx_start:idx_end,:)            = atm_oe%z(:,:)
+    atm_out%t(idx_start:idx_end,:)            = atm_oe%t(:,:)
+    atm_out%clc(idx_start:idx_end,:)          = atm_oe%clc(:,:)
+    atm_out%cdnc(idx_start:idx_end,:)         = atm_oe%cdnc(:,:)
+    atm_out%reff(idx_start:idx_end,:)         = atm_oe%reff(:,:)
+    atm_out%lwc(idx_start:idx_end,:)          = atm_oe%lwc(:,:)
 
-  END SUBROUTINE update_atm
+  END SUBROUTINE atm_update
 
-  SUBROUTINE setup_atm(idx_start, idx_end, nlevels, y, flag_oe, nml)
+  SUBROUTINE atm_init(idx_start, idx_end, nlevels, y, flag_oe, nml)
 
     INTEGER(kind=4) :: nchannels
 
@@ -151,6 +151,6 @@ CONTAINS
 
     y%Xa(:,1) = apriori_iwp
 
-  END SUBROUTINE setup_atm
+  END SUBROUTINE atm_init
 
-END MODULE mod_setup_atm
+END MODULE mod_atm_init

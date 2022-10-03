@@ -35,7 +35,7 @@ PROGRAM S3COM
   USE mod_rttov_interface, ONLY: rttov_init
   USE mod_rttov_setup,     ONLY: rttov_setup_opt, rttov_setup_atm
   USE mod_rttov,           ONLY: run_rttov
-  USE mod_setup_atm,       ONLY: setup_atm, update_atm
+  USE mod_atm_init,        ONLY: atm_init, atm_update
   USE mod_model_cloud,     ONLY: init_zcloud, init_cloudprof
   USE mod_write_output,    ONLY: write_output
   USE mod_oe_utils,        ONLY: idx_ice
@@ -47,7 +47,7 @@ PROGRAM S3COM
   TYPE(type_icon), TARGET :: icon
   TYPE(type_rttov_atm)    :: rttov_atm, rttov_atm_oe
   TYPE(type_rttov_opt)    :: rttov_opt
-  TYPE(type_s3com)        :: atm, oe, oe_ip1, oe_tmp
+  TYPE(type_s3com)        :: atm_out, atm_oe, atm_oe_ip1, oe_tmp
   TYPE(type_nml)          :: nml
 
   CHARACTER(LEN = 32) :: fname_nml
@@ -94,9 +94,9 @@ PROGRAM S3COM
   ! Initialize RTTOV (load data)
   CALL rttov_init(rttov_opt, nml)
 
-  ! Setup the overall atmospheric model used for radiative transfer
+  ! Initialize `atm`: the full atmospheric model to be outputed by S3COM
   flag_oe = .FALSE.
-  CALL setup_atm(1, icon%npoints, icon%nlevels, atm, flag_oe, nml)
+  CALL atm_init(1, icon%npoints, icon%nlevels, atm_out, flag_oe, nml)
 
   nChunks = icon%nPoints/nPoints_it
   IF (MOD(icon%npoints,npoints_it)/=0) nchunks = nchunks + 1
@@ -117,63 +117,64 @@ PROGRAM S3COM
 
      ! Subset the atmosphere based on the ICON input file
      CALL rttov_setup_atm(idx_start, idx_end, icon, rttov_atm)
-     CALL rttov_setup_atm(idx_start, idx_end, icon, rttov_atm_oe)
 
-     ! Setup the oe variables
-     CALL setup_atm(rttov_atm%idx_start, rttov_atm%idx_end, icon%nlevels, oe, flag_oe, nml)
+     ! Initialize `atm_oe`: a subset atmospheric model used within the optimal estimation framework
+     CALL atm_init(rttov_atm%idx_start, rttov_atm%idx_end, icon%nlevels, atm_oe, flag_oe, nml)
 
      IF (nml%flag_retrievals) THEN
 
+        CALL rttov_setup_atm(idx_start, idx_end, icon, rttov_atm_oe)
+
         ! Extract the cloud position for ice and liquid phase and modify rttov_atm
-        CALL init_zcloud(rttov_atm_oe,oe)
+        CALL init_zcloud(rttov_atm_oe,atm_oe)
 
         ! Set conditions to use RTTOV (now: need an ice cloud)
-        idx_iwp = idx_ice(oe,.TRUE.)
-        oe%flag_rttov(idx_iwp) = .TRUE.
+        idx_iwp = idx_ice(atm_oe,.TRUE.)
+        atm_oe%flag_rttov(idx_iwp) = .TRUE.
 
-        idx_oe = idx_rttov(oe)
+        idx_oe = idx_rttov(atm_oe)
         IF (SIZE(idx_oe) .EQ. 0) THEN
            CYCLE
         ENDIF
 
-        ! Update the cloud profiles in rttov_atm_oe using parameters from oe
-        CALL init_cloudprof(rttov_atm_oe, oe)
+        ! Update the cloud profiles in rttov_atm_oe using parameters from atm_oe
+        CALL init_cloudprof(rttov_atm_oe, atm_oe)
 
         ! Run rttov on the selected atmosphere
-        CALL run_rttov(rttov_atm_oe, rttov_opt, oe, dealloc = .FALSE.)
+        CALL run_rttov(rttov_atm_oe, rttov_opt, atm_oe, dealloc = .FALSE.)
 
      ELSE
 
-        oe%flag_rttov(:) = .TRUE.
-        CALL run_rttov(rttov_atm, rttov_opt, oe, dealloc = .FALSE.)
+        atm_oe%flag_rttov(:) = .TRUE.
+        CALL run_rttov(rttov_atm, rttov_opt, atm_oe, dealloc = .FALSE.)
 
      ENDIF
 
-     oe%y_refl_total = oe%f_refl_total; oe%y_refl_clear = oe%f_refl_clear
-     oe%y_bt_total = oe%f_bt_total; oe%y_bt_clear = oe%f_bt_clear
-     oe%y_rad_total = oe%f_rad_total; oe%y_rad_clear = oe%f_rad_clear; oe%y_rad_cloudy = oe%f_rad_cloudy
+     atm_oe%y_refl_total = atm_oe%f_refl_total; atm_oe%y_refl_clear = atm_oe%f_refl_clear
+     atm_oe%y_bt_total = atm_oe%f_bt_total; atm_oe%y_bt_clear = atm_oe%f_bt_clear
+     atm_oe%y_rad_total = atm_oe%f_rad_total; atm_oe%y_rad_clear = atm_oe%f_rad_clear; atm_oe%y_rad_cloudy = atm_oe%f_rad_cloudy
 
      IF(nml%flag_output_atm) THEN
-        oe%t = rttov_atm%t
-        oe%z = rttov_atm%z
-        oe%clc = rttov_atm%tca
-        oe%cdnc = rttov_atm%cdnc
-        oe%lwc = rttov_atm%lwc
-        oe%reff = rttov_atm%reff
+        atm_oe%t = rttov_atm%t
+        atm_oe%z = rttov_atm%z
+        atm_oe%clc = rttov_atm%tca
+        atm_oe%cdnc = rttov_atm%cdnc
+        atm_oe%lwc = rttov_atm%lwc
+        atm_oe%reff = rttov_atm%reff
      END IF
 
      IF (nml%flag_retrievals) THEN
-        oe%iwp_model = oe%iwp
+        atm_oe%iwp_model = atm_oe%iwp
 
-        CALL oe_run(oe, rttov_atm_oe, rttov_opt)
+        CALL oe_run(atm_oe, rttov_atm_oe, rttov_opt)
      ENDIF
 
      ! Update the final atmosperic model
-     CALL update_atm(idx_start, idx_end, oe, atm)
+     CALL atm_update(idx_start, idx_end, atm_oe, atm_out)
 
   ENDDO
 
   ! Write output file
-  CALL write_output(icon, atm, nml, atm)
+  CALL write_output(icon, atm_out, nml, atm_out)
 
 END PROGRAM S3COM
