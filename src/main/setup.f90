@@ -154,45 +154,43 @@ CONTAINS
   END SUBROUTINE atm_init
 
 
-  SUBROUTINE atm_setup_icon(icon, atm, nml)
-
-    INTEGER(kind=4) :: nchannels
+  SUBROUTINE atm_setup_icon(icon, atm_model, nml)
 
     ! Input variables
     TYPE(type_icon), INTENT(IN)    :: icon
     TYPE(type_nml), INTENT(IN)      :: nml
 
     ! Output variables
-    TYPE(type_icon), INTENT(OUT)   :: atm
+    TYPE(type_icon), INTENT(OUT)   :: atm_model
 
     ! Internal variables
 
-    atm%nPoints   =  icon%nPoints
-    atm%nLevels   =  icon%nLevels
-    atm%co2       =  icon%co2
-    atm%ch4       =  icon%ch4
-    atm%n2o       =  icon%n2o
-    atm%co        =  icon%co
-    atm%orography =  icon%orography
-    atm%u_wind    =  icon%u_wind
-    atm%v_wind    =  icon%v_wind
-    atm%skt       =  icon%skt
-    atm%psfc      =  icon%psfc
-    atm%q2m       =  icon%q2m
-    atm%t2m       =  icon%t2m
-    atm%landmask  =  icon%landmask
-    atm%lat       =  icon%lat
-    atm%lon       =  icon%lon
-    atm%p         =  icon%p
-    atm%z         =  icon%z
-    atm%dz        =  icon%dz
-    atm%t         =  icon%t
-    atm%sh        =  icon%sh
-    atm%tca       =  icon%tca
-    atm%iwc       =  icon%iwc
-    atm%lwc       =  icon%lwc
-    atm%reff      =  icon%reff
-    atm%cdnc      =  icon%cdnc
+    atm_model%nPoints   =  icon%nPoints
+    atm_model%nLevels   =  icon%nLevels
+    atm_model%co2       =  icon%co2
+    atm_model%ch4       =  icon%ch4
+    atm_model%n2o       =  icon%n2o
+    atm_model%co        =  icon%co
+    atm_model%orography =  icon%orography
+    atm_model%u_wind    =  icon%u_wind
+    atm_model%v_wind    =  icon%v_wind
+    atm_model%skt       =  icon%skt
+    atm_model%psfc      =  icon%psfc
+    atm_model%q2m       =  icon%q2m
+    atm_model%t2m       =  icon%t2m
+    atm_model%landmask  =  icon%landmask
+    atm_model%lat       =  icon%lat
+    atm_model%lon       =  icon%lon
+    atm_model%p         =  icon%p
+    atm_model%z         =  icon%z
+    atm_model%dz        =  icon%dz
+    atm_model%t         =  icon%t
+    atm_model%sh        =  icon%sh
+    atm_model%tca       =  icon%tca
+    atm_model%iwc       =  icon%iwc
+    atm_model%lwc       =  icon%lwc
+    atm_model%reff      =  icon%reff
+    atm_model%cdnc      =  icon%cdnc
 
   END SUBROUTINE atm_setup_icon
 
