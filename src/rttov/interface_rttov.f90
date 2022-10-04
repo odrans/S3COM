@@ -213,6 +213,8 @@ CONTAINS
 
     ENDIF
 
+    WRITE(*,*) 10000._wp / coefs%coef%ff_cwn(channel_list(:))
+
   END SUBROUTINE RTTOV_INIT
 
 END MODULE  MOD_RTTOV_INTERFACE

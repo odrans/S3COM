@@ -255,6 +255,7 @@ CONTAINS
        profiles(iprof)%t(:) = rttov_atm%t(idx_prof,:)
        profiles(iprof)%q(:) = rttov_atm%q(idx_prof,:)
 
+
        !!Air variables in 2 meters
        profiles(iprof)%s2m%t = rttov_atm%t2m(idx_prof)         !2m temperature (K)
        profiles(iprof)%s2m%q = rttov_atm%q2m(idx_prof)         !2m water vapour (kg/kg)
@@ -292,10 +293,10 @@ CONTAINS
        profiles(iprof)%mmr_cldaer = .FALSE. !Logical flag to set cloud and aerosol
        !Units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
        !(must be the same for all profiles)
-
+!!write(*,*) SIZE(profiles(iprof)%cfrac)
        !!Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
        profiles(iprof)%cfrac = rttov_atm%tca(idx_prof,:)
-
+!!stop
        !! Used by OPAC
        profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)
 

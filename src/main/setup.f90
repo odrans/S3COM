@@ -27,47 +27,47 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE mod_setup_atm
+MODULE mod_atm_init
 
-  USE s3com_types,  ONLY: type_s3com, wp, type_nml
+  USE s3com_types,  ONLY: type_s3com, wp, type_nml, type_icon, type_model
   USE s3com_config, ONLY: nstates, apriori_iwp
 
   IMPLICIT NONE
 
 CONTAINS
 
-  SUBROUTINE update_atm(idx_start, idx_end, oe, s3com)
+  SUBROUTINE atm_update(idx_start, idx_end, atm_oe, atm_out)
 
     ! Input variables
     INTEGER(kind=4), INTENT(IN) :: idx_start, idx_end
-    TYPE(type_s3com), INTENT(IN) :: oe
+    TYPE(type_s3com), INTENT(IN) :: atm_oe
 
     ! Output variables
-    TYPE(type_s3com), INTENT(INOUT) :: s3com
+    TYPE(type_s3com), INTENT(INOUT) :: atm_out
 
-    s3com%y_refl_total(idx_start:idx_end,:) = oe%y_refl_total(:,:)
-    s3com%y_refl_clear(idx_start:idx_end,:) = oe%y_refl_clear(:,:)
-    s3com%y_bt_total(idx_start:idx_end,:)   = oe%y_bt_total(:,:)
-    s3com%y_bt_clear(idx_start:idx_end,:)   = oe%y_bt_clear(:,:)
-    s3com%y_rad_total(idx_start:idx_end,:)  = oe%y_rad_total(:,:)
-    s3com%y_rad_clear(idx_start:idx_end,:)  = oe%y_rad_clear(:,:)
-    s3com%y_rad_cloudy(idx_start:idx_end,:) = oe%y_rad_cloudy(:,:)
-    s3com%brdf(idx_start:idx_end,:)         = oe%brdf(:,:)
-    s3com%emissivity(idx_start:idx_end,:)   = oe%emissivity(:,:)
-    s3com%Xip1(idx_start:idx_end,:)         = oe%Xip1(:,:)
-    s3com%iwp_model(idx_start:idx_end)      = oe%iwp_model(:)
-    s3com%Gip1(idx_start:idx_end)           = oe%Gip1(:)
-    s3com%t(idx_start:idx_end,:)            = oe%t(:,:)
-    s3com%z(idx_start:idx_end,:)            = oe%z(:,:)
-    s3com%t(idx_start:idx_end,:)            = oe%t(:,:)
-    s3com%clc(idx_start:idx_end,:)          = oe%clc(:,:)
-    s3com%cdnc(idx_start:idx_end,:)         = oe%cdnc(:,:)
-    s3com%reff(idx_start:idx_end,:)         = oe%reff(:,:)
-    s3com%lwc(idx_start:idx_end,:)          = oe%lwc(:,:)
+    atm_out%y_refl_total(idx_start:idx_end,:) = atm_oe%y_refl_total(:,:)
+    atm_out%y_refl_clear(idx_start:idx_end,:) = atm_oe%y_refl_clear(:,:)
+    atm_out%y_bt_total(idx_start:idx_end,:)   = atm_oe%y_bt_total(:,:)
+    atm_out%y_bt_clear(idx_start:idx_end,:)   = atm_oe%y_bt_clear(:,:)
+    atm_out%y_rad_total(idx_start:idx_end,:)  = atm_oe%y_rad_total(:,:)
+    atm_out%y_rad_clear(idx_start:idx_end,:)  = atm_oe%y_rad_clear(:,:)
+    atm_out%y_rad_cloudy(idx_start:idx_end,:) = atm_oe%y_rad_cloudy(:,:)
+    atm_out%brdf(idx_start:idx_end,:)         = atm_oe%brdf(:,:)
+    atm_out%emissivity(idx_start:idx_end,:)   = atm_oe%emissivity(:,:)
+    atm_out%Xip1(idx_start:idx_end,:)         = atm_oe%Xip1(:,:)
+    atm_out%iwp_model(idx_start:idx_end)      = atm_oe%iwp_model(:)
+    atm_out%Gip1(idx_start:idx_end)           = atm_oe%Gip1(:)
+    atm_out%t(idx_start:idx_end,:)            = atm_oe%t(:,:)
+    atm_out%z(idx_start:idx_end,:)            = atm_oe%z(:,:)
+    atm_out%t(idx_start:idx_end,:)            = atm_oe%t(:,:)
+    atm_out%clc(idx_start:idx_end,:)          = atm_oe%clc(:,:)
+    atm_out%cdnc(idx_start:idx_end,:)         = atm_oe%cdnc(:,:)
+    atm_out%reff(idx_start:idx_end,:)         = atm_oe%reff(:,:)
+    atm_out%lwc(idx_start:idx_end,:)          = atm_oe%lwc(:,:)
 
-  END SUBROUTINE update_atm
+  END SUBROUTINE atm_update
 
-  SUBROUTINE setup_atm(idx_start, idx_end, nlevels, y, flag_oe, nml)
+  SUBROUTINE atm_init(idx_start, idx_end, nlevels, y, flag_oe, nml)
 
     INTEGER(kind=4) :: nchannels
 
@@ -151,6 +151,124 @@ CONTAINS
 
     y%Xa(:,1) = apriori_iwp
 
-  END SUBROUTINE setup_atm
+  END SUBROUTINE atm_init
 
-END MODULE mod_setup_atm
+
+  SUBROUTINE model_setup_init(model, npoints, nlevels)
+
+    ! Input variables
+    INTEGER(KIND = 4), INTENT(IN) :: npoints, nlevels
+
+    ! Output variables
+    TYPE(type_model), INTENT(OUT)   :: model
+
+    ! Internal variables
+
+    model%nPoints   =  npoints
+    model%nLevels   =  nlevels
+
+    !! 2D fields
+    ALLOCATE(model%lat(npoints)); model%lat = 0._wp
+    ALLOCATE(model%lon(npoints)); model%lon = 0._wp
+    ALLOCATE(model%lat_orig(npoints)); model%lat_orig = 0._wp
+    ALLOCATE(model%lon_orig(npoints)); model%lon_orig = 0._wp
+
+    ALLOCATE(model%orography(npoints)); model%orography = 0._wp
+    ALLOCATE(model%u_wind(npoints)); model%u_wind = 0._wp
+    ALLOCATE(model%v_wind(npoints)); model%v_wind = 0._wp
+    ALLOCATE(model%skt(npoints)); model%skt = 0._wp
+    ALLOCATE(model%psfc(npoints)); model%psfc = 0._wp
+    ALLOCATE(model%q2m(npoints)); model%q2m = 0._wp
+    ALLOCATE(model%t2m(npoints)); model%t2m = 0._wp
+    ALLOCATE(model%landmask(npoints)); model%landmask = 0._wp
+
+    !! 3D fields
+    ALLOCATE(model%co2(npoints, nlevels)); model%co2 = 0._wp
+    ALLOCATE(model%ch4(npoints, nlevels)); model%ch4 = 0._wp
+    ALLOCATE(model%n2o(npoints, nlevels)); model%n2o = 0._wp
+    ALLOCATE(model%s2o(npoints, nlevels)); model%s2o = 0._wp
+    ALLOCATE(model%co(npoints, nlevels)); model%co = 0._wp
+    ALLOCATE(model%p(npoints, nlevels)); model%p = 0._wp
+    ALLOCATE(model%z(npoints, nlevels)); model%z = 0._wp
+    ALLOCATE(model%dz(npoints, nlevels)); model%dz = 0._wp
+    ALLOCATE(model%t(npoints, nlevels)); model%t = 0._wp
+    ALLOCATE(model%sh(npoints, nlevels)); model%sh = 0._wp
+    ALLOCATE(model%tca(npoints, nlevels)); model%tca = 0._wp
+    ALLOCATE(model%reff(npoints, nlevels)); model%reff = 0._wp
+    ALLOCATE(model%cdnc(npoints, nlevels)); model%cdnc = 0._wp
+    ALLOCATE(model%iwc(npoints, nlevels)); model%iwc = 0._wp
+    ALLOCATE(model%lwc(npoints, nlevels)); model%lwc = 0._wp
+
+
+  END SUBROUTINE model_setup_init
+
+
+  SUBROUTINE model_setup_icon(model, icon)
+
+    ! Input variables
+    TYPE(type_icon), INTENT(IN)    :: icon
+
+    ! Output variables
+    TYPE(type_model), INTENT(OUT)   :: model
+
+    model%Nlat = icon%nlat
+    model%Nlon = icon%nlon
+    model%mode = icon%mode
+
+    model%nPoints   =  icon%nPoints
+    model%nLevels   =  icon%nLevels
+
+    model%lat       =  icon%lat
+    model%lon       =  icon%lon
+    model%orography =  icon%orography
+    model%u_wind    =  icon%u_wind
+    model%v_wind    =  icon%v_wind
+    model%skt       =  icon%skt
+    model%psfc      =  icon%psfc
+    model%q2m       =  icon%q2m
+    model%t2m       =  icon%t2m
+    model%landmask  =  icon%landmask
+
+    model%co2       =  icon%co2
+    model%ch4       =  icon%ch4
+    model%n2o       =  icon%n2o
+    model%s2o       =  icon%s2o
+    model%co        =  icon%co
+    model%p         =  icon%p
+    model%z         =  icon%z
+    model%dz        =  icon%dz
+    model%t         =  icon%t
+    model%sh        =  icon%sh
+    model%tca       =  icon%tca
+    model%iwc       =  icon%iwc
+    model%lwc       =  icon%lwc
+    model%reff      =  icon%reff
+    model%cdnc      =  icon%cdnc
+
+  END SUBROUTINE model_setup_icon
+
+
+  SUBROUTINE model_setup(model, icon)
+
+    ! Input variables
+    TYPE(type_icon), INTENT(IN)    :: icon
+
+    ! Output variables
+    TYPE(type_model), INTENT(OUT)   :: model
+
+    ! Internal
+    INTEGER(KIND = 4) :: npoints, nlevels
+
+    npoints = icon%npoints
+    nlevels = icon%nlevels
+
+    ! Initialize model array
+    CALL model_setup_init(model, npoints, nlevels)
+
+    ! Set up part of the model with ICON data
+    CALL model_setup_icon(model, icon)
+
+
+  END SUBROUTINE model_setup
+
+END MODULE mod_atm_init
