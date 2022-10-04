@@ -389,7 +389,19 @@ MODULE MOD_READ_ICON
              ELSE
                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%qnc)
              ENDIF
-
+          CASE ('qr') !Rain mixing ratio
+              IF (Lpoint) THEN
+                 icon%qr(1:npoints,:) = x2(1:npoints,1:nlevels)
+              ELSE
+                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%qr)
+              ENDIF
+           CASE ('qs') !Snow mixing ratio
+              IF (Lpoint) THEN
+                 icon%qs(1:npoints,:) = x2(1:npoints,1:nlevels)
+              ELSE
+                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%qs)
+              ENDIF
+              
           END SELECT
 
           !! Free memory
@@ -446,7 +458,7 @@ MODULE MOD_READ_ICON
 
 
      END SUBROUTINE icon_read
-
+     
 
      SUBROUTINE extract_coordinates(fname, Nlevels, Npoints)
 
