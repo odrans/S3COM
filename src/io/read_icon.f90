@@ -415,7 +415,19 @@ MODULE MOD_READ_ICON
              ELSE
                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%qnc)
              ENDIF
-
+          CASE ('qr') !Rain mixing ratio
+              IF (Lpoint) THEN
+                 icon%qr(1:npoints,:) = x2(1:npoints,1:nlevels)
+              ELSE
+                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%qr)
+              ENDIF
+           CASE ('qs') !Snow mixing ratio
+              IF (Lpoint) THEN
+                 icon%qs(1:npoints,:) = x2(1:npoints,1:nlevels)
+              ELSE
+                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%qs)
+              ENDIF
+              
           END SELECT
 
           !! Free memory
@@ -491,12 +503,6 @@ MODULE MOD_READ_ICON
        icon%iwc = icon%cli*icon%rho_atm
        !!Layer depth
        icon%dz(:,1:nlevels) = abs(icon%zh(:,1:nlevels)-icon%z(:,1:nlevels))*2._wp
-
-       !!=======================================================================================================================!!
-       !! Validation tests                                                                                                      !!
-       !!=======================================================================================================================!!
-       !icon%q2m = 0._wp
-       !icon%sh(:,1:nlevels) = 0._wp
 
        !!=======================================================================================================================!!
        !! Calculation of the droplet effective radius (Reff) of liquid water clouds                                             !!
@@ -575,6 +581,8 @@ MODULE MOD_READ_ICON
             y%clw(Npoints,Nlevels),       &
             y%cli(Npoints,Nlevels),       &
             y%qnc(Npoints,Nlevels),       &
+            y%qr(Npoints,Nlevels),        &
+            y%qs(Npoints,Nlevels),        &
             y%rho_atm(Npoints,Nlevels),   &
             y%iwc(Npoints,Nlevels),       &
             y%dz(Npoints,Nlevels),        &
@@ -608,7 +616,7 @@ MODULE MOD_READ_ICON
        DEALLOCATE(&
             y%lon, y%lat, y%orography, y%landmask, y%psfc, &
             y%skt, y%t2m, y%q2m, y%u_wind, y%v_wind, y%z, &
-            y%zh, y%p, y%t, y%sh, y%tca, y%clw, y%cli,y%qnc, &
+            y%zh, y%p, y%t, y%sh, y%tca, y%clw, y%cli, y%qnc, y%qr, y%qs, &
             y%rho_atm, y%iwc, y%dz, y%t_celcius, y%e_sat, y%ssh, &
             y%wv, y%rh, y%pv, y%pd, y%rho, y%lwc, y%cdnc, y%Reff, &
             y%Deff, y%beta_ext,  y%tv, y%dz_cod, y%cod, y%height)
