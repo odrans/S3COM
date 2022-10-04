@@ -85,7 +85,8 @@ LIB_MODELS = $(lib)/libmodels.a
 # -------------------------------------------------------------------------------------------------------------------------------
 LIST_OBJ_MAIN = $(obj)/setup.o
 
-LIST_OBJ_MODELS = $(obj)/icon.o
+LIST_OBJ_MODELS = $(obj)/models.o \
+        $(obj)/icon.o \
 
 LIST_OBJ_IO = $(obj)/regrid.o \
         $(obj)/io_namelist.o \
@@ -159,6 +160,9 @@ $(obj)/setup.o : $(DIR_MAIN)/setup.f90
 ## Objects for subroutines in ./src/models
 # -------------------------------------------------------------------------------------------------------------------------------
 $(obj)/icon.o : $(DIR_MODELS)/icon.f90
+	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
+
+$(obj)/models.o : $(DIR_MODELS)/models.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 

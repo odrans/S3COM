@@ -36,7 +36,8 @@ PROGRAM S3COM
   USE mod_rttov_interface, ONLY: rttov_init
   USE mod_rttov_setup,     ONLY: rttov_setup_opt, rttov_setup_atm
   USE mod_rttov,           ONLY: run_rttov
-  USE mod_atm_init,        ONLY: atm_init, atm_update, model_setup
+  USE mod_atm_init,        ONLY: atm_init, atm_update
+  USE mod_models,          ONLY: models_setup
   USE mod_model_cloud,     ONLY: init_zcloud, init_cloudprof
   USE mod_write_output,    ONLY: write_output
   USE mod_oe_utils,        ONLY: idx_ice
@@ -85,7 +86,7 @@ PROGRAM S3COM
   npoints = icon%npoints
   nlevels = icon%nlevels
 
-  CALL model_setup(model, icon)
+  CALL models_setup(model, icon)
 
   CALL icon_clear(icon)
 
