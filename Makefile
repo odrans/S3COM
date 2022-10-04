@@ -114,7 +114,7 @@ LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MODEL
 FLAGS_NCDF = -I$(PATH_NCDF_INC) -L${PATH_NCDF_LIB} -lnetcdff -L${PATH_NCDF_C_LIB} -lnetcdf -Wl,-rpath,${PATH_NCDF_LIB} -Wl,-rpath,${PATH_NCDF_C_LIB}
 FLAGS_RTTOV = -I${RTTOV_INC_PATH} -L${RTTOV_LIB_PATH} $(RTTOV_LIBS)
 FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${PATH_HDF5_LIB}
-FLAGS_LOCAL = -L$(lib) -l_io -l_oe -lmodels -lrttovml -lmain -lutils
+FLAGS_LOCAL = -L$(lib) -lmodels -l_io -l_oe -lrttovml -lmain -lutils
 
 FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -159,7 +159,7 @@ $(obj)/setup.o : $(DIR_MAIN)/setup.f90
 ## Objects for subroutines in ./src/models
 # -------------------------------------------------------------------------------------------------------------------------------
 $(obj)/icon.o : $(DIR_MODELS)/icon.f90
-	$(F90) $(F90FLAGS) -c $< -o $@
+	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 
