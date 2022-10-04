@@ -35,7 +35,7 @@ PROGRAM S3COM
   USE mod_rttov_interface, ONLY: rttov_init
   USE mod_rttov_setup,     ONLY: rttov_setup_opt, rttov_setup_atm
   USE mod_rttov,           ONLY: run_rttov
-  USE mod_atm_init,        ONLY: atm_init, atm_update
+  USE mod_atm_init,        ONLY: atm_init, atm_update, model_setup_icon, model_setup_init
   USE mod_model_cloud,     ONLY: init_zcloud, init_cloudprof
   USE mod_write_output,    ONLY: write_output
   USE mod_oe_utils,        ONLY: idx_ice
@@ -44,7 +44,8 @@ PROGRAM S3COM
 
   IMPLICIT NONE
 
-  TYPE(type_icon), TARGET :: icon
+  TYPE(type_icon)         :: icon
+  TYPE(type_icon), TARGET         :: model
   TYPE(type_rttov_atm)    :: rttov_atm, rttov_atm_oe
   TYPE(type_rttov_opt)    :: rttov_opt
   TYPE(type_s3com)        :: atm_out, atm_oe, atm_oe_ip1, oe_tmp
@@ -88,6 +89,9 @@ PROGRAM S3COM
   ! Read input netcdf file containing ICON outputs
   CALL read_icon(nml%fname_in, icon)
 
+  CALL model_setup_init(model, npoints, nlevels)
+  CALL model_setup_icon(model, icon, nml)
+
   ! Setup the RTTOV optics
   CALL rttov_setup_opt(zenangle, azangle, sunzenangle, sunazangle, rttov_opt, nml)
 
@@ -116,14 +120,14 @@ PROGRAM S3COM
      END IF
 
      ! Subset the atmosphere based on the ICON input file
-     CALL rttov_setup_atm(idx_start, idx_end, icon, rttov_atm)
+     CALL rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
 
      ! Initialize `atm_oe`: a subset atmospheric model used within the optimal estimation framework
      CALL atm_init(rttov_atm%idx_start, rttov_atm%idx_end, icon%nlevels, atm_oe, flag_oe, nml)
 
      IF (nml%flag_retrievals) THEN
 
-        CALL rttov_setup_atm(idx_start, idx_end, icon, rttov_atm_oe)
+        CALL rttov_setup_atm(idx_start, idx_end, model, rttov_atm_oe)
 
         ! Extract the cloud position for ice and liquid phase and modify rttov_atm
         CALL init_zcloud(rttov_atm_oe,atm_oe)
@@ -175,6 +179,6 @@ PROGRAM S3COM
   ENDDO
 
   ! Write output file
-  CALL write_output(icon, atm_out, nml, atm_out)
+  CALL write_output(model, atm_out, nml, atm_out)
 
 END PROGRAM S3COM

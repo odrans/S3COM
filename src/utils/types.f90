@@ -141,11 +141,6 @@ MODULE s3com_types
           Nlevels, Npoints, Nlat, Nlon, mode !Dimensions
      INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
           height
-     REAL(wp) ::  &
-          co2,      & !Carbon dioxide
-          ch4,      & !Methane
-          n2o,      & !n2o
-          co          !Carbon monoxide
      REAL(wp), DIMENSION(:), ALLOCATABLE :: &
           lon_orig,                           & !Longitude that won't be regridded (degrees east)
           lat_orig,                           & !Latitude  that won't be regridded (degress north)
@@ -160,6 +155,11 @@ MODULE s3com_types
           u_wind,                             & !U-component of wind (m/s)
           v_wind                                !V-component of wind (m/s)
      REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
+          co2,                                & !Carbon dioxide
+          ch4,                                & !Methane
+          n2o,                                & !n2o
+          s2o,                                & !s2o
+          co,                                 &   !Carbon monoxide
           p,                                    & !Model pressure levels (pa)
           z,                                    & !Model level height (m)
           zh,                                   & !Model level height at half-levels (m)
@@ -197,11 +197,6 @@ MODULE s3com_types
           idx_end,         & !Index of ending ICON point
           nPoints,         & !Number of profiles to simulate
           nLevels            !Number of levels
-     REAL(wp), POINTER :: &
-          co2,              & !Carbon dioxide
-          ch4,              & !Methane
-          n2o,              & !n2o
-          co                  !Carbon monoxide
      REAL(wp), DIMENSION(:), POINTER :: &
           h_surf,                         & !Surface height
           u_surf,                         & !U component of surface wind
@@ -220,6 +215,11 @@ MODULE s3com_types
           t,                              & !Temperature
           q,                              & !Specific humidity
           o3,                             & !Ozone
+          co2,                            & !Carbon dioxide
+          ch4,                            & !Methane
+          n2o,                            & !n2o
+          s2o,                            & !s2o
+          co,                             & !Carbon monoxide
           reff,                           &
           cdnc
 

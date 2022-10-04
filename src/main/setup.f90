@@ -154,7 +154,56 @@ CONTAINS
   END SUBROUTINE atm_init
 
 
-  SUBROUTINE atm_setup_icon(icon, model, nml)
+  SUBROUTINE model_setup_init(model, npoints, nlevels)
+
+    ! Input variables
+    INTEGER(KIND = 4), INTENT(IN) :: npoints, nlevels
+
+    ! Output variables
+    TYPE(type_icon), INTENT(OUT)   :: model
+
+    ! Internal variables
+
+    model%nPoints   =  npoints
+    model%nLevels   =  nlevels
+
+    !! 2D fields
+    ALLOCATE(model%lat(npoints)); model%lat = 0._wp
+    ALLOCATE(model%lon(npoints)); model%lon = 0._wp
+    ALLOCATE(model%lat_orig(npoints)); model%lat_orig = 0._wp
+    ALLOCATE(model%lon_orig(npoints)); model%lon_orig = 0._wp
+
+    ALLOCATE(model%orography(npoints)); model%orography = 0._wp
+    ALLOCATE(model%u_wind(npoints)); model%u_wind = 0._wp
+    ALLOCATE(model%v_wind(npoints)); model%v_wind = 0._wp
+    ALLOCATE(model%skt(npoints)); model%skt = 0._wp
+    ALLOCATE(model%psfc(npoints)); model%psfc = 0._wp
+    ALLOCATE(model%q2m(npoints)); model%q2m = 0._wp
+    ALLOCATE(model%t2m(npoints)); model%t2m = 0._wp
+    ALLOCATE(model%landmask(npoints)); model%landmask = 0._wp
+
+    !! 3D fields
+    ALLOCATE(model%co2(npoints, nlevels)); model%co2 = 0._wp
+    ALLOCATE(model%ch4(npoints, nlevels)); model%ch4 = 0._wp
+    ALLOCATE(model%n2o(npoints, nlevels)); model%n2o = 0._wp
+    ALLOCATE(model%s2o(npoints, nlevels)); model%s2o = 0._wp
+    ALLOCATE(model%co(npoints, nlevels)); model%co = 0._wp
+    ALLOCATE(model%p(npoints, nlevels)); model%p = 0._wp
+    ALLOCATE(model%z(npoints, nlevels)); model%z = 0._wp
+    ALLOCATE(model%dz(npoints, nlevels)); model%dz = 0._wp
+    ALLOCATE(model%t(npoints, nlevels)); model%t = 0._wp
+    ALLOCATE(model%sh(npoints, nlevels)); model%sh = 0._wp
+    ALLOCATE(model%tca(npoints, nlevels)); model%tca = 0._wp
+    ALLOCATE(model%reff(npoints, nlevels)); model%reff = 0._wp
+    ALLOCATE(model%cdnc(npoints, nlevels)); model%cdnc = 0._wp
+    ALLOCATE(model%iwc(npoints, nlevels)); model%iwc = 0._wp
+    ALLOCATE(model%lwc(npoints, nlevels)); model%lwc = 0._wp
+
+
+  END SUBROUTINE model_setup_init
+
+
+  SUBROUTINE model_setup_icon(model, icon, nml)
 
     ! Input variables
     TYPE(type_icon), INTENT(IN)    :: icon
@@ -165,12 +214,16 @@ CONTAINS
 
     ! Internal variables
 
+
+    model%Nlat = icon%nlat
+    model%Nlon = icon%nlon
+    model%mode = icon%mode
+
     model%nPoints   =  icon%nPoints
     model%nLevels   =  icon%nLevels
-    model%co2       =  icon%co2
-    model%ch4       =  icon%ch4
-    model%n2o       =  icon%n2o
-    model%co        =  icon%co
+
+    model%lat       =  icon%lat
+    model%lon       =  icon%lon
     model%orography =  icon%orography
     model%u_wind    =  icon%u_wind
     model%v_wind    =  icon%v_wind
@@ -179,8 +232,12 @@ CONTAINS
     model%q2m       =  icon%q2m
     model%t2m       =  icon%t2m
     model%landmask  =  icon%landmask
-    model%lat       =  icon%lat
-    model%lon       =  icon%lon
+
+    model%co2       =  icon%co2
+    model%ch4       =  icon%ch4
+    model%n2o       =  icon%n2o
+    model%s2o       =  icon%s2o
+    model%co        =  icon%co
     model%p         =  icon%p
     model%z         =  icon%z
     model%dz        =  icon%dz
@@ -192,7 +249,7 @@ CONTAINS
     model%reff      =  icon%reff
     model%cdnc      =  icon%cdnc
 
-  END SUBROUTINE atm_setup_icon
+  END SUBROUTINE model_setup_icon
 
 
 
