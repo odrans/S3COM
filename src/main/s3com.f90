@@ -30,7 +30,8 @@
 PROGRAM S3COM
 
   USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_icon, type_s3com, type_nml, type_model
-  USE mod_read_icon,       ONLY: map_point_to_ll, extract_coordinates, icon_load, icon_clear
+  USE mod_icon,            ONLY: icon_load, icon_clear
+  USE mod_read_icon,       ONLY: map_point_to_ll, extract_coordinates
   USE mod_io_namelist,     ONLY: read_namelist
   USE mod_rttov_interface, ONLY: rttov_init
   USE mod_rttov_setup,     ONLY: rttov_setup_opt, rttov_setup_atm
