@@ -29,13 +29,13 @@
 
 PROGRAM S3COM
 
-  USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_icon, type_s3com, type_nml
-  USE mod_read_icon,       ONLY: read_icon, construct_icon, map_point_to_ll, extract_coordinates
+  USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_icon, type_s3com, type_nml, type_model
+  USE mod_read_icon,       ONLY: map_point_to_ll, extract_coordinates, icon_load, icon_clear
   USE mod_io_namelist,     ONLY: read_namelist
   USE mod_rttov_interface, ONLY: rttov_init
   USE mod_rttov_setup,     ONLY: rttov_setup_opt, rttov_setup_atm
   USE mod_rttov,           ONLY: run_rttov
-  USE mod_atm_init,        ONLY: atm_init, atm_update, model_setup_icon, model_setup_init
+  USE mod_atm_init,        ONLY: atm_init, atm_update, model_setup
   USE mod_model_cloud,     ONLY: init_zcloud, init_cloudprof
   USE mod_write_output,    ONLY: write_output
   USE mod_oe_utils,        ONLY: idx_ice
@@ -45,7 +45,7 @@ PROGRAM S3COM
   IMPLICIT NONE
 
   TYPE(type_icon)         :: icon
-  TYPE(type_icon), TARGET         :: model
+  TYPE(type_model), TARGET         :: model
   TYPE(type_rttov_atm)    :: rttov_atm, rttov_atm_oe
   TYPE(type_rttov_opt)    :: rttov_opt
   TYPE(type_s3com)        :: atm_out, atm_oe, atm_oe_ip1, oe_tmp
@@ -76,21 +76,17 @@ PROGRAM S3COM
   call read_namelist(fname_nml, nml)
   npoints_it = nml%npoints_it
 
-  ! Extract the number of vertical levels and grid points in the input files
-  call extract_coordinates(nml%fname_in, Nlevels, Npoints)
-
   ! Temporary: setting the viewing and solar angles
   zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
   sunzenangle = 0._wp; sunazangle = 0._wp !Viewing solar angles
 
-  ! Construct the icon pointer
-  CALL construct_icon(npoints, nlevels, icon)
+  CALL icon_load(nml%fname_in, icon)
+  npoints = icon%npoints
+  nlevels = icon%nlevels
 
-  ! Read input netcdf file containing ICON outputs
-  CALL read_icon(nml%fname_in, icon)
+  CALL model_setup(model, icon)
 
-  CALL model_setup_init(model, npoints, nlevels)
-  CALL model_setup_icon(model, icon, nml)
+  CALL icon_clear(icon)
 
   ! Setup the RTTOV optics
   CALL rttov_setup_opt(zenangle, azangle, sunzenangle, sunazangle, rttov_opt, nml)
@@ -179,6 +175,6 @@ PROGRAM S3COM
   ENDDO
 
   ! Write output file
-  CALL write_output(model, atm_out, nml, atm_out)
+  ! CALL write_output(model, atm_out, nml, atm_out)
 
 END PROGRAM S3COM

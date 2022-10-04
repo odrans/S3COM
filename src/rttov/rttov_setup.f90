@@ -66,13 +66,13 @@ MODULE MOD_RTTOV_SETUP
             
       END SUBROUTINE RTTOV_SETUP_OPT
       
-      SUBROUTINE rttov_setup_atm(idx_start,idx_end,icon,rttov_atm)
+      SUBROUTINE rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
          
-         USE s3com_types, ONLY: type_rttov_atm, type_icon
+         USE s3com_types, ONLY: type_rttov_atm, type_model
          
          !!Input variables
          INTEGER, TARGET, INTENT(IN)         :: idx_start, idx_end
-         TYPE(type_icon), TARGET, INTENT(IN) :: icon
+         TYPE(type_model), TARGET, INTENT(IN) :: model
          
          !!Output variables
          TYPE(type_rttov_atm)  :: rttov_atm
@@ -81,33 +81,33 @@ MODULE MOD_RTTOV_SETUP
          nidx = idx_end - idx_start + 1
          
          rttov_atm%nPoints   => nidx
-         rttov_atm%nLevels   => icon%nLevels
+         rttov_atm%nLevels   => model%nLevels
          rttov_atm%idx_start => idx_start
          rttov_atm%idx_end   => idx_end
-         rttov_atm%co2       => icon%co2
-         rttov_atm%ch4       => icon%ch4
-         rttov_atm%n2o       => icon%n2o
-         rttov_atm%co        => icon%co
-         rttov_atm%h_surf    => icon%orography(idx_start:idx_end)
-         rttov_atm%u_surf    => icon%u_wind(idx_start:idx_end)
-         rttov_atm%v_surf    => icon%v_wind(idx_start:idx_end)
-         rttov_atm%t_skin    => icon%skt(idx_start:idx_end)
-         rttov_atm%p_surf    => icon%psfc(idx_start:idx_end)
-         rttov_atm%q2m       => icon%q2m(idx_start:idx_end)
-         rttov_atm%t2m       => icon%t2m(idx_start:idx_end)
-         rttov_atm%lsmask    => icon%landmask(idx_start:idx_end)
-         rttov_atm%lat       => icon%lat(idx_start:idx_end)
-         rttov_atm%lon       => icon%lon(idx_start:idx_end)
-         rttov_atm%p         => icon%p(idx_start:idx_end,:)
-         rttov_atm%z         => icon%z(idx_start:idx_end,:)
-         rttov_atm%dz        => icon%dz(idx_start:idx_end,:)
-         rttov_atm%t         => icon%t(idx_start:idx_end,:)
-         rttov_atm%q         => icon%sh(idx_start:idx_end,:)
-         rttov_atm%tca       => icon%tca(idx_start:idx_end,:)
-         rttov_atm%iwc       => icon%iwc(idx_start:idx_end,:)
-         rttov_atm%lwc       => icon%lwc(idx_start:idx_end,:)
-         rttov_atm%reff      => icon%reff(idx_start:idx_end,:)
-         rttov_atm%cdnc      => icon%cdnc(idx_start:idx_end,:)
+         rttov_atm%co2       => model%co2
+         rttov_atm%ch4       => model%ch4
+         rttov_atm%n2o       => model%n2o
+         rttov_atm%co        => model%co
+         rttov_atm%h_surf    => model%orography(idx_start:idx_end)
+         rttov_atm%u_surf    => model%u_wind(idx_start:idx_end)
+         rttov_atm%v_surf    => model%v_wind(idx_start:idx_end)
+         rttov_atm%t_skin    => model%skt(idx_start:idx_end)
+         rttov_atm%p_surf    => model%psfc(idx_start:idx_end)
+         rttov_atm%q2m       => model%q2m(idx_start:idx_end)
+         rttov_atm%t2m       => model%t2m(idx_start:idx_end)
+         rttov_atm%lsmask    => model%landmask(idx_start:idx_end)
+         rttov_atm%lat       => model%lat(idx_start:idx_end)
+         rttov_atm%lon       => model%lon(idx_start:idx_end)
+         rttov_atm%p         => model%p(idx_start:idx_end,:)
+         rttov_atm%z         => model%z(idx_start:idx_end,:)
+         rttov_atm%dz        => model%dz(idx_start:idx_end,:)
+         rttov_atm%t         => model%t(idx_start:idx_end,:)
+         rttov_atm%q         => model%sh(idx_start:idx_end,:)
+         rttov_atm%tca       => model%tca(idx_start:idx_end,:)
+         rttov_atm%iwc       => model%iwc(idx_start:idx_end,:)
+         rttov_atm%lwc       => model%lwc(idx_start:idx_end,:)
+         rttov_atm%reff      => model%reff(idx_start:idx_end,:)
+         rttov_atm%cdnc      => model%cdnc(idx_start:idx_end,:)
          
       END SUBROUTINE rttov_setup_atm
 

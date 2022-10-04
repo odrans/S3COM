@@ -29,7 +29,7 @@
 
 MODULE mod_atm_init
 
-  USE s3com_types,  ONLY: type_s3com, wp, type_nml, type_icon
+  USE s3com_types,  ONLY: type_s3com, wp, type_nml, type_icon, type_model
   USE s3com_config, ONLY: nstates, apriori_iwp
 
   IMPLICIT NONE
@@ -160,7 +160,7 @@ CONTAINS
     INTEGER(KIND = 4), INTENT(IN) :: npoints, nlevels
 
     ! Output variables
-    TYPE(type_icon), INTENT(OUT)   :: model
+    TYPE(type_model), INTENT(OUT)   :: model
 
     ! Internal variables
 
@@ -203,17 +203,13 @@ CONTAINS
   END SUBROUTINE model_setup_init
 
 
-  SUBROUTINE model_setup_icon(model, icon, nml)
+  SUBROUTINE model_setup_icon(model, icon)
 
     ! Input variables
     TYPE(type_icon), INTENT(IN)    :: icon
-    TYPE(type_nml), INTENT(IN)      :: nml
 
     ! Output variables
-    TYPE(type_icon), INTENT(OUT)   :: model
-
-    ! Internal variables
-
+    TYPE(type_model), INTENT(OUT)   :: model
 
     model%Nlat = icon%nlat
     model%Nlon = icon%nlon
@@ -252,5 +248,27 @@ CONTAINS
   END SUBROUTINE model_setup_icon
 
 
+  SUBROUTINE model_setup(model, icon)
+
+    ! Input variables
+    TYPE(type_icon), INTENT(IN)    :: icon
+
+    ! Output variables
+    TYPE(type_model), INTENT(OUT)   :: model
+
+    ! Internal
+    INTEGER(KIND = 4) :: npoints, nlevels
+
+    npoints = icon%npoints
+    nlevels = icon%nlevels
+
+    ! Initialize model array
+    CALL model_setup_init(model, npoints, nlevels)
+
+    ! Set up part of the model with ICON data
+    CALL model_setup_icon(model, icon)
+
+
+  END SUBROUTINE model_setup
 
 END MODULE mod_atm_init
