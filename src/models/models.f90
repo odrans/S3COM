@@ -32,6 +32,7 @@ MODULE MOD_MODELS
   USE s3com_types,         ONLY: wp, type_icon, type_model
   USE mod_icon,            ONLY: icon_load, icon_clear
 
+  IMPLICIT NONE
 
 CONTAINS
 
@@ -62,6 +63,8 @@ CONTAINS
 
     ! Clear input data
     CALL icon_clear(icon)
+
+    stop
 
   END SUBROUTINE models_load
 

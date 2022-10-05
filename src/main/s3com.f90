@@ -94,6 +94,7 @@ PROGRAM S3COM
   flag_oe = .FALSE.
   CALL atm_init(1, npoints, nlevels, atm_out, flag_oe, nml)
 
+
   nChunks = nPoints/nPoints_it
   IF (MOD(npoints,npoints_it)/=0) nchunks = nchunks + 1
   IF (nPoints .EQ. nPoints_it) nChunks = 1

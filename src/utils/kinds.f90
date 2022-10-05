@@ -86,42 +86,33 @@ MODULE s3com_types
   end type type_icon
 
   type type_rttov_atm
-     integer,pointer :: &
-          nPoints,      & ! Number of profiles to simulate
-          nLevels,      &   ! Number of levels
-          nchannels
-     real(wp),pointer :: &
-          co2,          & ! Carbon dioxide 
-          ch4,          & ! Methane 
-          n2o,          & ! n2o 
-          co              ! Carbon monoxide
-     real(wp),dimension(:),pointer :: &
-          surfem          ! Surface emissivities for the channels
-     real(wp),dimension(:),pointer :: &
-          h_surf,       & ! Surface height
-          u_surf,       & ! U component of surface wind
-          v_surf,       & ! V component of surface wind
-          t_skin,       & ! Surface skin temperature
-          p_surf,       & ! Surface pressure
-          t2m,          & ! 2 m Temperature
-          q2m,          & ! 2 m Specific humidity
-          lsmask,       & ! land-sea mask
+     integer, pointer :: &
+          npoints,      & ! Number of profiles to simulate
+          nlevels,      & ! Number of levels
+          nlayers         ! Number of layers
+     real(wp), dimension(:), pointer :: &
           lat,          & ! Latitude
           lon,          & ! Longitude
-          seaice          ! Sea-ice? 
-     real(wp),dimension(:,:),pointer :: &
+          t_skin,       & ! Surface skin temperature
+          h_surf,       & ! Surface height
+          p_surf,       & ! Surface pressure
+          u_surf,       & ! U component of surface wind
+          v_surf,       & ! V component of surface wind
+          t2m,          & ! 2 m Temperature
+          q2m,          & ! 2 m Specific humidity
+          lsmask        & ! land-sea mask
+     real(wp), dimension(:,:), pointer :: &
           p,            & ! Pressure @ model levels
+          z,            & ! Height @ model levels
           ph,           & ! Pressure @ model half levels
           t,            & ! Temperature 
-          q,            & ! Specific humidity
-          o3              ! Ozone
-     ! These fields below are needed ONLY for the RTTOV all-sky brightness temperature
-     real(wp),dimension(:,:),pointer :: &
+          q               ! Specific humidity
+     real(wp), dimension(:,:), pointer :: &
           tca,          & ! Cloud fraction
-          cldIce,       & ! Cloud ice
-          cldLiq,       & ! Cloud liquid
- !         fl_rain,      & ! Precipitation flux (startiform+convective rain) (kg/m2/s)
- !         fl_snow         ! Precipitation flux (stratiform+convective snow)
+          iwc,          & ! ice water content
+          lwc,          & ! liquid water content
+          reff,         & ! droplet effective radius
+          cdnc          & ! cloud droplet number concentration
   end type type_rttov_atm
 
 

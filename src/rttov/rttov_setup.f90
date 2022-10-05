@@ -79,28 +79,23 @@ MODULE MOD_RTTOV_SETUP
          INTEGER, SAVE, TARGET :: nidx
          
          nidx = idx_end - idx_start + 1
-         
-         rttov_atm%nPoints   => nidx
-         rttov_atm%nLevels   => model%nLevels
          rttov_atm%idx_start => idx_start
          rttov_atm%idx_end   => idx_end
-         rttov_atm%co2       => model%co2
-         rttov_atm%ch4       => model%ch4
-         rttov_atm%n2o       => model%n2o
-         rttov_atm%co        => model%co
-         rttov_atm%h_surf    => model%orography(idx_start:idx_end)
-         rttov_atm%u_surf    => model%u_wind(idx_start:idx_end)
-         rttov_atm%v_surf    => model%v_wind(idx_start:idx_end)
-         rttov_atm%t_skin    => model%skt(idx_start:idx_end)
-         rttov_atm%p_surf    => model%psfc(idx_start:idx_end)
-         rttov_atm%q2m       => model%q2m(idx_start:idx_end)
-         rttov_atm%t2m       => model%t2m(idx_start:idx_end)
-         rttov_atm%lsmask    => model%landmask(idx_start:idx_end)
+
+         rttov_atm%nPoints   => nidx
+         rttov_atm%nLevels   => model%nLevels
          rttov_atm%lat       => model%lat(idx_start:idx_end)
          rttov_atm%lon       => model%lon(idx_start:idx_end)
+         rttov_atm%t_skin    => model%skt(idx_start:idx_end)
+         rttov_atm%h_surf    => model%orography(idx_start:idx_end)
+         rttov_atm%p_surf    => model%psfc(idx_start:idx_end)
+         rttov_atm%u_surf    => model%u_wind(idx_start:idx_end)
+         rttov_atm%v_surf    => model%v_wind(idx_start:idx_end)
+         rttov_atm%t2m       => model%t2m(idx_start:idx_end)
+         rttov_atm%q2m       => model%q2m(idx_start:idx_end)
+         rttov_atm%lsmask    => model%landmask(idx_start:idx_end)
          rttov_atm%p         => model%p(idx_start:idx_end,:)
          rttov_atm%z         => model%z(idx_start:idx_end,:)
-         rttov_atm%dz        => model%dz(idx_start:idx_end,:)
          rttov_atm%t         => model%t(idx_start:idx_end,:)
          rttov_atm%q         => model%sh(idx_start:idx_end,:)
          rttov_atm%tca       => model%tca(idx_start:idx_end,:)
@@ -108,7 +103,7 @@ MODULE MOD_RTTOV_SETUP
          rttov_atm%lwc       => model%lwc(idx_start:idx_end,:)
          rttov_atm%reff      => model%reff(idx_start:idx_end,:)
          rttov_atm%cdnc      => model%cdnc(idx_start:idx_end,:)
-         
+
       END SUBROUTINE rttov_setup_atm
 
 END MODULE MOD_RTTOV_SETUP

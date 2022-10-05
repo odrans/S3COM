@@ -170,10 +170,6 @@ CONTAINS
     ! ----------------------------------------------------------------------------------------------------
 
 
-
-    stop
-
-
   END SUBROUTINE icon_process
 
   SUBROUTINE icon_init(npoints, nlevels, y)
@@ -181,12 +177,12 @@ CONTAINS
     TYPE(type_icon) :: y
     INTEGER(KIND=4), INTENT(IN) :: npoints, nlevels
 
-    ALLOCATE(y%lon(Npoints)); y%lon = 0._wp
-    ALLOCATE(y%lat(Npoints)); y%lat = 0._wp
-    ALLOCATE(y%orography(Npoints)); y%orography = 0._wp
-    ALLOCATE(y%landmask(Npoints)); y%landmask = 0._wp
-    ALLOCATE(y%psfc(Npoints)); y%psfc = 0._wp
-    ALLOCATE(y%skt(Npoints)); y%skt = 0._wp
+    ALLOCATE(y%lon(Npoints)); y%lon = 0._wp !
+    ALLOCATE(y%lat(Npoints)); y%lat = 0._wp !
+    ALLOCATE(y%orography(Npoints)); y%orography = 0._wp !
+    ALLOCATE(y%landmask(Npoints)); y%landmask = 0._wp !
+    ALLOCATE(y%psfc(Npoints)); y%psfc = 0._wp !
+    ALLOCATE(y%skt(Npoints)); y%skt = 0._wp !
     ALLOCATE(y%t2m(Npoints)); y%t2m = 0._wp
     ALLOCATE(y%q2m(Npoints)); y%q2m = 0._wp
     ALLOCATE(y%u_wind(Npoints)); y%u_wind = 0._wp
@@ -202,7 +198,6 @@ CONTAINS
     ALLOCATE(y%qnc(Npoints,Nlevels)); y%qnc = 0._wp
     ALLOCATE(y%iwc(Npoints,Nlevels)); y%iwc = 0._wp
     ALLOCATE(y%dz(Npoints,Nlevels)); y%dz = 0._wp
-    ALLOCATE(y%t_celcius(Npoints,Nlevels)); y%t_celcius = 0._wp
     ALLOCATE(y%e_sat(Npoints,Nlevels)); y%e_sat = 0._wp
     ALLOCATE(y%ssh(Npoints,Nlevels)); y%ssh = 0._wp
     ALLOCATE(y%wv(Npoints,Nlevels)); y%wv = 0._wp
@@ -232,7 +227,7 @@ CONTAINS
          y%lon, y%lat, y%orography, y%landmask, y%psfc, &
          y%skt, y%t2m, y%q2m, y%u_wind, y%v_wind, y%z, &
          y%zh, y%p, y%t, y%sh, y%tca, y%clw, y%cli,y%qnc, &
-         y%rho_atm, y%iwc, y%dz, y%t_celcius, y%e_sat, y%ssh, &
+         y%rho_atm, y%iwc, y%dz, y%e_sat, y%ssh, &
          y%wv, y%rh, y%pv, y%pd, y%rho, y%lwc, y%cdnc, y%Reff, &
          y%Deff, y%beta_ext,  y%tv, y%dz_cod, y%cod, y%height)
 
