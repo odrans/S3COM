@@ -98,14 +98,13 @@ MODULE s3com_types
           p_surf,       & ! Surface pressure
           u_surf,       & ! U component of surface wind
           v_surf,       & ! V component of surface wind
-          t2m,          & ! 2 m Temperature
-          q2m,          & ! 2 m Specific humidity
+          t2m,          & ! 2-m Temperature
+          q2m,          & ! 2-m Specific humidity
           lsmask        & ! land-sea mask
      real(wp), dimension(:,:), pointer :: &
           p,            & ! Pressure @ model levels
           z,            & ! Height @ model levels
-          ph,           & ! Pressure @ model half levels
-          t,            & ! Temperature 
+          t,            & ! Temperature
           q               ! Specific humidity
      real(wp), dimension(:,:), pointer :: &
           tca,          & ! Cloud fraction
@@ -114,7 +113,6 @@ MODULE s3com_types
           reff,         & ! droplet effective radius
           cdnc          & ! cloud droplet number concentration
   end type type_rttov_atm
-
 
   type type_rttov_opt
      

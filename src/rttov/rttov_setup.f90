@@ -83,7 +83,7 @@ MODULE MOD_RTTOV_SETUP
          rttov_atm%idx_end   => idx_end
 
          rttov_atm%nPoints   => nidx
-         rttov_atm%nLevels   => model%nLevels
+         rttov_atm%nlevels   => model%nLevels
          rttov_atm%lat       => model%lat(idx_start:idx_end)
          rttov_atm%lon       => model%lon(idx_start:idx_end)
          rttov_atm%t_skin    => model%skt(idx_start:idx_end)
