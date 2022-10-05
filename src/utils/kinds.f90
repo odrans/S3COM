@@ -42,16 +42,11 @@ MODULE s3com_types
           nchannels
   END TYPE type_s3com
 
-
   type type_icon
      integer(kind=4) :: &
-          Nlevels, Npoints, Nhydro, Nlat, Nlon, mode! Dimensions 
+          nlevels, npoints, nhydro, nlat, nlon, mode! Dimensions
      real(wp) :: &
-          emsfc_lw,     &
-          co2,          & ! Carbon dioxide 
-          ch4,          & ! Methane 
-          n2o,          & ! n2o 
-          co              ! Carbon monoxide
+          maemsfc_lw
 
      real(wp),dimension(:),allocatable:: &
           lon_orig,  & ! Longitude that won't be regridded (deg)
@@ -78,18 +73,7 @@ MODULE s3com_types
           sh_lev,    & ! Specific humidity (kg/kg)          
           rh,        & ! Relative humidity (1)
           tca,       & ! Total cloud fraction (1)
-          cca,       & ! Convective cloud fraction (1) 
-          mr_lsliq,  & ! Mass mixing ratio for stratiform cloud liquid (kg/kg)
-          mr_lsice,  & ! Mass mixing ratio for stratiform cloud ice (kg/kg)
-          mr_ccliq,  & ! Mass mixing ratio for convective cloud liquid (kg/kg)
-          mr_ccice,  & ! Mass mixing ratio for convective cloud ice (kg/kg)
-          mr_ozone,  & ! Mass mixing ratio for ozone (kg/kg)
-          mr_ozone_lev,  & ! Mass mixing ratio for ozone (kg/kg)          
-          fl_lsrain, & ! Precipitation flux (rain) for stratiform cloud (kg/m^2/s)
-          fl_lssnow, & ! Precipitation flux (snow) for stratiform cloud (kg/m^2/s)
-          fl_lsgrpl, & ! Precipitation flux (groupel) for stratiform cloud (kg/m^2/s)
-          fl_ccrain, & ! Precipitation flux (rain) for convective cloud (kg/m^2/s)
-          fl_ccsnow, & ! Precipitation flux (snow) for convective cloud (kg/m^2/s)
+          cca,       & ! Convective cloud fraction (1)
           dtau_s,    & ! 0.67micron optical depth (stratiform cloud) (1)
           dtau_c,    & ! 0.67micron optical depth (convective cloud) (1)
           dem_s,     & ! 11micron emissivity (stratiform cloud) 

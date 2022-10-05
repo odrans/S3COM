@@ -30,34 +30,43 @@
 MODULE MOD_MODELS
 
   USE s3com_types,         ONLY: wp, type_icon, type_model
+  USE mod_icon,            ONLY: icon_load, icon_clear
+
 
 CONTAINS
 
-  SUBROUTINE models_setup(model, icon)
+  SUBROUTINE models_load(fname, model)
 
-    ! Input variables
-    TYPE(type_icon), INTENT(IN)    :: icon
+    ! Inputs
+    CHARACTER(LEN=256), INTENT(IN) :: fname
 
     ! Output variables
     TYPE(type_model), INTENT(OUT)   :: model
 
     ! Internal
-    INTEGER(KIND = 4) :: npoints, nlevels
+    INTEGER(KIND=4) :: nlevels, npoints
+    TYPE(type_icon) :: icon
 
+    ! Load input data
+    CALL icon_load(fname, icon)
+
+    ! Coordinates
     npoints = icon%npoints
     nlevels = icon%nlevels
 
     ! Initialize model array
-    CALL models_setup_init(model, npoints, nlevels)
+    CALL models_init(model, npoints, nlevels)
 
     ! Set up part of the model with ICON data
     CALL models_setup_icon(model, icon)
 
+    ! Clear input data
+    CALL icon_clear(icon)
 
-  END SUBROUTINE models_setup
+  END SUBROUTINE models_load
 
 
-  SUBROUTINE models_setup_init(model, npoints, nlevels)
+  SUBROUTINE models_init(model, npoints, nlevels)
 
     ! Input variables
     INTEGER(KIND = 4), INTENT(IN) :: npoints, nlevels
@@ -103,7 +112,7 @@ CONTAINS
     ALLOCATE(model%lwc(npoints, nlevels)); model%lwc = 0._wp
 
 
-  END SUBROUTINE models_setup_init
+  END SUBROUTINE models_init
 
 
   SUBROUTINE models_setup_icon(model, icon)
@@ -132,11 +141,6 @@ CONTAINS
     model%t2m       =  icon%t2m
     model%landmask  =  icon%landmask
 
-    model%co2       =  icon%co2
-    model%ch4       =  icon%ch4
-    model%n2o       =  icon%n2o
-    model%s2o       =  icon%s2o
-    model%co        =  icon%co
     model%p         =  icon%p
     model%z         =  icon%z
     model%dz        =  icon%dz

@@ -29,15 +29,13 @@
 
 PROGRAM S3COM
 
-  USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_icon, type_s3com, type_nml, type_model
-  USE mod_icon,            ONLY: icon_load, icon_clear
-  USE mod_read_icon,       ONLY: map_point_to_ll
+  USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_s3com, type_nml, type_model
   USE mod_io_namelist,     ONLY: read_namelist
   USE mod_rttov_interface, ONLY: rttov_init
   USE mod_rttov_setup,     ONLY: rttov_setup_opt, rttov_setup_atm
   USE mod_rttov,           ONLY: run_rttov
   USE mod_atm_init,        ONLY: atm_init, atm_update
-  USE mod_models,          ONLY: models_setup
+  USE mod_models,          ONLY: models_load
   USE mod_model_cloud,     ONLY: init_zcloud, init_cloudprof
   USE mod_write_output,    ONLY: write_output
   USE mod_oe_utils,        ONLY: idx_ice
@@ -46,7 +44,6 @@ PROGRAM S3COM
 
   IMPLICIT NONE
 
-  TYPE(type_icon)         :: icon
   TYPE(type_model), TARGET         :: model
   TYPE(type_rttov_atm)    :: rttov_atm, rttov_atm_oe
   TYPE(type_rttov_opt)    :: rttov_opt
@@ -82,13 +79,10 @@ PROGRAM S3COM
   zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
   sunzenangle = 0._wp; sunazangle = 0._wp !Viewing solar angles
 
-  CALL icon_load(nml%fname_in, icon)
-  npoints = icon%npoints
-  nlevels = icon%nlevels
-
-  CALL models_setup(model, icon)
-
-  CALL icon_clear(icon)
+  ! Load selected model inputs
+  CALL models_load(nml%fname_in, model)
+  npoints = model%npoints
+  nlevels = model%nlevels
 
   ! Setup the RTTOV optics
   CALL rttov_setup_opt(zenangle, azangle, sunzenangle, sunazangle, rttov_opt, nml)
@@ -96,13 +90,13 @@ PROGRAM S3COM
   ! Initialize RTTOV (load data)
   CALL rttov_init(rttov_opt, nml)
 
-  ! Initialize `atm`: the full atmospheric model to be outputed by S3COM
+  ! Initialize `atm_out`: the full atmospheric model to be outputed by S3COM
   flag_oe = .FALSE.
-  CALL atm_init(1, icon%npoints, icon%nlevels, atm_out, flag_oe, nml)
+  CALL atm_init(1, npoints, nlevels, atm_out, flag_oe, nml)
 
-  nChunks = icon%nPoints/nPoints_it
-  IF (MOD(icon%npoints,npoints_it)/=0) nchunks = nchunks + 1
-  IF (icon%nPoints .EQ. nPoints_it) nChunks = 1
+  nChunks = nPoints/nPoints_it
+  IF (MOD(npoints,npoints_it)/=0) nchunks = nchunks + 1
+  IF (nPoints .EQ. nPoints_it) nChunks = 1
 
   flag_oe = .TRUE.
 
@@ -117,11 +111,11 @@ PROGRAM S3COM
         IF (idx_end .GT. nPoints) idx_end=nPoints
      END IF
 
-     ! Subset the atmosphere based on the ICON input file
+     ! Subset the atmosphere based on the model inputs
      CALL rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
 
      ! Initialize `atm_oe`: a subset atmospheric model used within the optimal estimation framework
-     CALL atm_init(rttov_atm%idx_start, rttov_atm%idx_end, icon%nlevels, atm_oe, flag_oe, nml)
+     CALL atm_init(rttov_atm%idx_start, rttov_atm%idx_end, nlevels, atm_oe, flag_oe, nml)
 
      IF (nml%flag_retrievals) THEN
 
