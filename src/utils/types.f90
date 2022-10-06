@@ -265,7 +265,7 @@ MODULE s3com_types
           co2,          & !Carbon dioxide
           ch4,          & !Methane
           n2o,          & !n2o
-          s2o,          & !s2o
+          so2,          & !so2
           co,           & !Carbon monoxide
           tca,          & ! Cloud fraction
           iwc,          & ! ice water content
