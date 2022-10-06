@@ -238,44 +238,42 @@ MODULE s3com_types
 
 
   !!Type containing variables from RTTOV simulations
-  TYPE type_rttov_atm
-     INTEGER, POINTER :: &
-          idx_start,       & !Index of starting ICON point
-          idx_end,         & !Index of ending ICON point
-          nPoints,         & !Number of profiles to simulate
-          nLevels            !Number of levels
-     REAL(wp), DIMENSION(:), POINTER :: &
-          h_surf,                         & !Surface height
-          u_surf,                         & !U component of surface wind
-          v_surf,                         & !V component of surface wind
-          t_skin,                         & !Surface skin temperature
-          p_surf,                         & !Surface pressure
-          t2m,                            & !2 m Temperature
-          q2m,                            & !2 m Specific humidity
-          lsmask,                         & !land-sea mask
-          lat,                            & !Latitude
-          lon                               !Longitude
-     REAL(wp), DIMENSION(:,:), POINTER :: &
-          z,                              & !Height at model levels
-          dz,                             & !Layer depth at model levels
-          p,                              & !Pressure at model levels
-          t,                              & !Temperature
-          q,                              & !Specific humidity
-          o3,                             & !Ozone
-          co2,                            & !Carbon dioxide
-          ch4,                            & !Methane
-          n2o,                            & !n2o
-          s2o,                            & !s2o
-          co,                             & !Carbon monoxide
-          reff,                           &
-          cdnc
+    type type_rttov_atm
+     integer, pointer :: &
+          npoints,       & ! Number of profiles to simulate
+          nlevels,       & ! Number of levels
+          nlayers,       &  ! Number of layers
+          idx_start,     & !Index of starting ICON point
+          idx_end          !Index of ending ICON point
+     real(wp), dimension(:), pointer :: &
+          lat,          & ! Latitude
+          lon,          & ! Longitude
+          t_skin,       & ! Surface skin temperature
+          h_surf,       & ! Surface height
+          p_surf,       & ! Surface pressure
+          u_surf,       & ! U component of surface wind
+          v_surf,       & ! V component of surface wind
+          t2m,          & ! 2-m Temperature
+          q2m,          & ! 2-m Specific humidity
+          lsmask          ! land-sea mask
+     real(wp), dimension(:,:), pointer :: &
+          p,            & ! Pressure @ model levels
+          z,            & ! Height @ model levels
+          t,            & ! Temperature
+          q,            & ! Specific humidity
+          o3,           & !Ozone
+          co2,          & !Carbon dioxide
+          ch4,          & !Methane
+          n2o,          & !n2o
+          s2o,          & !s2o
+          co,           & !Carbon monoxide
+          tca,          & ! Cloud fraction
+          iwc,          & ! ice water content
+          lwc,          & ! liquid water content
+          reff,         & ! droplet effective radius
+          cdnc            ! cloud droplet number concentration
+  end type type_rttov_atm
 
-     !!These fields below are needed ONLY for the RTTOV all-sky brightness temperature
-     REAL(wp), DIMENSION(:,:), POINTER :: &
-          tca,                              & !Cloud fraction
-          iwc,                              & !Cloud ice water content
-          lwc                                 !Cloud liquid water content
-  END TYPE type_rttov_atm
 
   TYPE type_rttov_opt
      INTEGER ::       &
