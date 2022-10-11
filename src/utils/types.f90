@@ -171,17 +171,12 @@ MODULE s3com_types
           qr,                                   & !Rain mixing ratio (kg/kg)
           qs,                                   & !Snow mixing ratio (kg/kg)
           dz,                                   & !Layer thickness (m)
-          es_w,                                 & !Saturation vapour pressure of water (Pa)
-          es_i,                                 & !Saturation vapour pressure of ice (Pa)
           rho,                                  & !Air density used for liquid clouds (kg/m3)
           tv,                                   & !Virtual temperature (K)
           lwc,                                  & !Liquid water content (kg/m3)
           iwc,                                  & !Ice water content (kg/m3)
           cdnc,                                 & !Cloud droplet number concentration (1/m3)
-          Reff,                                 & !Cloud liquid water effective radius (m)
-          beta_ext,                             & !Cloud extinction coefficient (1/m)
-          dz_cod,                               & !Layer thickness (m)
-          cod                                     !Cloud optical depth (unitless)
+          Reff                                    !Cloud liquid water effective radius (m)
 
   END TYPE type_icon
 
