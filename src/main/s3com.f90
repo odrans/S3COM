@@ -30,7 +30,7 @@
 PROGRAM S3COM
 
   USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_s3com, type_nml, type_model
-  USE mod_io_namelist,     ONLY: read_namelist
+  USE mod_io_namelist,     ONLY: namelist_load
   USE mod_rttov_interface, ONLY: rttov_init
   USE mod_rttov_setup,     ONLY: rttov_setup_opt, rttov_setup_atm
   USE mod_rttov,           ONLY: run_rttov
@@ -62,18 +62,8 @@ PROGRAM S3COM
 
   LOGICAL :: flag_oe, dealloc_rttov
 
-  ! Set the namelist file
-  IF(COMMAND_ARGUMENT_COUNT().NE.1) THEN
-     write(*,*) "Namelist not provided"
-     stop
-  ELSE
-     CALL GET_COMMAND_ARGUMENT(1, fname_nml)
-     write(*,*) "Namelist file: ", fname_nml
-  ENDIF
-
-  ! Read namelist file
-  call read_namelist(fname_nml, nml)
-  npoints_it = nml%npoints_it
+  ! Load namelist
+  CALL namelist_load(nml)
 
   ! Temporary: setting the viewing and solar angles
   zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
@@ -94,7 +84,7 @@ PROGRAM S3COM
   flag_oe = .FALSE.
   CALL atm_init(1, npoints, nlevels, atm_out, flag_oe, nml)
 
-
+  npoints_it = nml%npoints_it
   nChunks = nPoints/nPoints_it
   IF (MOD(npoints,npoints_it)/=0) nchunks = nchunks + 1
   IF (nPoints .EQ. nPoints_it) nChunks = 1

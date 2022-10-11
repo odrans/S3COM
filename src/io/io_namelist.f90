@@ -30,16 +30,34 @@
 MODULE mod_io_namelist
   !! Inspired from https://cerfacs.fr/coop/fortran-namelist-workedex
 
-USE, INTRINSIC :: iso_fortran_env, ONLY: stderr => error_unit
+  USE, INTRINSIC :: iso_fortran_env, ONLY: stderr => error_unit
+  USE s3com_types,         ONLY: type_nml
+
+  IMPLICIT NONE
 
 CONTAINS
 
-  subroutine read_namelist(file_path, nml)
-    !! Read some parmeters,  Here we use a namelist
-    !! but if you were to change the storage format (TOML,or home-made),
-    !! this signature would not change
+  SUBROUTINE namelist_load(nml)
 
-    USE s3com_types,         ONLY: type_nml
+    TYPE(type_nml), intent(out)        :: nml
+
+    character(len=256) :: fname_nml
+
+    ! Set the namelist file
+    IF(COMMAND_ARGUMENT_COUNT().NE.1) THEN
+       write(*,*) "Namelist not provided"
+       stop
+    ELSE
+       CALL GET_COMMAND_ARGUMENT(1, fname_nml)
+       write(*,*) "Namelist file: ", trim(fname_nml)
+    ENDIF
+
+    CALL read_namelist(fname_nml, nml)
+
+  END SUBROUTINE namelist_load
+
+
+  SUBROUTINE read_namelist(file_path, nml)
 
     character(len=*),  intent(in)  :: file_path
     integer                        :: file_unit, iostat

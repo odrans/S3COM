@@ -138,9 +138,13 @@ MODULE s3com_types
   !!Type containing variables from ICON simulations
   TYPE type_icon
      INTEGER(KIND=4) :: &
-          Nlevels, Npoints, Nlat, Nlon, mode !Dimensions
+          nlevels, &
+          npoints, &
+          nlat, &
+          nlon, &
+          mode
      INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
-          height
+          height ! height index
      REAL(wp), DIMENSION(:), ALLOCATABLE :: &
           lon_orig,                           & !Longitude that won't be regridded (degrees east)
           lat_orig,                           & !Latitude  that won't be regridded (degress north)
@@ -155,41 +159,30 @@ MODULE s3com_types
           u_wind,                             & !U-component of wind (m/s)
           v_wind                                !V-component of wind (m/s)
      REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
-          co2,                                & !Carbon dioxide
-          ch4,                                & !Methane
-          n2o,                                & !n2o
-          s2o,                                & !s2o
-          co,                                 &   !Carbon monoxide
           p,                                    & !Model pressure levels (pa)
           z,                                    & !Model level height (m)
           zh,                                   & !Model level height at half-levels (m)
-          dz,                                   & !Layer thickness (m)
           t,                                    & !Temperature (K)
-          sh,                                   & !Specific humidity (kg/kg)
+          q,                                    & !Specific humidity (kg/kg)
           tca,                                  & !Total cloud fraction (0-1)
           clw,                                  & !Specific cloud water content (kg/kg)
           cli,                                  & !Specific cloud ice content (kg/kg)
           qnc,                                  & !Cloud droplet number concentration (particules/kg)
           qr,                                   & !Rain mixing ratio (kg/kg)
           qs,                                   & !Snow mixing ratio (kg/kg)
+          dz,                                   & !Layer thickness (m)
+          es_w,                                 & !Saturation vapour pressure of water (Pa)
+          es_i,                                 & !Saturation vapour pressure of ice (Pa)
+          rho,                                  & !Air density used for liquid clouds (kg/m3)
+          tv,                                   & !Virtual temperature (K)
           lwc,                                  & !Liquid water content (kg/m3)
           iwc,                                  & !Ice water content (kg/m3)
-          t_celcius,                            & !Temperature (degrees Celcius)
-          e_sat,                                & !Saturation vapour pressure of water (Pa)
-          ssh,                                  & !Saturation specific humidity (kg/kg)
-          wv,                                   & !Humidity ratio (0-1)
-          rh,                                   & !Relative humidity (%)
-          pv,                                   & !Pressure of water vapour (Pa)
-          pd,                                   & !Pressure of dry air (Pa)
-          rho,                                  & !Air density used for liquid clouds (kg/m3)
-          rho_atm,                              & !Air density used for ice clouds (kg/m3)
           cdnc,                                 & !Cloud droplet number concentration (1/m3)
           Reff,                                 & !Cloud liquid water effective radius (m)
-          Deff,                                 & !Cloud liquid water effective diameter (m)
           beta_ext,                             & !Cloud extinction coefficient (1/m)
-          tv,                                   & !Virtual temperature (K)
           dz_cod,                               & !Layer thickness (m)
           cod                                     !Cloud optical depth (unitless)
+
   END TYPE type_icon
 
 
@@ -233,18 +226,18 @@ MODULE s3com_types
           cdnc,                               & !Cloud droplet number concentration (1/m3)
           Reff                                  !Cloud liquid water effective radius (m)
 
-          END TYPE type_model
+  END TYPE type_model
 
 
 
   !!Type containing variables from RTTOV simulations
-    type type_rttov_atm
+  type type_rttov_atm
      integer, pointer :: &
           npoints,       & ! Number of profiles to simulate
           nlevels,       & ! Number of levels
-          nlayers,       &  ! Number of layers
-          idx_start,     & !Index of starting ICON point
-          idx_end          !Index of ending ICON point
+          nlayers,       & ! Number of layers
+          idx_start,     & ! Starting index for subset profile
+          idx_end          ! Ending index for subset profile
      real(wp), dimension(:), pointer :: &
           lat,          & ! Latitude
           lon,          & ! Longitude
@@ -261,11 +254,11 @@ MODULE s3com_types
           z,            & ! Height @ model levels
           t,            & ! Temperature
           q,            & ! Specific humidity
-          o3,           & !Ozone
-          co2,          & !Carbon dioxide
-          ch4,          & !Methane
-          n2o,          & !n2o
-          so2,          & !so2
+          o3,           & ! Ozone
+          co2,          & ! Carbon dioxide
+          ch4,          & ! Methane
+          n2o,          & ! n2o
+          so2,          & ! so2
           co,           & !Carbon monoxide
           tca,          & ! Cloud fraction
           iwc,          & ! ice water content

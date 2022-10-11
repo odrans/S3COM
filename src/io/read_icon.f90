@@ -31,11 +31,6 @@ MODULE MOD_READ_ICON
    
    USE netcdf
    USE s3com_types, ONLY: wp, type_icon
-   USE s3com_config, ONLY:                &
-      amd, rd, rv, rholiq, epsilon,    &
-      mr_co2, mr_ch4, mr_n2o, mr_co,   &
-      amCO2, amCH4, amN2O, amCO, amO3, &
-      a, b, mu, nu, Q_ext, grav
    USE mod_utils_fort, ONLY: s3com_error
    USE mod_regrid
    
@@ -157,7 +152,7 @@ MODULE MOD_READ_ICON
           ENDIF
        ENDDO
 
-       ALLOCATE(lon(icon%nlon), lat(icon%nlat), icon%lon_orig(icon%nlon), icon%lat_orig(icon%nlat))
+       ALLOCATE(lon(icon%nlon), lat(icon%nlat))
 
        !!========================================================================================================================!!
 
@@ -361,9 +356,9 @@ MODULE MOD_READ_ICON
              ENDIF
           CASE ('hus') !Specific humidity
              IF (Lpoint) THEN
-                icon%sh(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%q(1:npoints,:) = x2(1:npoints,1:nlevels)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%sh)
+                CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%q)
              ENDIF
           CASE ('clc') !Cloud cover
              IF (Lpoint) THEN

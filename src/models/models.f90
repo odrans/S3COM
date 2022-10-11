@@ -42,7 +42,7 @@ CONTAINS
     CHARACTER(LEN=256), INTENT(IN) :: fname
 
     ! Output variables
-    TYPE(type_model), INTENT(OUT)   :: model
+    TYPE(type_model), INTENT(OUT) :: model
 
     ! Internal
     INTEGER(KIND=4) :: nlevels, npoints
@@ -64,7 +64,7 @@ CONTAINS
     ! Clear input data
     CALL icon_clear(icon)
 
-    stop
+    write(*,*) "Model input loaded"
 
   END SUBROUTINE models_load
 
@@ -148,7 +148,7 @@ CONTAINS
     model%z         =  icon%z
     model%dz        =  icon%dz
     model%t         =  icon%t
-    model%sh        =  icon%sh
+    model%sh        =  icon%q
     model%tca       =  icon%tca
     model%iwc       =  icon%iwc
     model%lwc       =  icon%lwc
