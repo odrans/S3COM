@@ -174,17 +174,12 @@ CONTAINS
     ALLOCATE(y%qr(npoints, nlevels)); y%qr = 0._wp
     ALLOCATE(y%qs(npoints, nlevels)); y%qs = 0._wp
     ALLOCATE(y%dz(npoints, nlevels)); y%dz = 0._wp
-    ALLOCATE(y%es_w(npoints, nlevels)); y%es_w = 0._wp
-    ALLOCATE(y%es_i(npoints, nlevels)); y%es_i = 0._wp
     ALLOCATE(y%rho(npoints, nlevels)); y%rho = 0._wp
     ALLOCATE(y%tv(npoints, nlevels)); y%tv = 0._wp
     ALLOCATE(y%lwc(npoints, nlevels)); y%lwc = 0._wp
     ALLOCATE(y%iwc(npoints, nlevels)); y%iwc = 0._wp
     ALLOCATE(y%cdnc(npoints, nlevels)); y%cdnc = 0._wp
     ALLOCATE(y%Reff(npoints, nlevels)); y%Reff = 0._wp
-    ALLOCATE(y%beta_ext(npoints, nlevels)); y%beta_ext = 0._wp
-    ALLOCATE(y%dz_cod(npoints, nlevels)); y%dz_cod = 0._wp
-    ALLOCATE(y%cod(npoints, nlevels)); y%cod = 0._wp
 
   END SUBROUTINE icon_init
 
@@ -196,8 +191,8 @@ CONTAINS
     DEALLOCATE(y%height, y%lon, y%lat, y%lon_orig, y%lat_orig, &
          y%orography, y%landmask, y%psfc, y%skt, y%t2m, y%q2m, y%u_wind, y%v_wind, &
          y%p, y%z, y%zh, y%t, y%q, y%tca, y%clw, y%cli, y%qnc, y%qr, y%qs, y%dz, &
-         y%es_w, y%es_i, y%rho, y%tv, &
-         y%lwc, y%iwc, y%cdnc, y%Reff, y%beta_ext, y%dz_cod, y%cod)
+         y%rho, y%tv, &
+         y%lwc, y%iwc, y%cdnc, y%Reff)
 
   END SUBROUTINE icon_clear
 

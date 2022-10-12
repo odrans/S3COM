@@ -31,6 +31,7 @@ MODULE MOD_MODELS
 
   USE s3com_types,         ONLY: wp, type_icon, type_model
   USE mod_icon,            ONLY: icon_load, icon_clear
+  USE mod_utils_math,      ONLY: solar_angles
 
   IMPLICIT NONE
 
@@ -60,6 +61,9 @@ CONTAINS
 
     ! Set up part of the model with ICON data
     CALL models_setup_icon(model, icon)
+
+    ! Set up solar angles corresponding to model data
+    CALL models_setup_solar(model)
 
     ! Clear input data
     CALL icon_clear(icon)
@@ -96,6 +100,8 @@ CONTAINS
     ALLOCATE(model%q2m(npoints)); model%q2m = 0._wp
     ALLOCATE(model%t2m(npoints)); model%t2m = 0._wp
     ALLOCATE(model%landmask(npoints)); model%landmask = 0._wp
+    ALLOCATE(model%sunzenangle(npoints)); model%sunzenangle = 0._wp
+    ALLOCATE(model%sunazangle(npoints)); model%sunazangle = 0._wp
 
     !! 3D fields
     ALLOCATE(model%co2(npoints, nlevels)); model%co2 = 0._wp
@@ -124,7 +130,7 @@ CONTAINS
     TYPE(type_icon), INTENT(IN)    :: icon
 
     ! Output variables
-    TYPE(type_model), INTENT(OUT)   :: model
+    TYPE(type_model), INTENT(INOUT)   :: model
 
     model%Nlat = icon%nlat
     model%Nlon = icon%nlon
@@ -157,5 +163,25 @@ CONTAINS
 
   END SUBROUTINE models_setup_icon
 
+  SUBROUTINE models_setup_solar(model)
+
+    TYPE(type_model), INTENT(INOUT)   :: model
+
+    INTEGER(KIND = 4), DIMENSION(3) :: date, time
+    INTEGER(KIND = 4) :: i
+    REAL(KIND=wp) :: zen, az
+
+    !! This needs to be replaced by real date
+    date = (/02, 05, 2013/)
+    time = (/12, 00, 00/)
+
+    DO i = 1, model%npoints
+
+       CALL solar_angles(model%lat(i), model%lon(i), date, time, &
+            model%sunzenangle(i), model%sunazangle(i))
+
+    END DO
+
+  END SUBROUTINE models_setup_solar
 
 END MODULE MOD_MODELS

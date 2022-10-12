@@ -116,4 +116,53 @@ CONTAINS
   end subroutine inverse
 
 
+  subroutine day_number(day, month, year, julian)
+
+    INTEGER(KIND = 4), INTENT(IN) :: day, month, year
+
+    INTEGER(KIND = 4), INTENT(OUT) :: julian
+
+    if (month.le.2) then
+       julian = 31 * (month - 1) + day
+       return
+    endif
+    if (month.gt.8) then
+       julian = 31 * (month - 1) - ((month - 2) / 2) - 2 + day
+    else
+       julian= 31 * (month-1)-((month-1)/2)-2+day
+    endif
+    if(year.ne.0 .and. mod(year,4).eq.0) julian = julian + 1
+
+    return
+  end subroutine day_number
+
+
+  SUBROUTINE solar_angles(lat, lon, date, time, sunzenangle, sunazangle)
+
+    REAL(KIND = wp), INTENT(IN) :: lat, lon
+    INTEGER(KIND = 4), DIMENSION(3), INTENT(IN) :: date, time
+
+    REAL(KIND = wp), INTENT(OUT) :: sunzenangle, sunazangle
+
+    REAL(KIND = wp) :: elevation, dec, soldst, hour
+    INTEGER(KIND = 4) :: julian
+
+    ! Compute the julian date (day of year)
+    call day_number(date(1), date(2), date(3), julian)
+
+    ! Compute the fractional hour
+    hour = time(1) + time(2) / 60._wp + time(3) / 3600._wp
+
+    ! Get the angles
+    call sunae(date(3), julian, hour, lat, lon, sunazangle, elevation, dec, soldst)
+
+    ! Convert elevation into solar zenith angle
+    sunzenangle = 90 - elevation
+
+    RETURN
+
+  END SUBROUTINE solar_angles
+
+
+
 END MODULE mod_utils_math

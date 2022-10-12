@@ -158,6 +158,7 @@ MODULE s3com_types
           q2m,                                & !2m specific water vapor content (kg/kg)
           u_wind,                             & !U-component of wind (m/s)
           v_wind                                !V-component of wind (m/s)
+
      REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
           p,                                    & !Model pressure levels (pa)
           z,                                    & !Model level height (m)
@@ -199,7 +200,9 @@ MODULE s3com_types
           t2m,                                & !2m temperature (K)
           q2m,                                & !2m specific water vapor content (kg/kg)
           u_wind,                             & !U-component of wind (m/s)
-          v_wind                                !V-component of wind (m/s)
+          v_wind,                             & !V-component of wind (m/s)
+          sunzenangle,                        & !Solar zenith angle
+          sunazangle                            !Solar azimuth angle
      REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
           co2,                                & !Carbon dioxide
           ch4,                                & !Methane

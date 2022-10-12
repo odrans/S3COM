@@ -100,7 +100,9 @@ LIST_OBJ_OE = $(obj)/model_cloud.o \
 LIST_OBJ_UTILS = $(obj)/types.o \
 		 $(obj)/config.o \
 		 $(obj)/utils_math.o \
-		 $(obj)/utils_fort.o
+		 $(obj)/utils_fort.o \
+		 $(obj)/possol.o \
+		 $(obj)/sunae.o
 
 LIST_OBJ_RTTOVML = $(obj)/rttov_utils.o \
 		   $(obj)/rttov_ml.o \
@@ -222,6 +224,12 @@ $(obj)/utils_math.o : $(DIR_UTILS)/utils_math.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
 $(obj)/utils_fort.o : $(DIR_UTILS)/utils_fort.f90
+	$(F90) $(F90FLAGS) -c $< -o $@
+
+$(obj)/sunae.o : $(DIR_UTILS)/sunae.f
+	$(F90) $(F90FLAGS) -c $< -o $@
+
+$(obj)/possol.o : $(DIR_UTILS)/possol.f
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
