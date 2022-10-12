@@ -287,16 +287,15 @@ CONTAINS
        !!Satellite and solar angles (deg)
        profiles(iprof)%zenangle    = rttov_opt%zenangle
        profiles(iprof)%azangle     = rttov_opt%azangle
-       profiles(iprof)%sunzenangle = rttov_opt%sunzenangle
-       profiles(iprof)%sunazangle  = rttov_opt%sunazangle
+       profiles(iprof)%sunzenangle = rttov_atm%sunzenangle(idx_prof)
+       profiles(iprof)%sunazangle  = rttov_atm%sunazangle(idx_prof)
 
        profiles(iprof)%mmr_cldaer = .FALSE. !Logical flag to set cloud and aerosol
        !Units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
-       !(must be the same for all profiles)
-!!write(*,*) SIZE(profiles(iprof)%cfrac)
+
        !!Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
        profiles(iprof)%cfrac = rttov_atm%tca(idx_prof,:)
-!!stop
+
        !! Used by OPAC
        profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)
 

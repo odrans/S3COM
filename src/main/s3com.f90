@@ -77,10 +77,8 @@ PROGRAM S3COM
   npoints = model%npoints
   nlevels = model%nlevels
 
-stop
-
   ! Setup the RTTOV optics
-  CALL rttov_setup_opt(zenangle, azangle, sunzenangle, sunazangle, rttov_opt, nml)
+  CALL rttov_setup_opt(zenangle, azangle, rttov_opt, nml)
 
   ! Initialize RTTOV (load data)
   CALL rttov_init(rttov_opt, nml)

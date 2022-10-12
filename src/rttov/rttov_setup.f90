@@ -35,14 +35,14 @@ MODULE MOD_RTTOV_SETUP
    
    CONTAINS
    
-      SUBROUTINE RTTOV_SETUP_OPT(zenangle,azangle,sunzenangle,sunazangle,rttov_opt, nml)
+      SUBROUTINE RTTOV_SETUP_OPT(zenangle, azangle, rttov_opt, nml)
          
          USE s3com_types,  ONLY: type_rttov_opt, type_nml
          USE s3com_config, ONLY:                                 &
              RTTOV_DOSOLAR
       
             !!Input variables
-            REAL(wp), INTENT(IN) :: zenangle, azangle, sunzenangle, sunazangle
+            REAL(wp), INTENT(IN) :: zenangle, azangle
             
             !!Output variables
             TYPE(type_rttov_opt), INTENT(OUT) :: rttov_opt
@@ -61,9 +61,7 @@ MODULE MOD_RTTOV_SETUP
             rttov_opt%month        = nml%month
             rttov_opt%zenangle     = zenangle
             rttov_opt%azangle      = azangle
-            rttov_opt%sunzenangle  = sunzenangle
-            rttov_opt%sunazangle   = sunazangle
-            
+
       END SUBROUTINE RTTOV_SETUP_OPT
       
       SUBROUTINE rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
@@ -102,7 +100,8 @@ MODULE MOD_RTTOV_SETUP
          rttov_atm%iwc       => model%iwc(idx_start:idx_end,:)
          rttov_atm%lwc       => model%lwc(idx_start:idx_end,:)
          rttov_atm%reff      => model%reff(idx_start:idx_end,:)
-         rttov_atm%cdnc      => model%cdnc(idx_start:idx_end,:)
+         rttov_atm%sunzenangle  => model%sunzenangle(idx_start:idx_end)
+         rttov_atm%sunazangle   => model%sunazangle(idx_start:idx_end)
 
       END SUBROUTINE rttov_setup_atm
 

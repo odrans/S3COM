@@ -246,7 +246,9 @@ MODULE s3com_types
           v_surf,       & ! V component of surface wind
           t2m,          & ! 2-m Temperature
           q2m,          & ! 2-m Specific humidity
-          lsmask          ! land-sea mask
+          lsmask,       &  ! land-sea mask
+          sunzenangle,  & !Solar zenith angle
+          sunazangle      !Solar azimuth angle
      real(wp), dimension(:,:), pointer :: &
           p,            & ! Pressure @ model levels
           z,            & ! Height @ model levels
