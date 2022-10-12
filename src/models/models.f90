@@ -132,6 +132,10 @@ CONTAINS
     ! Output variables
     TYPE(type_model), INTENT(INOUT)   :: model
 
+    !! This needs to be replaced by real date
+    model%date = (/02, 05, 2013/)
+    model%time = (/12, 00, 00/)
+
     model%Nlat = icon%nlat
     model%Nlon = icon%nlon
     model%mode = icon%mode
@@ -167,16 +171,11 @@ CONTAINS
 
     TYPE(type_model), INTENT(INOUT)   :: model
 
-    INTEGER(KIND = 4), DIMENSION(3) :: date, time
     INTEGER(KIND = 4) :: i
-
-    !! This needs to be replaced by real date
-    date = (/02, 05, 2013/)
-    time = (/12, 00, 00/)
 
     DO i = 1, model%npoints
 
-       CALL solar_angles(model%lat(i), model%lon(i), date, time, &
+       CALL solar_angles(model%lat(i), model%lon(i), model%date, model%time, &
             model%sunzenangle(i), model%sunazangle(i))
 
     END DO

@@ -158,7 +158,6 @@ MODULE s3com_types
           q2m,                                & !2m specific water vapor content (kg/kg)
           u_wind,                             & !U-component of wind (m/s)
           v_wind                                !V-component of wind (m/s)
-
      REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
           p,                                    & !Model pressure levels (pa)
           z,                                    & !Model level height (m)
@@ -188,6 +187,9 @@ MODULE s3com_types
           Nlevels, Npoints, Nlat, Nlon, mode !Dimensions
      INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
           height
+     INTEGER(KIND=4), DIMENSION(3) :: &
+          time, &   ! day, month, year
+          date      ! hour, minute, second
      REAL(wp), DIMENSION(:), ALLOCATABLE :: &
           lon_orig,                           & !Longitude that won't be regridded (degrees east)
           lat_orig,                           & !Latitude  that won't be regridded (degress north)
