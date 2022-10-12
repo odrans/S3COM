@@ -169,7 +169,6 @@ CONTAINS
 
     INTEGER(KIND = 4), DIMENSION(3) :: date, time
     INTEGER(KIND = 4) :: i
-    REAL(KIND=wp) :: zen, az
 
     !! This needs to be replaced by real date
     date = (/02, 05, 2013/)
