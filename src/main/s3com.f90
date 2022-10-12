@@ -52,7 +52,7 @@ PROGRAM S3COM
 
   CHARACTER(LEN = 32) :: fname_nml
 
-  REAL(KIND=wp) :: zenangle, azangle, sunzenangle, sunazangle
+  REAL(KIND=wp) :: zenangle, azangle
 
   INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: idx_iwp, idx_oe
   INTEGER(KIND=4) :: i, loc, j
@@ -70,7 +70,6 @@ PROGRAM S3COM
   ! Zenith angle: degrees east from North
   ! Azimuth angle: degres from zenith (90 - elevation);
   zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
-  sunzenangle = 0._wp; sunazangle = 0._wp !Viewing solar angles
 
   ! Load selected model inputs
   CALL models_load(nml%fname_in, model)
