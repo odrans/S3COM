@@ -62,13 +62,10 @@ PROGRAM S3COM
 
   LOGICAL :: flag_oe, dealloc_rttov
 
-
   ! Load namelist
   CALL namelist_load(nml)
 
-  ! Temporary: setting the viewing and solar angles
-  ! Zenith angle: degrees east from North
-  ! Azimuth angle: degres from zenith (90 - elevation);
+  ! Temporary: setting the viewing angles
   zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
 
   ! Load selected model inputs
@@ -77,7 +74,7 @@ PROGRAM S3COM
   nlevels = model%nlevels
 
   ! Setup the RTTOV optics
-  CALL rttov_setup_opt(zenangle, azangle, rttov_opt, nml)
+  CALL rttov_setup_opt(model, zenangle, azangle, rttov_opt, nml)
 
   ! Initialize RTTOV (load data)
   CALL rttov_init(rttov_opt, nml)

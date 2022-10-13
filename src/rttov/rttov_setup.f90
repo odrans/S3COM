@@ -35,18 +35,18 @@ MODULE MOD_RTTOV_SETUP
    
    CONTAINS
    
-      SUBROUTINE RTTOV_SETUP_OPT(zenangle, azangle, rttov_opt, nml)
+      SUBROUTINE RTTOV_SETUP_OPT(model, zenangle, azangle, rttov_opt, nml)
          
-         USE s3com_types,  ONLY: type_rttov_opt, type_nml
-         USE s3com_config, ONLY:                                 &
-             RTTOV_DOSOLAR
-      
+         USE s3com_types,  ONLY: type_rttov_opt, type_nml, type_model
+         USE s3com_config, ONLY: RTTOV_DOSOLAR
+
             !!Input variables
             REAL(wp), INTENT(IN) :: zenangle, azangle
             
             !!Output variables
             TYPE(type_rttov_opt), INTENT(OUT) :: rttov_opt
             TYPE(type_nml), INTENT(IN) :: nml
+            TYPE(type_model), INTENT(IN) :: model
 
             rttov_opt%platform   = nml%platform
             rttov_opt%satellite  = nml%satellite
@@ -56,9 +56,9 @@ MODULE MOD_RTTOV_SETUP
             rttov_opt%nthreads = nml%rttov_nthreads
 
             ALLOCATE(rttov_opt%channel_list(rttov_opt%nchannels))
-            
+
             rttov_opt%channel_list = nml%channel_list
-            rttov_opt%month        = nml%month
+            rttov_opt%month        = model%date(2)
             rttov_opt%zenangle     = zenangle
             rttov_opt%azangle      = azangle
 

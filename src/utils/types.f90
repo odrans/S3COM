@@ -63,6 +63,156 @@ MODULE s3com_types
           flag_output_atm
   END TYPE type_nml
 
+  !!Type containing variables from ICON simulations
+  TYPE type_icon
+     INTEGER(KIND=4) :: &
+          nlevels, &
+          npoints, &
+          nlat, &
+          nlon, &
+          mode
+     INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
+          height ! height index
+     REAL(wp), DIMENSION(:), ALLOCATABLE :: &
+          lon_orig,                           & !Longitude that won't be regridded (degrees east)
+          lat_orig,                           & !Latitude  that won't be regridded (degress north)
+          lon,                                & !Longitude (degrees east)
+          lat,                                & !Latitude (degress north)
+          topography,                         & !Surface height
+          landmask,                           & !Land/sea mask (0/1)
+          ps,                                 & !Surface pressure (Pa)
+          ts,                                 & !Skin temperature (K)
+          t_2m,                                & !2m temperature (K)
+          q_2m,                                & !2m specific water vapor content (kg/kg)
+          u_10m,                              & !U-component of wind (m/s)
+          v_10m                                !V-component of wind (m/s)
+     REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
+          p,                                    & !Model pressure levels (pa)
+          z,                                    & !Model level height (m)
+          zh,                                   & !Model level height at half-levels (m)
+          t,                                    & !Temperature (K)
+          q,                                    & !Specific humidity (kg/kg)
+          clc,                                  & !Total cloud fraction (0-1)
+          clw,                                  & !Specific cloud water content (kg/kg)
+          cli,                                  & !Specific cloud ice content (kg/kg)
+          qnc,                                  & !Cloud droplet number concentration (particules/kg)
+          qr,                                   & !Rain mixing ratio (kg/kg)
+          qs,                                   & !Snow mixing ratio (kg/kg)
+          dz,                                   & !Layer thickness (m)
+          rho,                                  & !Air density used for liquid clouds (kg/m3)
+          tv,                                   & !Virtual temperature (K)
+          lwc,                                  & !Liquid water content (kg/m3)
+          iwc,                                  & !Ice water content (kg/m3)
+          cdnc,                                 & !Cloud droplet number concentration (1/m3)
+          Reff                                    !Cloud liquid water effective radius (m)
+  END TYPE type_icon
+
+
+  !! Type containing variables stored for model outputs
+  TYPE type_model
+     INTEGER(KIND=4) :: &
+          nlevels, npoints, nlayers, nlat, nlon, mode, &!Dimensions
+          idx_start,     & ! Starting index for subset profile
+          idx_end          ! Ending index for subset profile
+     INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
+          height
+     INTEGER(KIND=4), DIMENSION(3) :: &
+          time, &   ! day, month, year
+          date      ! hour, minute, second
+     REAL(wp), DIMENSION(:), ALLOCATABLE :: &
+          lon_orig,                           & !Longitude that won't be regridded (degrees east)
+          lat_orig,                           & !Latitude  that won't be regridded (degress north)
+          lon,                                & !Longitude (degrees east)
+          lat,                                & !Latitude (degress north)
+          topography,                         & !Surface height
+          landmask,                           & !Land/sea mask (0/1)
+          ps,                                 & !Surface pressure (Pa)
+          ts,                                 & !Skin temperature (K)
+          t_2m,                                & !2m temperature (K)
+          q_2m,                                & !2m specific water vapor content (kg/kg)
+          u_10m,                              & !U-component of wind (m/s)
+          v_10m,                              & !V-component of wind (m/s)
+          sunzenangle,                        & !Solar zenith angle
+          sunazangle                            !Solar azimuth angle
+     REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
+          co2,                                & !Carbon dioxide
+          ch4,                                & !Methane
+          n2o,                                & !n2o
+          s2o,                                & !s2o
+          co,                                 & !Carbon monoxide
+          p,                                  & !Model pressure levels (pa)
+          z,                                  & !Model level height (m)
+          zh,                                 & !Model level height at half-levels (m)
+          dz,                                 & !Layer thickness (m)
+          t,                                  & !Temperature (K)
+          q,                                  & !Specific humidity (kg/kg)
+          clc,                                & !Total cloud fraction (0-1)
+          qnc,                                & !Cloud droplet number concentration (particules/kg)
+          qr,                                 & !Rain mixing ratio (kg/kg)
+          qs,                                 & !Snow mixing ratio (kg/kg)
+          lwc,                                & !Liquid water content (kg/m3)
+          iwc,                                & !Ice water content (kg/m3)
+          cdnc,                               & !Cloud droplet number concentration (1/m3)
+          Reff                                  !Cloud liquid water effective radius (m)
+  END TYPE type_model
+
+
+  !!Type containing variables from RTTOV simulations
+  type type_rttov_atm
+     integer, pointer :: &
+          npoints,       & ! Number of profiles to simulate
+          nlevels,       & ! Number of levels
+          nlayers,       & ! Number of layers
+          idx_start,     & ! Starting index for subset profile
+          idx_end          ! Ending index for subset profile
+     real(wp), dimension(:), pointer :: &
+          lat,          & ! Latitude
+          lon,          & ! Longitude
+          ts,           & ! Surface skin temperature
+          topography,   & ! Surface height
+          ps,           & ! Surface pressure
+          u_10m,        & ! U component of surface wind
+          v_10m,        & ! V component of surface wind
+          t_2m,         & ! 2-m Temperature
+          q_2m,         & ! 2-m Specific humidity
+          landmask,     &  ! land-sea mask
+          sunzenangle,  & !Solar zenith angle
+          sunazangle      !Solar azimuth angle
+     real(wp), dimension(:,:), pointer :: &
+          p,            & ! Pressure @ model levels
+          z,            & ! Height @ model levels
+          t,            & ! Temperature
+          q,            & ! Specific humidity
+          o3,           & ! Ozone
+          co2,          & ! Carbon dioxide
+          ch4,          & ! Methane
+          n2o,          & ! n2o
+          so2,          & ! so2
+          co,           & !Carbon monoxide
+          clc,          & ! Cloud fraction
+          iwc,          & ! ice water content
+          lwc,          & ! liquid water content
+          reff,         & ! droplet effective radius
+          cdnc            ! cloud droplet number concentration
+  end type type_rttov_atm
+
+
+  TYPE type_rttov_opt
+     INTEGER ::       &
+          dosolar,    &
+          nchannels,  &
+          nthreads,   &
+          manthreads, &
+          platform,   &
+          satellite,  &
+          instrument, &
+          month         !Month (needed for surface emissivity calculation)
+     INTEGER, DIMENSION(:), ALLOCATABLE :: &
+          channel_list
+     REAL(wp) :: &
+          zenangle, azangle
+  END TYPE type_rttov_opt
+
   !!Type containing variables used by S3COM for retrievals
   TYPE type_s3com
      INTEGER(KIND=4) :: &
@@ -135,156 +285,7 @@ MODULE s3com_types
           cdnc_model
   END TYPE type_s3com
 
-  !!Type containing variables from ICON simulations
-  TYPE type_icon
-     INTEGER(KIND=4) :: &
-          nlevels, &
-          npoints, &
-          nlat, &
-          nlon, &
-          mode
-     INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
-          height ! height index
-     REAL(wp), DIMENSION(:), ALLOCATABLE :: &
-          lon_orig,                           & !Longitude that won't be regridded (degrees east)
-          lat_orig,                           & !Latitude  that won't be regridded (degress north)
-          lon,                                & !Longitude (degrees east)
-          lat,                                & !Latitude (degress north)
-          topography,                         & !Surface height
-          landmask,                           & !Land/sea mask (0/1)
-          ps,                                 & !Surface pressure (Pa)
-          ts,                                 & !Skin temperature (K)
-          t_2m,                                & !2m temperature (K)
-          q_2m,                                & !2m specific water vapor content (kg/kg)
-          u_10m,                              & !U-component of wind (m/s)
-          v_10m                                !V-component of wind (m/s)
-     REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
-          p,                                    & !Model pressure levels (pa)
-          z,                                    & !Model level height (m)
-          zh,                                   & !Model level height at half-levels (m)
-          t,                                    & !Temperature (K)
-          q,                                    & !Specific humidity (kg/kg)
-          clc,                                  & !Total cloud fraction (0-1)
-          clw,                                  & !Specific cloud water content (kg/kg)
-          cli,                                  & !Specific cloud ice content (kg/kg)
-          qnc,                                  & !Cloud droplet number concentration (particules/kg)
-          qr,                                   & !Rain mixing ratio (kg/kg)
-          qs,                                   & !Snow mixing ratio (kg/kg)
-          dz,                                   & !Layer thickness (m)
-          rho,                                  & !Air density used for liquid clouds (kg/m3)
-          tv,                                   & !Virtual temperature (K)
-          lwc,                                  & !Liquid water content (kg/m3)
-          iwc,                                  & !Ice water content (kg/m3)
-          cdnc,                                 & !Cloud droplet number concentration (1/m3)
-          Reff                                    !Cloud liquid water effective radius (m)
-
-  END TYPE type_icon
 
 
-  !! Type containing variables stored for model outputs
-  TYPE type_model
-     INTEGER(KIND=4) :: &
-          nlevels, npoints, nlayers, nlat, nlon, mode, &!Dimensions
-          idx_start,     & ! Starting index for subset profile
-          idx_end          ! Ending index for subset profile
-     INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
-          height
-     INTEGER(KIND=4), DIMENSION(3) :: &
-          time, &   ! day, month, year
-          date      ! hour, minute, second
-     REAL(wp), DIMENSION(:), ALLOCATABLE :: &
-          lon_orig,                           & !Longitude that won't be regridded (degrees east)
-          lat_orig,                           & !Latitude  that won't be regridded (degress north)
-          lon,                                & !Longitude (degrees east)
-          lat,                                & !Latitude (degress north)
-          topography,                         & !Surface height
-          landmask,                           & !Land/sea mask (0/1)
-          ps,                                 & !Surface pressure (Pa)
-          ts,                                 & !Skin temperature (K)
-          t_2m,                                & !2m temperature (K)
-          q_2m,                                & !2m specific water vapor content (kg/kg)
-          u_10m,                              & !U-component of wind (m/s)
-          v_10m,                              & !V-component of wind (m/s)
-          sunzenangle,                        & !Solar zenith angle
-          sunazangle                            !Solar azimuth angle
-     REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
-          co2,                                & !Carbon dioxide
-          ch4,                                & !Methane
-          n2o,                                & !n2o
-          s2o,                                & !s2o
-          co,                                 & !Carbon monoxide
-          p,                                  & !Model pressure levels (pa)
-          z,                                  & !Model level height (m)
-          zh,                                 & !Model level height at half-levels (m)
-          dz,                                 & !Layer thickness (m)
-          t,                                  & !Temperature (K)
-          q,                                  & !Specific humidity (kg/kg)
-          clc,                                & !Total cloud fraction (0-1)
-          qnc,                                & !Cloud droplet number concentration (particules/kg)
-          qr,                                 & !Rain mixing ratio (kg/kg)
-          qs,                                 & !Snow mixing ratio (kg/kg)
-          lwc,                                & !Liquid water content (kg/m3)
-          iwc,                                & !Ice water content (kg/m3)
-          cdnc,                               & !Cloud droplet number concentration (1/m3)
-          Reff                                  !Cloud liquid water effective radius (m)
-
-  END TYPE type_model
-
-
-  !!Type containing variables from RTTOV simulations
-  type type_rttov_atm
-     integer, pointer :: &
-          npoints,       & ! Number of profiles to simulate
-          nlevels,       & ! Number of levels
-          nlayers,       & ! Number of layers
-          idx_start,     & ! Starting index for subset profile
-          idx_end          ! Ending index for subset profile
-     real(wp), dimension(:), pointer :: &
-          lat,          & ! Latitude
-          lon,          & ! Longitude
-          ts,           & ! Surface skin temperature
-          topography,   & ! Surface height
-          ps,           & ! Surface pressure
-          u_10m,        & ! U component of surface wind
-          v_10m,        & ! V component of surface wind
-          t_2m,         & ! 2-m Temperature
-          q_2m,         & ! 2-m Specific humidity
-          landmask,     &  ! land-sea mask
-          sunzenangle,  & !Solar zenith angle
-          sunazangle      !Solar azimuth angle
-     real(wp), dimension(:,:), pointer :: &
-          p,            & ! Pressure @ model levels
-          z,            & ! Height @ model levels
-          t,            & ! Temperature
-          q,            & ! Specific humidity
-          o3,           & ! Ozone
-          co2,          & ! Carbon dioxide
-          ch4,          & ! Methane
-          n2o,          & ! n2o
-          so2,          & ! so2
-          co,           & !Carbon monoxide
-          clc,          & ! Cloud fraction
-          iwc,          & ! ice water content
-          lwc,          & ! liquid water content
-          reff,         & ! droplet effective radius
-          cdnc            ! cloud droplet number concentration
-  end type type_rttov_atm
-
-
-  TYPE type_rttov_opt
-     INTEGER ::       &
-          dosolar,    &
-          nchannels,  &
-          nthreads,   &
-          manthreads, &
-          platform,   &
-          satellite,  &
-          instrument, &
-          month         !Month (needed for surface emissivity calculation)
-     INTEGER, DIMENSION(:), ALLOCATABLE :: &
-          channel_list
-     REAL(wp) :: &
-          zenangle, azangle
-  END TYPE type_rttov_opt
 
 END MODULE s3com_types
