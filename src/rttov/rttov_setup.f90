@@ -77,31 +77,33 @@ MODULE MOD_RTTOV_SETUP
          INTEGER, SAVE, TARGET :: nidx
          
          nidx = idx_end - idx_start + 1
-         rttov_atm%idx_start => idx_start
-         rttov_atm%idx_end   => idx_end
 
-         rttov_atm%nPoints   => nidx
-         rttov_atm%nlevels   => model%nLevels
-         rttov_atm%lat       => model%lat(idx_start:idx_end)
-         rttov_atm%lon       => model%lon(idx_start:idx_end)
-         rttov_atm%ts        => model%ts(idx_start:idx_end)
-         rttov_atm%topography => model%topography(idx_start:idx_end)
-         rttov_atm%ps        => model%ps(idx_start:idx_end)
-         rttov_atm%u_10m     => model%u_10m(idx_start:idx_end)
-         rttov_atm%v_10m     => model%v_10m(idx_start:idx_end)
-         rttov_atm%t_2m      => model%t_2m(idx_start:idx_end)
-         rttov_atm%q_2m      => model%q_2m(idx_start:idx_end)
-         rttov_atm%landmask  => model%landmask(idx_start:idx_end)
-         rttov_atm%p         => model%p(idx_start:idx_end,:)
-         rttov_atm%z         => model%z(idx_start:idx_end,:)
-         rttov_atm%t         => model%t(idx_start:idx_end,:)
-         rttov_atm%q         => model%q(idx_start:idx_end,:)
-         rttov_atm%clc       => model%clc(idx_start:idx_end,:)
-         rttov_atm%iwc       => model%iwc(idx_start:idx_end,:)
-         rttov_atm%lwc       => model%lwc(idx_start:idx_end,:)
-         rttov_atm%reff      => model%reff(idx_start:idx_end,:)
-         rttov_atm%sunzenangle  => model%sunzenangle(idx_start:idx_end)
-         rttov_atm%sunazangle   => model%sunazangle(idx_start:idx_end)
+         rttov_atm%nPoints     => nidx
+         rttov_atm%idx_start   => idx_start
+         rttov_atm%idx_end     => idx_end
+         rttov_atm%nlevels     => model%nLevels
+
+         rttov_atm%lat         => model%lat(idx_start:idx_end)
+         rttov_atm%lon         => model%lon(idx_start:idx_end)
+         rttov_atm%landmask    => model%landmask(idx_start:idx_end)
+         rttov_atm%topography  => model%topography(idx_start:idx_end)
+         rttov_atm%ps          => model%ps(idx_start:idx_end)
+         rttov_atm%ts          => model%ts(idx_start:idx_end)
+         rttov_atm%t_2m        => model%t_2m(idx_start:idx_end)
+         rttov_atm%q_2m        => model%q_2m(idx_start:idx_end)
+         rttov_atm%u_10m       => model%u_10m(idx_start:idx_end)
+         rttov_atm%v_10m       => model%v_10m(idx_start:idx_end)
+         rttov_atm%sunzenangle => model%sunzenangle(idx_start:idx_end)
+         rttov_atm%sunazangle  => model%sunazangle(idx_start:idx_end)
+
+         rttov_atm%p           => model%p(idx_start:idx_end,:)
+         rttov_atm%z           => model%z(idx_start:idx_end,:)
+         rttov_atm%t           => model%t(idx_start:idx_end,:)
+         rttov_atm%q           => model%q(idx_start:idx_end,:)
+         rttov_atm%clc         => model%clc(idx_start:idx_end,:)
+         rttov_atm%iwc         => model%iwc(idx_start:idx_end,:)
+         rttov_atm%lwc         => model%lwc(idx_start:idx_end,:)
+         rttov_atm%reff        => model%reff(idx_start:idx_end,:)
 
       END SUBROUTINE rttov_setup_atm
 

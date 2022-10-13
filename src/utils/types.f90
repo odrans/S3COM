@@ -231,7 +231,6 @@ MODULE s3com_types
   END TYPE type_model
 
 
-
   !!Type containing variables from RTTOV simulations
   type type_rttov_atm
      integer, pointer :: &
