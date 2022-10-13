@@ -154,23 +154,24 @@ CONTAINS
     ALLOCATE(y%lat(npoints)); y%lat = 0._wp
     ALLOCATE(y%lon_orig(npoints)); y%lon_orig = 0._wp
     ALLOCATE(y%lat_orig(npoints)); y%lat_orig = 0._wp
-    ALLOCATE(y%orography(npoints)); y%orography = 0._wp
+    ALLOCATE(y%topography(npoints)); y%topography = 0._wp
     ALLOCATE(y%landmask(npoints)); y%landmask = 0._wp
-    ALLOCATE(y%psfc(npoints)); y%psfc = 0._wp
-    ALLOCATE(y%skt(npoints)); y%skt = 0._wp
-    ALLOCATE(y%t2m(npoints)); y%t2m = 0._wp
-    ALLOCATE(y%q2m(npoints)); y%q2m = 0._wp
-    ALLOCATE(y%u_wind(npoints)); y%u_wind = 0._wp
-    ALLOCATE(y%v_wind(npoints)); y%v_wind = 0._wp
+    ALLOCATE(y%ps(npoints)); y%ps = 0._wp
+    ALLOCATE(y%ts(npoints)); y%ts = 0._wp
+    ALLOCATE(y%t_2m(npoints)); y%t_2m = 0._wp
+    ALLOCATE(y%q_2m(npoints)); y%q_2m = 0._wp
+    ALLOCATE(y%u_10m(npoints)); y%u_10m = 0._wp
+    ALLOCATE(y%v_10m(npoints)); y%v_10m = 0._wp
     ALLOCATE(y%p(npoints, nlevels)); y%p = 0._wp
     ALLOCATE(y%z(npoints, nlevels)); y%z = 0._wp
     ALLOCATE(y%zh(npoints, nlevels+1)); y%zh = 0._wp
     ALLOCATE(y%t(npoints, nlevels)); y%t = 0._wp
     ALLOCATE(y%q(npoints, nlevels)); y%q = 0._wp
-    ALLOCATE(y%tca(npoints, nlevels)); y%tca = 0._wp
+    ALLOCATE(y%clc(npoints, nlevels)); y%clc = 0._wp
     ALLOCATE(y%clw(npoints, nlevels)); y%clw = 0._wp
     ALLOCATE(y%cli(npoints, nlevels)); y%cli = 0._wp
     ALLOCATE(y%qnc(npoints, nlevels)); y%qnc = 0._wp
+
     ALLOCATE(y%qr(npoints, nlevels)); y%qr = 0._wp
     ALLOCATE(y%qs(npoints, nlevels)); y%qs = 0._wp
     ALLOCATE(y%dz(npoints, nlevels)); y%dz = 0._wp
@@ -189,8 +190,8 @@ CONTAINS
     TYPE(type_icon), INTENT(INOUT) :: y
 
     DEALLOCATE(y%height, y%lon, y%lat, y%lon_orig, y%lat_orig, &
-         y%orography, y%landmask, y%psfc, y%skt, y%t2m, y%q2m, y%u_wind, y%v_wind, &
-         y%p, y%z, y%zh, y%t, y%q, y%tca, y%clw, y%cli, y%qnc, y%qr, y%qs, y%dz, &
+         y%topography, y%landmask, y%ps, y%ts, y%t_2m, y%q_2m, y%u_10m, y%v_10m, &
+         y%p, y%z, y%zh, y%t, y%q, y%clc, y%clw, y%cli, y%qnc, y%qr, y%qs, y%dz, &
          y%rho, y%tv, &
          y%lwc, y%iwc, y%cdnc, y%Reff)
 

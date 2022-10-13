@@ -257,20 +257,20 @@ CONTAINS
 
 
        !!Air variables in 2 meters
-       profiles(iprof)%s2m%t = rttov_atm%t2m(idx_prof)         !2m temperature (K)
-       profiles(iprof)%s2m%q = rttov_atm%q2m(idx_prof)         !2m water vapour (kg/kg)
-       profiles(iprof)%s2m%p = rttov_atm%p_surf(idx_prof)*1E-2 !Surface pressure (hPa)
-       profiles(iprof)%s2m%u = rttov_atm%u_surf(idx_prof)      !10m zonal wind (m/s)
-       profiles(iprof)%s2m%v = rttov_atm%v_surf(idx_prof)      !10m meridional wind (m/s)
+       profiles(iprof)%s2m%t = rttov_atm%t_2m(idx_prof)        !2m temperature (K)
+       profiles(iprof)%s2m%q = rttov_atm%q_2m(idx_prof)        !2m water vapour (kg/kg)
+       profiles(iprof)%s2m%p = rttov_atm%ps(idx_prof)*1E-2     !Surface pressure (hPa)
+       profiles(iprof)%s2m%u = rttov_atm%u_10m(idx_prof)       !10m zonal wind (m/s)
+       profiles(iprof)%s2m%v = rttov_atm%v_10m(idx_prof)       !10m meridional wind (m/s)
        profiles(iprof)%s2m%wfetc = 100000                      !Used typical value given in documentation
 
        !!Skin variables
-       profiles(iprof)%skin%t = rttov_atm%t_skin(idx_prof)
+       profiles(iprof)%skin%t = rttov_atm%ts(idx_prof)
        profiles(iprof)%skin%salinity = 0.0                        !tmp, use other typical value
        profiles(iprof)%skin%fastem = (/3.0, 5.0, 15.0, 0.1, 0.3/) !Typical RTTOV default for land
 
        !!Surface type and water type
-       IF (rttov_atm%lsmask(iprof) < 0.5) THEN
+       IF (rttov_atm%landmask(iprof) < 0.5) THEN
           profiles(iprof)%skin%surftype = surftype_sea
        ELSE
           profiles(iprof)%skin%surftype = surftype_land
@@ -280,7 +280,7 @@ CONTAINS
        !fresh more likely for ICON-DE simulations
 
        !!Elevation (km), latitude (deg) and longitude (deg)
-       profiles(iprof)%elevation = rttov_atm%h_surf(idx_prof)*1E-3
+       profiles(iprof)%elevation = rttov_atm%topography(idx_prof)*1E-3
        profiles(iprof)%latitude  = rttov_atm%lat(idx_prof)
        profiles(iprof)%longitude = rttov_atm%lon(idx_prof)
 
@@ -294,7 +294,7 @@ CONTAINS
        !Units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
 
        !!Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
-       profiles(iprof)%cfrac = rttov_atm%tca(idx_prof,:)
+       profiles(iprof)%cfrac = rttov_atm%clc(idx_prof,:)
 
        !! Used by OPAC
        profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)

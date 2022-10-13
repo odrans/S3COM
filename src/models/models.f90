@@ -92,13 +92,13 @@ CONTAINS
     ALLOCATE(model%lat_orig(npoints)); model%lat_orig = 0._wp
     ALLOCATE(model%lon_orig(npoints)); model%lon_orig = 0._wp
 
-    ALLOCATE(model%orography(npoints)); model%orography = 0._wp
-    ALLOCATE(model%u_wind(npoints)); model%u_wind = 0._wp
-    ALLOCATE(model%v_wind(npoints)); model%v_wind = 0._wp
-    ALLOCATE(model%skt(npoints)); model%skt = 0._wp
-    ALLOCATE(model%psfc(npoints)); model%psfc = 0._wp
-    ALLOCATE(model%q2m(npoints)); model%q2m = 0._wp
-    ALLOCATE(model%t2m(npoints)); model%t2m = 0._wp
+    ALLOCATE(model%topography(npoints)); model%topography = 0._wp
+    ALLOCATE(model%u_10m(npoints)); model%u_10m = 0._wp
+    ALLOCATE(model%v_10m(npoints)); model%v_10m = 0._wp
+    ALLOCATE(model%ts(npoints)); model%ts = 0._wp
+    ALLOCATE(model%ps(npoints)); model%ps = 0._wp
+    ALLOCATE(model%q_2m(npoints)); model%q_2m = 0._wp
+    ALLOCATE(model%t_2m(npoints)); model%t_2m = 0._wp
     ALLOCATE(model%landmask(npoints)); model%landmask = 0._wp
     ALLOCATE(model%sunzenangle(npoints)); model%sunzenangle = 0._wp
     ALLOCATE(model%sunazangle(npoints)); model%sunazangle = 0._wp
@@ -113,8 +113,8 @@ CONTAINS
     ALLOCATE(model%z(npoints, nlevels)); model%z = 0._wp
     ALLOCATE(model%dz(npoints, nlevels)); model%dz = 0._wp
     ALLOCATE(model%t(npoints, nlevels)); model%t = 0._wp
-    ALLOCATE(model%sh(npoints, nlevels)); model%sh = 0._wp
-    ALLOCATE(model%tca(npoints, nlevels)); model%tca = 0._wp
+    ALLOCATE(model%q(npoints, nlevels)); model%q = 0._wp
+    ALLOCATE(model%clc(npoints, nlevels)); model%clc = 0._wp
     ALLOCATE(model%reff(npoints, nlevels)); model%reff = 0._wp
     ALLOCATE(model%cdnc(npoints, nlevels)); model%cdnc = 0._wp
     ALLOCATE(model%iwc(npoints, nlevels)); model%iwc = 0._wp
@@ -145,21 +145,22 @@ CONTAINS
 
     model%lat       =  icon%lat
     model%lon       =  icon%lon
-    model%orography =  icon%orography
-    model%u_wind    =  icon%u_wind
-    model%v_wind    =  icon%v_wind
-    model%skt       =  icon%skt
-    model%psfc      =  icon%psfc
-    model%q2m       =  icon%q2m
-    model%t2m       =  icon%t2m
+    model%topography =  icon%topography
+    model%u_10m     =  icon%u_10m
+    model%v_10m     =  icon%v_10m
+    model%ts        =  icon%ts
+    model%ps        =  icon%ps
+    model%q_2m      =  icon%q_2m
+    model%t_2m      =  icon%t_2m
+
     model%landmask  =  icon%landmask
 
     model%p         =  icon%p
     model%z         =  icon%z
     model%dz        =  icon%dz
     model%t         =  icon%t
-    model%sh        =  icon%q
-    model%tca       =  icon%tca
+    model%q         =  icon%q
+    model%clc       =  icon%clc
     model%iwc       =  icon%iwc
     model%lwc       =  icon%lwc
     model%reff      =  icon%reff

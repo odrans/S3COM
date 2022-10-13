@@ -282,9 +282,9 @@ MODULE MOD_READ_ICON
              !!2D variables
           CASE ('topography_c') !Orography
              IF (Lpoint) THEN
-                icon%orography(1:npoints) = x1(1:npoints)
+                icon%topography(1:npoints) = x1(1:npoints)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%orography)
+                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%topography)
              ENDIF
           CASE ('FR_LAND') !Land use class fraction
              IF (Lpoint) THEN
@@ -294,39 +294,39 @@ MODULE MOD_READ_ICON
              ENDIF
           CASE ('ps') !Surface pressure
              IF (Lpoint) THEN
-                icon%psfc(1:npoints) = x1(1:npoints)
+                icon%ps(1:npoints) = x1(1:npoints)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%psfc)
+                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%ps)
              ENDIF
           CASE ('t_s') !Skin temperature
              IF (Lpoint) THEN
-                icon%skt(1:npoints) = x1(1:npoints)
+                icon%ts(1:npoints) = x1(1:npoints)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%skt)
+                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%ts)
              ENDIF
           CASE ('tas') !Temperature in 2m
              IF (Lpoint) THEN
-                icon%t2m(1:npoints) = x1(1:npoints)
+                icon%t_2m(1:npoints) = x1(1:npoints)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%t2m)
+                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%t_2m)
              ENDIF
           CASE ('huss') !Specific water vapour content in 2m
              IF (Lpoint) THEN
-                icon%q2m(1:npoints) = x1(1:npoints)
+                icon%q_2m(1:npoints) = x1(1:npoints)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%q2m)
+                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%q_2m)
              ENDIF
-          CASE ('u_10m') !Zonal wind in 2m
+          CASE ('u_10m') !Zonal wind in 10 m
              IF (Lpoint) THEN
-                icon%u_wind(1:npoints) = x1(1:npoints)
+                icon%u_10m(1:npoints) = x1(1:npoints)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%u_wind)
+                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%u_10m)
              ENDIF
-          CASE ('v_10m') !Meridional wind in 2m
+          CASE ('v_10m') !Meridional wind in 10 m
              IF (Lpoint) THEN
-                icon%v_wind(1:npoints) = x1(1:npoints)
+                icon%v_10m(1:npoints) = x1(1:npoints)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%v_wind)
+                CALL map_ll_to_point(Na,Nb,npoints,x2=x2,y1=icon%v_10m)
              ENDIF
 
              !!3D variables
@@ -362,9 +362,9 @@ MODULE MOD_READ_ICON
              ENDIF
           CASE ('clc') !Cloud cover
              IF (Lpoint) THEN
-                icon%tca(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%clc(1:npoints,:) = x2(1:npoints,1:nlevels)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%tca)
+                CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%clc)
              ENDIF
           CASE ('clw') !Specific cloud water content
              IF (Lpoint) THEN

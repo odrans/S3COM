@@ -94,7 +94,7 @@ MODULE mod_model_cloud
          
          ! idx_oe = idx_rttov(oe)
 
-         ! oe%cla = rttov%tca
+         ! oe%cla = rttov%clc
 
          ! DO ipoint = 1, size(idx_oe)
 
@@ -110,7 +110,7 @@ MODULE mod_model_cloud
          ! ENDDO
 
          ! rttov%iwc => oe%iwc
-         ! rttov%tca => oe%cla
+         ! rttov%clc => oe%cla
          
       END SUBROUTINE init_cloudprof
       

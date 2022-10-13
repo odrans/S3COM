@@ -150,21 +150,21 @@ MODULE s3com_types
           lat_orig,                           & !Latitude  that won't be regridded (degress north)
           lon,                                & !Longitude (degrees east)
           lat,                                & !Latitude (degress north)
-          orography,                          & !Surface height
+          topography,                         & !Surface height
           landmask,                           & !Land/sea mask (0/1)
-          psfc,                               & !Surface pressure (Pa)
-          skt,                                & !Skin temperature (K)
-          t2m,                                & !2m temperature (K)
-          q2m,                                & !2m specific water vapor content (kg/kg)
-          u_wind,                             & !U-component of wind (m/s)
-          v_wind                                !V-component of wind (m/s)
+          ps,                                 & !Surface pressure (Pa)
+          ts,                                 & !Skin temperature (K)
+          t_2m,                                & !2m temperature (K)
+          q_2m,                                & !2m specific water vapor content (kg/kg)
+          u_10m,                              & !U-component of wind (m/s)
+          v_10m                                !V-component of wind (m/s)
      REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
           p,                                    & !Model pressure levels (pa)
           z,                                    & !Model level height (m)
           zh,                                   & !Model level height at half-levels (m)
           t,                                    & !Temperature (K)
           q,                                    & !Specific humidity (kg/kg)
-          tca,                                  & !Total cloud fraction (0-1)
+          clc,                                  & !Total cloud fraction (0-1)
           clw,                                  & !Specific cloud water content (kg/kg)
           cli,                                  & !Specific cloud ice content (kg/kg)
           qnc,                                  & !Cloud droplet number concentration (particules/kg)
@@ -184,7 +184,9 @@ MODULE s3com_types
   !! Type containing variables stored for model outputs
   TYPE type_model
      INTEGER(KIND=4) :: &
-          Nlevels, Npoints, Nlat, Nlon, mode !Dimensions
+          nlevels, npoints, nlayers, nlat, nlon, mode, &!Dimensions
+          idx_start,     & ! Starting index for subset profile
+          idx_end          ! Ending index for subset profile
      INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
           height
      INTEGER(KIND=4), DIMENSION(3) :: &
@@ -195,14 +197,14 @@ MODULE s3com_types
           lat_orig,                           & !Latitude  that won't be regridded (degress north)
           lon,                                & !Longitude (degrees east)
           lat,                                & !Latitude (degress north)
-          orography,                          & !Surface height
+          topography,                         & !Surface height
           landmask,                           & !Land/sea mask (0/1)
-          psfc,                               & !Surface pressure (Pa)
-          skt,                                & !Skin temperature (K)
-          t2m,                                & !2m temperature (K)
-          q2m,                                & !2m specific water vapor content (kg/kg)
-          u_wind,                             & !U-component of wind (m/s)
-          v_wind,                             & !V-component of wind (m/s)
+          ps,                                 & !Surface pressure (Pa)
+          ts,                                 & !Skin temperature (K)
+          t_2m,                                & !2m temperature (K)
+          q_2m,                                & !2m specific water vapor content (kg/kg)
+          u_10m,                              & !U-component of wind (m/s)
+          v_10m,                              & !V-component of wind (m/s)
           sunzenangle,                        & !Solar zenith angle
           sunazangle                            !Solar azimuth angle
      REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
@@ -216,8 +218,8 @@ MODULE s3com_types
           zh,                                 & !Model level height at half-levels (m)
           dz,                                 & !Layer thickness (m)
           t,                                  & !Temperature (K)
-          sh,                                 & !Specific humidity (kg/kg)
-          tca,                                & !Total cloud fraction (0-1)
+          q,                                  & !Specific humidity (kg/kg)
+          clc,                                & !Total cloud fraction (0-1)
           qnc,                                & !Cloud droplet number concentration (particules/kg)
           qr,                                 & !Rain mixing ratio (kg/kg)
           qs,                                 & !Snow mixing ratio (kg/kg)
@@ -241,14 +243,14 @@ MODULE s3com_types
      real(wp), dimension(:), pointer :: &
           lat,          & ! Latitude
           lon,          & ! Longitude
-          t_skin,       & ! Surface skin temperature
-          h_surf,       & ! Surface height
-          p_surf,       & ! Surface pressure
-          u_surf,       & ! U component of surface wind
-          v_surf,       & ! V component of surface wind
-          t2m,          & ! 2-m Temperature
-          q2m,          & ! 2-m Specific humidity
-          lsmask,       &  ! land-sea mask
+          ts,           & ! Surface skin temperature
+          topography,   & ! Surface height
+          ps,           & ! Surface pressure
+          u_10m,        & ! U component of surface wind
+          v_10m,        & ! V component of surface wind
+          t_2m,         & ! 2-m Temperature
+          q_2m,         & ! 2-m Specific humidity
+          landmask,     &  ! land-sea mask
           sunzenangle,  & !Solar zenith angle
           sunazangle      !Solar azimuth angle
      real(wp), dimension(:,:), pointer :: &
@@ -262,7 +264,7 @@ MODULE s3com_types
           n2o,          & ! n2o
           so2,          & ! so2
           co,           & !Carbon monoxide
-          tca,          & ! Cloud fraction
+          clc,          & ! Cloud fraction
           iwc,          & ! ice water content
           lwc,          & ! liquid water content
           reff,         & ! droplet effective radius
@@ -283,7 +285,7 @@ MODULE s3com_types
      INTEGER, DIMENSION(:), ALLOCATABLE :: &
           channel_list
      REAL(wp) :: &
-          zenangle, azangle, sunzenangle, sunazangle
+          zenangle, azangle
   END TYPE type_rttov_opt
 
 END MODULE s3com_types

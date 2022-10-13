@@ -146,7 +146,7 @@ PROGRAM S3COM
      IF(nml%flag_output_atm) THEN
         atm_oe%t = rttov_atm%t
         atm_oe%z = rttov_atm%z
-        atm_oe%clc = rttov_atm%tca
+        atm_oe%clc = rttov_atm%clc
         atm_oe%cdnc = rttov_atm%cdnc
         atm_oe%lwc = rttov_atm%lwc
         atm_oe%reff = rttov_atm%reff
