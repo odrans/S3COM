@@ -116,7 +116,6 @@ MODULE MOD_RTTOV
   INTEGER(KIND=jpim)               :: errorstatus              ! Return error status of RTTOV subroutine calls
 
   INTEGER(KIND=jpim) :: atlas_type
-  INTEGER(KIND=jpim) :: alloc_status
   CHARACTER(LEN=11)  :: NameOfRoutine = 'example_fwd'
 
   !!==========================================================================================================================!!
@@ -168,7 +167,7 @@ CONTAINS
 
     !!Local variables
     INTEGER, DIMENSION(:), ALLOCATABLE :: list_points
-    INTEGER                            :: errorstatus, alloc_status, idx_prof, ilevel
+    INTEGER                            :: errorstatus, idx_prof
 
     errorstatus = 0_jpim
 

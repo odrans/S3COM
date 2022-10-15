@@ -47,20 +47,16 @@ PROGRAM S3COM
   TYPE(type_model), TARGET         :: model
   TYPE(type_rttov_atm)    :: rttov_atm, rttov_atm_oe
   TYPE(type_rttov_opt)    :: rttov_opt
-  TYPE(type_s3com)        :: atm_out, atm_oe, atm_oe_ip1, oe_tmp
+  TYPE(type_s3com)        :: atm_out, atm_oe
   TYPE(type_nml)          :: nml
-
-  CHARACTER(LEN = 32) :: fname_nml
 
   REAL(KIND=wp) :: zenangle, azangle
 
   INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: idx_iwp, idx_oe
-  INTEGER(KIND=4) :: i, loc, j
-  INTEGER(KIND=4) :: nchunks, idx_start, idx_end, nPtsPerIt, ichunk
-  INTEGER(KIND=4) :: nidx
-  INTEGER(KIND=4) :: Nlayers, Npoints, npoints_it
+  INTEGER(KIND=4) :: nchunks, idx_start, idx_end, ichunk
+  INTEGER(KIND=4) :: nlayers, npoints, npoints_it
 
-  LOGICAL :: flag_oe, dealloc_rttov
+  LOGICAL :: flag_oe
 
   ! Read information from the namelist file
   CALL namelist_load(nml)
@@ -156,7 +152,7 @@ PROGRAM S3COM
      ENDIF
 
      ! Update the final atmosperic model
-     CALL atm_update(idx_start, idx_end, atm_oe, atm_out)
+     ! CALL atm_update(idx_start, idx_end, atm_oe, atm_out)
 
   ENDDO
 

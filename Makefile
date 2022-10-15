@@ -29,7 +29,7 @@
 prog = s3com
 
 F90      = ifort
-F90FLAGS = -module $(mod) -fpp -qopenmp -g -O0 -debug -traceback -check bounds
+F90FLAGS = -module $(mod) -fpp -qopenmp -g -check all -fpe0 -traceback -debug extended
 # F90FLAGS = -module $(mod) -fpp -qopenmp -march=core-avx2 -g -O3 -debug -traceback -check bounds
 # F90FLAGS = -module $(mod) -fp-model source -qopenmp -g -O3 -debug -traceback -check bounds
 

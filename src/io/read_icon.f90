@@ -487,10 +487,10 @@ MODULE MOD_READ_ICON
 
        !!Local variables
        CHARACTER(LEN=256) :: errmsg, straux
-       CHARACTER(LEN=256) :: dimname(NMAX_DIM), vname
+       CHARACTER(LEN=256) :: dimname(NMAX_DIM)
 
-       INTEGER(KIND=4)                    :: idim, dimsize(NMAX_DIM), vdimid(NMAX_DIM)
-       INTEGER(KIND=4)                    :: ncid, ndims, nvars, ngatts, recdim, errst, vid, vrank
+       INTEGER(KIND=4)                    :: idim, dimsize(NMAX_DIM)
+       INTEGER(KIND=4)                    :: ncid, ndims, nvars, ngatts, recdim, errst
        INTEGER(KIND=4)                    :: nlat, nlon
 
        !!========================================================================================================================!!
