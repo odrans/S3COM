@@ -47,15 +47,15 @@ CONTAINS
     TYPE(type_icon), INTENT(INOUT) :: icon
 
     ! Internal
-    INTEGER(KIND=4) :: nlevels, npoints
+    INTEGER(KIND=4) :: nlayers, npoints
 
     write(6, "(1X, A, 1X, A)", advance='no') "Reading ICON inputs:", trim(fname)
 
-    ! Extract the number of vertical levels and grid points in the input files
-    CALL extract_coordinates(fname, nlevels, npoints)
+    ! Extract the number of vertical layers and grid points in the input files
+    CALL extract_coordinates(fname, nlayers, npoints)
 
     ! Initialize the ICON array
-    CALL icon_init(npoints, nlevels, icon)
+    CALL icon_init(npoints, nlayers, icon)
 
     ! Read input netcdf file containing ICON outputs
     CALL icon_read(fname, icon)
@@ -73,18 +73,17 @@ CONTAINS
     TYPE(type_icon), INTENT(INOUT) :: icon
 
     ! Internal
-    INTEGER(KIND=4) :: i, j, nlevels, npoints
-
+    INTEGER(KIND=4) :: i, j, nlevels, nlayers, npoints
 
     nlevels = icon%nlevels
+    nlayers = icon%nlayers
     npoints = icon%npoints
-
 
     ! Atmospehric structure
     ! ----------------------------------------------------------------------------------------------------
 
-    ! Layer depth
-    icon%dz(:,1:nlevels) = abs(icon%zh(:,1:nlevels) - icon%z(:,1:nlevels)) * 2._wp
+    ! Layer depth (approximate!! why not ifc(i+1) - ifc(i)?)
+    icon%dz(:,1:nlayers) = abs(icon%z_ifc(:,1:nlayers) - icon%z(:,1:nlayers)) * 2._wp
 
     ! ----------------------------------------------------------------------------------------------------
 
@@ -119,7 +118,7 @@ CONTAINS
 
     !Cloud liquid water effective radius (m)
     DO i = 1, Npoints
-       DO j = 1, Nlevels
+       DO j = 1, Nlayers
           IF(icon%cdnc(i,j) .GT. 0) THEN
              icon%Reff(i,j) = (a/2._wp)*(gamma((nu+1._wp+3._wp*b)/mu)/gamma((nu+1._wp+2._wp*b)/mu))*(icon%lwc(i,j) / icon%cdnc(i,j))**b*&
                   (gamma((nu+1._wp)/mu)/gamma((nu+2._wp)/mu))**b
@@ -142,14 +141,21 @@ CONTAINS
 
   END SUBROUTINE icon_process
 
-  SUBROUTINE icon_init(npoints, nlevels, y)
+  SUBROUTINE icon_init(npoints, nlayers, y)
 
     TYPE(type_icon) :: y
-    INTEGER(KIND=4), INTENT(IN) :: npoints, nlevels
+    INTEGER(KIND=4), INTENT(IN) :: npoints, nlayers
+    INTEGER(KIND = 4) :: nlevels
 
-    y%nlevels = nlevels; y%npoints = npoints
+    nlevels = nlayers + 1
+
+    y%npoints = npoints
+    y%nlayers = nlayers
+    y%nlevels = nlevels
 
     ALLOCATE(y%height(nlevels)); y%height = 0._wp
+
+    !! 2D variables
     ALLOCATE(y%lon(npoints)); y%lon = 0._wp
     ALLOCATE(y%lat(npoints)); y%lat = 0._wp
     ALLOCATE(y%lon_orig(npoints)); y%lon_orig = 0._wp
@@ -162,25 +168,31 @@ CONTAINS
     ALLOCATE(y%q_2m(npoints)); y%q_2m = 0._wp
     ALLOCATE(y%u_10m(npoints)); y%u_10m = 0._wp
     ALLOCATE(y%v_10m(npoints)); y%v_10m = 0._wp
-    ALLOCATE(y%p(npoints, nlevels)); y%p = 0._wp
-    ALLOCATE(y%z(npoints, nlevels)); y%z = 0._wp
-    ALLOCATE(y%zh(npoints, nlevels+1)); y%zh = 0._wp
-    ALLOCATE(y%t(npoints, nlevels)); y%t = 0._wp
-    ALLOCATE(y%q(npoints, nlevels)); y%q = 0._wp
-    ALLOCATE(y%clc(npoints, nlevels)); y%clc = 0._wp
-    ALLOCATE(y%clw(npoints, nlevels)); y%clw = 0._wp
-    ALLOCATE(y%cli(npoints, nlevels)); y%cli = 0._wp
-    ALLOCATE(y%qnc(npoints, nlevels)); y%qnc = 0._wp
 
-    ALLOCATE(y%qr(npoints, nlevels)); y%qr = 0._wp
-    ALLOCATE(y%qs(npoints, nlevels)); y%qs = 0._wp
-    ALLOCATE(y%dz(npoints, nlevels)); y%dz = 0._wp
-    ALLOCATE(y%rho(npoints, nlevels)); y%rho = 0._wp
-    ALLOCATE(y%tv(npoints, nlevels)); y%tv = 0._wp
-    ALLOCATE(y%lwc(npoints, nlevels)); y%lwc = 0._wp
-    ALLOCATE(y%iwc(npoints, nlevels)); y%iwc = 0._wp
-    ALLOCATE(y%cdnc(npoints, nlevels)); y%cdnc = 0._wp
-    ALLOCATE(y%Reff(npoints, nlevels)); y%Reff = 0._wp
+    !! 3D variables on atmospheric levels
+    ALLOCATE(y%z_ifc(npoints, nlevels)); y%z_ifc = 0._wp
+    ALLOCATE(y%p_ifc(npoints, nlevels)); y%p_ifc = 0._wp
+    ALLOCATE(y%t_ifc(npoints, nlevels)); y%t_ifc = 0._wp
+    ALLOCATE(y%q_ifc(npoints, nlevels)); y%q_ifc = 0._wp
+
+    !! 3D variables in atmospheric layers
+    ALLOCATE(y%p(npoints, nlayers)); y%p = 0._wp
+    ALLOCATE(y%z(npoints, nlayers)); y%z = 0._wp
+    ALLOCATE(y%t(npoints, nlayers)); y%t = 0._wp
+    ALLOCATE(y%q(npoints, nlayers)); y%q = 0._wp
+    ALLOCATE(y%clc(npoints, nlayers)); y%clc = 0._wp
+    ALLOCATE(y%clw(npoints, nlayers)); y%clw = 0._wp
+    ALLOCATE(y%cli(npoints, nlayers)); y%cli = 0._wp
+    ALLOCATE(y%qnc(npoints, nlayers)); y%qnc = 0._wp
+    ALLOCATE(y%qr(npoints, nlayers)); y%qr = 0._wp
+    ALLOCATE(y%qs(npoints, nlayers)); y%qs = 0._wp
+    ALLOCATE(y%dz(npoints, nlayers)); y%dz = 0._wp
+    ALLOCATE(y%rho(npoints, nlayers)); y%rho = 0._wp
+    ALLOCATE(y%tv(npoints, nlayers)); y%tv = 0._wp
+    ALLOCATE(y%lwc(npoints, nlayers)); y%lwc = 0._wp
+    ALLOCATE(y%iwc(npoints, nlayers)); y%iwc = 0._wp
+    ALLOCATE(y%cdnc(npoints, nlayers)); y%cdnc = 0._wp
+    ALLOCATE(y%Reff(npoints, nlayers)); y%Reff = 0._wp
 
   END SUBROUTINE icon_init
 
@@ -191,9 +203,9 @@ CONTAINS
 
     DEALLOCATE(y%height, y%lon, y%lat, y%lon_orig, y%lat_orig, &
          y%topography, y%landmask, y%ps, y%ts, y%t_2m, y%q_2m, y%u_10m, y%v_10m, &
-         y%p, y%z, y%zh, y%t, y%q, y%clc, y%clw, y%cli, y%qnc, y%qr, y%qs, y%dz, &
-         y%rho, y%tv, &
-         y%lwc, y%iwc, y%cdnc, y%Reff)
+         y%p, y%z, y%z_ifc, y%p_ifc, y%t_ifc, y%q_ifc, &
+         y%t, y%q, y%clc, y%clw, y%cli, y%qnc, y%qr, y%qs, y%dz, &
+         y%rho, y%tv, y%lwc, y%iwc, y%cdnc, y%Reff)
 
   END SUBROUTINE icon_clear
 

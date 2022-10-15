@@ -68,6 +68,7 @@ MODULE s3com_types
      INTEGER(KIND=4) :: &
           nlevels, &
           npoints, &
+          nlayers, &
           nlat, &
           nlon, &
           mode
@@ -87,11 +88,14 @@ MODULE s3com_types
           u_10m,                              & !U-component of wind (m/s)
           v_10m                                !V-component of wind (m/s)
      REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
-          p,                                    & !Model pressure levels (pa)
-          z,                                    & !Model level height (m)
-          zh,                                   & !Model level height at half-levels (m)
+          p,                                    & !Layer pressure (Pa)
+          p_ifc,                                & !Pressure at half-level center (Pa)
+          z,                                    & !Layer height (m)
+          z_ifc,                                & !Height at half-levels center (m)
           t,                                    & !Temperature (K)
+          t_ifc,                                & !Temperature at half-levels center
           q,                                    & !Specific humidity (kg/kg)
+          q_ifc,                                & !Specific humidity at half level center (kg/kg)
           clc,                                  & !Total cloud fraction (0-1)
           clw,                                  & !Specific cloud water content (kg/kg)
           cli,                                  & !Specific cloud ice content (kg/kg)

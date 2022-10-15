@@ -46,7 +46,7 @@ CONTAINS
     TYPE(type_model), INTENT(OUT) :: model
 
     ! Internal
-    INTEGER(KIND=4) :: nlevels, npoints
+    INTEGER(KIND=4) :: nlayers, npoints
     TYPE(type_icon) :: icon
 
     ! Load input data
@@ -54,10 +54,10 @@ CONTAINS
 
     ! Coordinates
     npoints = icon%npoints
-    nlevels = icon%nlevels
+    nlayers = icon%nlayers
 
     ! Initialize model array
-    CALL models_init(model, npoints, nlevels)
+    CALL models_init(model, npoints, nlayers)
 
     ! Set up part of the model with ICON data
     CALL models_setup_icon(model, icon)
@@ -73,18 +73,23 @@ CONTAINS
   END SUBROUTINE models_load
 
 
-  SUBROUTINE models_init(model, npoints, nlevels)
+  SUBROUTINE models_init(model, npoints, nlayers)
 
     ! Input variables
-    INTEGER(KIND = 4), INTENT(IN) :: npoints, nlevels
+    INTEGER(KIND = 4), INTENT(IN) :: npoints, nlayers
 
     ! Output variables
     TYPE(type_model), INTENT(OUT)   :: model
 
     ! Internal variables
+    INTEGER(KIND = 4) :: nlevels
 
-    model%nPoints   =  npoints
-    model%nLevels   =  nlevels
+    nlevels = nlayers + 1
+
+    model%npoints   =  npoints
+    model%nlayers   =  nlayers
+    model%nlevels   =  nlevels
+
 
     !! 2D fields
     ALLOCATE(model%lat(npoints)); model%lat = 0._wp
@@ -103,22 +108,24 @@ CONTAINS
     ALLOCATE(model%sunzenangle(npoints)); model%sunzenangle = 0._wp
     ALLOCATE(model%sunazangle(npoints)); model%sunazangle = 0._wp
 
-    !! 3D fields
+    !! 3D fields at atmospheric levels
     ALLOCATE(model%co2(npoints, nlevels)); model%co2 = 0._wp
     ALLOCATE(model%ch4(npoints, nlevels)); model%ch4 = 0._wp
     ALLOCATE(model%n2o(npoints, nlevels)); model%n2o = 0._wp
     ALLOCATE(model%s2o(npoints, nlevels)); model%s2o = 0._wp
     ALLOCATE(model%co(npoints, nlevels)); model%co = 0._wp
     ALLOCATE(model%p(npoints, nlevels)); model%p = 0._wp
-    ALLOCATE(model%z(npoints, nlevels)); model%z = 0._wp
-    ALLOCATE(model%dz(npoints, nlevels)); model%dz = 0._wp
     ALLOCATE(model%t(npoints, nlevels)); model%t = 0._wp
     ALLOCATE(model%q(npoints, nlevels)); model%q = 0._wp
-    ALLOCATE(model%clc(npoints, nlevels)); model%clc = 0._wp
-    ALLOCATE(model%reff(npoints, nlevels)); model%reff = 0._wp
-    ALLOCATE(model%cdnc(npoints, nlevels)); model%cdnc = 0._wp
-    ALLOCATE(model%iwc(npoints, nlevels)); model%iwc = 0._wp
-    ALLOCATE(model%lwc(npoints, nlevels)); model%lwc = 0._wp
+
+    !! 3D fields in atmospheric layers
+    ALLOCATE(model%z(npoints, nlayers)); model%z = 0._wp
+    ALLOCATE(model%dz(npoints, nlayers)); model%dz = 0._wp
+    ALLOCATE(model%clc(npoints, nlayers)); model%clc = 0._wp
+    ALLOCATE(model%reff(npoints, nlayers)); model%reff = 0._wp
+    ALLOCATE(model%cdnc(npoints, nlayers)); model%cdnc = 0._wp
+    ALLOCATE(model%iwc(npoints, nlayers)); model%iwc = 0._wp
+    ALLOCATE(model%lwc(npoints, nlayers)); model%lwc = 0._wp
 
 
   END SUBROUTINE models_init
@@ -136,12 +143,13 @@ CONTAINS
     model%date = (/02, 05, 2013/)
     model%time = (/12, 00, 00/)
 
-    model%Nlat = icon%nlat
-    model%Nlon = icon%nlon
+    model%nlat = icon%nlat
+    model%nlon = icon%nlon
     model%mode = icon%mode
 
-    model%nPoints   =  icon%nPoints
-    model%nLevels   =  icon%nLevels
+    model%npoints   =  icon%npoints
+    model%nlevels   =  icon%nlevels
+    model%nlayers   =  icon%nlayers
 
     model%lat       =  icon%lat
     model%lon       =  icon%lon
@@ -152,14 +160,13 @@ CONTAINS
     model%ps        =  icon%ps
     model%q_2m      =  icon%q_2m
     model%t_2m      =  icon%t_2m
-
     model%landmask  =  icon%landmask
 
-    model%p         =  icon%p
-    model%z         =  icon%z
+    model%p         =  icon%p_ifc
+    model%z         =  icon%z_ifc
     model%dz        =  icon%dz
-    model%t         =  icon%t
-    model%q         =  icon%q
+    model%t         =  icon%t_ifc
+    model%q         =  icon%q_ifc
     model%clc       =  icon%clc
     model%iwc       =  icon%iwc
     model%lwc       =  icon%lwc

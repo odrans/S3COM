@@ -88,7 +88,7 @@ MODULE MOD_READ_ICON
        INTEGER(KIND=4)                    :: idim, dimsize(NMAX_DIM), vdimid(NMAX_DIM)
        INTEGER(KIND=4)                    :: ncid, ndims, nvars, ngatts, recdim, errst, vid, vrank
        INTEGER(KIND=4)                    :: Na, Nb, Nc, Nd, Ne, i, j, k
-       INTEGER(KIND=4)                    :: npoints, nlevels
+       INTEGER(KIND=4)                    :: npoints, nlevels, nlayers
        INTEGER, DIMENSION(:), ALLOCATABLE :: plon, plat
 
        REAL(wp), DIMENSION(:), ALLOCATABLE :: lat, lon, ll, height
@@ -96,7 +96,7 @@ MODULE MOD_READ_ICON
 
        LOGICAL :: Llat, Llon, Lpoint
 
-       npoints = icon%npoints; nlevels = icon%nlevels
+       npoints = icon%npoints; nlevels = icon%nlevels; nlayers = icon%nlayers
 
        !!========================================================================================================================!!
        !! Checking the opening of the ICON input NetCDF file                                                                     !!
@@ -130,10 +130,10 @@ MODULE MOD_READ_ICON
              CALL s3com_error(routine_name, errmsg)
           ENDIF
 
-          IF ((trim(dimname(idim)) .EQ. 'height') .AND. (nlevels > dimsize(idim))) THEN
-             errmsg = 'Number of levels selected is greater than in input file '//trim(fname)
-             CALL s3com_error(routine_name, errmsg)
-          ENDIF
+          ! IF ((trim(dimname(idim)) .EQ. 'height') .AND. (nlevels > dimsize(idim))) THEN
+          !    errmsg = 'Number of levels selected is greater than in input file '//trim(fname)
+          !    CALL s3com_error(routine_name, errmsg)
+          ! ENDIF
 
           IF (trim(dimname(idim)) .EQ. 'point') THEN
              Lpoint = .TRUE.
@@ -200,12 +200,12 @@ MODULE MOD_READ_ICON
           CALL s3com_error(routine_name,errmsg,errcode=errst)
        ENDIF
 
-       errst = nf90_inq_varid(ncid, 'height', vid)
-       errst = nf90_get_var(ncid, vid, icon%height, start = (/1/), count = (/icon%nlevels/))
-       IF (errst /= 0) THEN
-          errmsg = "Error in nf90_get_var, var: height"
-          CALL s3com_error(routine_name,errmsg,errcode=errst)
-       ENDIF
+       ! errst = nf90_inq_varid(ncid, 'height', vid)
+       ! errst = nf90_get_var(ncid, vid, icon%height, start = (/1/), count = (/icon%nlevels/))
+       ! IF (errst /= 0) THEN
+       !    errmsg = "Error in nf90_get_var, var: height"
+       !    CALL s3com_error(routine_name,errmsg,errcode=errst)
+       ! ENDIF
 
        icon%lon_orig = lon; icon%lat_orig = lat
 
@@ -332,67 +332,85 @@ MODULE MOD_READ_ICON
              !!3D variables
           CASE ('z_mc') !Geometric height at full level center
              IF (Lpoint) THEN
-                icon%z(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%z(1:npoints,:) = x2(1:npoints,1:nlayers)
              ELSE
                 call map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%z)
              ENDIF
           CASE ('z_ifc') !Geometric height at half level center
              if (Lpoint) THEN
-                icon%zh(1:npoints,1:nlevels+1) = x2(1:npoints,1:nlevels+1)
+                icon%z_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
              ELSE
-                CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%zh)
+                CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%z_ifc)
+             ENDIF
+          CASE ('ta_ifc') !Temperature at half level center
+             if (Lpoint) THEN
+                icon%t_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
+             ELSE
+                CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%t_ifc)
+             ENDIF
+          CASE ('pres_ifc') !Pressures at half level center
+             if (Lpoint) THEN
+                icon%p_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
+             ELSE
+                CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%p_ifc)
+             ENDIF
+          CASE ('hus_ifc') !Specific humidity at half level center
+             if (Lpoint) THEN
+                icon%q_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
+             ELSE
+                CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%q_ifc)
              ENDIF
           CASE ('pres') !Air pressure
              IF (Lpoint) THEN
-                icon%p(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%p(1:npoints,:) = x2(1:npoints,1:nlayers)
              ELSE
                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%p)
              ENDIF
           CASE ('ta') !Air temperature
              IF (Lpoint) THEN
-                icon%T(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%T(1:npoints,:) = x2(1:npoints,1:nlayers)
              ELSE
                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%T)
              ENDIF
           CASE ('hus') !Specific humidity
              IF (Lpoint) THEN
-                icon%q(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%q(1:npoints,:) = x2(1:npoints,1:nlayers)
              ELSE
                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%q)
              ENDIF
           CASE ('clc') !Cloud cover
              IF (Lpoint) THEN
-                icon%clc(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%clc(1:npoints,:) = x2(1:npoints,1:nlayers)
              ELSE
                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%clc)
              ENDIF
           CASE ('clw') !Specific cloud water content
              IF (Lpoint) THEN
-                icon%clw(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%clw(1:npoints,:) = x2(1:npoints,1:nlayers)
              ELSE
                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%clw)
              ENDIF
           CASE ('cli') !Specific cloud ice content
              IF (Lpoint) THEN
-                icon%cli(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%cli(1:npoints,:) = x2(1:npoints,1:nlayers)
              ELSE
                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%cli)
              ENDIF
           CASE ('qnc') !Cloud droplet number concentration
              IF (Lpoint) THEN
-                icon%qnc(1:npoints,:) = x2(1:npoints,1:nlevels)
+                icon%qnc(1:npoints,:) = x2(1:npoints,1:nlayers)
              ELSE
                 CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%qnc)
              ENDIF
           CASE ('qr') !Rain mixing ratio
               IF (Lpoint) THEN
-                 icon%qr(1:npoints,:) = x2(1:npoints,1:nlevels)
+                 icon%qr(1:npoints,:) = x2(1:npoints,1:nlayers)
               ELSE
                  CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%qr)
               ENDIF
            CASE ('qs') !Snow mixing ratio
               IF (Lpoint) THEN
-                 icon%qs(1:npoints,:) = x2(1:npoints,1:nlevels)
+                 icon%qs(1:npoints,:) = x2(1:npoints,1:nlayers)
               ELSE
                  CALL map_ll_to_point(Na,Nb,npoints,x3=x3,y2=icon%qs)
               ENDIF
@@ -455,7 +473,7 @@ MODULE MOD_READ_ICON
      END SUBROUTINE icon_read
      
 
-     SUBROUTINE extract_coordinates(fname, Nlevels, Npoints)
+     SUBROUTINE extract_coordinates(fname, nlayers, npoints)
 
        !!Parameters
        CHARACTER(LEN=64), PARAMETER :: routine_name = 'extract_coordinates'
@@ -465,7 +483,7 @@ MODULE MOD_READ_ICON
        CHARACTER(LEN=256), INTENT(IN) :: fname
 
        !!Inputs/Outputs
-       INTEGER(kind = 4), INTENT(INOUT) :: Nlevels, Npoints
+       INTEGER(kind = 4), INTENT(INOUT) :: nlayers, npoints
 
        !!Local variables
        CHARACTER(LEN=256) :: errmsg, straux
@@ -512,7 +530,7 @@ MODULE MOD_READ_ICON
           ENDIF
 
           IF (trim(dimname(idim)) .EQ. 'height') THEN
-             nlevels = dimsize(idim)
+             nlayers = dimsize(idim)
           ENDIF
 
           IF (trim(dimname(idim)) .EQ. 'lat') THEN

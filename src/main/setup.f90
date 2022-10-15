@@ -67,12 +67,12 @@ CONTAINS
 
   END SUBROUTINE atm_update
 
-  SUBROUTINE atm_init(idx_start, idx_end, nlevels, y, flag_oe, nml)
+  SUBROUTINE atm_init(idx_start, idx_end, nlayers, y, flag_oe, nml)
 
     INTEGER(kind=4) :: nchannels
 
     ! Input variables
-    INTEGER(kind=4), INTENT(IN) :: nlevels, idx_start, idx_end
+    INTEGER(kind=4), INTENT(IN) :: nlayers, idx_start, idx_end
     LOGICAL :: flag_oe
 
     ! Output variables
@@ -119,17 +119,17 @@ CONTAINS
     ALLOCATE(y%gip1(npoints)); y%gip1 = 0._wp
 
     IF(nml%flag_output_atm) THEN
-       ALLOCATE(y%t(npoints, nlevels)); y%t = 0._wp
-       ALLOCATE(y%z(npoints, nlevels)); y%z = 0._wp
-       ALLOCATE(y%clc(npoints, nlevels)); y%clc = 0._wp
-       ALLOCATE(y%reff(npoints, nlevels)); y%reff = 0._wp
-       ALLOCATE(y%cdnc(npoints, nlevels)); y%cdnc = 0._wp
-       ALLOCATE(y%lwc(npoints, nlevels)); y%lwc = 0._wp
+       ALLOCATE(y%t(npoints, nlayers)); y%t = 0._wp
+       ALLOCATE(y%z(npoints, nlayers)); y%z = 0._wp
+       ALLOCATE(y%clc(npoints, nlayers)); y%clc = 0._wp
+       ALLOCATE(y%reff(npoints, nlayers)); y%reff = 0._wp
+       ALLOCATE(y%cdnc(npoints, nlayers)); y%cdnc = 0._wp
+       ALLOCATE(y%lwc(npoints, nlayers)); y%lwc = 0._wp
     END IF
 
     IF(flag_oe) THEN
-       ALLOCATE(y%iwc(npoints,nlevels)); y%iwc = 0._wp
-       ALLOCATE(y%cla(npoints,nlevels)); y%cla = 0._wp
+       ALLOCATE(y%iwc(npoints,nlayers)); y%iwc = 0._wp
+       ALLOCATE(y%cla(npoints,nlayers)); y%cla = 0._wp
        ALLOCATE(y%xi(npoints,nstates)); y%xi = 0._wp
        ALLOCATE(y%gi(npoints)); y%gi = 0._wp
        ALLOCATE(y%stepsize(npoints)); y%stepsize = 0._wp

@@ -58,20 +58,20 @@ PROGRAM S3COM
   INTEGER(KIND=4) :: i, loc, j
   INTEGER(KIND=4) :: nchunks, idx_start, idx_end, nPtsPerIt, ichunk
   INTEGER(KIND=4) :: nidx
-  INTEGER(KIND=4) :: Nlevels, Npoints, npoints_it
+  INTEGER(KIND=4) :: Nlayers, Npoints, npoints_it
 
   LOGICAL :: flag_oe, dealloc_rttov
 
-  ! Load namelist
+  ! Read information from the namelist file
   CALL namelist_load(nml)
 
   ! Temporary: setting the viewing angles
   zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
 
-  ! Load selected model inputs
+  ! Load atmospheric data from selected models
   CALL models_load(nml%fname_in, model)
   npoints = model%npoints
-  nlevels = model%nlevels
+  nlayers = model%nlayers
 
   ! Setup the RTTOV optics
   CALL rttov_setup_opt(model, zenangle, azangle, rttov_opt, nml)
@@ -81,7 +81,7 @@ PROGRAM S3COM
 
   ! Initialize `atm_out`: the full atmospheric model to be outputed by S3COM
   flag_oe = .FALSE.
-  CALL atm_init(1, npoints, nlevels, atm_out, flag_oe, nml)
+  CALL atm_init(1, npoints, nlayers, atm_out, flag_oe, nml)
 
   npoints_it = nml%npoints_it
   nChunks = nPoints/nPoints_it
@@ -105,7 +105,7 @@ PROGRAM S3COM
      CALL rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
 
      ! Initialize `atm_oe`: a subset atmospheric model used within the optimal estimation framework
-     CALL atm_init(rttov_atm%idx_start, rttov_atm%idx_end, nlevels, atm_oe, flag_oe, nml)
+     CALL atm_init(rttov_atm%idx_start, rttov_atm%idx_end, nlayers, atm_oe, flag_oe, nml)
 
      IF (nml%flag_retrievals) THEN
 
