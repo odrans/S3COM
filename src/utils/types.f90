@@ -72,6 +72,8 @@ MODULE s3com_types
           nlat, &
           nlon, &
           mode
+     REAL(dp) :: &
+          time
      INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
           height ! height index
      REAL(wp), DIMENSION(:), ALLOCATABLE :: &
@@ -169,6 +171,7 @@ MODULE s3com_types
           nlayers,       & ! Number of layers
           idx_start,     & ! Starting index for subset profile
           idx_end          ! Ending index for subset profile
+
      real(wp), dimension(:), pointer :: &
           lat,          & ! Latitude
           lon,          & ! Longitude
