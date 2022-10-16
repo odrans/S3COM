@@ -29,7 +29,7 @@
 
 MODULE MOD_RTTOV
 
-  USE s3com_types,        ONLY: wp, type_rttov_atm, type_rttov_opt, type_s3com
+  USE s3com_types,        ONLY: wp, type_rttov_atm, type_rttov_opt, type_s3com, type_s3com_new_ss
   USE mod_rttov_utils, ONLY: idx_rttov
 
   !!rttov_const contains useful RTTOV constants
@@ -116,6 +116,7 @@ MODULE MOD_RTTOV
   INTEGER(KIND=jpim)               :: errorstatus              ! Return error status of RTTOV subroutine calls
 
   INTEGER(KIND=jpim) :: atlas_type
+
   CHARACTER(LEN=11)  :: NameOfRoutine = 'example_fwd'
 
   !!==========================================================================================================================!!
@@ -163,7 +164,7 @@ CONTAINS
     LOGICAL, INTENT(IN) :: dealloc !Flag to determine whether to deallocate RTTOV types
 
     !!Inout/Outputs variables
-    TYPE(type_s3com), INTENT(INOUT) :: oe
+    TYPE(type_s3com_new_ss), INTENT(INOUT) :: oe
 
     !!Local variables
     INTEGER, DIMENSION(:), ALLOCATABLE :: list_points
@@ -175,16 +176,6 @@ CONTAINS
 
     list_points = idx_rttov(oe)
     nprof = size(list_points); nlevels = rttov_atm%nlevels
-
-    oe%f_refl_total(list_points,:) = 0._wp
-    oe%f_refl_clear(list_points,:) = 0._wp
-    oe%f_bt_total(list_points,:)   = 0._wp
-    oe%f_bt_clear(list_points,:)   = 0._wp
-    oe%f_rad_total(list_points,:)  = 0._wp
-    oe%f_rad_clear(list_points,:)  = 0._wp
-    oe%f_rad_cloudy(list_points,:) = 0._wp
-    oe%brdf(list_points,:)         = 0._wp
-    oe%emissivity(list_points,:)   = 0._wp
 
     IF (nprof .EQ. 0) RETURN
 
@@ -414,15 +405,15 @@ CONTAINS
 
        DO j = 1+joff, nchannels+joff
 
-          oe%f_refl_total(idx_prof,ichan) = radiance%refl(j)
-          oe%f_refl_clear(idx_prof,ichan) = radiance%refl_clear(j)
-          oe%f_bt_total(idx_prof,ichan)   = radiance%bt(j)
-          oe%f_bt_clear(idx_prof,ichan)   = radiance%bt_clear(j)
-          oe%brdf(idx_prof,ichan)         = reflectance(j)%refl_out
-          oe%emissivity(idx_prof,ichan)   = emissivity(j)%emis_out
-          oe%f_rad_total(idx_prof,ichan)  = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-          oe%f_rad_clear(idx_prof,ichan)  = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-          oe%f_rad_cloudy(idx_prof,ichan) = radiance%cloudy(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+          oe%rad%f_ref_total(idx_prof,ichan)   = radiance%refl(j)
+          oe%rad%f_ref_clear(idx_prof,ichan)   = radiance%refl_clear(j)
+          oe%rad%f_bt_total(idx_prof,ichan)    = radiance%bt(j)
+          oe%rad%f_bt_clear(idx_prof,ichan)    = radiance%bt_clear(j)
+          oe%rad%f_rad_total(idx_prof,ichan)   = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+          oe%rad%f_rad_clear(idx_prof,ichan)   = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+
+          ! oe%brdf(idx_prof,ichan)         = reflectance(j)%refl_out
+          ! oe%emissivity(idx_prof,ichan)   = emissivity(j)%emis_out
 
           ichan = ichan + 1
 

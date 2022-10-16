@@ -263,7 +263,6 @@ MODULE s3com_types
           clc, &
           reff, &
           cdnc
-
      REAL(KIND=wp), DIMENSION(:,:,:), ALLOCATABLE :: &
           K,                                           &
           Kt,                                          &
@@ -291,6 +290,61 @@ MODULE s3com_types
           cdnc_ret,                                &
           cdnc_model
   END TYPE type_s3com
+
+
+  !!Type containing variables used by S3COM for retrievals
+  TYPE type_s3com_rad
+     REAL(KIND=wp), DIMENSION(:), ALLOCATABLE ::   &
+          wavelength
+     REAL(KIND=wp), DIMENSION(:,:), ALLOCATABLE :: &
+          y,                                       &
+          f,                                       &
+          f_ref_total,                             &
+          f_ref_clear,                             &
+          f_bt_total,                              &
+          f_bt_clear,                              &
+          f_rad_total,                             &
+          f_rad_clear
+  END TYPE type_s3com_rad
+
+  TYPE type_s3com_new
+     INTEGER(KIND=4) :: &
+          npoints,      &
+          nlevels,      &
+          nlayers,      &
+          nmeas,        &
+          nstates
+     TYPE(type_s3com_rad) :: rad
+  END TYPE type_s3com_new
+
+
+  !!Type containing variables used by S3COM for retrievals
+  TYPE type_s3com_rad_ss
+     REAL(KIND=wp), DIMENSION(:), POINTER ::   &
+          wavelength
+     REAL(KIND=wp), DIMENSION(:,:), POINTER :: &
+          y,                                       &
+          f,                                       &
+          f_ref_total,                             &
+          f_ref_clear,                             &
+          f_bt_total,                              &
+          f_bt_clear,                              &
+          f_rad_total,                             &
+          f_rad_clear
+  END TYPE type_s3com_rad_ss
+
+  TYPE type_s3com_new_ss
+     INTEGER(KIND=4), POINTER :: &
+          npoints,      &
+          nlevels,      &
+          nlayers,      &
+          nmeas,        &
+          nstates
+     LOGICAL, DIMENSION(:), ALLOCATABLE :: &
+          flag_rttov
+     TYPE(type_s3com_rad_ss) :: rad
+  END TYPE type_s3com_new_ss
+
 
 
 

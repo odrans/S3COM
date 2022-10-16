@@ -30,7 +30,7 @@
 
 MODULE MOD_RTTOV_INTERFACE
 
-  USE s3com_types,  ONLY: wp, type_rttov_opt, type_nml
+  USE s3com_types,  ONLY: wp, type_rttov_opt, type_nml, type_s3com_new
 
   USE rttov_const, ONLY: &
        surftype_sea,      &
@@ -77,10 +77,11 @@ MODULE MOD_RTTOV_INTERFACE
 
 CONTAINS
 
-  SUBROUTINE RTTOV_INIT(rttov_opt, nml)
+  SUBROUTINE RTTOV_INIT(rttov_opt, nml, s3com)
 
     TYPE(type_rttov_opt), INTENT(in) :: rttov_opt
     TYPE(type_nml), intent(IN) :: nml
+    TYPE(type_s3com_new), INTENT(INOUT) :: s3com
 
     !!Local variables
     CHARACTER(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2
@@ -213,7 +214,7 @@ CONTAINS
 
     ENDIF
 
-    WRITE(*,*) 10000._wp / coefs%coef%ff_cwn(channel_list(:))
+    s3com%rad%wavelength = 10000._wp / coefs%coef%ff_cwn(channel_list(:))
 
   END SUBROUTINE RTTOV_INIT
 

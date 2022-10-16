@@ -35,7 +35,7 @@ MODULE MOD_RTTOV_SETUP
    
    CONTAINS
    
-      SUBROUTINE RTTOV_SETUP_OPT(model, zenangle, azangle, rttov_opt, nml)
+      SUBROUTINE RTTOV_SETUP_OPT(model, nml, zenangle, azangle, rttov_opt)
          
          USE s3com_types,  ONLY: type_rttov_opt, type_nml, type_model
          USE s3com_config, ONLY: RTTOV_DOSOLAR
@@ -78,10 +78,11 @@ MODULE MOD_RTTOV_SETUP
          
          nidx = idx_end - idx_start + 1
 
-         rttov_atm%nPoints     => nidx
+         rttov_atm%npoints     => nidx
          rttov_atm%idx_start   => idx_start
          rttov_atm%idx_end     => idx_end
-         rttov_atm%nlevels     => model%nLevels
+         rttov_atm%nlevels     => model%nlevels
+         rttov_atm%nlayers     => model%nlayers
 
          rttov_atm%lat         => model%lat(idx_start:idx_end)
          rttov_atm%lon         => model%lon(idx_start:idx_end)

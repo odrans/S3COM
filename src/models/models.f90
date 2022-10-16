@@ -29,7 +29,7 @@
 
 MODULE MOD_MODELS
 
-  USE s3com_types,         ONLY: wp, type_icon, type_model
+  USE s3com_types,         ONLY: wp, type_icon, type_model, type_nml
   USE mod_icon,            ONLY: icon_load, icon_clear
   USE mod_utils_math,      ONLY: solar_angles
 
@@ -37,10 +37,10 @@ MODULE MOD_MODELS
 
 CONTAINS
 
-  SUBROUTINE models_load(fname, model)
+  SUBROUTINE models_load(nml, model)
 
     ! Inputs
-    CHARACTER(LEN=256), INTENT(IN) :: fname
+    TYPE(type_nml), INTENT(IN)     :: nml
 
     ! Output variables
     TYPE(type_model), INTENT(OUT) :: model
@@ -50,7 +50,7 @@ CONTAINS
     TYPE(type_icon) :: icon
 
     ! Load input data
-    CALL icon_load(fname, icon)
+    CALL icon_load(nml%fname_in, icon)
 
     ! Coordinates
     npoints = icon%npoints

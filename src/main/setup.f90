@@ -29,7 +29,8 @@
 
 MODULE mod_atm_init
 
-  USE s3com_types,  ONLY: type_s3com, wp, type_nml, type_icon, type_model
+  USE s3com_types,  ONLY: type_s3com, wp, type_nml, type_icon, type_model, type_rttov_atm, type_s3com_new, type_s3com_new_ss
+
   USE s3com_config, ONLY: nstates, apriori_iwp
 
   IMPLICIT NONE
@@ -152,6 +153,73 @@ CONTAINS
     y%Xa(:,1) = apriori_iwp
 
   END SUBROUTINE atm_init
+
+
+  SUBROUTINE s3com_init(nml, model, s3com)
+
+    TYPE(type_nml), INTENT(IN)        :: nml
+    TYPE(type_model), INTENT(IN)      :: model
+
+    TYPE(type_s3com_new), INTENT(OUT)     :: s3com
+
+    INTEGER(KIND = 4) :: npoints, nlayers, nlevels, nstates, nmeas
+
+    npoints = model%npoints
+    nlevels = model%nlevels
+    nlayers = model%nlayers
+    nstates = 1
+    nmeas = nml%nchannels
+
+    s3com%npoints = npoints
+    s3com%nlayers = nlayers
+    s3com%nlevels = nlevels
+    s3com%nstates = 1
+    s3com%nmeas = nmeas
+
+    ALLOCATE(s3com%rad%wavelength(nmeas)); s3com%rad%wavelength = 0._wp
+
+    ALLOCATE(s3com%rad%y(npoints, nmeas)); s3com%rad%y = 0._wp
+    ALLOCATE(s3com%rad%f(npoints, nmeas)); s3com%rad%f = 0._wp
+    ALLOCATE(s3com%rad%f_ref_total(npoints, nmeas)); s3com%rad%f_ref_total = 0._wp
+    ALLOCATE(s3com%rad%f_ref_clear(npoints, nmeas)); s3com%rad%f_ref_clear = 0._wp
+    ALLOCATE(s3com%rad%f_bt_total(npoints, nmeas)); s3com%rad%f_bt_total = 0._wp
+    ALLOCATE(s3com%rad%f_bt_clear(npoints, nmeas)); s3com%rad%f_bt_clear = 0._wp
+    ALLOCATE(s3com%rad%f_rad_total(npoints, nmeas)); s3com%rad%f_rad_total = 0._wp
+    ALLOCATE(s3com%rad%f_rad_clear(npoints, nmeas)); s3com%rad%f_rad_clear = 0._wp
+
+    RETURN
+
+  END SUBROUTINE s3com_init
+
+
+
+  SUBROUTINE s3com_subset(s3com, rttov_atm, oe)
+
+    TYPE(type_s3com_new), TARGET, INTENT(IN)     :: s3com
+    TYPE(type_rttov_atm), INTENT(IN)     :: rttov_atm
+
+    TYPE(type_s3com_new_ss), INTENT(OUT) :: oe
+
+    INTEGER(KIND=4) :: idx_start, idx_end, npoints
+
+    idx_start = rttov_atm%idx_start
+    idx_end = rttov_atm%idx_end
+    npoints = idx_end - idx_start + 1
+
+    ALLOCATE(oe%flag_rttov(npoints)); oe%flag_rttov = .TRUE.
+
+    oe%npoints => s3com%npoints
+
+    oe%rad%f_ref_total => s3com%rad%f_ref_total(idx_start:idx_end,:)
+    oe%rad%f_ref_clear => s3com%rad%f_ref_clear(idx_start:idx_end,:)
+    oe%rad%f_bt_total => s3com%rad%f_bt_total(idx_start:idx_end,:)
+    oe%rad%f_bt_clear => s3com%rad%f_bt_clear(idx_start:idx_end,:)
+    oe%rad%f_rad_total => s3com%rad%f_rad_total(idx_start:idx_end,:)
+    oe%rad%f_rad_clear => s3com%rad%f_rad_clear(idx_start:idx_end,:)
+
+    RETURN
+
+  END SUBROUTINE s3com_subset
 
 
 END MODULE mod_atm_init
