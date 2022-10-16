@@ -303,9 +303,6 @@ CONTAINS
     !! 6. Specify surface emissivity and reflectance                                                                      !!
     !!--------------------------------------------------------------------------------------------------------------------!!
 
-    !In this example we have no values for input emissivity
-    !emissivity(:)%emis_in = 0._jprb
-
     !!Use emissivity atlas
     CALL rttov_get_emis( &
          errorstatus,    &
@@ -325,8 +322,6 @@ CONTAINS
     calcemis(:) = (emissivity(:)%emis_in <= 0._jprb)
 
     IF (opts%rt_ir%addsolar) THEN
-       !In this example we have no values for input reflectances
-       !reflectance(:)%refl_in = 0._jprb
 
        !!Use BRDF atlas
        CALL rttov_get_brdf(         &

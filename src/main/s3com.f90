@@ -29,7 +29,7 @@
 
 PROGRAM S3COM_MAIN
 
-  USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_s3com, type_nml, type_model, type_s3com_new, type_s3com_new_ss
+  USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_nml, type_model, type_s3com_new, type_s3com_new_ss
   USE mod_io_namelist,     ONLY: namelist_load
   USE mod_rttov_interface, ONLY: rttov_init
   USE mod_rttov_setup,     ONLY: rttov_setup_opt, rttov_setup_atm
@@ -45,9 +45,8 @@ PROGRAM S3COM_MAIN
   IMPLICIT NONE
 
   TYPE(type_model), TARGET      :: model
-  TYPE(type_rttov_atm)          :: rttov_atm, rttov_atm_oe
+  TYPE(type_rttov_atm)          :: rttov_atm
   TYPE(type_rttov_opt)          :: rttov_opt
-  TYPE(type_s3com)              :: atm_out, atm_oe
   TYPE(type_s3com_new), TARGET  :: s3com
   TYPE(type_nml)                :: nml
   TYPE(type_s3com_new_ss)       :: oe
@@ -73,24 +72,17 @@ PROGRAM S3COM_MAIN
 
   CALL s3com_init(nml, model, s3com)
 
-
   ! Setup the RTTOV optics (`rttov_opt` created)
   CALL rttov_setup_opt(model, nml, zenangle, azangle, rttov_opt)
 
   ! Initialize RTTOV (loading surface data and optical properties)
   CALL rttov_init(rttov_opt, nml, s3com)
 
-  ! Initialize `atm_out`: the full atmospheric model to be outputed by S3COM
-  flag_oe = .FALSE.
-  CALL atm_init(1, npoints, nlayers, atm_out, flag_oe, nml)
-
   ! Compute the amount of data chunk to be treated simultaneously
   npoints_it = nml%npoints_it
   nChunks = npoints / npoints_it
   IF (MOD(npoints,npoints_it)/=0) nchunks = nchunks + 1
   IF (npoints .EQ. npoints_it) nChunks = 1
-
-  flag_oe = .TRUE.
 
   ! Loop over data points, by chunks
   DO iChunk = 1, nChunks
@@ -108,9 +100,7 @@ PROGRAM S3COM_MAIN
      ! Subset the atmosphere (`rttov_atm` created as pointer to `model`)
      CALL rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
 
-     ! Initialize `atm_oe`: a subset atmospheric model used within the optimal estimation framework
-     CALL atm_init(rttov_atm%idx_start, rttov_atm%idx_end, nlayers, atm_oe, flag_oe, nml)
-
+     ! Point to the corresponding parts of the s3com structure
      CALL s3com_subset(s3com, rttov_atm, oe)
 
      IF (nml%flag_retrievals) THEN
@@ -137,7 +127,7 @@ PROGRAM S3COM_MAIN
 
      ELSE
 
-        atm_oe%flag_rttov(:) = .TRUE.
+        oe%flag_rttov(:) = .TRUE.
         CALL run_rttov(rttov_atm, rttov_opt, oe, dealloc = .FALSE.)
 
      ENDIF

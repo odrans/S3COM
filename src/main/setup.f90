@@ -177,7 +177,6 @@ CONTAINS
     s3com%nmeas = nmeas
 
     ALLOCATE(s3com%rad%wavelength(nmeas)); s3com%rad%wavelength = 0._wp
-
     ALLOCATE(s3com%rad%y(npoints, nmeas)); s3com%rad%y = 0._wp
     ALLOCATE(s3com%rad%f(npoints, nmeas)); s3com%rad%f = 0._wp
     ALLOCATE(s3com%rad%f_ref_total(npoints, nmeas)); s3com%rad%f_ref_total = 0._wp
@@ -206,6 +205,7 @@ CONTAINS
     idx_end = rttov_atm%idx_end
     npoints = idx_end - idx_start + 1
 
+    IF(ALLOCATED(oe%flag_rttov)) DEALLOCATE(oe%flag_rttov)
     ALLOCATE(oe%flag_rttov(npoints)); oe%flag_rttov = .TRUE.
 
     oe%npoints => s3com%npoints
