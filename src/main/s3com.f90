@@ -34,7 +34,7 @@ program s3com_main
   use mod_rttov_interface, only: rttov_init
   use mod_rttov_setup,     only: rttov_setup_opt, rttov_setup_atm
   use mod_rttov,           only: run_rttov
-  use mod_atm_init,        only: atm_init, atm_update, s3com_init, s3com_subset
+  use mod_atm_init,        only: s3com_init, s3com_subset
   use mod_models,          only: models_load
   use mod_utils_math,      only: n_chunks
   !  use mod_model_cloud,     only: init_zcloud, init_cloudprof
