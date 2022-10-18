@@ -94,41 +94,24 @@ CONTAINS
     model%time = (/0, 0, 0/)
 
     !! 2D fields
-    ALLOCATE(model%lat(npoints)); model%lat = 0._wp
-    ALLOCATE(model%lon(npoints)); model%lon = 0._wp
-    ALLOCATE(model%lat_orig(npoints)); model%lat_orig = 0._wp
-    ALLOCATE(model%lon_orig(npoints)); model%lon_orig = 0._wp
-
-    ALLOCATE(model%topography(npoints)); model%topography = 0._wp
-    ALLOCATE(model%u_10m(npoints)); model%u_10m = 0._wp
-    ALLOCATE(model%v_10m(npoints)); model%v_10m = 0._wp
-    ALLOCATE(model%ts(npoints)); model%ts = 0._wp
-    ALLOCATE(model%ps(npoints)); model%ps = 0._wp
-    ALLOCATE(model%q_2m(npoints)); model%q_2m = 0._wp
-    ALLOCATE(model%t_2m(npoints)); model%t_2m = 0._wp
-    ALLOCATE(model%landmask(npoints)); model%landmask = 0._wp
-    ALLOCATE(model%sunzenangle(npoints)); model%sunzenangle = 0._wp
-    ALLOCATE(model%sunazangle(npoints)); model%sunazangle = 0._wp
+    ALLOCATE(model%lat(npoints), source = 0._wp)
+    ALLOCATE(model%lon, model%lat_orig, model%lon_orig, &
+         model%topography, model%u_10m, model%v_10m, &
+         model%ts, model%ps, model%q_2m, model%t_2m, &
+         model%landmask, model%sunzenangle, model%sunazangle, &
+         mold = model%lat)
 
     !! 3D fields at atmospheric levels
-    ALLOCATE(model%co2(npoints, nlevels)); model%co2 = 0._wp
-    ALLOCATE(model%ch4(npoints, nlevels)); model%ch4 = 0._wp
-    ALLOCATE(model%n2o(npoints, nlevels)); model%n2o = 0._wp
-    ALLOCATE(model%s2o(npoints, nlevels)); model%s2o = 0._wp
-    ALLOCATE(model%co(npoints, nlevels)); model%co = 0._wp
-    ALLOCATE(model%p(npoints, nlevels)); model%p = 0._wp
-    ALLOCATE(model%t(npoints, nlevels)); model%t = 0._wp
-    ALLOCATE(model%q(npoints, nlevels)); model%q = 0._wp
+    ALLOCATE(model%p(npoints, nlevels), source = 0._wp)
+    ALLOCATE(model%t, model%q, model%co2, model%ch4, &
+         model%n2o, model%s2o, model%co, &
+         mold = model%p)
 
     !! 3D fields in atmospheric layers
-    ALLOCATE(model%z(npoints, nlayers)); model%z = 0._wp
-    ALLOCATE(model%dz(npoints, nlayers)); model%dz = 0._wp
-    ALLOCATE(model%clc(npoints, nlayers)); model%clc = 0._wp
-    ALLOCATE(model%reff(npoints, nlayers)); model%reff = 0._wp
-    ALLOCATE(model%cdnc(npoints, nlayers)); model%cdnc = 0._wp
-    ALLOCATE(model%iwc(npoints, nlayers)); model%iwc = 0._wp
-    ALLOCATE(model%lwc(npoints, nlayers)); model%lwc = 0._wp
-
+    ALLOCATE(model%z(npoints, nlayers), source = 0._wp)
+    ALLOCATE(model%dz, model%clc, model%reff, model%cdnc, &
+         model%iwc, model%lwc, &
+         mold = model%z)
 
   END SUBROUTINE models_init
 

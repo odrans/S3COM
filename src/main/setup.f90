@@ -173,18 +173,15 @@ CONTAINS
     s3com%npoints = npoints
     s3com%nlayers = nlayers
     s3com%nlevels = nlevels
-    s3com%nstates = 1
+    s3com%nstates = nstates
     s3com%nmeas = nmeas
 
-    ALLOCATE(s3com%rad%wavelength(nmeas)); s3com%rad%wavelength = 0._wp
-    ALLOCATE(s3com%rad%y(npoints, nmeas)); s3com%rad%y = 0._wp
-    ALLOCATE(s3com%rad%f(npoints, nmeas)); s3com%rad%f = 0._wp
-    ALLOCATE(s3com%rad%f_ref_total(npoints, nmeas)); s3com%rad%f_ref_total = 0._wp
-    ALLOCATE(s3com%rad%f_ref_clear(npoints, nmeas)); s3com%rad%f_ref_clear = 0._wp
-    ALLOCATE(s3com%rad%f_bt_total(npoints, nmeas)); s3com%rad%f_bt_total = 0._wp
-    ALLOCATE(s3com%rad%f_bt_clear(npoints, nmeas)); s3com%rad%f_bt_clear = 0._wp
-    ALLOCATE(s3com%rad%f_rad_total(npoints, nmeas)); s3com%rad%f_rad_total = 0._wp
-    ALLOCATE(s3com%rad%f_rad_clear(npoints, nmeas)); s3com%rad%f_rad_clear = 0._wp
+    ALLOCATE(s3com%rad%wavelength(nmeas), source = 0._wp)
+
+    ALLOCATE(s3com%rad%y(npoints, nmeas), source = 0._wp)
+    ALLOCATE(s3com%rad%f, s3com%rad%f_ref_total, s3com%rad%f_ref_clear, s3com%rad%f_bt_total, &
+         s3com%rad%f_bt_clear, s3com%rad%f_rad_total, s3com%rad%f_rad_clear, &
+         mold = s3com%rad%y)
 
     RETURN
 

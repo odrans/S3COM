@@ -144,7 +144,7 @@ CONTAINS
   SUBROUTINE icon_init(npoints, nlayers, y)
 
     TYPE(type_icon) :: y
-    INTEGER(KIND=4), INTENT(IN) :: npoints, nlayers
+    INTEGER(KIND = 4), INTENT(IN) :: npoints, nlayers
     INTEGER(KIND = 4) :: nlevels
 
     nlevels = nlayers + 1
@@ -153,46 +153,25 @@ CONTAINS
     y%nlayers = nlayers
     y%nlevels = nlevels
 
-    ALLOCATE(y%height(nlevels)); y%height = 0._wp
+    ALLOCATE(y%height(nlevels), source = 0)
 
     !! 2D variables
-    ALLOCATE(y%lon(npoints)); y%lon = 0._wp
-    ALLOCATE(y%lat(npoints)); y%lat = 0._wp
-    ALLOCATE(y%lon_orig(npoints)); y%lon_orig = 0._wp
-    ALLOCATE(y%lat_orig(npoints)); y%lat_orig = 0._wp
-    ALLOCATE(y%topography(npoints)); y%topography = 0._wp
-    ALLOCATE(y%landmask(npoints)); y%landmask = 0._wp
-    ALLOCATE(y%ps(npoints)); y%ps = 0._wp
-    ALLOCATE(y%ts(npoints)); y%ts = 0._wp
-    ALLOCATE(y%t_2m(npoints)); y%t_2m = 0._wp
-    ALLOCATE(y%q_2m(npoints)); y%q_2m = 0._wp
-    ALLOCATE(y%u_10m(npoints)); y%u_10m = 0._wp
-    ALLOCATE(y%v_10m(npoints)); y%v_10m = 0._wp
+    ALLOCATE(y%lon(npoints), source = 0._wp)
+    ALLOCATE(y%lat, y%lon_orig, y%lat_orig, y%topography, y%landmask, &
+         y%ps, y%ts, y%t_2m, y%q_2m, y%u_10m, y%v_10m, &
+         mold = y%lon)
 
     !! 3D variables on atmospheric levels
-    ALLOCATE(y%z_ifc(npoints, nlevels)); y%z_ifc = 0._wp
-    ALLOCATE(y%p_ifc(npoints, nlevels)); y%p_ifc = 0._wp
-    ALLOCATE(y%t_ifc(npoints, nlevels)); y%t_ifc = 0._wp
-    ALLOCATE(y%q_ifc(npoints, nlevels)); y%q_ifc = 0._wp
+    ALLOCATE(y%z_ifc(npoints, nlevels), source = 0._wp)
+    ALLOCATE(y%p_ifc, y%t_ifc, y%q_ifc, &
+         mold = y%z_ifc)
 
     !! 3D variables in atmospheric layers
-    ALLOCATE(y%p(npoints, nlayers)); y%p = 0._wp
-    ALLOCATE(y%z(npoints, nlayers)); y%z = 0._wp
-    ALLOCATE(y%t(npoints, nlayers)); y%t = 0._wp
-    ALLOCATE(y%q(npoints, nlayers)); y%q = 0._wp
-    ALLOCATE(y%clc(npoints, nlayers)); y%clc = 0._wp
-    ALLOCATE(y%clw(npoints, nlayers)); y%clw = 0._wp
-    ALLOCATE(y%cli(npoints, nlayers)); y%cli = 0._wp
-    ALLOCATE(y%qnc(npoints, nlayers)); y%qnc = 0._wp
-    ALLOCATE(y%qr(npoints, nlayers)); y%qr = 0._wp
-    ALLOCATE(y%qs(npoints, nlayers)); y%qs = 0._wp
-    ALLOCATE(y%dz(npoints, nlayers)); y%dz = 0._wp
-    ALLOCATE(y%rho(npoints, nlayers)); y%rho = 0._wp
-    ALLOCATE(y%tv(npoints, nlayers)); y%tv = 0._wp
-    ALLOCATE(y%lwc(npoints, nlayers)); y%lwc = 0._wp
-    ALLOCATE(y%iwc(npoints, nlayers)); y%iwc = 0._wp
-    ALLOCATE(y%cdnc(npoints, nlayers)); y%cdnc = 0._wp
-    ALLOCATE(y%Reff(npoints, nlayers)); y%Reff = 0._wp
+    ALLOCATE(y%z(npoints, nlayers), source = 0._wp)
+    ALLOCATE(y%p, y%t, y%q, y%clc, y%clw, y%cli, &
+         y%qnc, y%qr, y%qs, y%dz, y%rho, y%tv, y%lwc, &
+         y%iwc, y%cdnc, y%reff, &
+         mold = y%z)
 
   END SUBROUTINE icon_init
 
