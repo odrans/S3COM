@@ -27,84 +27,84 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-PROGRAM S3COM_MAIN
+program s3com_main
 
-  USE s3com_types,         ONLY: wp, type_rttov_atm, type_rttov_opt, type_nml, type_model, type_s3com_new, type_s3com_new_ss
-  USE mod_io_namelist,     ONLY: namelist_load
-  USE mod_rttov_interface, ONLY: rttov_init
-  USE mod_rttov_setup,     ONLY: rttov_setup_opt, rttov_setup_atm
-  USE mod_rttov,           ONLY: run_rttov
-  USE mod_atm_init,        ONLY: atm_init, atm_update, s3com_init, s3com_subset
-  USE mod_models,          ONLY: models_load
-  USE mod_utils_math,      ONLY: n_chunks
-!  USE mod_model_cloud,     ONLY: init_zcloud, init_cloudprof
-  USE mod_write_output,    ONLY: write_output
-!  USE mod_oe_utils,        ONLY: idx_ice
-  USE mod_rttov_utils,     ONLY: idx_rttov
-!  USE mod_oe_run,          ONLY: oe_run
+  use s3com_types,         only: wp, type_rttov_atm, type_rttov_opt, type_nml, type_model, type_s3com_new, type_s3com_new_ss
+  use mod_io_namelist,     only: namelist_load
+  use mod_rttov_interface, only: rttov_init
+  use mod_rttov_setup,     only: rttov_setup_opt, rttov_setup_atm
+  use mod_rttov,           only: run_rttov
+  use mod_atm_init,        only: atm_init, atm_update, s3com_init, s3com_subset
+  use mod_models,          only: models_load
+  use mod_utils_math,      only: n_chunks
+  !  use mod_model_cloud,     only: init_zcloud, init_cloudprof
+  use mod_write_output,    only: write_output
+  !  use mod_oe_utils,        only: idx_ice
+  use mod_rttov_utils,     only: idx_rttov
+  !  use mod_oe_run,          only: oe_run
 
-  IMPLICIT NONE
+  implicit none
 
-  TYPE(type_model), TARGET      :: model
-  TYPE(type_rttov_atm)          :: rttov_atm
-  TYPE(type_rttov_opt)          :: rttov_opt
-  TYPE(type_s3com_new), TARGET  :: s3com
-  TYPE(type_nml)                :: nml
-  TYPE(type_s3com_new_ss)       :: oe
+  type(type_model), target      :: model
+  type(type_rttov_atm)          :: rttov_atm
+  type(type_rttov_opt)          :: rttov_opt
+  type(type_s3com_new), target  :: s3com
+  type(type_nml)                :: nml
+  type(type_s3com_new_ss)       :: oe
 
-  REAL(KIND=wp) :: zenangle, azangle
+  real(kind=wp) :: zenangle, azangle
 
-  INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: idx_iwp, idx_oe
-  INTEGER(KIND=4) :: nchunks, idx_start, idx_end, ichunk
-  INTEGER(KIND=4) :: nlayers, npoints, npoints_it
+  integer(kind=4), dimension(:), allocatable :: idx_iwp, idx_oe
+  integer(kind=4) :: nchunks, idx_start, idx_end, ichunk
+  integer(kind=4) :: nlayers, npoints, npoints_it
 
-  LOGICAL :: flag_oe
+  logical :: flag_oe
 
   ! Read namelist file (`nml` created)
-  CALL namelist_load(nml)
+  call namelist_load(nml)
 
   ! Temporary: setting the viewing angles
   zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
 
   ! Load atmospheric data from selected models (`model` created)
-  CALL models_load(nml, model)
+  call models_load(nml, model)
   npoints = model%npoints
   nlayers = model%nlayers
 
-  CALL s3com_init(nml, model, s3com)
+  call s3com_init(nml, model, s3com)
 
   ! Setup the RTTOV optics (`rttov_opt` created)
-  CALL rttov_setup_opt(model, nml, zenangle, azangle, rttov_opt)
+  call rttov_setup_opt(model, nml, zenangle, azangle, rttov_opt)
 
   ! Initialize RTTOV (loading surface data and optical properties)
-  CALL rttov_init(rttov_opt, nml, s3com)
+  call rttov_init(rttov_opt, nml, s3com)
 
   ! Loop over data points, by chunks
   nChunks = n_chunks(npoints, nml%npoints_it)
-  DO iChunk = 1, nChunks
+  do iChunk = 1, nChunks
 
-     WRITE(6,*) ichunk, "/", nchunks
+     write(6,*) ichunk, "/", nchunks
 
      ! Compute starting and end points for the chunk
-     IF (nChunks .EQ. 1) THEN
+     if (nChunks .EQ. 1) then
         idx_start = 1; idx_end = npoints
-     ELSE
+     else
         idx_start = (iChunk-1)*npoints_it+1; idx_end = iChunk*npoints_it
-        IF (idx_end .GT. npoints) idx_end=npoints
-     END IF
+        if (idx_end .gt. npoints) idx_end=npoints
+     end if
 
      ! Subset the atmosphere (`rttov_atm` created as pointer to `model`)
-     CALL rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
+     call rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
 
      ! Point to the corresponding parts of the s3com structure
-     CALL s3com_subset(s3com, rttov_atm, oe)
+     call s3com_subset(s3com, rttov_atm, oe)
 
-     IF (nml%flag_retrievals) THEN
+     if (nml%flag_retrievals) then
 
-        ! CALL rttov_setup_atm(idx_start, idx_end, model, rttov_atm_oe)
+        ! call rttov_setup_atm(idx_start, idx_end, model, rttov_atm_oe)
 
         ! ! Extract the cloud position for ice and liquid phase and modify rttov_atm
-        ! CALL init_zcloud(rttov_atm_oe,atm_oe)
+        ! call init_zcloud(rttov_atm_oe,atm_oe)
 
         ! ! Set conditions to use RTTOV (now: need an ice cloud)
         ! idx_iwp = idx_ice(atm_oe,.TRUE.)
@@ -116,21 +116,21 @@ PROGRAM S3COM_MAIN
         ! ENDIF
 
         ! ! Update the cloud profiles in rttov_atm_oe using parameters from atm_oe
-        ! CALL init_cloudprof(rttov_atm_oe, atm_oe)
+        ! call init_cloudprof(rttov_atm_oe, atm_oe)
 
         ! ! Run rttov on the selected atmosphere
-        ! CALL run_rttov(rttov_atm_oe, rttov_opt, atm_oe, dealloc = .FALSE.)
+        ! call run_rttov(rttov_atm_oe, rttov_opt, atm_oe, dealloc = .FALSE.)
 
-     ELSE
+     else
 
         oe%flag_rttov(:) = .TRUE.
-        CALL run_rttov(rttov_atm, rttov_opt, oe, dealloc = .FALSE.)
+        call run_rttov(rttov_atm, rttov_opt, oe, dealloc = .FALSE.)
 
-     ENDIF
+     end if
 
-  ENDDO
+  end do
 
   ! Write output file
-  CALL write_output(s3com, model, nml)
+  call write_output(s3com, model, nml)
 
-END PROGRAM S3COM_MAIN
+end program s3com_main
