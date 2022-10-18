@@ -188,7 +188,6 @@ CONTAINS
   END SUBROUTINE s3com_init
 
 
-
   SUBROUTINE s3com_subset(s3com, rttov_atm, oe)
 
     TYPE(type_s3com_new), TARGET, INTENT(IN)     :: s3com

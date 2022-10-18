@@ -163,6 +163,16 @@ CONTAINS
 
   END SUBROUTINE solar_angles
 
+  function n_chunks(npoints, npoints_it) result(nchunks)
+    integer(kind=4), intent(in) :: npoints, npoints_it
+    integer(kind=4)             :: nchunks
+
+    nChunks = npoints / npoints_it
+    IF (MOD(npoints,npoints_it)/=0) nchunks = nchunks + 1
+    IF (npoints .EQ. npoints_it) nChunks = 1
+
+  end function n_chunks
+
 
 
 END MODULE mod_utils_math

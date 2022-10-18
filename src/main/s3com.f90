@@ -36,6 +36,7 @@ PROGRAM S3COM_MAIN
   USE mod_rttov,           ONLY: run_rttov
   USE mod_atm_init,        ONLY: atm_init, atm_update, s3com_init, s3com_subset
   USE mod_models,          ONLY: models_load
+  USE mod_utils_math,      ONLY: n_chunks
 !  USE mod_model_cloud,     ONLY: init_zcloud, init_cloudprof
   USE mod_write_output,    ONLY: write_output
 !  USE mod_oe_utils,        ONLY: idx_ice
@@ -78,13 +79,8 @@ PROGRAM S3COM_MAIN
   ! Initialize RTTOV (loading surface data and optical properties)
   CALL rttov_init(rttov_opt, nml, s3com)
 
-  ! Compute the amount of data chunk to be treated simultaneously
-  npoints_it = nml%npoints_it
-  nChunks = npoints / npoints_it
-  IF (MOD(npoints,npoints_it)/=0) nchunks = nchunks + 1
-  IF (npoints .EQ. npoints_it) nChunks = 1
-
   ! Loop over data points, by chunks
+  nChunks = n_chunks(npoints, nml%npoints_it)
   DO iChunk = 1, nChunks
 
      WRITE(6,*) ichunk, "/", nchunks
