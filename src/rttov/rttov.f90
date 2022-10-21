@@ -29,7 +29,7 @@
 
 module MOD_RTTOV
 
-  use s3com_types,        only: wp, type_model, type_rttov_opt, type_s3com, type_s3com_new
+  use s3com_types,        only: wp, type_model, type_rttov_opt, type_s3com
   use mod_rttov_utils, only: idx_rttov
 
   !!rttov_const contains useful RTTOV constants
@@ -164,7 +164,7 @@ contains
     logical, intent(IN) :: dealloc !Flag to determine whether to deallocate RTTOV types
 
     !!Inout/Outputs variables
-    type(type_s3com_new), intent(INOUT) :: oe
+    type(type_s3com), intent(INOUT) :: oe
 
     !!Local variables
     integer, dimension(:), allocatable :: list_points

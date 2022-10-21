@@ -29,7 +29,7 @@
 
 module mod_s3com_setup
 
-  use s3com_types,  only: type_s3com, wp, type_nml, type_icon, type_model, type_s3com_new
+  use s3com_types,  only: wp, type_nml, type_icon, type_model, type_s3com
 
   use s3com_config, only: nstates, apriori_iwp
 
@@ -42,7 +42,7 @@ contains
     type(type_nml), intent(IN)        :: nml
     type(type_model), intent(IN)      :: model
 
-    type(type_s3com_new), intent(OUT)     :: s3com
+    type(type_s3com), intent(OUT)     :: s3com
 
     integer(KIND = 4) :: npoints, nlayers, nlevels, nstates, nmeas
 
@@ -71,10 +71,10 @@ contains
 
   subroutine s3com_subset(s3com, rttov_atm, oe)
 
-    type(type_s3com_new), intent(IN)     :: s3com
+    type(type_s3com), intent(IN)     :: s3com
     type(type_model), intent(IN)     :: rttov_atm
 
-    type(type_s3com_new), intent(OUT) :: oe
+    type(type_s3com), intent(OUT) :: oe
 
     integer(KIND=4) :: idx_start, idx_end, npoints
 
@@ -98,9 +98,9 @@ contains
 
   subroutine s3com_update(s3com, oe)
 
-    type(type_s3com_new), intent(INOUT) :: s3com
+    type(type_s3com), intent(INOUT) :: s3com
 
-    type(type_s3com_new), intent(INOUT) :: oe
+    type(type_s3com), intent(INOUT) :: oe
 
     ! Radiation data
     s3com%rad%f_ref_total(oe%idx_start:oe%idx_end, 1:oe%nmeas) = oe%rad%f_ref_total(1:oe%npoints, 1:oe%nmeas)

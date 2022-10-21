@@ -29,7 +29,7 @@
 
 program s3com_main
 
-  use s3com_types,         only: wp, type_rttov_opt, type_nml, type_model, type_s3com_new
+  use s3com_types,         only: wp, type_rttov_opt, type_nml, type_model, type_s3com
   use mod_io_namelist,     only: namelist_load
   use mod_rttov_interface, only: rttov_init
   use mod_rttov_setup,     only: rttov_setup_opt, rttov_setup_atm
@@ -47,7 +47,7 @@ program s3com_main
 
   type(type_model)              :: model, rttov_atm
   type(type_rttov_opt)          :: rttov_opt
-  type(type_s3com_new)          :: s3com, oe
+  type(type_s3com)          :: s3com, oe
   type(type_nml)                :: nml
 
   real(kind=wp) :: zenangle, azangle

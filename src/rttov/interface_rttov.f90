@@ -30,7 +30,7 @@
 
 module MOD_RTTOV_INTERFACE
 
-  use s3com_types,  only: wp, type_rttov_opt, type_nml, type_s3com_new
+  use s3com_types,  only: wp, type_rttov_opt, type_nml, type_s3com
 
   use rttov_const, only: &
        surftype_sea,      &
@@ -81,7 +81,7 @@ contains
 
     type(type_rttov_opt), intent(in) :: rttov_opt
     type(type_nml), intent(IN) :: nml
-    type(type_s3com_new), intent(INOUT) :: s3com
+    type(type_s3com), intent(INOUT) :: s3com
 
     !!Local variables
     character(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2

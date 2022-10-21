@@ -29,7 +29,7 @@
 
 MODULE mod_rttov_utils
    
-   USE s3com_types, ONLY: wp, type_s3com_new
+   USE s3com_types, ONLY: wp, type_s3com
    
    IMPLICIT NONE
    
@@ -37,7 +37,7 @@ MODULE mod_rttov_utils
    
       FUNCTION idx_rttov(oe)
       
-         TYPE(type_s3com_new), INTENT(IN) :: oe
+         TYPE(type_s3com), INTENT(IN) :: oe
          INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: idx_rttov
          INTEGER(KIND=4), DIMENSION(oe%npoints) :: idx_all
          INTEGER(KIND=4) :: idx, i

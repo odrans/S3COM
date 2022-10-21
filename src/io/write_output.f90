@@ -29,7 +29,7 @@
 
 module MOD_WRITE_OUTPUT
 
-  use s3com_types,  only: type_s3com, type_icon, wp, type_nml, type_model, type_s3com_new
+  use s3com_types,  only: type_icon, wp, type_nml, type_model, type_s3com
   use netcdf
   use mod_read_icon, only: map_point_to_ll
 
@@ -42,7 +42,7 @@ contains
 
     ! Input variables
     type(type_model), intent(IN) :: model
-    type(type_s3com_new), intent(IN) :: s3com
+    type(type_s3com), intent(IN) :: s3com
     type(type_nml), intent(IN) :: nml
 
     call write_output_rad(s3com, model, nml)
@@ -63,7 +63,7 @@ contains
 
     ! Input variables
     type(type_model),       intent(IN) :: model
-    type(type_s3com_new),      intent(IN) :: s3com
+    type(type_s3com),      intent(IN) :: s3com
     type(type_nml),        intent(IN) :: nml
 
     ! Local variables
@@ -202,12 +202,12 @@ contains
 
     fn_out_atm = trim(nml%path_out)//"S3COM"//trim(suffix)//"_atm.nc"
 
-    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%t,     y3=gridded_atm_t)
-    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%z,     y3=gridded_atm_z)
-    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%clc,   y3=gridded_atm_clc)
-    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%cdnc,  y3=gridded_atm_cdnc)
-    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%reff,  y3=gridded_atm_reff)
-    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%lwc,   y3=gridded_atm_lwc)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%atm%t,     y3=gridded_atm_t)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%atm%z,     y3=gridded_atm_z)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%atm%clc,   y3=gridded_atm_clc)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%atm%cdnc,  y3=gridded_atm_cdnc)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%atm%reff,  y3=gridded_atm_reff)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%atm%lwc,   y3=gridded_atm_lwc)
 
     errst = nf90_create(fn_out_atm, NF90_CLOBBER, ncid)
 
@@ -259,66 +259,66 @@ contains
 
 
 ! Write retrieval outputs
-  subroutine write_output_ret(icon, oe, nml)
+  ! subroutine write_output_ret(icon, oe, nml)
 
-    ! Input variables
-    type(type_icon),       intent(IN) :: icon
-    type(type_s3com),      intent(IN) :: oe
-    type(type_nml),        intent(IN) :: nml
+  !   ! Input variables
+  !   type(type_icon),       intent(IN) :: icon
+  !   type(type_s3com),      intent(IN) :: oe
+  !   type(type_nml),        intent(IN) :: nml
 
-    real(KIND=wp), dimension(icon%Nlon, icon%Nlat) :: &
-         gridded_iwp_model, &
-         gridded_iwp_ret, &
-         gridded_g
+  !   real(KIND=wp), dimension(icon%Nlon, icon%Nlat) :: &
+  !        gridded_iwp_model, &
+  !        gridded_iwp_ret, &
+  !        gridded_g
 
-    integer(KIND=4) :: ncid, errst
-    integer(KIND=4) :: &
-         varid_lon, &
-         varid_lat, &
-         varid_iwp_ret, &
-         varid_iwp_mod, &
-         varid_g
+  !   integer(KIND=4) :: ncid, errst
+  !   integer(KIND=4) :: &
+  !        varid_lon, &
+  !        varid_lat, &
+  !        varid_iwp_ret, &
+  !        varid_iwp_mod, &
+  !        varid_g
 
-    integer(KIND=4) :: dimid_lon, dimid_lat, dimid_chan, dimid_latlon(2)
+  !   integer(KIND=4) :: dimid_lon, dimid_lat, dimid_chan, dimid_latlon(2)
 
-    character(LEN = 256) :: fn_out_ret, suffix
+  !   character(LEN = 256) :: fn_out_ret, suffix
 
-    suffix = trim(nml%suffix_out)
-    if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)//"_"
+  !   suffix = trim(nml%suffix_out)
+  !   if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)//"_"
 
-    fn_out_ret = trim(nml%path_out)//"S3COM"//trim(suffix)//"_ret.nc"
+  !   fn_out_ret = trim(nml%path_out)//"S3COM"//trim(suffix)//"_ret.nc"
 
-    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%Xip1(:,1),    y2=gridded_iwp_ret)
-    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%iwp_model(:), y2=gridded_iwp_model)
-    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%gip1(:),      y2=gridded_g)
+  !   call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%Xip1(:,1),    y2=gridded_iwp_ret)
+  !   call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%iwp_model(:), y2=gridded_iwp_model)
+  !   call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%gip1(:),      y2=gridded_g)
 
-    errst = nf90_create(fn_out_ret, NF90_CLOBBER, ncid)
+  !   errst = nf90_create(fn_out_ret, NF90_CLOBBER, ncid)
 
-    errst = nf90_def_dim(ncid, "Longitude", icon%Nlon,       dimid_lon)
-    errst = nf90_def_dim(ncid, "Latitude",  icon%Nlat,       dimid_lat)
+  !   errst = nf90_def_dim(ncid, "Longitude", icon%Nlon,       dimid_lon)
+  !   errst = nf90_def_dim(ncid, "Latitude",  icon%Nlat,       dimid_lat)
 
-    dimid_latlon     = (/dimid_lon, dimid_lat/)
+  !   dimid_latlon     = (/dimid_lon, dimid_lat/)
 
-    errst = nf90_def_var(ncid, "Longitude",       NF90_REAL, dimid_lon,        varid_lon)
-    errst = nf90_def_var(ncid, "Latitude",        NF90_REAL, dimid_lat,        varid_lat)
-    errst = nf90_def_var(ncid, "iwp_ret",         NF90_REAL, dimid_latlon,     varid_iwp_ret)
-    errst = nf90_def_var(ncid, "iwp_model",       NF90_REAL, dimid_latlon,     varid_iwp_mod)
+  !   errst = nf90_def_var(ncid, "Longitude",       NF90_REAL, dimid_lon,        varid_lon)
+  !   errst = nf90_def_var(ncid, "Latitude",        NF90_REAL, dimid_lat,        varid_lat)
+  !   errst = nf90_def_var(ncid, "iwp_ret",         NF90_REAL, dimid_latlon,     varid_iwp_ret)
+  !   errst = nf90_def_var(ncid, "iwp_model",       NF90_REAL, dimid_latlon,     varid_iwp_mod)
 
-    errst = nf90_put_att(ncid, varid_lon,        "units", "degrees_east")
-    errst = nf90_put_att(ncid, varid_lat,        "units", "degrees_north")
-    errst = nf90_put_att(ncid, varid_iwp_ret,    "units", "kg/m2")
-    errst = nf90_put_att(ncid, varid_iwp_mod,    "units", "kg/m2")
+  !   errst = nf90_put_att(ncid, varid_lon,        "units", "degrees_east")
+  !   errst = nf90_put_att(ncid, varid_lat,        "units", "degrees_north")
+  !   errst = nf90_put_att(ncid, varid_iwp_ret,    "units", "kg/m2")
+  !   errst = nf90_put_att(ncid, varid_iwp_mod,    "units", "kg/m2")
 
-    errst = nf90_enddef(ncid)
+  !   errst = nf90_enddef(ncid)
 
-    errst = nf90_put_var(ncid, varid_lon,        icon%lon_orig)
-    errst = nf90_put_var(ncid, varid_lat,        icon%lat_orig)
-    errst = nf90_put_var(ncid, varid_iwp_ret,    gridded_iwp_ret)
-    errst = nf90_put_var(ncid, varid_iwp_mod,    gridded_iwp_model)
+  !   errst = nf90_put_var(ncid, varid_lon,        icon%lon_orig)
+  !   errst = nf90_put_var(ncid, varid_lat,        icon%lat_orig)
+  !   errst = nf90_put_var(ncid, varid_iwp_ret,    gridded_iwp_ret)
+  !   errst = nf90_put_var(ncid, varid_iwp_mod,    gridded_iwp_model)
 
-    errst = nf90_close(ncid)
+  !   errst = nf90_close(ncid)
 
-  end subroutine write_output_ret
+  ! end subroutine write_output_ret
 
 
 

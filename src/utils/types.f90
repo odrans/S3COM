@@ -113,7 +113,6 @@ module s3com_types
           Reff                                    !Cloud liquid water effective radius (m)
   end type type_icon
 
-
   !! Type containing variables stored for model outputs
   type type_model
      integer(kind=4) :: &
@@ -179,7 +178,52 @@ module s3com_types
   end type type_rttov_opt
 
   !!Type containing variables used by S3COM for retrievals
+  type type_s3com_rad
+     real(kind=wp), dimension(:), allocatable ::   &
+          wavelength
+     real(kind=wp), dimension(:,:), allocatable :: &
+          y,                                       &
+          f,                                       &
+          f_ref_total,                             &
+          f_ref_clear,                             &
+          f_bt_total,                              &
+          f_bt_clear,                              &
+          f_rad_total,                             &
+          f_rad_clear
+  end type type_s3com_rad
+
+  type type_s3com_atm
+     real(kind=wp), dimension(:,:), allocatable :: &
+          t,                                       &
+          z,                                       &
+          clc,                                     &
+          cdnc,                                    &
+          reff,                                    &
+          lwc,                                     &
+          f_rad_total,                             &
+          f_rad_clear
+  end type type_s3com_atm
+
+
   type type_s3com
+     integer(kind=4) :: &
+          npoints,      &
+          nlevels,      &
+          nlayers,      &
+          nmeas,        &
+          nstates,      &
+          idx_start,    &
+          idx_end
+     logical, dimension(:), allocatable :: &
+          flag_rttov
+     type(type_s3com_rad) :: rad
+     type(type_s3com_atm) :: atm
+  end type type_s3com
+
+
+
+  !!Type containing variables used by S3COM for retrievals
+  type type_s3com_obsolete
      integer(kind=4) :: &
           nstates,        &
           nmeas,          &
@@ -247,37 +291,8 @@ module s3com_types
           lwp_model,                               &
           cdnc_ret,                                &
           cdnc_model
-  end type type_s3com
+  end type type_s3com_obsolete
 
-
-  !!Type containing variables used by S3COM for retrievals
-  type type_s3com_rad
-     real(kind=wp), dimension(:), allocatable ::   &
-          wavelength
-     real(kind=wp), dimension(:,:), allocatable :: &
-          y,                                       &
-          f,                                       &
-          f_ref_total,                             &
-          f_ref_clear,                             &
-          f_bt_total,                              &
-          f_bt_clear,                              &
-          f_rad_total,                             &
-          f_rad_clear
-  end type type_s3com_rad
-
-  type type_s3com_new
-     integer(kind=4) :: &
-          npoints,      &
-          nlevels,      &
-          nlayers,      &
-          nmeas,        &
-          nstates,      &
-          idx_start,    &
-          idx_end
-     logical, dimension(:), allocatable :: &
-          flag_rttov
-     type(type_s3com_rad) :: rad
-  end type type_s3com_new
 
 
 end module s3com_types
