@@ -27,25 +27,25 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE MOD_WRITE_OUTPUT
+module MOD_WRITE_OUTPUT
 
-  USE s3com_types,  ONLY: type_s3com, type_icon, wp, type_nml, type_rttov_atm, type_model, type_s3com_new
-  USE netcdf
-  USE mod_read_icon, ONLY: map_point_to_ll
+  use s3com_types,  only: type_s3com, type_icon, wp, type_nml, type_model, type_s3com_new
+  use netcdf
+  use mod_read_icon, only: map_point_to_ll
 
-  IMPLICIT NONE
+  implicit none
 
-CONTAINS
+contains
 
   ! Write all S3COM outputs
-  SUBROUTINE write_output(s3com, model, nml)
+  subroutine write_output(s3com, model, nml)
 
     ! Input variables
-    TYPE(type_model), INTENT(IN) :: model
-    TYPE(type_s3com_new), INTENT(IN) :: s3com
-    TYPE(type_nml), INTENT(IN) :: nml
+    type(type_model), intent(IN) :: model
+    type(type_s3com_new), intent(IN) :: s3com
+    type(type_nml), intent(IN) :: nml
 
-    CALL write_output_rad(s3com, model, nml)
+    call write_output_rad(s3com, model, nml)
 
     ! IF(nml%flag_output_atm) THEN
     !    CALL write_output_atm(icon, oe, nml, atm)
@@ -55,19 +55,19 @@ CONTAINS
     !    CALL write_output_ret(icon, oe, nml)
     ! END IF
 
-  END SUBROUTINE write_output
+  end subroutine write_output
 
 
   ! Write radiation outputs, mainly satellite measurements simulated by RTTOV
-  SUBROUTINE write_output_rad(s3com, model, nml)
+  subroutine write_output_rad(s3com, model, nml)
 
     ! Input variables
-    TYPE(type_model),       INTENT(IN) :: model
-    TYPE(type_s3com_new),      INTENT(IN) :: s3com
-    TYPE(type_nml),        INTENT(IN) :: nml
+    type(type_model),       intent(IN) :: model
+    type(type_s3com_new),      intent(IN) :: s3com
+    type(type_nml),        intent(IN) :: nml
 
     ! Local variables
-    REAL(KIND=wp), DIMENSION(model%nlon, model%nlat, nml%nchannels) :: &
+    real(KIND=wp), dimension(model%nlon, model%nlat, nml%nchannels) :: &
          gridded_f_ref_total,  &
          gridded_f_ref_clear,  &
          gridded_f_bt_total,   &
@@ -75,9 +75,9 @@ CONTAINS
          gridded_f_rad_total,  &
          gridded_f_rad_clear
 
-    INTEGER(KIND=4) :: ncid, errst
+    integer(KIND=4) :: ncid, errst
 
-    INTEGER(KIND=4) ::      &
+    integer(KIND=4) ::      &
          varid_lon,         &
          varid_lat,         &
          varid_chan,        &
@@ -88,26 +88,26 @@ CONTAINS
          varid_rad_total,   &
          varid_rad_clear
 
-    INTEGER(KIND=4) ::      &
+    integer(KIND=4) ::      &
          dimid_lon,         &
          dimid_lat,         &
          dimid_chan,        &
          dimid_latlon(2),   &
          dimid_latlonchan(3)
 
-    CHARACTER(LEN = 256) :: fn_out_rad, suffix
+    character(LEN = 256) :: fn_out_rad, suffix
 
     suffix = trim(nml%suffix_out)
-    IF(trim(suffix) .NE. "") suffix = "_"//trim(suffix)//"_"
+    if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)//"_"
 
     fn_out_rad = trim(nml%path_out)//"S3COM"//trim(suffix)//"_rad.nc"
 
-    CALL map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_ref_total, y3=gridded_f_ref_total)
-    CALL map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_ref_clear, y3=gridded_f_ref_clear)
-    CALL map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_bt_total,  y3=gridded_f_bt_total)
-    CALL map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_bt_clear,  y3=gridded_f_bt_clear)
-    CALL map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_rad_total, y3=gridded_f_rad_total)
-    CALL map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_rad_clear, y3=gridded_f_rad_clear)
+    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_ref_total, y3=gridded_f_ref_total)
+    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_ref_clear, y3=gridded_f_ref_clear)
+    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_bt_total,  y3=gridded_f_bt_total)
+    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_bt_clear,  y3=gridded_f_bt_clear)
+    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_rad_total, y3=gridded_f_rad_total)
+    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_rad_clear, y3=gridded_f_rad_clear)
 
     errst = nf90_create(fn_out_rad, NF90_CLOBBER, ncid)
 
@@ -162,18 +162,18 @@ CONTAINS
 
     errst = nf90_close(ncid)
 
-  END SUBROUTINE write_output_rad
+  end subroutine write_output_rad
 
   ! Write atmospheric outputs
-  SUBROUTINE write_output_atm(icon, oe, nml, atm)
+  subroutine write_output_atm(icon, oe, nml, atm)
 
     ! Input variables
-    TYPE(type_icon),       INTENT(IN) :: icon
-    TYPE(type_s3com),      INTENT(IN) :: oe
-    TYPE(type_nml),        INTENT(IN) :: nml
-    TYPE(type_s3com),      INTENT(IN) :: atm
+    type(type_icon),       intent(IN) :: icon
+    type(type_s3com),      intent(IN) :: oe
+    type(type_nml),        intent(IN) :: nml
+    type(type_s3com),      intent(IN) :: atm
 
-    REAL(KIND=wp), DIMENSION(icon%Nlon, icon%Nlat, icon%Nlevels) :: &
+    real(KIND=wp), dimension(icon%Nlon, icon%Nlat, icon%Nlevels) :: &
          gridded_atm_t, &
          gridded_atm_z, &
          gridded_atm_clc, &
@@ -181,8 +181,8 @@ CONTAINS
          gridded_atm_reff, &
          gridded_atm_lwc
 
-    INTEGER(KIND=4) :: ncid, errst
-    INTEGER(KIND=4) :: &
+    integer(KIND=4) :: ncid, errst
+    integer(KIND=4) :: &
          varid_lon, &
          varid_lat, &
          varid_lev, &
@@ -193,21 +193,21 @@ CONTAINS
          varid_atm_reff, &
          varid_atm_lwc
 
-    INTEGER(KIND=4) :: dimid_lon, dimid_lat, dimid_lev, dimid_latlonlev(3)
+    integer(KIND=4) :: dimid_lon, dimid_lat, dimid_lev, dimid_latlonlev(3)
 
-    CHARACTER(LEN = 256) :: fn_out_atm, suffix
+    character(LEN = 256) :: fn_out_atm, suffix
 
     suffix = trim(nml%suffix_out)
-    IF(trim(suffix) .NE. "") suffix = "_"//trim(suffix)//"_"
+    if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)//"_"
 
     fn_out_atm = trim(nml%path_out)//"S3COM"//trim(suffix)//"_atm.nc"
 
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%t,     y3=gridded_atm_t)
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%z,     y3=gridded_atm_z)
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%clc,   y3=gridded_atm_clc)
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%cdnc,  y3=gridded_atm_cdnc)
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%reff,  y3=gridded_atm_reff)
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%lwc,   y3=gridded_atm_lwc)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%t,     y3=gridded_atm_t)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%z,     y3=gridded_atm_z)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%clc,   y3=gridded_atm_clc)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%cdnc,  y3=gridded_atm_cdnc)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%reff,  y3=gridded_atm_reff)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x2=atm%lwc,   y3=gridded_atm_lwc)
 
     errst = nf90_create(fn_out_atm, NF90_CLOBBER, ncid)
 
@@ -255,42 +255,42 @@ CONTAINS
 
     errst = nf90_close(ncid)
 
-  END SUBROUTINE write_output_atm
+  end subroutine write_output_atm
 
 
 ! Write retrieval outputs
-  SUBROUTINE write_output_ret(icon, oe, nml)
+  subroutine write_output_ret(icon, oe, nml)
 
     ! Input variables
-    TYPE(type_icon),       INTENT(IN) :: icon
-    TYPE(type_s3com),      INTENT(IN) :: oe
-    TYPE(type_nml),        INTENT(IN) :: nml
+    type(type_icon),       intent(IN) :: icon
+    type(type_s3com),      intent(IN) :: oe
+    type(type_nml),        intent(IN) :: nml
 
-    REAL(KIND=wp), DIMENSION(icon%Nlon, icon%Nlat) :: &
+    real(KIND=wp), dimension(icon%Nlon, icon%Nlat) :: &
          gridded_iwp_model, &
          gridded_iwp_ret, &
          gridded_g
 
-    INTEGER(KIND=4) :: ncid, errst
-    INTEGER(KIND=4) :: &
+    integer(KIND=4) :: ncid, errst
+    integer(KIND=4) :: &
          varid_lon, &
          varid_lat, &
          varid_iwp_ret, &
          varid_iwp_mod, &
          varid_g
 
-    INTEGER(KIND=4) :: dimid_lon, dimid_lat, dimid_chan, dimid_latlon(2)
+    integer(KIND=4) :: dimid_lon, dimid_lat, dimid_chan, dimid_latlon(2)
 
-    CHARACTER(LEN = 256) :: fn_out_ret, suffix
+    character(LEN = 256) :: fn_out_ret, suffix
 
     suffix = trim(nml%suffix_out)
-    IF(trim(suffix) .NE. "") suffix = "_"//trim(suffix)//"_"
+    if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)//"_"
 
     fn_out_ret = trim(nml%path_out)//"S3COM"//trim(suffix)//"_ret.nc"
 
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%Xip1(:,1),    y2=gridded_iwp_ret)
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%iwp_model(:), y2=gridded_iwp_model)
-    CALL map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%gip1(:),      y2=gridded_g)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%Xip1(:,1),    y2=gridded_iwp_ret)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%iwp_model(:), y2=gridded_iwp_model)
+    call map_point_to_ll(icon%Nlon, icon%Nlat, icon%mode, x1=oe%gip1(:),      y2=gridded_g)
 
     errst = nf90_create(fn_out_ret, NF90_CLOBBER, ncid)
 
@@ -318,9 +318,9 @@ CONTAINS
 
     errst = nf90_close(ncid)
 
-  END SUBROUTINE write_output_ret
+  end subroutine write_output_ret
 
 
 
 
-END MODULE MOD_WRITE_OUTPUT
+end module MOD_WRITE_OUTPUT

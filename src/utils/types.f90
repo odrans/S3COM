@@ -27,23 +27,23 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE s3com_types
+module s3com_types
 
-  IMPLICIT NONE
+  implicit none
 
   !!Few kind definitions for variables
-  INTEGER, PARAMETER :: sp = selected_real_kind(6, 37)
-  INTEGER, PARAMETER :: dp = selected_real_kind(12, 307)
-  INTEGER, PARAMETER :: wp = sp
+  integer, parameter :: sp = selected_real_kind(6, 37)
+  integer, parameter :: dp = selected_real_kind(12, 307)
+  integer, parameter :: wp = sp
 
   ! Namelist
-  TYPE type_nml
-     CHARACTER(LEN = 256) :: &
+  type type_nml
+     character(len=256) :: &
           path_rttov, &
           fname_in, &
           path_out, &
           suffix_out
-     INTEGER(KIND=4) :: &
+     integer(kind=4) :: &
           npoints_it, &
           month, &
           platform, &
@@ -54,29 +54,29 @@ MODULE s3com_types
           vis_scatt_model, &
           dom_nstreams, &
           rttov_nthreads
-     INTEGER(KIND = 4), DIMENSION(:), ALLOCATABLE :: &
+     integer(kind=4), dimension(:), allocatable :: &
           channel_list
-     LOGICAL :: &
+     logical :: &
           flag_retrievals, &
           addrefrac, &
           dom_rayleigh, &
           flag_output_atm
-  END TYPE type_nml
+  end type type_nml
 
   !!Type containing variables from ICON simulations
-  TYPE type_icon
-     INTEGER(KIND=4) :: &
+  type type_icon
+     integer(kind=4) :: &
           nlevels, &
           npoints, &
           nlayers, &
           nlat, &
           nlon, &
           mode
-     REAL(dp) :: &
+     real(dp) :: &
           time
-     INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
+     integer(kind=4), dimension(:), allocatable :: &
           height ! height index
-     REAL(wp), DIMENSION(:), ALLOCATABLE :: &
+     real(wp), dimension(:), allocatable :: &
           lon_orig,                           & !Longitude that won't be regridded (degrees east)
           lat_orig,                           & !Latitude  that won't be regridded (degress north)
           lon,                                & !Longitude (degrees east)
@@ -89,7 +89,7 @@ MODULE s3com_types
           q_2m,                                & !2m specific water vapor content (kg/kg)
           u_10m,                              & !U-component of wind (m/s)
           v_10m                                !V-component of wind (m/s)
-     REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
+     real(wp), dimension(:,:), allocatable :: &
           p,                                    & !Layer pressure (Pa)
           p_ifc,                                & !Pressure at half-level center (Pa)
           z,                                    & !Layer height (m)
@@ -111,21 +111,21 @@ MODULE s3com_types
           iwc,                                  & !Ice water content (kg/m3)
           cdnc,                                 & !Cloud droplet number concentration (1/m3)
           Reff                                    !Cloud liquid water effective radius (m)
-  END TYPE type_icon
+  end type type_icon
 
 
   !! Type containing variables stored for model outputs
-  TYPE type_model
-     INTEGER(KIND=4) :: &
+  type type_model
+     integer(kind=4) :: &
           nlevels, npoints, nlayers, nlat, nlon, mode, &!Dimensions
           idx_start,     & ! Starting index for subset profile
           idx_end          ! Ending index for subset profile
-     INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
+     integer(kind=4), dimension(:), allocatable :: &
           height
-     INTEGER(KIND=4), DIMENSION(3) :: &
+     integer(kind=4), dimension(3) :: &
           time, &   ! day, month, year
           date      ! hour, minute, second
-     REAL(wp), DIMENSION(:), ALLOCATABLE :: &
+     real(wp), dimension(:), allocatable :: &
           lon_orig,                           & !Longitude that won't be regridded (degrees east)
           lat_orig,                           & !Latitude  that won't be regridded (degress north)
           lon,                                & !Longitude (degrees east)
@@ -140,7 +140,7 @@ MODULE s3com_types
           v_10m,                              & !V-component of wind (m/s)
           sunzenangle,                        & !Solar zenith angle
           sunazangle                            !Solar azimuth angle
-     REAL(wp), DIMENSION(:,:), ALLOCATABLE :: &
+     real(wp), dimension(:,:), allocatable :: &
           co2,                                & !Carbon dioxide
           ch4,                                & !Methane
           n2o,                                & !n2o
@@ -160,52 +160,10 @@ MODULE s3com_types
           iwc,                                & !Ice water content (kg/m3)
           cdnc,                               & !Cloud droplet number concentration (1/m3)
           Reff                                  !Cloud liquid water effective radius (m)
-  END TYPE type_model
+  end type type_model
 
-
-  !!Type containing variables from RTTOV simulations
-  type type_rttov_atm
-     integer, pointer :: &
-          npoints,       & ! Number of profiles to simulate
-          nlevels,       & ! Number of levels
-          nlayers,       & ! Number of layers
-          idx_start,     & ! Starting index for subset profile
-          idx_end          ! Ending index for subset profile
-
-     real(wp), dimension(:), pointer :: &
-          lat,          & ! Latitude
-          lon,          & ! Longitude
-          ts,           & ! Surface skin temperature
-          topography,   & ! Surface height
-          ps,           & ! Surface pressure
-          u_10m,        & ! U component of surface wind
-          v_10m,        & ! V component of surface wind
-          t_2m,         & ! 2-m Temperature
-          q_2m,         & ! 2-m Specific humidity
-          landmask,     &  ! land-sea mask
-          sunzenangle,  & !Solar zenith angle
-          sunazangle      !Solar azimuth angle
-     real(wp), dimension(:,:), pointer :: &
-          p,            & ! Pressure @ model levels
-          z,            & ! Height @ model levels
-          t,            & ! Temperature
-          q,            & ! Specific humidity
-          o3,           & ! Ozone
-          co2,          & ! Carbon dioxide
-          ch4,          & ! Methane
-          n2o,          & ! n2o
-          so2,          & ! so2
-          co,           & !Carbon monoxide
-          clc,          & ! Cloud fraction
-          iwc,          & ! ice water content
-          lwc,          & ! liquid water content
-          reff,         & ! droplet effective radius
-          cdnc            ! cloud droplet number concentration
-  end type type_rttov_atm
-
-
-  TYPE type_rttov_opt
-     INTEGER ::       &
+  type type_rttov_opt
+     integer ::       &
           dosolar,    &
           nchannels,  &
           nthreads,   &
@@ -214,29 +172,29 @@ MODULE s3com_types
           satellite,  &
           instrument, &
           month         !Month (needed for surface emissivity calculation)
-     INTEGER, DIMENSION(:), ALLOCATABLE :: &
+     integer, dimension(:), allocatable :: &
           channel_list
-     REAL(wp) :: &
+     real(wp) :: &
           zenangle, azangle
-  END TYPE type_rttov_opt
+  end type type_rttov_opt
 
   !!Type containing variables used by S3COM for retrievals
-  TYPE type_s3com
-     INTEGER(KIND=4) :: &
+  type type_s3com
+     integer(kind=4) :: &
           nstates,        &
           nmeas,          &
           npoints
-     INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: &
+     integer(kind=4), dimension(:), allocatable :: &
           ztop_ice_idx,                              &
           zbase_ice_idx,                             &
           ztop_liquid_idx,                           &
           zbase_liquid_idx,                          &
           n_iter, i_stepsize
-     REAL(KIND=wp), DIMENSION(:), ALLOCATABLE :: &
+     real(kind=wp), dimension(:), allocatable :: &
           g, gi, gip1, g_meas, stepsize
-     LOGICAL, DIMENSION(:), ALLOCATABLE :: &
+     logical, dimension(:), allocatable :: &
           flag_rttov, flag_testconv
-     REAL(KIND=wp), DIMENSION(:,:), ALLOCATABLE :: &
+     real(kind=wp), dimension(:,:), allocatable :: &
           Y,                                         &
           y_refl_total,                              &
           y_refl_clear,                              &
@@ -263,7 +221,7 @@ MODULE s3com_types
           clc, &
           reff, &
           cdnc
-     REAL(KIND=wp), DIMENSION(:,:,:), ALLOCATABLE :: &
+     real(kind=wp), dimension(:,:,:), allocatable :: &
           K,                                           &
           Kt,                                          &
           Sy,                                          &
@@ -274,11 +232,11 @@ MODULE s3com_types
           Sx_i,                                        &
           Sa,                                          &
           Sa_i
-     REAL(KIND=wp), DIMENSION(:,:), ALLOCATABLE :: &
+     real(kind=wp), dimension(:,:), allocatable :: &
           iwc,                                       & !Output measurement vector
           lwc,                                       &
           cla
-     REAL(KIND=wp), DIMENSION(:), ALLOCATABLE :: &
+     real(kind=wp), dimension(:), allocatable :: &
           ztop_ice,                                &
           zbase_ice,                               &
           iwp,                                     &
@@ -289,14 +247,14 @@ MODULE s3com_types
           lwp_model,                               &
           cdnc_ret,                                &
           cdnc_model
-  END TYPE type_s3com
+  end type type_s3com
 
 
   !!Type containing variables used by S3COM for retrievals
-  TYPE type_s3com_rad
-     REAL(KIND=wp), DIMENSION(:), ALLOCATABLE ::   &
+  type type_s3com_rad
+     real(kind=wp), dimension(:), allocatable ::   &
           wavelength
-     REAL(KIND=wp), DIMENSION(:,:), ALLOCATABLE :: &
+     real(kind=wp), dimension(:,:), allocatable :: &
           y,                                       &
           f,                                       &
           f_ref_total,                             &
@@ -305,48 +263,21 @@ MODULE s3com_types
           f_bt_clear,                              &
           f_rad_total,                             &
           f_rad_clear
-  END TYPE type_s3com_rad
+  end type type_s3com_rad
 
-  TYPE type_s3com_new
-     INTEGER(KIND=4) :: &
+  type type_s3com_new
+     integer(kind=4) :: &
           npoints,      &
           nlevels,      &
           nlayers,      &
           nmeas,        &
-          nstates
-     TYPE(type_s3com_rad) :: rad
-  END TYPE type_s3com_new
-
-
-  !!Type containing variables used by S3COM for retrievals
-  TYPE type_s3com_rad_ss
-     REAL(KIND=wp), DIMENSION(:), POINTER ::   &
-          wavelength
-     REAL(KIND=wp), DIMENSION(:,:), POINTER :: &
-          y,                                       &
-          f,                                       &
-          f_ref_total,                             &
-          f_ref_clear,                             &
-          f_bt_total,                              &
-          f_bt_clear,                              &
-          f_rad_total,                             &
-          f_rad_clear
-  END TYPE type_s3com_rad_ss
-
-  TYPE type_s3com_new_ss
-     INTEGER(KIND=4), POINTER :: &
-          npoints,      &
-          nlevels,      &
-          nlayers,      &
-          nmeas,        &
-          nstates
-     LOGICAL, DIMENSION(:), ALLOCATABLE :: &
+          nstates,      &
+          idx_start,    &
+          idx_end
+     logical, dimension(:), allocatable :: &
           flag_rttov
-     TYPE(type_s3com_rad_ss) :: rad
-  END TYPE type_s3com_new_ss
+     type(type_s3com_rad) :: rad
+  end type type_s3com_new
 
 
-
-
-
-END MODULE s3com_types
+end module s3com_types

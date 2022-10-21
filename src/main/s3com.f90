@@ -29,28 +29,26 @@
 
 program s3com_main
 
-  use s3com_types,         only: wp, type_rttov_atm, type_rttov_opt, type_nml, type_model, type_s3com_new, type_s3com_new_ss
+  use s3com_types,         only: wp, type_rttov_opt, type_nml, type_model, type_s3com_new
   use mod_io_namelist,     only: namelist_load
   use mod_rttov_interface, only: rttov_init
   use mod_rttov_setup,     only: rttov_setup_opt, rttov_setup_atm
   use mod_rttov,           only: run_rttov
-  use mod_atm_init,        only: s3com_init, s3com_subset
-  use mod_models,          only: models_load
+  use mod_s3com_setup,     only: s3com_init, s3com_subset, s3com_update
+  use mod_models,          only: models_load, models_deinit
   use mod_utils_math,      only: n_chunks
-  !  use mod_model_cloud,     only: init_zcloud, init_cloudprof
   use mod_write_output,    only: write_output
-  !  use mod_oe_utils,        only: idx_ice
   use mod_rttov_utils,     only: idx_rttov
+  !  use mod_oe_utils,        only: idx_ice
+  !  use mod_model_cloud,     only: init_zcloud, init_cloudprof
   !  use mod_oe_run,          only: oe_run
 
   implicit none
 
-  type(type_model), target      :: model
-  type(type_rttov_atm)          :: rttov_atm
+  type(type_model)              :: model, rttov_atm
   type(type_rttov_opt)          :: rttov_opt
-  type(type_s3com_new), target  :: s3com
+  type(type_s3com_new)          :: s3com, oe
   type(type_nml)                :: nml
-  type(type_s3com_new_ss)       :: oe
 
   real(kind=wp) :: zenangle, azangle
 
@@ -63,8 +61,8 @@ program s3com_main
   ! Read namelist file (`nml` created)
   call namelist_load(nml)
 
-  ! Temporary: setting the viewing angles
-  zenangle = 0._wp; azangle = 0._wp       !Viewing satellite angles
+  ! Temporary: setting the viewing satellite angles
+  zenangle = 0._wp; azangle = 0._wp
 
   ! Load atmospheric data from selected models (`model` created)
   call models_load(nml, model)
@@ -128,9 +126,14 @@ program s3com_main
 
      end if
 
+     call s3com_update(s3com, oe)
+
   end do
 
   ! Write output file
   call write_output(s3com, model, nml)
+
+  ! Deallocate arrays
+  call models_deinit(model)
 
 end program s3com_main

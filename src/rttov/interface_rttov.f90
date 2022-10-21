@@ -28,11 +28,11 @@
 !
 
 
-MODULE MOD_RTTOV_INTERFACE
+module MOD_RTTOV_INTERFACE
 
-  USE s3com_types,  ONLY: wp, type_rttov_opt, type_nml, type_s3com_new
+  use s3com_types,  only: wp, type_rttov_opt, type_nml, type_s3com_new
 
-  USE rttov_const, ONLY: &
+  use rttov_const, only: &
        surftype_sea,      &
        surftype_land,     &
        sensor_id_mw,      &
@@ -40,20 +40,20 @@ MODULE MOD_RTTOV_INTERFACE
        inst_name,         &
        platform_name
 
-  USE mod_rttov, ONLY: platform, satellite, sensor, nChannels,       &
+  use mod_rttov, only: platform, satellite, sensor, nChannels,       &
        opts, errorstatus_success, rttov_exit, coefs,                  &
        emis_atlas, brdf_atlas, atlas_type, dosolar, imonth, &
        dosolar, channel_list
 
   !!The rttov_emis_atlas_data type must be imported separately
-  USE mod_rttov_emis_atlas, ONLY:  &
+  use mod_rttov_emis_atlas, only:  &
        rttov_emis_atlas_data,       &
        atlas_type_ir, atlas_type_mw
 
   !!The rttov_brdf_atlas_data type must be imported separately
-  USE mod_rttov_brdf_atlas, ONLY : rttov_brdf_atlas_data
+  use mod_rttov_brdf_atlas, only : rttov_brdf_atlas_data
 
-  IMPLICIT NONE
+  implicit none
 
 #include "rttov_direct.interface"
 #include "rttov_parallel_direct.interface"
@@ -75,29 +75,29 @@ MODULE MOD_RTTOV_INTERFACE
 #include "rttov_get_brdf.interface"
 #include "rttov_deallocate_brdf_atlas.interface"
 
-CONTAINS
+contains
 
-  SUBROUTINE RTTOV_INIT(rttov_opt, nml, s3com)
+  subroutine RTTOV_INIT(rttov_opt, nml, s3com)
 
-    TYPE(type_rttov_opt), INTENT(in) :: rttov_opt
-    TYPE(type_nml), intent(IN) :: nml
-    TYPE(type_s3com_new), INTENT(INOUT) :: s3com
+    type(type_rttov_opt), intent(in) :: rttov_opt
+    type(type_nml), intent(IN) :: nml
+    type(type_s3com_new), intent(INOUT) :: s3com
 
     !!Local variables
-    CHARACTER(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2
-    INTEGER :: errorstatus
+    character(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2
+    integer :: errorstatus
 
     imonth    = rttov_opt%month
     dosolar   = rttov_opt%dosolar
     nChannels = rttov_opt%nchannels
 
-    ALLOCATE(channel_list(nchannels))
+    allocate(channel_list(nchannels))
     channel_list(1:nchannels)=rttov_opt%channel_list
 
-    IF (rttov_opt%satellite .NE. 0) THEN
-       WRITE(sat,*) rttov_opt%satellite
+    if (rttov_opt%satellite .ne. 0) then
+       write(sat,*) rttov_opt%satellite
        sat="_"//trim(adjustl(sat))//"_"
-    END IF
+    end if
 
     coef_filename = trim(nml%path_rttov)//"/rtcoef_rttov13/rttov13pred54L/rtcoef_"//&
          trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"_o3.dat"
@@ -112,20 +112,20 @@ CONTAINS
     !! 1. Initialise RTTOV options structure                                                                                 !!
     !!-----------------------------------------------------------------------------------------------------------------------!!
 
-    IF (dosolar == 1) THEN
-       opts%rt_ir%addsolar = .TRUE.              !Solar radiation included
-    ELSE
-       opts%rt_ir%addsolar = .FALSE.             !Solar radiation not included (default = false)
-    ENDIF
+    if (dosolar == 1) then
+       opts%rt_ir%addsolar = .true.              !Solar radiation included
+    else
+       opts%rt_ir%addsolar = .false.             !Solar radiation not included (default = false)
+    endif
 
-    opts%interpolation%addinterp       = .TRUE.  !If true input profiles may be supplied on user-defined levels, and internal
+    opts%interpolation%addinterp       = .true.  !If true input profiles may be supplied on user-defined levels, and internal
     !interpolation is used (default = false)
     opts%interpolation%interp_mode     = 1       !Interpolation method
     !opts%interpolation%reg_limit_extrap = .TRUE.
 
     opts%rt_all%addrefrac              =  nml%addrefrac  !If true RTTOV calculations accounts for atmospheric refraction (default = true)
-    opts%rt_ir%addaerosl               = .FALSE. !If true accounts for scattering due to aerosols (default = false)
-    opts%rt_ir%addclouds               = .TRUE.  !If true accounts for scattering due to clouds (default = false)
+    opts%rt_ir%addaerosl               = .false. !If true accounts for scattering due to aerosols (default = false)
+    opts%rt_ir%addclouds               = .true.  !If true accounts for scattering due to clouds (default = false)
 
     opts%rt_ir%ir_scatt_model          = nml%ir_scatt_model      !Scattering model for emission source term:
     !1 => DOM; 2 => Chou-scaling
@@ -134,53 +134,53 @@ CONTAINS
     opts%rt_ir%dom_nstreams            = nml%dom_nstreams       !Number of streams for Discrete Ordinates (DOM)
     opts%rt_ir%dom_rayleigh            = nml%dom_rayleigh !Enables Rayleigh multiple-scattering in solar DOM simulations
 
-    opts%rt_all%ozone_data             = .FALSE. !Set the relevant flag to .TRUE. when supplying a profile of the given
-    opts%rt_all%co2_data               = .FALSE. !trace gas (ensure the coefficient file supports the gas)
-    opts%rt_all%n2o_data               = .FALSE.
-    opts%rt_all%ch4_data               = .FALSE.
-    opts%rt_all%co_data                = .FALSE.
-    opts%rt_all%so2_data               = .FALSE.
+    opts%rt_all%ozone_data             = .false. !Set the relevant flag to .TRUE. when supplying a profile of the given
+    opts%rt_all%co2_data               = .false. !trace gas (ensure the coefficient file supports the gas)
+    opts%rt_all%n2o_data               = .false.
+    opts%rt_all%ch4_data               = .false.
+    opts%rt_all%co_data                = .false.
+    opts%rt_all%so2_data               = .false.
 
-    opts%rt_mw%clw_data                = .FALSE.
+    opts%rt_mw%clw_data                = .false.
 
-    opts%config%verbose                = .FALSE.  !If false only messages for fatal errors are output (default = true)
-    opts%config%do_checkinput          = .TRUE. !If true checks whether input profiles are within both absolute and regression
+    opts%config%verbose                = .false.  !If false only messages for fatal errors are output (default = true)
+    opts%config%do_checkinput          = .true. !If true checks whether input profiles are within both absolute and regression
     !limits (default = true)
 
-    opts%rt_all%switchrad              = .TRUE.
+    opts%rt_all%switchrad              = .true.
 
     !!-----------------------------------------------------------------------------------------------------------------------!!
     !! 2. Read coefficients                                                                                                  !!
     !!-----------------------------------------------------------------------------------------------------------------------!!
 
     !!Read optical depth and cloud coefficient files together
-    CALL rttov_read_coefs(errorstatus, coefs, opts, file_coef=coef_filename, file_sccld=cld_coef_filename)
-    IF (errorstatus /= errorstatus_success) THEN
-       WRITE(*,*) 'fatal error reading coefficients'
-       CALL rttov_exit(errorstatus)
-    ENDIF
+    call rttov_read_coefs(errorstatus, coefs, opts, file_coef=coef_filename, file_sccld=cld_coef_filename)
+    if (errorstatus /= errorstatus_success) then
+       write(*,*) 'fatal error reading coefficients'
+       call rttov_exit(errorstatus)
+    endif
 
     !!Ensure input number of channels is not higher than number stored in coefficient file
-    IF (nchannels > coefs%coef%fmv_chn) THEN
+    if (nchannels > coefs%coef%fmv_chn) then
        nchannels = coefs%coef%fmv_chn
-    ENDIF
+    endif
 
     !!Ensure the options and coefficients are consistent
-    CALL rttov_user_options_checkinput(errorstatus, opts, coefs)
-    IF (errorstatus /= errorstatus_success) THEN
-       WRITE(*,*) 'error in rttov options'
-       CALL rttov_exit(errorstatus)
-    ENDIF
+    call rttov_user_options_checkinput(errorstatus, opts, coefs)
+    if (errorstatus /= errorstatus_success) then
+       write(*,*) 'error in rttov options'
+       call rttov_exit(errorstatus)
+    endif
 
     !!Initialise the RTTOV emissivity atlas
     !This loads the default IR/MW atlases: use the atlas_id argument to select alternative atlases
-    IF (coefs%coef%id_sensor == sensor_id_mw .OR. coefs%coef%id_sensor == sensor_id_po) THEN
+    if (coefs%coef%id_sensor == sensor_id_mw .or. coefs%coef%id_sensor == sensor_id_po) then
        atlas_type = atlas_type_mw !MW atlas
-    ELSE
+    else
        atlas_type = atlas_type_ir !IR atlas
-    ENDIF
+    endif
 
-    CALL rttov_setup_emis_atlas(                               &
+    call rttov_setup_emis_atlas(                               &
          errorstatus,                                          &
          opts,                                                 &
          imonth,                                               &
@@ -191,14 +191,14 @@ CONTAINS
     !if supplied for IR atlases they are initialised for this
     !sensor and this makes the atlas much faster to access
 
-    IF (errorstatus /= errorstatus_success) THEN
-       WRITE(*,*) 'error initialising emissivity atlas'
-       CALL rttov_exit(errorstatus)
-    ENDIF
+    if (errorstatus /= errorstatus_success) then
+       write(*,*) 'error initialising emissivity atlas'
+       call rttov_exit(errorstatus)
+    endif
 
-    IF (opts%rt_ir%addsolar) THEN
+    if (opts%rt_ir%addsolar) then
        !!Initialise the RTTOV BRDF atlas
-       CALL rttov_setup_brdf_atlas(                              &
+       call rttov_setup_brdf_atlas(                              &
             errorstatus,                                         &
             opts,                                                &
             imonth,                                              &
@@ -207,15 +207,15 @@ CONTAINS
             coefs = coefs)                                         !If supplied the BRDF atlas is initialised for this sensor
        !and this makes the atlas much faster to access
        !
-       IF (errorstatus /= errorstatus_success) THEN
-          WRITE(*,*) 'error initialising BRDF atlas'
-          CALL rttov_exit(errorstatus)
-       ENDIF
+       if (errorstatus /= errorstatus_success) then
+          write(*,*) 'error initialising BRDF atlas'
+          call rttov_exit(errorstatus)
+       endif
 
-    ENDIF
+    endif
 
     s3com%rad%wavelength = 10000._wp / coefs%coef%ff_cwn(channel_list(:))
 
-  END SUBROUTINE RTTOV_INIT
+  end subroutine RTTOV_INIT
 
-END MODULE  MOD_RTTOV_INTERFACE
+end module  MOD_RTTOV_INTERFACE

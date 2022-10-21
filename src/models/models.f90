@@ -27,62 +27,62 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE MOD_MODELS
+module mod_models
 
-  USE s3com_types,         ONLY: wp, type_icon, type_model, type_nml
-  USE mod_icon,            ONLY: icon_load, icon_clear
-  USE mod_utils_math,      ONLY: solar_angles
+  use s3com_types,         only: wp, type_icon, type_model, type_nml
+  use mod_icon,            only: icon_load, icon_clear
+  use mod_utils_math,      only: solar_angles
 
-  IMPLICIT NONE
+  implicit none
 
-CONTAINS
+contains
 
-  SUBROUTINE models_load(nml, model)
+  subroutine models_load(nml, model)
 
     ! Inputs
-    TYPE(type_nml), INTENT(IN)     :: nml
+    type(type_nml), intent(IN)     :: nml
 
     ! Output variables
-    TYPE(type_model), INTENT(OUT) :: model
+    type(type_model), intent(OUT) :: model
 
     ! Internal
-    INTEGER(KIND=4) :: nlayers, npoints
-    TYPE(type_icon) :: icon
+    integer(kind=4) :: nlayers, npoints
+    type(type_icon) :: icon
 
     ! Load input data
-    CALL icon_load(nml%fname_in, icon)
+    call icon_load(nml%fname_in, icon)
 
     ! Coordinates
     npoints = icon%npoints
     nlayers = icon%nlayers
 
     ! Initialize model array
-    CALL models_init(model, npoints, nlayers)
+    call models_init(model, npoints, nlayers)
 
     ! Set up part of the model with ICON data
-    CALL models_setup_icon(model, icon)
+    call models_setup_icon(model, icon)
 
     ! Set up solar angles corresponding to model data
-    CALL models_setup_solar(model)
+    call models_setup_solar(model)
 
     ! Clear input data
-    CALL icon_clear(icon)
+    call icon_clear(icon)
 
     write(*,*) "Model input loaded"
 
-  END SUBROUTINE models_load
+  end subroutine models_load
 
 
-  SUBROUTINE models_init(model, npoints, nlayers)
+  subroutine models_init(model, npoints, nlayers)
 
     ! Input variables
-    INTEGER(KIND = 4), INTENT(IN) :: npoints, nlayers
+    integer(kind = 4), intent(IN) :: npoints, nlayers
 
     ! Output variables
-    TYPE(type_model), INTENT(OUT)   :: model
+    type(type_model), intent(OUT)   :: model
 
     ! Internal variables
-    INTEGER(KIND = 4) :: nlevels
+    integer(kind = 4) :: nlevels
 
     nlevels = nlayers + 1
 
@@ -94,38 +94,53 @@ CONTAINS
     model%time = (/0, 0, 0/)
 
     !! 2D fields
-    ALLOCATE(model%lat(npoints), source = 0._wp)
-    ALLOCATE(model%lon, model%lat_orig, model%lon_orig, &
+    allocate(model%lat(npoints), source = 0._wp)
+    allocate(model%lon, model%lat_orig, model%lon_orig, &
          model%topography, model%u_10m, model%v_10m, &
          model%ts, model%ps, model%q_2m, model%t_2m, &
          model%landmask, model%sunzenangle, model%sunazangle, &
          mold = model%lat)
 
     !! 3D fields at atmospheric levels
-    ALLOCATE(model%p(npoints, nlevels), source = 0._wp)
-    ALLOCATE(model%t, model%q, model%co2, model%ch4, &
+    allocate(model%p(npoints, nlevels), source = 0._wp)
+    allocate(model%t, model%q, model%co2, model%ch4, &
          model%n2o, model%s2o, model%co, &
          mold = model%p)
 
     !! 3D fields in atmospheric layers
-    ALLOCATE(model%z(npoints, nlayers), source = 0._wp)
-    ALLOCATE(model%dz, model%clc, model%reff, model%cdnc, &
+    allocate(model%z(npoints, nlayers), source = 0._wp)
+    allocate(model%dz, model%clc, model%reff, model%cdnc, &
          model%iwc, model%lwc, &
          mold = model%z)
 
-  END SUBROUTINE models_init
+  end subroutine models_init
 
-
-  SUBROUTINE models_setup_icon(model, icon)
-
-    ! Input variables
-    TYPE(type_icon), INTENT(IN)    :: icon
+  subroutine models_deinit(model)
 
     ! Output variables
-    TYPE(type_model), INTENT(INOUT)   :: model
+    type(type_model), intent(inout)   :: model
 
-    REAL(wp) :: hour, minute, sec
-    CHARACTER(LEN=8) :: icon_date
+    deallocate(model%lat, model%lon, model%lat_orig, model%lon_orig, &
+         model%topography, model%u_10m, model%v_10m, &
+         model%ts, model%ps, model%q_2m, model%t_2m, &
+         model%landmask, model%sunzenangle, model%sunazangle, &
+         model%p, model%t, model%q, model%co2, model%ch4, &
+         model%n2o, model%s2o, model%co, &
+         model%z, model%dz, model%clc, model%reff, model%cdnc, &
+         model%iwc, model%lwc)
+
+  end subroutine models_deinit
+
+  subroutine models_setup_icon(model, icon)
+
+    ! Input variables
+    type(type_icon), intent(in)    :: icon
+
+    ! Output variables
+    type(type_model), intent(inout)   :: model
+
+    real(wp) :: hour, minute, sec
+    character(len=8) :: icon_date
 
     ! Extract information from the ICON time (%Y%m%d.%f)
     ! ----------------------------------------------------------------------------------------------------
@@ -169,21 +184,21 @@ CONTAINS
     model%reff      =  icon%reff
     model%cdnc      =  icon%cdnc
 
-  END SUBROUTINE models_setup_icon
+  end subroutine models_setup_icon
 
-  SUBROUTINE models_setup_solar(model)
+  subroutine models_setup_solar(model)
 
-    TYPE(type_model), INTENT(INOUT)   :: model
+    type(type_model), intent(inout)   :: model
 
-    INTEGER(KIND = 4) :: i
+    integer(kind = 4) :: i
 
-    DO i = 1, model%npoints
+    do i = 1, model%npoints
 
-       CALL solar_angles(model%lat(i), model%lon(i), model%date, model%time, &
+       call solar_angles(model%lat(i), model%lon(i), model%date, model%time, &
             model%sunzenangle(i), model%sunazangle(i))
 
-    END DO
+    end do
 
-  END SUBROUTINE models_setup_solar
+  end subroutine models_setup_solar
 
-END MODULE MOD_MODELS
+end module mod_models

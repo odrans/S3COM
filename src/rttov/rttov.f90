@@ -27,13 +27,13 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE MOD_RTTOV
+module MOD_RTTOV
 
-  USE s3com_types,        ONLY: wp, type_rttov_atm, type_rttov_opt, type_s3com, type_s3com_new_ss
-  USE mod_rttov_utils, ONLY: idx_rttov
+  use s3com_types,        only: wp, type_model, type_rttov_opt, type_s3com, type_s3com_new
+  use mod_rttov_utils, only: idx_rttov
 
   !!rttov_const contains useful RTTOV constants
-  USE rttov_const, ONLY:    &
+  use rttov_const, only:    &
        errorstatus_success,   &
        errorstatus_fatal,     &
        platform_name,         &
@@ -47,7 +47,7 @@ MODULE MOD_RTTOV
        wcl_id_stco,           &
        wcl_id_stma
 
-  USE rttov_types, ONLY: &
+  use rttov_types, only: &
        rttov_options,      &
        rttov_coefs,        &
        rttov_profile,      &
@@ -59,18 +59,18 @@ MODULE MOD_RTTOV
        rttov_opt_param
 
   !!The rttov_emis_atlas_data type must be imported separately
-  USE mod_rttov_emis_atlas, ONLY: &
+  use mod_rttov_emis_atlas, only: &
        rttov_emis_atlas_data,       &
        atlas_type_ir, atlas_type_mw
 
   !!The rttov_brdf_atlas_data type must be imported separately
-  USE mod_rttov_brdf_atlas, ONLY: rttov_brdf_atlas_data
+  use mod_rttov_brdf_atlas, only: rttov_brdf_atlas_data
 
-  USE rttov_unix_env, ONLY: rttov_exit
+  use rttov_unix_env, only: rttov_exit
 
-  USE parkind1, ONLY: jpim, jprb, jplm
+  use parkind1, only: jpim, jprb, jplm
 
-  IMPLICIT NONE
+  implicit none
 
 #include "rttov_direct.interface"
 #include "rttov_parallel_direct.interface"
@@ -92,83 +92,83 @@ MODULE MOD_RTTOV
 #include "rttov_get_brdf.interface"
 #include "rttov_deallocate_brdf_atlas.interface"
 
-  INTEGER(KIND=jpim), PARAMETER :: iup   = 20 !Unit for input profile file
-  INTEGER(KIND=jpim), PARAMETER :: ioout = 21 !Unit for output
+  integer(KIND=jpim), parameter :: iup   = 20 !Unit for input profile file
+  integer(KIND=jpim), parameter :: ioout = 21 !Unit for output
 
   !!==========================================================================================================================!!
   !! RTTOV variables/structures                                                                                               !!
   !!==========================================================================================================================!!
 
-  TYPE(rttov_options)              :: opts                     ! Options structure
-  TYPE(rttov_coefs)                :: coefs                    ! Coefficients structure
-  TYPE(rttov_chanprof),    POINTER :: chanprof(:)    => NULL() ! Input channel/profile list
-  LOGICAL(KIND=jplm),      POINTER :: calcemis(:)    => NULL() ! Flag to indicate calculation of emissivity within RTTOV
-  TYPE(rttov_emissivity),  POINTER :: emissivity(:)  => NULL() ! Input/output surface emissivity
-  LOGICAL(KIND=jplm),      POINTER :: calcrefl(:)    => NULL() ! Flag to indicate calculation of BRDF within RTTOV
-  TYPE(rttov_reflectance), POINTER :: reflectance(:) => NULL() ! Input/output surface BRDF
-  TYPE(rttov_profile),     POINTER :: profiles(:)    => NULL() ! Input profiles
-  TYPE(rttov_transmission)         :: transmission             ! Output transmittances
-  TYPE(rttov_radiance)             :: radiance                 ! Output radiances
-  TYPE(rttov_opt_param)            :: cld_opt_param            ! Input cloud optical parameters
-  TYPE(rttov_emis_atlas_data)      :: emis_atlas               ! Data structure for emissivity atlas
-  TYPE(rttov_brdf_atlas_data)      :: brdf_atlas               ! Data structure for BRDF atlas
+  type(rttov_options)              :: opts                     ! Options structure
+  type(rttov_coefs)                :: coefs                    ! Coefficients structure
+  type(rttov_chanprof),    pointer :: chanprof(:)    => null() ! Input channel/profile list
+  logical(KIND=jplm),      pointer :: calcemis(:)    => null() ! Flag to indicate calculation of emissivity within RTTOV
+  type(rttov_emissivity),  pointer :: emissivity(:)  => null() ! Input/output surface emissivity
+  logical(KIND=jplm),      pointer :: calcrefl(:)    => null() ! Flag to indicate calculation of BRDF within RTTOV
+  type(rttov_reflectance), pointer :: reflectance(:) => null() ! Input/output surface BRDF
+  type(rttov_profile),     pointer :: profiles(:)    => null() ! Input profiles
+  type(rttov_transmission)         :: transmission             ! Output transmittances
+  type(rttov_radiance)             :: radiance                 ! Output radiances
+  type(rttov_opt_param)            :: cld_opt_param            ! Input cloud optical parameters
+  type(rttov_emis_atlas_data)      :: emis_atlas               ! Data structure for emissivity atlas
+  type(rttov_brdf_atlas_data)      :: brdf_atlas               ! Data structure for BRDF atlas
 
-  INTEGER(KIND=jpim)               :: errorstatus              ! Return error status of RTTOV subroutine calls
+  integer(KIND=jpim)               :: errorstatus              ! Return error status of RTTOV subroutine calls
 
-  INTEGER(KIND=jpim) :: atlas_type
+  integer(KIND=jpim) :: atlas_type
 
-  CHARACTER(LEN=11)  :: NameOfRoutine = 'example_fwd'
+  character(LEN=11)  :: NameOfRoutine = 'example_fwd'
 
   !!==========================================================================================================================!!
   !! Variables for input                                                                                                      !!
   !!==========================================================================================================================!!
 
-  CHARACTER(LEN=256) :: coef_filename
-  CHARACTER(LEN=256) :: prof_filename, cld_coef_filename
-  INTEGER(KIND=jpim) :: nthreads
-  INTEGER(KIND=jpim) :: dosolar
-  INTEGER(KIND=jpim) :: nlevels
-  INTEGER(KIND=jpim) :: nprof
-  INTEGER(KIND=jpim) :: nchannels
-  INTEGER(KIND=jpim) :: nchanprof
-  INTEGER(KIND=jpim), ALLOCATABLE :: channel_list(:)
-  REAL(KIND=jprb)    :: trans_out(10)
+  character(LEN=256) :: coef_filename
+  character(LEN=256) :: prof_filename, cld_coef_filename
+  integer(KIND=jpim) :: nthreads
+  integer(KIND=jpim) :: dosolar
+  integer(KIND=jpim) :: nlevels
+  integer(KIND=jpim) :: nprof
+  integer(KIND=jpim) :: nchannels
+  integer(KIND=jpim) :: nchanprof
+  integer(KIND=jpim), allocatable :: channel_list(:)
+  real(KIND=jprb)    :: trans_out(10)
 
   ! Loop variables
-  INTEGER(KIND=jpim) :: j, jch
-  INTEGER(KIND=jpim) :: np, nch
-  INTEGER(KIND=jpim) :: ilev, nprint
-  INTEGER(KIND=jpim) :: iprof, joff, ichan
-  INTEGER            :: ios, imonth
+  integer(KIND=jpim) :: j, jch
+  integer(KIND=jpim) :: np, nch
+  integer(KIND=jpim) :: ilev, nprint
+  integer(KIND=jpim) :: iprof, joff, ichan
+  integer            :: ios, imonth
 
   ! Initialization parameters
-  INTEGER ::   &
+  integer ::   &
        platform, & !RTTOV platform
        sensor,   & !RTTOV instrument
        satellite
 
-CONTAINS
+contains
 
   !!==========================================================================================================================!!
   !! SUBROUTINE rttov_column                                                                                                  !!
   !!==========================================================================================================================!!
 
-  SUBROUTINE run_rttov(rttov_atm,rttov_opt,oe,dealloc)
+  subroutine run_rttov(rttov_atm,rttov_opt,oe,dealloc)
 
-    USE s3com_config, ONLY: rd
+    use s3com_config, only: rd
 
     !!Inputs variables
-    TYPE(type_rttov_atm), INTENT(IN) :: rttov_atm
-    TYPE(type_rttov_opt), INTENT(IN) :: rttov_opt
+    type(type_model), intent(IN) :: rttov_atm
+    type(type_rttov_opt), intent(IN) :: rttov_opt
 
-    LOGICAL, INTENT(IN) :: dealloc !Flag to determine whether to deallocate RTTOV types
+    logical, intent(IN) :: dealloc !Flag to determine whether to deallocate RTTOV types
 
     !!Inout/Outputs variables
-    TYPE(type_s3com_new_ss), INTENT(INOUT) :: oe
+    type(type_s3com_new), intent(INOUT) :: oe
 
     !!Local variables
-    INTEGER, DIMENSION(:), ALLOCATABLE :: list_points
-    INTEGER                            :: errorstatus, idx_prof
+    integer, dimension(:), allocatable :: list_points
+    integer                            :: errorstatus, idx_prof
 
     errorstatus = 0_jpim
 
@@ -177,7 +177,7 @@ CONTAINS
     list_points = idx_rttov(oe)
     nprof = size(list_points); nlevels = rttov_atm%nlevels
 
-    IF (nprof .EQ. 0) RETURN
+    if (nprof .eq. 0) return
 
     !!--------------------------------------------------------------------------------------------------------------------!!
     !! 3. Allocate RTTOV input and output structures
@@ -191,7 +191,7 @@ CONTAINS
 
     !!Allocate structures for rttov_direct
 
-    CALL rttov_alloc_direct(      &
+    call rttov_alloc_direct(      &
          errorstatus,             &
          1_jpim,                  & !1 => allocate
          nprof,                   &
@@ -207,12 +207,12 @@ CONTAINS
          emissivity=emissivity,   &
          calcrefl=calcrefl,       &
          reflectance=reflectance, &
-         init=.TRUE._jplm)
+         init=.true._jplm)
 
-    IF (errorstatus /= errorstatus_success) THEN
-       WRITE(*,*) 'allocation error for rttov_direct structures'
-       CALL rttov_exit(errorstatus)
-    ENDIF
+    if (errorstatus /= errorstatus_success) then
+       write(*,*) 'allocation error for rttov_direct structures'
+       call rttov_exit(errorstatus)
+    endif
 
     !!--------------------------------------------------------------------------------------------------------------------!!
     !! 4. Build the list of profile/channel indices in chanprof                                                           !!
@@ -220,13 +220,13 @@ CONTAINS
 
     nch = 0_jpim
 
-    DO j = 1, nprof
-       DO jch = 1, nchannels
+    do j = 1, nprof
+       do jch = 1, nchannels
           nch = nch + 1_jpim
           chanprof(nch)%prof = j
           chanprof(nch)%chan = channel_list(jch)
-       ENDDO
-    ENDDO
+       enddo
+    enddo
 
     !!--------------------------------------------------------------------------------------------------------------------!!
     !! 5. Read profile data                                                                                               !!
@@ -236,7 +236,7 @@ CONTAINS
     profiles(:)%gas_units = 1 ! Units: kg/kg
 
     !!Loop over all profiles and read data for each one
-    DO iprof = 1, nprof
+    do iprof = 1, nprof
 
        idx_prof = list_points(iprof)
 
@@ -260,11 +260,11 @@ CONTAINS
        profiles(iprof)%skin%fastem = (/3.0, 5.0, 15.0, 0.1, 0.3/) !Typical RTTOV default for land
 
        !!Surface type and water type
-       IF (rttov_atm%landmask(iprof) < 0.5) THEN
+       if (rttov_atm%landmask(iprof) < 0.5) then
           profiles(iprof)%skin%surftype = surftype_sea
-       ELSE
+       else
           profiles(iprof)%skin%surftype = surftype_land
-       ENDIF
+       endif
 
        profiles(iprof)%skin%watertype = watertype_fresh_water !tmp, adapt this to truth,
        !fresh more likely for ICON-DE simulations
@@ -280,7 +280,7 @@ CONTAINS
        profiles(iprof)%sunzenangle = rttov_atm%sunzenangle(idx_prof)
        profiles(iprof)%sunazangle  = rttov_atm%sunazangle(idx_prof)
 
-       profiles(iprof)%mmr_cldaer = .FALSE. !Logical flag to set cloud and aerosol
+       profiles(iprof)%mmr_cldaer = .false. !Logical flag to set cloud and aerosol
        !Units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
 
        !!Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
@@ -297,14 +297,14 @@ CONTAINS
        profiles(:)%clw_scheme = 2 !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
        profiles(iprof)%clwde(:) = rttov_atm%reff(idx_prof,:)*2.0 ! Need the diameter
 
-    ENDDO
+    enddo
 
     !!--------------------------------------------------------------------------------------------------------------------!!
     !! 6. Specify surface emissivity and reflectance                                                                      !!
     !!--------------------------------------------------------------------------------------------------------------------!!
 
     !!Use emissivity atlas
-    CALL rttov_get_emis( &
+    call rttov_get_emis( &
          errorstatus,    &
          opts,           &
          chanprof,       &
@@ -313,18 +313,18 @@ CONTAINS
          emis_atlas,     &
          emissivity(:)%emis_in)
 
-    IF (errorstatus /= errorstatus_success) THEN
-       WRITE(*,*) 'error reading emissivity atlas'
-       CALL rttov_exit(errorstatus)
-    ENDIF
+    if (errorstatus /= errorstatus_success) then
+       write(*,*) 'error reading emissivity atlas'
+       call rttov_exit(errorstatus)
+    endif
 
     !!Calculate emissivity within RTTOV where the atlas emissivity value is zero or less
     calcemis(:) = (emissivity(:)%emis_in <= 0._jprb)
 
-    IF (opts%rt_ir%addsolar) THEN
+    if (opts%rt_ir%addsolar) then
 
        !!Use BRDF atlas
-       CALL rttov_get_brdf(         &
+       call rttov_get_brdf(         &
             errorstatus,            &
             opts,                   &
             chanprof,               &
@@ -333,22 +333,22 @@ CONTAINS
             brdf_atlas,             &
             reflectance(:)%refl_in)
 
-       IF (errorstatus /= errorstatus_success) THEN
-          WRITE(*,*) 'error reading BRDF atlas'
-          CALL rttov_exit(errorstatus)
-       ENDIF
+       if (errorstatus /= errorstatus_success) then
+          write(*,*) 'error reading BRDF atlas'
+          call rttov_exit(errorstatus)
+       endif
 
        !!Calculate BRDF within RTTOV where the atlas BRDF value is zero or less
        calcrefl(:) = (reflectance(:)%refl_in <= 0._jprb)
-    ENDIF
+    endif
 
     !!Use the RTTOV emissivity and BRDF calculations over sea surfaces
-    DO j = 1, SIZE(chanprof)
-       IF (profiles(chanprof(j)%prof)%skin%surftype == surftype_sea) THEN
-          calcemis(j) = .TRUE.
-          calcrefl(j) = .TRUE.
-       ENDIF
-    ENDDO
+    do j = 1, size(chanprof)
+       if (profiles(chanprof(j)%prof)%skin%surftype == surftype_sea) then
+          calcemis(j) = .true.
+          calcrefl(j) = .true.
+       endif
+    enddo
 
     !!Use default cloud top BRDF for simple cloud in VIS/NIR channels
     reflectance(:)%refl_cloud_top = 0._jprb
@@ -357,8 +357,8 @@ CONTAINS
     !! 7. Call RTTOV forward model                                                                                        !!
     !!--------------------------------------------------------------------------------------------------------------------!!
 
-    IF (nthreads <= 1) THEN
-       CALL rttov_direct(              &
+    if (nthreads <= 1) then
+       call rttov_direct(              &
             errorstatus,               & !out   error flag
             chanprof,                  & !in    channel and profile index structure
             opts,                      & !in    options structure
@@ -370,8 +370,8 @@ CONTAINS
             emissivity  = emissivity,  & !inout input/output emissivities per channel
             calcrefl    = calcrefl,    & !in    flag for internal BRDF calcs
             reflectance = reflectance)   !inout input/output BRDFs per channel
-    ELSE
-       CALL rttov_parallel_direct(     &
+    else
+       call rttov_parallel_direct(     &
             errorstatus,               & !out   error flag
             chanprof,                  & !in    channel and profile index structure
             opts,                      & !in    options structure
@@ -384,21 +384,21 @@ CONTAINS
             calcrefl    = calcrefl,    & !in    flag for internal BRDF calcs
             reflectance = reflectance, & !inout input/output BRDFs per channel
             nthreads    = nthreads)      !in    number of threads to use
-    ENDIF
+    endif
 
-    IF (errorstatus /= errorstatus_success) THEN
-       WRITE (*,*) 'rttov_direct error'
-       CALL rttov_exit(errorstatus)
-    ENDIF
+    if (errorstatus /= errorstatus_success) then
+       write (*,*) 'rttov_direct error'
+       call rttov_exit(errorstatus)
+    endif
 
     !!Output the results
-    DO iprof = 1, nprof
+    do iprof = 1, nprof
 
        idx_prof = list_points(iprof)
        joff = (iprof-1_jpim) * nchannels
        ichan = 1
 
-       DO j = 1+joff, nchannels+joff
+       do j = 1+joff, nchannels+joff
 
           oe%rad%f_ref_total(idx_prof,ichan)   = radiance%refl(j)
           oe%rad%f_ref_clear(idx_prof,ichan)   = radiance%refl_clear(j)
@@ -412,16 +412,16 @@ CONTAINS
 
           ichan = ichan + 1
 
-       ENDDO
+       enddo
 
-    ENDDO
+    enddo
 
     !!--------------------------------------------------------------------------------------------------------------------!!
     !! 8. Deallocate all RTTOV arrays and structures                                                                      !!
     !!--------------------------------------------------------------------------------------------------------------------!!
 
     !!Deallocate structures for rttov_direct
-    CALL rttov_alloc_direct(    &
+    call rttov_alloc_direct(    &
          errorstatus,           &
          0_jpim,                & !0 => deallocate
          nprof,                 &
@@ -438,25 +438,25 @@ CONTAINS
          calcrefl=calcrefl,     &
          reflectance=reflectance)
 
-    IF (errorstatus /= errorstatus_success) THEN
-       WRITE(*,*) 'deallocation error for rttov_direct structures'
-       CALL rttov_exit(errorstatus)
-    ENDIF
+    if (errorstatus /= errorstatus_success) then
+       write(*,*) 'deallocation error for rttov_direct structures'
+       call rttov_exit(errorstatus)
+    endif
 
-    IF (dealloc) THEN
-       CALL rttov_dealloc_coefs(errorstatus, coefs)
+    if (dealloc) then
+       call rttov_dealloc_coefs(errorstatus, coefs)
 
-       IF (errorstatus /= errorstatus_success) THEN
-          WRITE(*,*) 'coefs deallocation error'
-       ENDIF
+       if (errorstatus /= errorstatus_success) then
+          write(*,*) 'coefs deallocation error'
+       endif
 
-       CALL rttov_deallocate_emis_atlas(emis_atlas) !Deallocate emissivity atlas
+       call rttov_deallocate_emis_atlas(emis_atlas) !Deallocate emissivity atlas
 
-       IF (opts%rt_ir%addsolar) THEN
-          CALL rttov_deallocate_brdf_atlas(brdf_atlas) !Deallocate BRDF atlas
-       ENDIF
-    ENDIF
+       if (opts%rt_ir%addsolar) then
+          call rttov_deallocate_brdf_atlas(brdf_atlas) !Deallocate BRDF atlas
+       endif
+    endif
 
-  END SUBROUTINE run_rttov
+  end subroutine run_rttov
 
-END MODULE MOD_RTTOV
+end module MOD_RTTOV
