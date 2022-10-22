@@ -29,15 +29,17 @@
 
 module mod_rttov_setup
 
-  use s3com_types, only: wp
+  use s3com_types, only: wp, type_model
 
   implicit none
+
+  public :: rttov_setup_opt, rttov_setup_atm
 
 contains
 
   subroutine rttov_setup_opt(model, nml, zenangle, azangle, rttov_opt)
 
-    use s3com_types,  only: type_rttov_opt, type_nml, type_model
+    use s3com_types,  only: type_rttov_opt, type_nml
     use s3com_config, only: RTTOV_DOSOLAR
 
     type(type_nml), intent(in) :: nml
@@ -63,8 +65,6 @@ contains
   end subroutine rttov_setup_opt
 
   subroutine rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
-
-    use s3com_types, only: type_model
 
     integer, intent(in)            :: idx_start, idx_end
     type(type_model), intent(in)   :: model

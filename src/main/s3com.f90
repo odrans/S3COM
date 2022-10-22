@@ -47,7 +47,7 @@ program s3com_main
 
   type(type_model)              :: model, rttov_atm
   type(type_rttov_opt)          :: rttov_opt
-  type(type_s3com)          :: s3com, oe
+  type(type_s3com)              :: s3com, oe
   type(type_nml)                :: nml
 
   real(kind=wp) :: zenangle, azangle
@@ -58,24 +58,25 @@ program s3com_main
 
   logical :: flag_oe
 
-  ! Read namelist file (`nml` created)
-  call namelist_load(nml)
+  ! Read namelist file
+  nml = namelist_load()
 
   ! Temporary: setting the viewing satellite angles
   zenangle = 0._wp; azangle = 0._wp
 
   ! Load atmospheric data from selected models (`model` created)
   call models_load(nml, model)
-  npoints = model%npoints
-  nlayers = model%nlayers
 
+  ! Initialise the s3com structure
   call s3com_init(nml, model, s3com)
+  npoints = s3com%npoints
+  nlayers = s3com%nlayers
 
   ! Setup the RTTOV optics (`rttov_opt` created)
   call rttov_setup_opt(model, nml, zenangle, azangle, rttov_opt)
 
   ! Initialize RTTOV (loading surface data and optical properties)
-  call rttov_init(rttov_opt, nml, s3com)
+  call rttov_init(rttov_opt, s3com)
 
   ! Loop over data points, by chunks
   nChunks = n_chunks(npoints, nml%npoints_it)

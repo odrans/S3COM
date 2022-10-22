@@ -35,6 +35,8 @@ module mod_s3com_setup
 
   implicit none
 
+  public :: s3com_init, s3com_subset, s3com_update
+
 contains
 
   subroutine s3com_init(nml, model, s3com)
@@ -64,6 +66,9 @@ contains
     allocate(s3com%rad%f, s3com%rad%f_ref_total, s3com%rad%f_ref_clear, s3com%rad%f_bt_total, &
          s3com%rad%f_bt_clear, s3com%rad%f_rad_total, s3com%rad%f_rad_clear, &
          mold = s3com%rad%y)
+
+
+    s3com%nml = nml
 
     return
 

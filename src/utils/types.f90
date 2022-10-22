@@ -204,8 +204,10 @@ module s3com_types
           f_rad_clear
   end type type_s3com_atm
 
-
   type type_s3com
+     integer(kind=4), dimension(3) :: &
+          time, &   ! day, month, year
+          date      ! hour, minute, second
      integer(kind=4) :: &
           npoints,      &
           nlevels,      &
@@ -216,6 +218,7 @@ module s3com_types
           idx_end
      logical, dimension(:), allocatable :: &
           flag_rttov
+     type(type_nml) :: nml
      type(type_s3com_rad) :: rad
      type(type_s3com_atm) :: atm
   end type type_s3com

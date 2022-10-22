@@ -27,37 +27,37 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE mod_io_namelist
-  !! Inspired from https://cerfacs.fr/coop/fortran-namelist-workedex
+module mod_io_namelist
+  !! Inspired by https://cerfacs.fr/coop/fortran-namelist-workedex
 
-  USE, INTRINSIC :: iso_fortran_env, ONLY: stderr => error_unit
-  USE s3com_types,         ONLY: type_nml
+  use, intrinsic :: iso_fortran_env, only: stderr => error_unit
+  use s3com_types,         only: type_nml
 
-  IMPLICIT NONE
+  implicit none
 
-CONTAINS
+  private
+  public :: namelist_load
 
-  SUBROUTINE namelist_load(nml)
+contains
 
-    TYPE(type_nml), intent(out)        :: nml
+  type(type_nml) function namelist_load() result(nml)
 
     character(len=256) :: fname_nml
 
     ! Set the namelist file
-    IF(COMMAND_ARGUMENT_COUNT().NE.1) THEN
+    if(command_argument_count().ne.1) then
        write(*,*) "Namelist not provided"
        stop
-    ELSE
-       CALL GET_COMMAND_ARGUMENT(1, fname_nml)
+    else
+       call get_command_argument(1, fname_nml)
        write(*,*) "Namelist file: ", trim(fname_nml)
-    ENDIF
+    endif
 
-    CALL read_namelist(fname_nml, nml)
+    call read_namelist(fname_nml, nml)
 
-  END SUBROUTINE namelist_load
+  end function namelist_load
 
-
-  SUBROUTINE read_namelist(file_path, nml)
+  subroutine read_namelist(file_path, nml)
 
     character(len=*),  intent(in)  :: file_path
     integer                        :: file_unit, iostat
@@ -68,9 +68,9 @@ CONTAINS
 
     integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
          ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads
-    integer(kind = 4), DIMENSION(:), ALLOCATABLE :: channel_list
+    integer(kind = 4), dimension(:), allocatable :: channel_list
 
-    TYPE(type_nml), intent(out)        :: nml
+    type(type_nml), intent(out)        :: nml
 
     ! Namelist definition===============================
     namelist /general/ &
@@ -174,4 +174,4 @@ CONTAINS
     close (file_unit)
   end subroutine close_namelist
 
-END MODULE mod_io_namelist
+end module mod_io_namelist
