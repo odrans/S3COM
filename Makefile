@@ -49,7 +49,7 @@ obj = $(PATH_S3COM)/obj
 lib = $(PATH_S3COM)/lib
 mod = $(PATH_S3COM)/mod
 
-DIR_MAIN = $(src)/main
+DIR_S3COM = $(src)/s3com
 DIR_IO = $(src)/io
 DIR_OE = $(src)/oe
 DIR_UTILS = $(src)/utils
@@ -73,7 +73,7 @@ RTTOV_LIBS       = -lrttov13_wrapper -lrttov13_mw_scatt -lrttov13_brdf_atlas -lr
 
 # List of library files that will be created
 # -------------------------------------------------------------------------------------------------------------------------------
-LIB_MAIN = $(lib)/libmain.a
+LIB_S3COM = $(lib)/libs3com.a
 LIB_IO = $(lib)/lib_io.a
 LIB_OE = $(lib)/lib_oe.a
 LIB_UTILS = $(lib)/libutils.a
@@ -83,7 +83,7 @@ LIB_MODELS = $(lib)/libmodels.a
 
 # List of object files in each library
 # -------------------------------------------------------------------------------------------------------------------------------
-LIST_OBJ_MAIN = $(obj)/setup.o
+LIST_OBJ_S3COM = $(obj)/setup.o
 
 LIST_OBJ_MODELS = $(obj)/icon.o \
         $(obj)/models.o \
@@ -108,7 +108,7 @@ LIST_OBJ_RTTOVML = $(obj)/rttov_utils.o \
 		   $(obj)/interface_rttov.o \
 		   $(obj)/rttov_setup.o
 
-LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_MAIN)
+LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_S3COM)
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of flags related to each libraries + final flag
@@ -116,8 +116,8 @@ LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MODEL
 FLAGS_NCDF = -I$(PATH_NCDF_INC) -L${PATH_NCDF_LIB} -lnetcdff -L${PATH_NCDF_C_LIB} -lnetcdf -Wl,-rpath,${PATH_NCDF_LIB} -Wl,-rpath,${PATH_NCDF_C_LIB}
 FLAGS_RTTOV = -I${RTTOV_INC_PATH} -L${RTTOV_LIB_PATH} $(RTTOV_LIBS)
 FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${PATH_HDF5_LIB}
-##FLAGS_LOCAL = -L$(lib) -lmodels -l_io -l_oe -lrttovml -lmain -lutils
-FLAGS_LOCAL = -L$(lib) -lmodels -l_io -lrttovml -lmain -lutils
+##FLAGS_LOCAL = -L$(lib) -lmodels -l_io -l_oe -lrttovml -ls3com -lutils
+FLAGS_LOCAL = -L$(lib) -lmodels -l_io -lrttovml -ls3com -lutils
 
 FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -126,12 +126,12 @@ FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
 # -------------------------------------------------------------------------------------------------------------------------------
 install: $(LIST_OBJ)
 	ar r $(LIB_UTILS) $(LIST_OBJ_UTILS)
-	ar r $(LIB_MAIN) $(LIST_OBJ_MAIN)
+	ar r $(LIB_S3COM) $(LIST_OBJ_S3COM)
 	ar r $(LIB_OE) $(LIST_OBJ_OE)
 	ar r $(LIB_MODELS) $(LIST_OBJ_MODELS)
 	ar r $(LIB_IO) $(LIST_OBJ_IO)
 	ar r $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
-	$(F90) $(F90FLAGS) $(DIR_MAIN)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
+	$(F90) $(F90FLAGS) $(DIR_S3COM)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
 
 clean:
 	rm -f $(obj)/*.o $(mod)/*.mod $(lib)/*.a s3com
@@ -153,9 +153,9 @@ $(mod):
 # -------------------------------------------------------------------------------------------------------------------------------
 
 
-## Objects for subroutines in ./src/main
+## Objects for subroutines in ./src/s3com
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/setup.o : $(DIR_MAIN)/setup.f90
+$(obj)/setup.o : $(DIR_S3COM)/s3com_setup.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
