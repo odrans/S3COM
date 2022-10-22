@@ -40,7 +40,6 @@ module s3com_types
   integer, parameter :: dp = selected_real_kind(12, 307)
   integer, parameter :: wp = sp
 
-
   ! Namelist
   type type_nml
      character(len=256) :: &

@@ -27,13 +27,16 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE mod_utils_math
+module mod_utils_math
 
 use s3com_types, only: wp
-  
-IMPLICIT NONE
 
-CONTAINS
+implicit none
+
+private
+public :: day_number, solar_angles, n_chunks
+
+contains
 
   subroutine inverse(a,c,n)
     !============================================================
@@ -118,9 +121,9 @@ CONTAINS
 
   subroutine day_number(day, month, year, julian)
 
-    INTEGER(KIND = 4), INTENT(IN) :: day, month, year
+    integer(KIND = 4), intent(IN) :: day, month, year
 
-    INTEGER(KIND = 4), INTENT(OUT) :: julian
+    integer(KIND = 4), intent(OUT) :: julian
 
     if (month.le.2) then
        julian = 31 * (month - 1) + day
@@ -137,15 +140,15 @@ CONTAINS
   end subroutine day_number
 
 
-  SUBROUTINE solar_angles(lat, lon, date, time, sunzenangle, sunazangle)
+  subroutine solar_angles(lat, lon, date, time, sunzenangle, sunazangle)
 
-    REAL(KIND = wp), INTENT(IN) :: lat, lon
-    INTEGER(KIND = 4), DIMENSION(3), INTENT(IN) :: date, time
+    real(KIND = wp), intent(IN) :: lat, lon
+    integer(KIND = 4), dimension(3), intent(IN) :: date, time
 
-    REAL(KIND = wp), INTENT(OUT) :: sunzenangle, sunazangle
+    real(KIND = wp), intent(OUT) :: sunzenangle, sunazangle
 
-    REAL(KIND = wp) :: elevation, dec, soldst, hour
-    INTEGER(KIND = 4) :: julian
+    real(KIND = wp) :: elevation, dec, soldst, hour
+    integer(KIND = 4) :: julian
 
     ! Compute the julian date (day of year)
     call day_number(date(1), date(2), date(3), julian)
@@ -159,20 +162,20 @@ CONTAINS
     ! Convert elevation into solar zenith angle
     sunzenangle = 90 - elevation
 
-    RETURN
+    return
 
-  END SUBROUTINE solar_angles
+  end subroutine solar_angles
 
   function n_chunks(npoints, npoints_it) result(nchunks)
     integer(kind=4), intent(in) :: npoints, npoints_it
     integer(kind=4)             :: nchunks
 
     nChunks = npoints / npoints_it
-    IF (MOD(npoints,npoints_it)/=0) nchunks = nchunks + 1
-    IF (npoints .EQ. npoints_it) nChunks = 1
+    if (mod(npoints,npoints_it)/=0) nchunks = nchunks + 1
+    if (npoints .eq. npoints_it) nChunks = 1
 
   end function n_chunks
 
 
 
-END MODULE mod_utils_math
+end module mod_utils_math
