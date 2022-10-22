@@ -31,10 +31,15 @@ module s3com_types
 
   implicit none
 
+  private
+  public :: wp, dp
+  public :: type_s3com, type_model, type_rttov_opt, type_nml, type_icon
+
   !!Few kind definitions for variables
   integer, parameter :: sp = selected_real_kind(6, 37)
   integer, parameter :: dp = selected_real_kind(12, 307)
   integer, parameter :: wp = sp
+
 
   ! Namelist
   type type_nml
@@ -133,8 +138,8 @@ module s3com_types
           landmask,                           & !Land/sea mask (0/1)
           ps,                                 & !Surface pressure (Pa)
           ts,                                 & !Skin temperature (K)
-          t_2m,                                & !2m temperature (K)
-          q_2m,                                & !2m specific water vapor content (kg/kg)
+          t_2m,                               & !2m temperature (K)
+          q_2m,                               & !2m specific water vapor content (kg/kg)
           u_10m,                              & !U-component of wind (m/s)
           v_10m,                              & !V-component of wind (m/s)
           sunzenangle,                        & !Solar zenith angle
