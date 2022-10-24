@@ -27,37 +27,40 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE mod_rttov_utils
-   
-   USE s3com_types, ONLY: wp, type_s3com
-   
-   IMPLICIT NONE
-   
-   CONTAINS
-   
-      FUNCTION idx_rttov(oe)
-      
-         TYPE(type_s3com), INTENT(IN) :: oe
-         INTEGER(KIND=4), DIMENSION(:), ALLOCATABLE :: idx_rttov
-         INTEGER(KIND=4), DIMENSION(oe%npoints) :: idx_all
-         INTEGER(KIND=4) :: idx, i
-      
-         idx_all = 0
-         idx = 1
-      
-         DO i = 1, oe%npoints
-            IF(oe%flag_rttov(i)) THEN
-               idx_all(idx) = i
-               idx = idx + 1
-            END IF
-         END DO
-      
-         idx = idx-1
-      
-         ALLOCATE(idx_rttov(idx)); idx_rttov(1:idx) = idx_all(1:idx)
-      
-         RETURN
-      
-      END FUNCTION idx_rttov
-      
-END MODULE mod_rttov_utils
+module mod_rttov_utils
+
+  use s3com_types, only: wp, type_s3com
+
+  implicit none
+
+  private
+  public :: idx_rttov
+
+contains
+
+  function idx_rttov(oe)
+
+    type(type_s3com), intent(in) :: oe
+    integer(kind=4), dimension(:), allocatable :: idx_rttov
+    integer(kind=4), dimension(oe%npoints) :: idx_all
+    integer(kind=4) :: idx, i
+
+    idx_all = 0
+    idx = 1
+
+    do i = 1, oe%npoints
+       if(oe%flag_rttov(i)) then
+          idx_all(idx) = i
+          idx = idx + 1
+       end if
+    end do
+
+    idx = idx-1
+
+    allocate(idx_rttov(idx)); idx_rttov(1:idx) = idx_all(1:idx)
+
+    return
+
+  end function idx_rttov
+
+end module mod_rttov_utils

@@ -27,33 +27,28 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-
-module MOD_RTTOV_INTERFACE
+! Initialize a few structures for RTTOV (opts, coefs, emis_atlas, brdf_atlas)
+module mod_rttov_interface
 
   use s3com_types,  only: wp, type_rttov_opt, type_nml, type_s3com
 
-  use rttov_const, only: &
-       surftype_sea,      &
-       surftype_land,     &
-       sensor_id_mw,      &
-       sensor_id_po,      &
-       inst_name,         &
-       platform_name
+  use rttov_const, only: surftype_sea, surftype_land, sensor_id_mw, &
+       sensor_id_po, inst_name, platform_name, errorstatus_success
 
-  use mod_rttov, only: platform, satellite, sensor, nChannels,       &
-       opts, errorstatus_success, rttov_exit, coefs,                  &
-       emis_atlas, brdf_atlas, atlas_type, dosolar, imonth, &
-       dosolar, channel_list
+  use mod_rttov, only: opts, coefs, emis_atlas, brdf_atlas
 
   !!The rttov_emis_atlas_data type must be imported separately
-  use mod_rttov_emis_atlas, only:  &
-       rttov_emis_atlas_data,       &
-       atlas_type_ir, atlas_type_mw
+  use mod_rttov_emis_atlas, only: rttov_emis_atlas_data, atlas_type_ir, atlas_type_mw
 
   !!The rttov_brdf_atlas_data type must be imported separately
   use mod_rttov_brdf_atlas, only : rttov_brdf_atlas_data
 
+  use rttov_unix_env, only: rttov_exit
+
   implicit none
+
+  private
+  public :: rttov_init
 
 #include "rttov_direct.interface"
 #include "rttov_parallel_direct.interface"
@@ -65,12 +60,12 @@ module MOD_RTTOV_INTERFACE
 #include "rttov_print_profile.interface"
 #include "rttov_skipcommentline.interface"
 
-  !!Use emissivity atlas
+  ! Use emissivity atlas
 #include "rttov_setup_emis_atlas.interface"
 #include "rttov_get_emis.interface"
 #include "rttov_deallocate_emis_atlas.interface"
 
-  !!Use BRDF atlas
+  ! Use BRDF atlas
 #include "rttov_setup_brdf_atlas.interface"
 #include "rttov_get_brdf.interface"
 #include "rttov_deallocate_brdf_atlas.interface"
@@ -85,14 +80,10 @@ contains
 
     !!Local variables
     character(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2
-    integer :: errorstatus
+    integer(kind=4) :: errorstatus, imonth, nchannels, atlas_type
 
     imonth    = rttov_opt%month
-    dosolar   = rttov_opt%dosolar
     nChannels = rttov_opt%nchannels
-
-    allocate(channel_list(nchannels))
-    channel_list(1:nchannels)=rttov_opt%channel_list
 
     if (rttov_opt%satellite .ne. 0) then
        write(sat,*) rttov_opt%satellite
@@ -108,11 +99,14 @@ contains
     path_emis_atlas = trim(s3com%nml%path_rttov)//'/emis_data'
     path_brdf_atlas = trim(s3com%nml%path_rttov)//'/brdf_data'
 
+    s3com%opt%rttov%platform_name = platform_name(rttov_opt%platform)
+    s3com%opt%rttov%inst_name = inst_name(rttov_opt%instrument)
+
     !!-----------------------------------------------------------------------------------------------------------------------!!
     !! 1. Initialise RTTOV options structure                                                                                 !!
     !!-----------------------------------------------------------------------------------------------------------------------!!
 
-    if (dosolar == 1) then
+    if (rttov_opt%dosolar == 1) then
        opts%rt_ir%addsolar = .true.              !Solar radiation included
     else
        opts%rt_ir%addsolar = .false.             !Solar radiation not included (default = false)
@@ -153,27 +147,27 @@ contains
     !! 2. Read coefficients                                                                                                  !!
     !!-----------------------------------------------------------------------------------------------------------------------!!
 
-    !!Read optical depth and cloud coefficient files together
+    ! Read optical depth and cloud coefficient files together
     call rttov_read_coefs(errorstatus, coefs, opts, file_coef=coef_filename, file_sccld=cld_coef_filename)
     if (errorstatus /= errorstatus_success) then
        write(*,*) 'fatal error reading coefficients'
        call rttov_exit(errorstatus)
     endif
 
-    !!Ensure input number of channels is not higher than number stored in coefficient file
+    ! Ensure input number of channels is not higher than number stored in coefficient file
     if (nchannels > coefs%coef%fmv_chn) then
        nchannels = coefs%coef%fmv_chn
     endif
 
-    !!Ensure the options and coefficients are consistent
+    ! Ensure the options and coefficients are consistent
     call rttov_user_options_checkinput(errorstatus, opts, coefs)
     if (errorstatus /= errorstatus_success) then
        write(*,*) 'error in rttov options'
        call rttov_exit(errorstatus)
     endif
 
-    !!Initialise the RTTOV emissivity atlas
-    !This loads the default IR/MW atlases: use the atlas_id argument to select alternative atlases
+    ! Initialise the RTTOV emissivity atlas
+    ! This loads the default IR/MW atlases: use the atlas_id argument to select alternative atlases
     if (coefs%coef%id_sensor == sensor_id_mw .or. coefs%coef%id_sensor == sensor_id_po) then
        atlas_type = atlas_type_mw !MW atlas
     else
@@ -188,8 +182,9 @@ contains
          emis_atlas,                                           &
          path = path_emis_atlas, & !Default path to atlas data
          coefs = coefs)                                          !This is mandatory for the CNRM MW atlas, ignored by TELSEM2;
-    !if supplied for IR atlases they are initialised for this
-    !sensor and this makes the atlas much faster to access
+
+    ! If supplied for IR atlases they are initialised for this
+    ! sensor and this makes the atlas much faster to access
 
     if (errorstatus /= errorstatus_success) then
        write(*,*) 'error initialising emissivity atlas'
@@ -214,8 +209,8 @@ contains
 
     endif
 
-    s3com%rad%wavelength = 10000._wp / coefs%coef%ff_cwn(channel_list(:))
+    s3com%rad%wavelength = 10000._wp / coefs%coef%ff_cwn(rttov_opt%channel_list(:))
 
-  end subroutine RTTOV_INIT
+  end subroutine rttov_init
 
-end module  MOD_RTTOV_INTERFACE
+end module mod_rttov_interface

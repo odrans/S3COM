@@ -170,13 +170,15 @@ module s3com_types
           dosolar,    &
           nchannels,  &
           nthreads,   &
-          manthreads, &
           platform,   &
           satellite,  &
           instrument, &
-          month         !Month (needed for surface emissivity calculation)
+          month
      integer, dimension(:), allocatable :: &
           channel_list
+     character(len = 32) :: &
+          platform_name, &
+          inst_name
      real(wp) :: &
           zenangle, azangle
   end type type_rttov_opt
@@ -203,10 +205,12 @@ module s3com_types
           clc,                                     &
           cdnc,                                    &
           reff,                                    &
-          lwc,                                     &
-          f_rad_total,                             &
-          f_rad_clear
+          lwc
   end type type_s3com_atm
+
+  type type_s3com_opt
+     type(type_rttov_opt) :: rttov
+  end type type_s3com_opt
 
   type type_s3com
      integer(kind=4), dimension(3) :: &
@@ -225,6 +229,7 @@ module s3com_types
      type(type_nml) :: nml
      type(type_s3com_rad) :: rad
      type(type_s3com_atm) :: atm
+     type(type_s3com_opt) :: opt
   end type type_s3com
 
 

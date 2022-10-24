@@ -35,6 +35,9 @@ module mod_models
 
   implicit none
 
+  private
+  public :: models_load, models_init, models_deinit, models_setup_icon, models_setup_solar
+
 contains
 
   subroutine models_load(nml, model)

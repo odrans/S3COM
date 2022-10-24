@@ -33,17 +33,18 @@ module mod_rttov_setup
 
   implicit none
 
+  private
   public :: rttov_setup_opt, rttov_setup_atm
 
 contains
 
-  subroutine rttov_setup_opt(model, nml, zenangle, azangle, rttov_opt)
+  subroutine rttov_setup_opt(nml, zenangle, azangle, rttov_opt, s3com)
 
-    use s3com_types,  only: type_rttov_opt, type_nml
-    use s3com_config, only: RTTOV_DOSOLAR
+    use s3com_types,  only: type_rttov_opt, type_nml, type_s3com
 
     type(type_nml), intent(in) :: nml
-    type(type_model), intent(in) :: model
+    type(type_s3com), intent(inout) :: s3com
+
     real(wp), intent(in) :: zenangle, azangle
 
     type(type_rttov_opt), intent(out) :: rttov_opt
@@ -51,16 +52,18 @@ contains
     rttov_opt%platform   = nml%platform
     rttov_opt%satellite  = nml%satellite
     rttov_opt%instrument = nml%instrument
-    rttov_opt%dosolar    = RTTOV_DOSOLAR
+    rttov_opt%dosolar    = 1
     rttov_opt%nchannels  = nml%nchannels
     rttov_opt%nthreads = nml%rttov_nthreads
 
     allocate(rttov_opt%channel_list(rttov_opt%nchannels))
 
     rttov_opt%channel_list = nml%channel_list
-    rttov_opt%month        = model%date(2)
+    rttov_opt%month        = s3com%date(2)
     rttov_opt%zenangle     = zenangle
     rttov_opt%azangle      = azangle
+
+    s3com%opt%rttov = rttov_opt
 
   end subroutine rttov_setup_opt
 

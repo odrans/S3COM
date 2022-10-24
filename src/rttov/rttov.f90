@@ -27,10 +27,10 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-module MOD_RTTOV
+module mod_rttov
 
   use s3com_types,        only: wp, type_model, type_rttov_opt, type_s3com
-  use mod_rttov_utils, only: idx_rttov
+  use mod_rttov_utils,    only: idx_rttov
 
   !!rttov_const contains useful RTTOV constants
   use rttov_const, only:    &
@@ -72,6 +72,9 @@ module MOD_RTTOV
 
   implicit none
 
+  private
+  public :: run_rttov, opts, coefs, emis_atlas, brdf_atlas
+
 #include "rttov_direct.interface"
 #include "rttov_parallel_direct.interface"
 #include "rttov_read_coefs.interface"
@@ -92,9 +95,6 @@ module MOD_RTTOV
 #include "rttov_get_brdf.interface"
 #include "rttov_deallocate_brdf_atlas.interface"
 
-  integer(KIND=jpim), parameter :: iup   = 20 !Unit for input profile file
-  integer(KIND=jpim), parameter :: ioout = 21 !Unit for output
-
   !!==========================================================================================================================!!
   !! RTTOV variables/structures                                                                                               !!
   !!==========================================================================================================================!!
@@ -102,9 +102,9 @@ module MOD_RTTOV
   type(rttov_options)              :: opts                     ! Options structure
   type(rttov_coefs)                :: coefs                    ! Coefficients structure
   type(rttov_chanprof),    pointer :: chanprof(:)    => null() ! Input channel/profile list
-  logical(KIND=jplm),      pointer :: calcemis(:)    => null() ! Flag to indicate calculation of emissivity within RTTOV
+  logical(kind=jplm),      pointer :: calcemis(:)    => null() ! Flag to indicate calculation of emissivity within RTTOV
   type(rttov_emissivity),  pointer :: emissivity(:)  => null() ! Input/output surface emissivity
-  logical(KIND=jplm),      pointer :: calcrefl(:)    => null() ! Flag to indicate calculation of BRDF within RTTOV
+  logical(kind=jplm),      pointer :: calcrefl(:)    => null() ! Flag to indicate calculation of BRDF within RTTOV
   type(rttov_reflectance), pointer :: reflectance(:) => null() ! Input/output surface BRDF
   type(rttov_profile),     pointer :: profiles(:)    => null() ! Input profiles
   type(rttov_transmission)         :: transmission             ! Output transmittances
@@ -113,39 +113,26 @@ module MOD_RTTOV
   type(rttov_emis_atlas_data)      :: emis_atlas               ! Data structure for emissivity atlas
   type(rttov_brdf_atlas_data)      :: brdf_atlas               ! Data structure for BRDF atlas
 
-  integer(KIND=jpim)               :: errorstatus              ! Return error status of RTTOV subroutine calls
-
-  integer(KIND=jpim) :: atlas_type
-
-  character(LEN=11)  :: NameOfRoutine = 'example_fwd'
+  integer(kind=jpim)               :: errorstatus              ! Return error status of RTTOV subroutine calls
 
   !!==========================================================================================================================!!
   !! Variables for input                                                                                                      !!
   !!==========================================================================================================================!!
 
-  character(LEN=256) :: coef_filename
-  character(LEN=256) :: prof_filename, cld_coef_filename
-  integer(KIND=jpim) :: nthreads
-  integer(KIND=jpim) :: dosolar
-  integer(KIND=jpim) :: nlevels
-  integer(KIND=jpim) :: nprof
-  integer(KIND=jpim) :: nchannels
-  integer(KIND=jpim) :: nchanprof
-  integer(KIND=jpim), allocatable :: channel_list(:)
-  real(KIND=jprb)    :: trans_out(10)
+  integer(kind=jpim) :: nthreads
+  integer(kind=jpim) :: nlevels
+  integer(kind=jpim) :: nprof
+  integer(kind=jpim) :: nchannels
+  integer(kind=jpim) :: nchanprof
+
+  real(kind=jprb)    :: trans_out(10)
 
   ! Loop variables
-  integer(KIND=jpim) :: j, jch
-  integer(KIND=jpim) :: np, nch
-  integer(KIND=jpim) :: ilev, nprint
-  integer(KIND=jpim) :: iprof, joff, ichan
-  integer            :: ios, imonth
-
-  ! Initialization parameters
-  integer ::   &
-       platform, & !RTTOV platform
-       sensor,   & !RTTOV instrument
-       satellite
+  integer(kind=jpim) :: j, jch
+  integer(kind=jpim) :: np, nch
+  integer(kind=jpim) :: ilev, nprint
+  integer(kind=jpim) :: iprof, joff, ichan
+  integer(kind=4)    :: ios
 
 contains
 
@@ -153,18 +140,18 @@ contains
   !! SUBROUTINE rttov_column                                                                                                  !!
   !!==========================================================================================================================!!
 
-  subroutine run_rttov(rttov_atm,rttov_opt,oe,dealloc)
+  subroutine run_rttov(rttov_atm,rttov_opt,s3com,dealloc)
 
     use s3com_config, only: rd
 
     !!Inputs variables
-    type(type_model), intent(IN) :: rttov_atm
-    type(type_rttov_opt), intent(IN) :: rttov_opt
+    type(type_model), intent(in) :: rttov_atm
+    type(type_rttov_opt), intent(in) :: rttov_opt
 
     logical, intent(IN) :: dealloc !Flag to determine whether to deallocate RTTOV types
 
     !!Inout/Outputs variables
-    type(type_s3com), intent(INOUT) :: oe
+    type(type_s3com), intent(inout) :: s3com
 
     !!Local variables
     integer, dimension(:), allocatable :: list_points
@@ -172,9 +159,11 @@ contains
 
     errorstatus = 0_jpim
 
+    nchannels = rttov_opt%nchannels
+
     nthreads = rttov_opt%nthreads
 
-    list_points = idx_rttov(oe)
+    list_points = idx_rttov(s3com)
     nprof = size(list_points); nlevels = rttov_atm%nlevels
 
     if (nprof .eq. 0) return
@@ -224,7 +213,7 @@ contains
        do jch = 1, nchannels
           nch = nch + 1_jpim
           chanprof(nch)%prof = j
-          chanprof(nch)%chan = channel_list(jch)
+          chanprof(nch)%chan = rttov_opt%channel_list(jch)
        enddo
     enddo
 
@@ -244,7 +233,6 @@ contains
        profiles(iprof)%p(:) = rttov_atm%p(idx_prof,:)*1E-2
        profiles(iprof)%t(:) = rttov_atm%t(idx_prof,:)
        profiles(iprof)%q(:) = rttov_atm%q(idx_prof,:)
-
 
        !!Air variables in 2 meters
        profiles(iprof)%s2m%t = rttov_atm%t_2m(idx_prof)        !2m temperature (K)
@@ -400,15 +388,15 @@ contains
 
        do j = 1+joff, nchannels+joff
 
-          oe%rad%f_ref_total(idx_prof,ichan)   = radiance%refl(j)
-          oe%rad%f_ref_clear(idx_prof,ichan)   = radiance%refl_clear(j)
-          oe%rad%f_bt_total(idx_prof,ichan)    = radiance%bt(j)
-          oe%rad%f_bt_clear(idx_prof,ichan)    = radiance%bt_clear(j)
-          oe%rad%f_rad_total(idx_prof,ichan)   = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-          oe%rad%f_rad_clear(idx_prof,ichan)   = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+          s3com%rad%f_ref_total(idx_prof,ichan)   = radiance%refl(j)
+          s3com%rad%f_ref_clear(idx_prof,ichan)   = radiance%refl_clear(j)
+          s3com%rad%f_bt_total(idx_prof,ichan)    = radiance%bt(j)
+          s3com%rad%f_bt_clear(idx_prof,ichan)    = radiance%bt_clear(j)
+          s3com%rad%f_rad_total(idx_prof,ichan)   = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+          s3com%rad%f_rad_clear(idx_prof,ichan)   = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
 
-          ! oe%brdf(idx_prof,ichan)         = reflectance(j)%refl_out
-          ! oe%emissivity(idx_prof,ichan)   = emissivity(j)%emis_out
+          ! s3com%brdf(idx_prof,ichan)         = reflectance(j)%refl_out
+          ! s3com%emissivity(idx_prof,ichan)   = emissivity(j)%emis_out
 
           ichan = ichan + 1
 
@@ -459,4 +447,4 @@ contains
 
   end subroutine run_rttov
 
-end module MOD_RTTOV
+end module mod_rttov

@@ -27,13 +27,16 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-module MOD_WRITE_OUTPUT
+module mod_write_output
 
-  use s3com_types,  only: type_icon, wp, type_nml, type_model, type_s3com
+  use s3com_types, only: type_icon, wp, type_nml, type_model, type_s3com
+  use mod_regrid, only: map_point_to_ll
   use netcdf
-  use mod_read_icon, only: map_point_to_ll
 
   implicit none
+
+  private
+  public :: write_output
 
 contains
 
@@ -41,9 +44,9 @@ contains
   subroutine write_output(s3com, model, nml)
 
     ! Input variables
-    type(type_model), intent(IN) :: model
-    type(type_s3com), intent(IN) :: s3com
-    type(type_nml), intent(IN) :: nml
+    type(type_model), intent(in) :: model
+    type(type_s3com), intent(in) :: s3com
+    type(type_nml), intent(in) :: nml
 
     call write_output_rad(s3com, model, nml)
 
@@ -62,12 +65,12 @@ contains
   subroutine write_output_rad(s3com, model, nml)
 
     ! Input variables
-    type(type_model),       intent(IN) :: model
-    type(type_s3com),      intent(IN) :: s3com
-    type(type_nml),        intent(IN) :: nml
+    type(type_model),  intent(in) :: model
+    type(type_s3com),  intent(in) :: s3com
+    type(type_nml),    intent(in) :: nml
 
     ! Local variables
-    real(KIND=wp), dimension(model%nlon, model%nlat, nml%nchannels) :: &
+    real(kind=wp), dimension(model%nlon, model%nlat, nml%nchannels) :: &
          gridded_f_ref_total,  &
          gridded_f_ref_clear,  &
          gridded_f_bt_total,   &
@@ -75,9 +78,9 @@ contains
          gridded_f_rad_total,  &
          gridded_f_rad_clear
 
-    integer(KIND=4) :: ncid, errst
+    integer(kind=4) :: ncid, errst
 
-    integer(KIND=4) ::      &
+    integer(kind=4) ::      &
          varid_lon,         &
          varid_lat,         &
          varid_chan,        &
@@ -88,14 +91,14 @@ contains
          varid_rad_total,   &
          varid_rad_clear
 
-    integer(KIND=4) ::      &
+    integer(kind=4) ::      &
          dimid_lon,         &
          dimid_lat,         &
          dimid_chan,        &
          dimid_latlon(2),   &
          dimid_latlonchan(3)
 
-    character(LEN = 256) :: fn_out_rad, suffix
+    character(LEN = 256) :: fn_out_rad, suffix, attr_instrument
 
     suffix = trim(nml%suffix_out)
     if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)//"_"
@@ -148,6 +151,10 @@ contains
     errst = nf90_put_att(ncid, varid_rad_total,  "description", "All-sky upwelling radiance at TOA")
     errst = nf90_put_att(ncid, varid_rad_clear,  "description", "Clear-sky upwelling radiance at TOA")
 
+    attr_instrument = trim(s3com%opt%rttov%inst_name)//"/"//trim(s3com%opt%rttov%platform_name)
+
+    errst = nf90_put_att(ncid, nf90_global, 'RTTOV_instrument', trim(attr_instrument))
+
     errst = nf90_enddef(ncid)
 
     errst = nf90_put_var(ncid, varid_lon,        model%lon_orig)
@@ -168,12 +175,12 @@ contains
   subroutine write_output_atm(icon, oe, nml, atm)
 
     ! Input variables
-    type(type_icon),       intent(IN) :: icon
-    type(type_s3com),      intent(IN) :: oe
-    type(type_nml),        intent(IN) :: nml
-    type(type_s3com),      intent(IN) :: atm
+    type(type_icon),       intent(in) :: icon
+    type(type_s3com),      intent(in) :: oe
+    type(type_nml),        intent(in) :: nml
+    type(type_s3com),      intent(in) :: atm
 
-    real(KIND=wp), dimension(icon%Nlon, icon%Nlat, icon%Nlevels) :: &
+    real(kind=wp), dimension(icon%Nlon, icon%Nlat, icon%Nlevels) :: &
          gridded_atm_t, &
          gridded_atm_z, &
          gridded_atm_clc, &
@@ -181,8 +188,8 @@ contains
          gridded_atm_reff, &
          gridded_atm_lwc
 
-    integer(KIND=4) :: ncid, errst
-    integer(KIND=4) :: &
+    integer(kind=4) :: ncid, errst
+    integer(kind=4) :: &
          varid_lon, &
          varid_lat, &
          varid_lev, &
@@ -193,7 +200,7 @@ contains
          varid_atm_reff, &
          varid_atm_lwc
 
-    integer(KIND=4) :: dimid_lon, dimid_lat, dimid_lev, dimid_latlonlev(3)
+    integer(kind=4) :: dimid_lon, dimid_lat, dimid_lev, dimid_latlonlev(3)
 
     character(LEN = 256) :: fn_out_atm, suffix
 
@@ -258,28 +265,28 @@ contains
   end subroutine write_output_atm
 
 
-! Write retrieval outputs
+  ! Write retrieval outputs
   ! subroutine write_output_ret(icon, oe, nml)
 
   !   ! Input variables
-  !   type(type_icon),       intent(IN) :: icon
-  !   type(type_s3com),      intent(IN) :: oe
-  !   type(type_nml),        intent(IN) :: nml
+  !   type(type_icon),       intent(in) :: icon
+  !   type(type_s3com),      intent(in) :: oe
+  !   type(type_nml),        intent(in) :: nml
 
-  !   real(KIND=wp), dimension(icon%Nlon, icon%Nlat) :: &
+  !   real(kind=wp), dimension(icon%Nlon, icon%Nlat) :: &
   !        gridded_iwp_model, &
   !        gridded_iwp_ret, &
   !        gridded_g
 
-  !   integer(KIND=4) :: ncid, errst
-  !   integer(KIND=4) :: &
+  !   integer(kind=4) :: ncid, errst
+  !   integer(kind=4) :: &
   !        varid_lon, &
   !        varid_lat, &
   !        varid_iwp_ret, &
   !        varid_iwp_mod, &
   !        varid_g
 
-  !   integer(KIND=4) :: dimid_lon, dimid_lat, dimid_chan, dimid_latlon(2)
+  !   integer(kind=4) :: dimid_lon, dimid_lat, dimid_chan, dimid_latlon(2)
 
   !   character(LEN = 256) :: fn_out_ret, suffix
 
@@ -320,7 +327,4 @@ contains
 
   ! end subroutine write_output_ret
 
-
-
-
-end module MOD_WRITE_OUTPUT
+end module mod_write_output

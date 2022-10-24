@@ -27,25 +27,26 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE MOD_UTILS_FORT
+module mod_utils_fort
 
-  IMPLICIT NONE
-  
-CONTAINS
+  implicit none
+
+  private
+  public :: s3com_error
+
+contains
 
   !! In case of error when running the program (inspired from COSPv2)
-  SUBROUTINE S3COM_ERROR(routine_name,message,errcode)
+  subroutine s3com_error(routine_name,message,errcode)
     character(len = *), intent(in) :: routine_name
     character(len = *), intent(in) :: message
     integer,optional :: errcode
-    
+
     write(6, *) " ********** Failure in ", trim(routine_name)
     write(6, *) " ********** ", trim(message)
     if (present(errcode)) write(6, *) " ********** errcode: ", errcode
     flush(6)
     stop
-  END SUBROUTINE S3COM_ERROR
+  end subroutine s3com_error
 
-  
-
-END MODULE MOD_UTILS_FORT
+end module mod_utils_fort
