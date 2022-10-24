@@ -55,6 +55,7 @@ DIR_OE = $(src)/oe
 DIR_UTILS = $(src)/utils
 DIR_RTTOV = $(src)/rttov
 DIR_MODELS = $(src)/models
+DIR_CONF = $(src)/conf
 
 PATH_NCDF_C_LIB = $(PATH_NETCDF_C)/lib
 PATH_NCDF_INC = $(PATH_NETCDF_F)/include
@@ -77,16 +78,20 @@ LIB_S3COM = $(lib)/libs3com.a
 LIB_IO = $(lib)/lib_io.a
 LIB_OE = $(lib)/lib_oe.a
 LIB_UTILS = $(lib)/libutils.a
+LIB_CONF = $(lib)/libconf.a
 LIB_RTTOVML = $(lib)/librttovml.a
 LIB_MODELS = $(lib)/libmodels.a
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of object files in each library
 # -------------------------------------------------------------------------------------------------------------------------------
-LIST_OBJ_S3COM = $(obj)/setup.o
+LIST_OBJ_CONF = $(obj)/types.o \
+        $(obj)/config.o
+
+LIST_OBJ_S3COM = $(obj)/s3com_setup.o
 
 LIST_OBJ_MODELS = $(obj)/icon.o \
-        $(obj)/models.o \
+        $(obj)/models.o
 
 LIST_OBJ_IO = $(obj)/regrid.o \
         $(obj)/io_namelist.o \
@@ -97,18 +102,16 @@ LIST_OBJ_IO = $(obj)/regrid.o \
 #         $(obj)/oe_utils.o \
 # 		$(obj)/oe_run.o
 
-LIST_OBJ_UTILS = $(obj)/types.o \
-		 $(obj)/config.o \
+LIST_OBJ_UTILS = $(obj)/utils_fort.o \
 		 $(obj)/utils_math.o \
-		 $(obj)/utils_fort.o \
-		 $(obj)/sunae.o
+		 $(obj)/utils_phys.o
 
 LIST_OBJ_RTTOVML = $(obj)/rttov_utils.o \
-		   $(obj)/rttov_ml.o \
-		   $(obj)/interface_rttov.o \
+		   $(obj)/rttov.o \
+		   $(obj)/rttov_init.o \
 		   $(obj)/rttov_setup.o
 
-LIST_OBJ = $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_S3COM)
+LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_S3COM)
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of flags related to each libraries + final flag
@@ -117,7 +120,7 @@ FLAGS_NCDF = -I$(PATH_NCDF_INC) -L${PATH_NCDF_LIB} -lnetcdff -L${PATH_NCDF_C_LIB
 FLAGS_RTTOV = -I${RTTOV_INC_PATH} -L${RTTOV_LIB_PATH} $(RTTOV_LIBS)
 FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${PATH_HDF5_LIB}
 ##FLAGS_LOCAL = -L$(lib) -lmodels -l_io -l_oe -lrttovml -ls3com -lutils
-FLAGS_LOCAL = -L$(lib) -lmodels -l_io -lrttovml -ls3com -lutils
+FLAGS_LOCAL = -L$(lib) -lmodels -l_io -lrttovml -ls3com -lutils -lconf
 
 FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -125,6 +128,7 @@ FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
 # Make commands
 # -------------------------------------------------------------------------------------------------------------------------------
 install: $(LIST_OBJ)
+	ar r $(LIB_CONF) $(LIST_OBJ_CONF)
 	ar r $(LIB_UTILS) $(LIST_OBJ_UTILS)
 	ar r $(LIB_S3COM) $(LIST_OBJ_S3COM)
 	ar r $(LIB_OE) $(LIST_OBJ_OE)
@@ -153,9 +157,19 @@ $(mod):
 # -------------------------------------------------------------------------------------------------------------------------------
 
 
+## Objects for subroutines in ./src/conf
+# -------------------------------------------------------------------------------------------------------------------------------
+$(obj)/types.o : $(DIR_CONF)/types.f90
+	$(F90) $(F90FLAGS) -c $< -o $@
+
+$(obj)/config.o : $(DIR_CONF)/config.f90
+	$(F90) $(F90FLAGS) -c $< -o $@
+# -------------------------------------------------------------------------------------------------------------------------------
+
+
 ## Objects for subroutines in ./src/s3com
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/setup.o : $(DIR_S3COM)/s3com_setup.f90
+$(obj)/s3com_setup.o : $(DIR_S3COM)/s3com_setup.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
@@ -199,10 +213,10 @@ $(obj)/regrid.o : $(DIR_IO)/regrid.f90
 
 ## Objects for subroutines in ./src/rttov
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/interface_rttov.o : $(DIR_RTTOV)/interface_rttov.f90
+$(obj)/rttov_init.o : $(DIR_RTTOV)/rttov_init.f90
 	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
 
-$(obj)/rttov_ml.o : $(DIR_RTTOV)/rttov.f90
+$(obj)/rttov.o : $(DIR_RTTOV)/rttov.f90
 	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
 
 $(obj)/rttov_setup.o : $(DIR_RTTOV)/rttov_setup.f90
@@ -214,18 +228,12 @@ $(obj)/rttov_utils.o : $(DIR_RTTOV)/rttov_utils.f90
 
 ## Objects for subroutines in ./src/utils
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/types.o : $(DIR_UTILS)/types.f90
-	$(F90) $(F90FLAGS) -c $< -o $@
-
-$(obj)/config.o : $(DIR_UTILS)/config.f90
-	$(F90) $(F90FLAGS) -c $< -o $@
-
 $(obj)/utils_math.o : $(DIR_UTILS)/utils_math.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
 $(obj)/utils_fort.o : $(DIR_UTILS)/utils_fort.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/sunae.o : $(DIR_UTILS)/sunae.f
+$(obj)/utils_phys.o : $(DIR_UTILS)/utils_phys.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------

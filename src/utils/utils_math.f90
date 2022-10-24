@@ -34,7 +34,7 @@ use s3com_types, only: wp
 implicit none
 
 private
-public :: day_number, solar_angles, n_chunks
+public :: n_chunks, day_number
 
 contains
 
@@ -118,6 +118,15 @@ contains
     end do
   end subroutine inverse
 
+  function n_chunks(npoints, npoints_it) result(nchunks)
+    integer(kind=4), intent(in) :: npoints, npoints_it
+    integer(kind=4)             :: nchunks
+
+    nChunks = npoints / npoints_it
+    if (mod(npoints,npoints_it)/=0) nchunks = nchunks + 1
+    if (npoints .eq. npoints_it) nChunks = 1
+
+  end function n_chunks
 
   subroutine day_number(day, month, year, julian)
 
@@ -138,43 +147,6 @@ contains
 
     return
   end subroutine day_number
-
-
-  subroutine solar_angles(lat, lon, date, time, sunzenangle, sunazangle)
-
-    real(KIND = wp), intent(IN) :: lat, lon
-    integer(KIND = 4), dimension(3), intent(IN) :: date, time
-
-    real(KIND = wp), intent(OUT) :: sunzenangle, sunazangle
-
-    real(KIND = wp) :: elevation, dec, soldst, hour
-    integer(KIND = 4) :: julian
-
-    ! Compute the julian date (day of year)
-    call day_number(date(1), date(2), date(3), julian)
-
-    ! Compute the fractional hour
-    hour = time(1) + time(2) / 60._wp + time(3) / 3600._wp
-
-    ! Get the angles
-    call sunae(date(3), julian, hour, lat, lon, sunazangle, elevation, dec, soldst)
-
-    ! Convert elevation into solar zenith angle
-    sunzenangle = 90 - elevation
-
-    return
-
-  end subroutine solar_angles
-
-  function n_chunks(npoints, npoints_it) result(nchunks)
-    integer(kind=4), intent(in) :: npoints, npoints_it
-    integer(kind=4)             :: nchunks
-
-    nChunks = npoints / npoints_it
-    if (mod(npoints,npoints_it)/=0) nchunks = nchunks + 1
-    if (npoints .eq. npoints_it) nChunks = 1
-
-  end function n_chunks
 
 
 

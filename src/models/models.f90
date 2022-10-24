@@ -31,7 +31,7 @@ module mod_models
 
   use s3com_types,         only: wp, type_icon, type_model, type_nml
   use mod_icon,            only: icon_load, icon_clear
-  use mod_utils_math,      only: solar_angles
+  use mod_utils_phys,      only: solar_angles
 
   implicit none
 
