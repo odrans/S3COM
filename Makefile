@@ -90,7 +90,7 @@ LIST_OBJ_CONF = $(obj)/types.o \
 
 LIST_OBJ_S3COM = $(obj)/s3com_setup.o
 
-LIST_OBJ_MODELS = $(obj)/icon.o \
+LIST_OBJ_MODELS = $(obj)/models_icon.o \
         $(obj)/models.o
 
 LIST_OBJ_IO = $(obj)/io_utils.o \
@@ -175,7 +175,7 @@ $(obj)/s3com_setup.o : $(DIR_S3COM)/s3com_setup.f90
 
 ## Objects for subroutines in ./src/models
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/icon.o : $(DIR_MODELS)/icon.f90
+$(obj)/models_icon.o : $(DIR_MODELS)/models_icon.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
 $(obj)/models.o : $(DIR_MODELS)/models.f90
