@@ -27,10 +27,10 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-module mod_write_output
+module mod_io_s3com
 
   use s3com_types, only: type_icon, wp, type_nml, type_model, type_s3com
-  use mod_regrid, only: map_point_to_ll
+  use mod_io_utils, only: map_point_to_ll
   use netcdf
 
   implicit none
@@ -327,4 +327,4 @@ contains
 
   ! end subroutine write_output_ret
 
-end module mod_write_output
+end module mod_io_s3com

@@ -93,10 +93,10 @@ LIST_OBJ_S3COM = $(obj)/s3com_setup.o
 LIST_OBJ_MODELS = $(obj)/icon.o \
         $(obj)/models.o
 
-LIST_OBJ_IO = $(obj)/regrid.o \
+LIST_OBJ_IO = $(obj)/io_utils.o \
         $(obj)/io_namelist.o \
 		$(obj)/io_icon.o \
-		$(obj)/write_output.o
+		$(obj)/io_s3com.o
 
 # LIST_OBJ_OE = $(obj)/model_cloud.o \
 #         $(obj)/oe_utils.o \
@@ -198,7 +198,7 @@ $(obj)/oe_utils.o : $(DIR_OE)/oe_utils.f90
 
 ## Objects for subroutines in ./src/io
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/write_output.o : $(DIR_IO)/write_output.f90
+$(obj)/io_s3com.o : $(DIR_IO)/io_s3com.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
 $(obj)/io_icon.o : $(DIR_IO)/io_icon.f90
@@ -207,7 +207,7 @@ $(obj)/io_icon.o : $(DIR_IO)/io_icon.f90
 $(obj)/io_namelist.o : $(DIR_IO)/io_namelist.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
-$(obj)/regrid.o : $(DIR_IO)/regrid.f90
+$(obj)/io_utils.o : $(DIR_IO)/io_utils.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 

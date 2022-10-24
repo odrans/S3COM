@@ -28,7 +28,7 @@
 !
 
 
-module mod_regrid
+module mod_io_utils
 
   use mod_utils_fort, only: s3com_error
   use s3com_types,    only: wp
@@ -316,4 +316,4 @@ contains
     endif
   end subroutine map_ll_to_point
 
-end module mod_regrid
+end module mod_io_utils

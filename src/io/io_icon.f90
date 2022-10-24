@@ -32,7 +32,7 @@ module mod_io_icon
   use netcdf
   use s3com_types, only: wp, dp, type_icon
   use mod_utils_fort, only: s3com_error
-  use mod_regrid, only: map_ll_to_point
+  use mod_io_utils, only: map_ll_to_point
 
   implicit none
 
