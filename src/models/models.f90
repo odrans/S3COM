@@ -75,7 +75,6 @@ contains
 
   end subroutine models_load
 
-
   subroutine models_init(model, npoints, nlayers)
 
     ! Input variables

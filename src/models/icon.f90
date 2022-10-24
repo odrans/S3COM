@@ -30,7 +30,7 @@
 module mod_icon
 
   use s3com_types,         only: wp, type_icon
-  use mod_io_icon_read,       only: icon_read, extract_coordinates
+  use mod_io_icon,         only: icon_read, extract_coordinates
 
   use s3com_config,        only: rd, rv, epsilon, mu, nu, a, b, Q_ext, rholiq
 
