@@ -27,53 +27,52 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-MODULE MOD_ICON
+module mod_icon
 
-  USE s3com_types,         ONLY: wp, type_icon
-  USE mod_read_icon,       ONLY: icon_read, extract_coordinates
+  use s3com_types,         only: wp, type_icon
+  use mod_io_icon_read,       only: icon_read, extract_coordinates
 
-  USE s3com_config,        ONLY: rd, rv, epsilon, mu, nu, a, b, Q_ext, rholiq
+  use s3com_config,        only: rd, rv, epsilon, mu, nu, a, b, Q_ext, rholiq
 
-  IMPLICIT NONE
+  implicit none
 
-CONTAINS
+  private
+  public :: icon_load, icon_clear
 
-  SUBROUTINE icon_load(fname, icon)
+contains
+
+  subroutine icon_load(fname, icon)
 
     ! Inputs
-    CHARACTER(LEN=256), INTENT(IN) :: fname
+    character(LEN=256), intent(in) :: fname
 
     ! Inputs/Outputs
-    TYPE(type_icon), INTENT(INOUT) :: icon
+    type(type_icon), intent(inout) :: icon
 
     ! Internal
-    INTEGER(KIND=4) :: nlayers, npoints
-
-    write(6, "(1X, A, 1X, A)", advance='no') "Reading ICON inputs:", trim(fname)
+    integer(kind=4) :: nlayers, npoints
 
     ! Extract the number of vertical layers and grid points in the input files
-    CALL extract_coordinates(fname, nlayers, npoints)
+    call extract_coordinates(fname, nlayers, npoints)
 
     ! Initialize the ICON array
-    CALL icon_init(npoints, nlayers, icon)
+    call icon_init(npoints, nlayers, icon)
 
     ! Read input netcdf file containing ICON outputs
-    CALL icon_read(fname, icon)
+    call icon_read(fname, icon)
 
     ! Post-process ICON data
-    CALL icon_process(icon)
+    call icon_process(icon)
 
-    write(6, "(A)") "... Done"
-
-  END SUBROUTINE icon_load
+  end subroutine icon_load
 
 
-  SUBROUTINE icon_process(icon)
+  subroutine icon_process(icon)
 
-    TYPE(type_icon), INTENT(INOUT) :: icon
+    type(type_icon), intent(inout) :: icon
 
     ! Internal
-    INTEGER(KIND=4) :: i, j, nlevels, nlayers, npoints
+    integer(kind=4) :: i, j, nlevels, nlayers, npoints
 
     nlevels = icon%nlevels
     nlayers = icon%nlayers
@@ -117,14 +116,14 @@ CONTAINS
     icon%cdnc = icon%qnc * icon%rho
 
     !Cloud liquid water effective radius (m)
-    DO i = 1, Npoints
-       DO j = 1, Nlayers
-          IF(icon%cdnc(i,j) .GT. 0) THEN
+    do i = 1, Npoints
+       do j = 1, Nlayers
+          if(icon%cdnc(i,j) .gt. 0) then
              icon%Reff(i,j) = (a/2._wp)*(gamma((nu+1._wp+3._wp*b)/mu)/gamma((nu+1._wp+2._wp*b)/mu))*(icon%lwc(i,j) / icon%cdnc(i,j))**b*&
                   (gamma((nu+1._wp)/mu)/gamma((nu+2._wp)/mu))**b
-          END IF
-       END DO
-    END DO
+          end if
+       end do
+    end do
     icon%Reff = icon%Reff * 1E6 !! m to um (default input in RTTOV)
 
     !!Cloud extinction coefficient in m-1
@@ -137,58 +136,53 @@ CONTAINS
     ! icon%cod(:,1:nlevels-1) = ((icon%beta_ext(:,1:nlevels)+icon%beta_ext(:,1:nlevels+1))/2._wp)*icon%dz_cod(:,1:nlevels-1)
     ! ----------------------------------------------------------------------------------------------------
 
+  end subroutine icon_process
 
+  subroutine icon_init(npoints, nlayers, icon)
 
-  END SUBROUTINE icon_process
-
-  SUBROUTINE icon_init(npoints, nlayers, y)
-
-    TYPE(type_icon) :: y
-    INTEGER(KIND = 4), INTENT(IN) :: npoints, nlayers
-    INTEGER(KIND = 4) :: nlevels
+    type(type_icon) :: icon
+    integer(kind=4), intent(in) :: npoints, nlayers
+    integer(kind=4) :: nlevels
 
     nlevels = nlayers + 1
 
-    y%npoints = npoints
-    y%nlayers = nlayers
-    y%nlevels = nlevels
+    icon%npoints = npoints
+    icon%nlayers = nlayers
+    icon%nlevels = nlevels
 
-    ALLOCATE(y%height(nlevels), source = 0)
+    allocate(icon%height(nlevels), source = 0)
 
     !! 2D variables
-    ALLOCATE(y%lon(npoints), source = 0._wp)
-    ALLOCATE(y%lat, y%lon_orig, y%lat_orig, y%topography, y%landmask, &
-         y%ps, y%ts, y%t_2m, y%q_2m, y%u_10m, y%v_10m, &
-         mold = y%lon)
+    allocate(icon%lon(npoints), source = 0._wp)
+    allocate(icon%lat, icon%lon_orig, icon%lat_orig, icon%topography, icon%landmask, &
+         icon%ps, icon%ts, icon%t_2m, icon%q_2m, icon%u_10m, icon%v_10m, &
+         mold = icon%lon)
 
     !! 3D variables on atmospheric levels
-    ALLOCATE(y%z_ifc(npoints, nlevels), source = 0._wp)
-    ALLOCATE(y%p_ifc, y%t_ifc, y%q_ifc, &
-         mold = y%z_ifc)
+    allocate(icon%z_ifc(npoints, nlevels), source = 0._wp)
+    allocate(icon%p_ifc, icon%t_ifc, icon%q_ifc, &
+         mold = icon%z_ifc)
 
     !! 3D variables in atmospheric layers
-    ALLOCATE(y%z(npoints, nlayers), source = 0._wp)
-    ALLOCATE(y%p, y%t, y%q, y%clc, y%clw, y%cli, &
-         y%qnc, y%qr, y%qs, y%dz, y%rho, y%tv, y%lwc, &
-         y%iwc, y%cdnc, y%reff, &
-         mold = y%z)
+    allocate(icon%z(npoints, nlayers), source = 0._wp)
+    allocate(icon%p, icon%t, icon%q, icon%clc, icon%clw, icon%cli, &
+         icon%qnc, icon%qr, icon%qs, icon%dz, icon%rho, icon%tv, icon%lwc, &
+         icon%iwc, icon%cdnc, icon%reff, &
+         mold = icon%z)
 
-  END SUBROUTINE icon_init
-
-
-  SUBROUTINE icon_clear(y)
-
-    TYPE(type_icon), INTENT(INOUT) :: y
-
-    DEALLOCATE(y%height, y%lon, y%lat, y%lon_orig, y%lat_orig, &
-         y%topography, y%landmask, y%ps, y%ts, y%t_2m, y%q_2m, y%u_10m, y%v_10m, &
-         y%p, y%z, y%z_ifc, y%p_ifc, y%t_ifc, y%q_ifc, &
-         y%t, y%q, y%clc, y%clw, y%cli, y%qnc, y%qr, y%qs, y%dz, &
-         y%rho, y%tv, y%lwc, y%iwc, y%cdnc, y%Reff)
-
-  END SUBROUTINE icon_clear
+  end subroutine icon_init
 
 
+  subroutine icon_clear(icon)
 
+    type(type_icon), intent(inout) :: icon
 
-END MODULE MOD_ICON
+    deallocate(icon%height, icon%lon, icon%lat, icon%lon_orig, icon%lat_orig, &
+         icon%topography, icon%landmask, icon%ps, icon%ts, icon%t_2m, icon%q_2m, icon%u_10m, icon%v_10m, &
+         icon%p, icon%z, icon%z_ifc, icon%p_ifc, icon%t_ifc, icon%q_ifc, &
+         icon%t, icon%q, icon%clc, icon%clw, icon%cli, icon%qnc, icon%qr, icon%qs, icon%dz, &
+         icon%rho, icon%tv, icon%lwc, icon%iwc, icon%cdnc, icon%Reff)
+
+  end subroutine icon_clear
+
+end module mod_icon

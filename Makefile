@@ -95,7 +95,7 @@ LIST_OBJ_MODELS = $(obj)/icon.o \
 
 LIST_OBJ_IO = $(obj)/regrid.o \
         $(obj)/io_namelist.o \
-		$(obj)/read_icon.o \
+		$(obj)/io_icon_read.o \
 		$(obj)/write_output.o
 
 # LIST_OBJ_OE = $(obj)/model_cloud.o \
@@ -201,7 +201,7 @@ $(obj)/oe_utils.o : $(DIR_OE)/oe_utils.f90
 $(obj)/write_output.o : $(DIR_IO)/write_output.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
-$(obj)/read_icon.o : $(DIR_IO)/read_icon.f90
+$(obj)/io_icon_read.o : $(DIR_IO)/io_icon_read.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
 $(obj)/io_namelist.o : $(DIR_IO)/io_namelist.f90
