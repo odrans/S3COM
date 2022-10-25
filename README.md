@@ -12,7 +12,7 @@ S3COM is a tool at the interface of high-resolution modeling and satellite obser
 
 S3COM can be installed via its makefile:
 ```bash
-git clone git@github.com:odrans/S3COM.git
+git clone https://github.com/odrans/S3COM.git
 cd S3COM
 make
 ```
