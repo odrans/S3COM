@@ -271,17 +271,17 @@ contains
        profiles(iprof)%mmr_cldaer = .false. !Logical flag to set cloud and aerosol
        !Units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
 
-       !!Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
+       ! Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
        profiles(iprof)%cfrac = rttov_atm%clc(idx_prof,:)
 
-       !! Used by OPAC
+       ! Used by OPAC
        profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)
 
-       !!Ice cloud input profiles
+       ! Ice cloud input profiles
        profiles(iprof)%ice_scheme = 3 !Cloud ice water scheme: 1=Baum; 2=Baran 2014; 3=Baran 2018
        profiles(iprof)%cloud(6,:) = rttov_atm%iwc(idx_prof,:)*1E3 !(kg/m3)
 
-       !!Liquid cloud input profiles
+       ! Liquid cloud input profiles
        profiles(:)%clw_scheme = 2 !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
        profiles(iprof)%clwde(:) = rttov_atm%reff(idx_prof,:)*2.0 ! Need the diameter
 
