@@ -10,6 +10,7 @@ nchannels = 2
 
 &rttov_init
 path_rttov = ""
+do_opdep_calc = TRUE
 addrefrac = TRUE
 ir_scatt_model = 1
 vis_scatt_model = 1

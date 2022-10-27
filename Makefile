@@ -35,7 +35,7 @@ F90FLAGS = -module $(mod) -fpp -qopenmp -g -traceback -check bounds -debug exten
 
 # Let's start with setting up some paths
 # ---------------------------------------------------------------------------------------------------------------------------------------
-PATH_S3COM = $(HOME)/github/S3COM
+PATH_S3COM = $(HOME)/S3COM-test/S3COM
 PATH_RTTOV = /work/bb1036/rttov_share/rttov131
 PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-2k3cmu
 PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g
