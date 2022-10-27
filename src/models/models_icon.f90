@@ -78,7 +78,7 @@ contains
     nlayers = icon%nlayers
     npoints = icon%npoints
 
-    ! Atmospehric structure
+    ! Atmospheric structure
     ! ----------------------------------------------------------------------------------------------------
 
     ! Layer depth (approximate!! why not ifc(i+1) - ifc(i)?)
@@ -86,7 +86,7 @@ contains
 
     ! ----------------------------------------------------------------------------------------------------
 
-    ! Atmospehric moisture
+    ! Atmospheric moisture
     ! ----------------------------------------------------------------------------------------------------
     ! Virtual temperature
     icon%tv = icon%t * (1 + 0.608 * icon%q)
