@@ -101,7 +101,7 @@ contains
     character(LEN = 256) :: fn_out_rad, suffix, attr_instrument
 
     suffix = trim(nml%suffix_out)
-    if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)//"_"
+    if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)
 
     fn_out_rad = trim(nml%path_out)//"S3COM"//trim(suffix)//"_rad.nc"
 

@@ -64,7 +64,7 @@ contains
 
     ! Namelist variables
     character(len=256) :: fname_in, path_rttov, path_out, suffix_out
-    logical :: flag_retrievals, addrefrac, dom_rayleigh, flag_output_atm
+    logical :: flag_retrievals, flag_output_atm, do_opdep_calc, addrefrac, dom_rayleigh
 
     integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
          ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads
@@ -85,6 +85,7 @@ contains
 
     namelist /rttov_init/ &
          path_rttov, &
+         do_opdep_calc, &
          addrefrac, &
          ir_scatt_model, &
          vis_scatt_model, &
@@ -129,6 +130,7 @@ contains
     nml%platform = platform
     nml%satellite = satellite
     nml%instrument = instrument
+    nml%do_opdep_calc = do_opdep_calc
     nml%addrefrac = addrefrac
     nml%ir_scatt_model = ir_scatt_model
     nml%vis_scatt_model = vis_scatt_model

@@ -4,12 +4,14 @@ path_out = "./"
 suffix_out = ""
 month = 1
 flag_retrievals = FALSE
+flag_output_atm = FALSE
 npoints_it = 100
 nchannels = 2
 /
 
 &rttov_init
 path_rttov = ""
+do_opdep_calc = TRUE
 addrefrac = TRUE
 ir_scatt_model = 1
 vis_scatt_model = 1

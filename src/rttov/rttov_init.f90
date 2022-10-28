@@ -116,8 +116,9 @@ contains
     !interpolation is used (default = false)
     opts%interpolation%interp_mode     = 1       !Interpolation method
     !opts%interpolation%reg_limit_extrap = .TRUE.
-
-    opts%rt_all%addrefrac              =  s3com%nml%addrefrac  !If true RTTOV calculations accounts for atmospheric refraction (default = true)
+    
+    opts%dev%do_opdep_calc             = s3com%nml%do_opdep_calc !If false disables the RTTOV gas optical depth calculation (default = true)
+    opts%rt_all%addrefrac              = s3com%nml%addrefrac  !If true RTTOV calculations accounts for atmospheric refraction (default = true)
     opts%rt_ir%addaerosl               = .false. !If true accounts for scattering due to aerosols (default = false)
     opts%rt_ir%addclouds               = .true.  !If true accounts for scattering due to clouds (default = false)
 

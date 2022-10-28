@@ -62,9 +62,11 @@ module s3com_types
           channel_list
      logical :: &
           flag_retrievals, &
+          flag_output_atm, &
+          do_opdep_calc, &
           addrefrac, &
-          dom_rayleigh, &
-          flag_output_atm
+          dom_rayleigh
+          
   end type type_nml
 
   !!Type containing variables from ICON simulations
