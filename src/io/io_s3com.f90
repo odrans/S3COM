@@ -157,8 +157,8 @@ contains
 
     errst = nf90_enddef(ncid)
 
-    errst = nf90_put_var(ncid, varid_lon,        model%lon_orig) !model%lon_orig
-    errst = nf90_put_var(ncid, varid_lat,        model%lat_orig) !model%lat_orig
+    errst = nf90_put_var(ncid, varid_lon,        model%lon_orig)
+    errst = nf90_put_var(ncid, varid_lat,        model%lat_orig)
     errst = nf90_put_var(ncid, varid_chan,       s3com%rad%wavelength)
     errst = nf90_put_var(ncid, varid_ref_total,  gridded_f_ref_total)
     errst = nf90_put_var(ncid, varid_ref_clear,  gridded_f_ref_clear)
