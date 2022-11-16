@@ -156,35 +156,38 @@ contains
     read(icon_date(7:8), "(I)") model%date(1)
     ! ----------------------------------------------------------------------------------------------------
 
-    model%nlat = icon%nlat
-    model%nlon = icon%nlon
-    model%mode = icon%mode
+    model%nlat       = icon%nlat
+    model%nlon       = icon%nlon
+    model%mode       = icon%mode
 
-    model%npoints   =  icon%npoints
-    model%nlevels   =  icon%nlevels
-    model%nlayers   =  icon%nlayers
+    model%npoints    = icon%npoints
+    model%nlevels    = icon%nlevels
+    model%nlayers    = icon%nlayers
 
-    model%lat       =  icon%lat
-    model%lon       =  icon%lon
-    model%topography =  icon%topography
-    model%u_10m     =  icon%u_10m
-    model%v_10m     =  icon%v_10m
-    model%ts        =  icon%ts
-    model%ps        =  icon%ps
-    model%q_2m      =  icon%q_2m
-    model%t_2m      =  icon%t_2m
-    model%landmask  =  icon%landmask
+    model%lat_orig   = icon%lat_orig
+    model%lon_orig   = icon%lon_orig
+    
+    model%lat        = icon%lat
+    model%lon        = icon%lon
+    model%topography = icon%topography
+    model%u_10m      = icon%u_10m
+    model%v_10m      = icon%v_10m
+    model%ts         = icon%ts
+    model%ps         = icon%ps
+    model%q_2m       = icon%q_2m
+    model%t_2m       = icon%t_2m
+    model%landmask   = icon%landmask
 
-    model%p         =  icon%p_ifc
-    model%z         =  icon%z_ifc
-    model%dz        =  icon%dz
-    model%t         =  icon%t_ifc
-    model%q         =  icon%q_ifc
-    model%clc       =  icon%clc
-    model%iwc       =  icon%iwc
-    model%lwc       =  icon%lwc
-    model%reff      =  icon%reff
-    model%cdnc      =  icon%cdnc
+    model%p          = icon%p_ifc
+    model%z          = icon%z_ifc
+    model%dz         = icon%dz
+    model%t          = icon%t_ifc
+    model%q          = icon%q_ifc
+    model%clc        = icon%clc
+    model%iwc        = icon%iwc
+    model%lwc        = icon%lwc
+    model%reff       = icon%reff
+    model%cdnc       = icon%cdnc
 
   end subroutine models_setup_icon
 
