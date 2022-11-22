@@ -28,148 +28,157 @@
 !
 
 module mod_io_s3com
-
-  use s3com_types, only: type_icon, wp, type_nml, type_model, type_s3com
-  use mod_io_utils, only: map_point_to_ll
-  use netcdf
-
-  implicit none
-
-  private
-  public :: write_output
-
+   
+   use s3com_types,  only: type_icon, wp, type_nml, type_model, type_s3com
+   use mod_io_utils, only: map_point_to_ll
+   use netcdf
+   
+   implicit none
+   
+   private
+   public :: write_output, write_output_rad, write_output_atm
+   
 contains
-
-  ! Write all S3COM outputs
-  subroutine write_output(s3com, model, nml)
-
-    ! Input variables
-    type(type_model), intent(in) :: model
-    type(type_s3com), intent(in) :: s3com
-    type(type_nml), intent(in) :: nml
-
-    call write_output_rad(s3com, model, nml)
-
-    ! IF(nml%flag_output_atm) THEN
-    !    CALL write_output_atm(icon, oe, nml, atm)
-    ! END IF
-
-    ! IF(nml%flag_retrievals) THEN
-    !    CALL write_output_ret(icon, oe, nml)
-    ! END IF
-
-  end subroutine write_output
-
-
-  ! Write radiation outputs, mainly satellite measurements simulated by RTTOV
-  subroutine write_output_rad(s3com, model, nml)
-
-    ! Input variables
-    type(type_model),  intent(in) :: model
-    type(type_s3com),  intent(in) :: s3com
-    type(type_nml),    intent(in) :: nml
-
-    ! Local variables
-    real(kind=wp), dimension(model%nlon, model%nlat, nml%nchannels) :: &
-         gridded_f_ref_total,  &
-         gridded_f_ref_clear,  &
-         gridded_f_bt_total,   &
-         gridded_f_bt_clear,   &
-         gridded_f_rad_total,  &
+   
+   !!Write all S3COM outputs
+   subroutine write_output(s3com, model, nml)
+      
+      !!Input variables
+      type(type_s3com), intent(in) :: s3com
+      type(type_model), intent(in) :: model
+      type(type_nml),   intent(in) :: nml
+      
+      call write_output_rad(s3com, model, nml)
+               
+      !if (nml%flag_output_atm) then
+      !   call write_output_atm(icon, oe, nml, atm)
+      !endif
+      
+      !if (nml%flag_retrievals) then
+      !   call write_output_ret(icon, oe, nml)
+      !endif
+      
+   end subroutine write_output
+   
+   !!Write radiation outputs, mainly satellite measurements simulated by RTTOV
+   subroutine write_output_rad(s3com, model, nml)
+      
+      !!Input variables
+      type(type_s3com), intent(in) :: s3com
+      type(type_model), intent(in) :: model
+      type(type_nml),   intent(in) :: nml
+      
+      !!Local variables
+      real(kind=wp), dimension(model%nlon, model%nlat, nml%nchannels) :: &
+         gridded_f_ref_total, &
+         gridded_f_ref_clear, &
+         gridded_f_bt_total,  &
+         gridded_f_bt_clear,  &
+         gridded_f_rad_total, &
          gridded_f_rad_clear
-
-    integer(kind=4) :: ncid, errst
-
-    integer(kind=4) ::      &
-         varid_lon,         &
-         varid_lat,         &
-         varid_chan,        &
-         varid_ref_total,   &
-         varid_ref_clear,   &
-         varid_bt_total,    &
-         varid_bt_clear,    &
-         varid_rad_total,   &
+         
+      integer(kind=4) :: ncid, errst
+      
+      integer(kind=4) ::  &
+         varid_lon,       &
+         varid_lat,       &
+         varid_chan,      &
+         varid_ref_total, &
+         varid_ref_clear, &
+         varid_bt_total,  &
+         varid_bt_clear,  &
+         varid_rad_total, &
          varid_rad_clear
-
-    integer(kind=4) ::      &
-         dimid_lon,         &
-         dimid_lat,         &
-         dimid_chan,        &
-         dimid_latlon(2),   &
+         
+      integer(kind=4) ::  &
+         dimid_lon,       &
+         dimid_lat,       &
+         dimid_chan,      &
+         dimid_latlon(2), &
          dimid_latlonchan(3)
-
-    character(LEN = 256) :: fn_out_rad, suffix, attr_instrument
-
-    suffix = trim(nml%suffix_out)
-    if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)
-
-    fn_out_rad = trim(nml%path_out)//"S3COM"//trim(suffix)//"_rad.nc"
-
-    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_ref_total, y3=gridded_f_ref_total)
-    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_ref_clear, y3=gridded_f_ref_clear)
-    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_bt_total,  y3=gridded_f_bt_total)
-    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_bt_clear,  y3=gridded_f_bt_clear)
-    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_rad_total, y3=gridded_f_rad_total)
-    call map_point_to_ll(model%Nlon, model%Nlat, model%mode, x2=s3com%rad%f_rad_clear, y3=gridded_f_rad_clear)
-
-    errst = nf90_create(fn_out_rad, NF90_CLOBBER, ncid)
-
-    errst = nf90_def_dim(ncid, "lon", model%nlon, dimid_lon)
-    errst = nf90_def_dim(ncid, "lat", model%nlat, dimid_lat)
-    errst = nf90_def_dim(ncid, "chan", nml%nchannels, dimid_chan)
-
-    dimid_latlon     = (/dimid_lon, dimid_lat/)
-    dimid_latlonchan = (/dimid_lon, dimid_lat, dimid_chan/)
-
-    errst = nf90_def_var(ncid, "lon",             NF90_REAL, dimid_lon,        varid_lon)
-    errst = nf90_def_var(ncid, "lat",             NF90_REAL, dimid_lat,        varid_lat)
-    errst = nf90_def_var(ncid, "chan",            NF90_REAL, dimid_chan,       varid_chan)
-    errst = nf90_def_var(ncid, "ref_total",       NF90_REAL, dimid_latlonchan, varid_ref_total)
-    errst = nf90_def_var(ncid, "ref_clear",       NF90_REAL, dimid_latlonchan, varid_ref_clear)
-    errst = nf90_def_var(ncid, "BT_total",        NF90_REAL, dimid_latlonchan, varid_bt_total)
-    errst = nf90_def_var(ncid, "BT_clear",        NF90_REAL, dimid_latlonchan, varid_bt_clear)
-    errst = nf90_def_var(ncid, "rad_total",       NF90_REAL, dimid_latlonchan, varid_rad_total)
-    errst = nf90_def_var(ncid, "rad_clear",       NF90_REAL, dimid_latlonchan, varid_rad_clear)
-
-    errst = nf90_put_att(ncid, varid_lon,        "units", "degrees_east")
-    errst = nf90_put_att(ncid, varid_lat,        "units", "degrees_north")
-    errst = nf90_put_att(ncid, varid_chan,       "units", "um")
-    errst = nf90_put_att(ncid, varid_ref_total,  "units", "-")
-    errst = nf90_put_att(ncid, varid_ref_clear,  "units", "-")
-    errst = nf90_put_att(ncid, varid_bt_total,   "units", "K")
-    errst = nf90_put_att(ncid, varid_bt_clear,   "units", "K")
-    errst = nf90_put_att(ncid, varid_rad_total,  "units", "W/m2/sr/um")
-    errst = nf90_put_att(ncid, varid_rad_clear,  "units", "W/m2/sr/um")
-
-    errst = nf90_put_att(ncid, varid_lon,        "description", "Longitude")
-    errst = nf90_put_att(ncid, varid_lat,        "description", "Latitude")
-    errst = nf90_put_att(ncid, varid_chan,       "description", "Central wavelength of instrument channel")
-    errst = nf90_put_att(ncid, varid_ref_total,  "description", "All-sky upwelling reflectance at TOA")
-    errst = nf90_put_att(ncid, varid_ref_clear,  "description", "Clear-sky upwelling reflectance at TOA")
-    errst = nf90_put_att(ncid, varid_bt_total,   "description", "All-sky upwelling brightness temperature at TOA")
-    errst = nf90_put_att(ncid, varid_bt_clear,   "description", "Clear-sky upwelling brightness temperature at TOA")
-    errst = nf90_put_att(ncid, varid_rad_total,  "description", "All-sky upwelling radiance at TOA")
-    errst = nf90_put_att(ncid, varid_rad_clear,  "description", "Clear-sky upwelling radiance at TOA")
-
-    attr_instrument = trim(s3com%opt%rttov%inst_name)//"/"//trim(s3com%opt%rttov%platform_name)
-
-    errst = nf90_put_att(ncid, nf90_global, 'RTTOV_instrument', trim(attr_instrument))
-
-    errst = nf90_enddef(ncid)
-
-    errst = nf90_put_var(ncid, varid_lon,        model%lon_orig)
-    errst = nf90_put_var(ncid, varid_lat,        model%lat_orig)
-    errst = nf90_put_var(ncid, varid_chan,       s3com%rad%wavelength)
-    errst = nf90_put_var(ncid, varid_ref_total,  gridded_f_ref_total)
-    errst = nf90_put_var(ncid, varid_ref_clear,  gridded_f_ref_clear)
-    errst = nf90_put_var(ncid, varid_bt_total,   gridded_f_bt_total)
-    errst = nf90_put_var(ncid, varid_bt_clear,   gridded_f_bt_clear)
-    errst = nf90_put_var(ncid, varid_rad_total,  gridded_f_rad_total)
-    errst = nf90_put_var(ncid, varid_rad_clear,  gridded_f_rad_clear)
-
-    errst = nf90_close(ncid)
-
-  end subroutine write_output_rad
+         
+      character(LEN = 256) :: fn_out_rad, suffix, attr_instrument
+      
+      suffix = trim(nml%suffix_out)
+      if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)
+      
+      fn_out_rad = trim(nml%path_out)//"S3COM"//trim(suffix)//"_rad.nc"
+      
+      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_ref_total, y3=gridded_f_ref_total)
+      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_ref_clear, y3=gridded_f_ref_clear)
+      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_bt_total,  y3=gridded_f_bt_total)
+      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_bt_clear,  y3=gridded_f_bt_clear)
+      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_rad_total, y3=gridded_f_rad_total)
+      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_rad_clear, y3=gridded_f_rad_clear)
+      
+      errst = nf90_create(fn_out_rad, NF90_CLOBBER, ncid)
+      
+      errst = nf90_def_dim(ncid, "lon", model%nlon, dimid_lon)
+      errst = nf90_def_dim(ncid, "lat", model%nlat, dimid_lat)
+      errst = nf90_def_dim(ncid, "chan", nml%nchannels, dimid_chan)
+      
+      dimid_latlon     = (/dimid_lon, dimid_lat/)
+      dimid_latlonchan = (/dimid_lon, dimid_lat, dimid_chan/)
+      
+      errst = nf90_def_var(ncid, "lon",       NF90_REAL, dimid_lon,        varid_lon)
+      errst = nf90_def_var(ncid, "lat",       NF90_REAL, dimid_lat,        varid_lat)
+      errst = nf90_def_var(ncid, "chan",      NF90_REAL, dimid_chan,       varid_chan)
+      errst = nf90_def_var(ncid, "ref_total", NF90_REAL, dimid_latlonchan, varid_ref_total)
+      errst = nf90_def_var(ncid, "ref_clear", NF90_REAL, dimid_latlonchan, varid_ref_clear)
+      errst = nf90_def_var(ncid, "bt_total",  NF90_REAL, dimid_latlonchan, varid_bt_total)
+      errst = nf90_def_var(ncid, "bt_clear",  NF90_REAL, dimid_latlonchan, varid_bt_clear)
+      errst = nf90_def_var(ncid, "rad_total", NF90_REAL, dimid_latlonchan, varid_rad_total)
+      errst = nf90_def_var(ncid, "rad_clear", NF90_REAL, dimid_latlonchan, varid_rad_clear)
+      
+      errst = nf90_put_att(ncid, varid_lon,       "standard_name", "longitude")
+      errst = nf90_put_att(ncid, varid_lat,       "standard_name", "latitude")
+      errst = nf90_put_att(ncid, varid_chan,      "standard_name", "chan")
+      errst = nf90_put_att(ncid, varid_ref_total, "standard_name", "ref_total")
+      errst = nf90_put_att(ncid, varid_ref_clear, "standard_name", "ref_clear")
+      errst = nf90_put_att(ncid, varid_bt_total,  "standard_name", "bt_total")
+      errst = nf90_put_att(ncid, varid_bt_clear,  "standard_name", "bt_clear")
+      errst = nf90_put_att(ncid, varid_rad_total, "standard_name", "rad_total")
+      errst = nf90_put_att(ncid, varid_rad_clear, "standard_name", "rad_clear")
+      
+      errst = nf90_put_att(ncid, varid_lon,       "long_name", "Longitude")
+      errst = nf90_put_att(ncid, varid_lat,       "long_name", "Latitude")
+      errst = nf90_put_att(ncid, varid_chan,      "long_name", "Central wavelength of instrument channel")
+      errst = nf90_put_att(ncid, varid_ref_total, "long_name", "All-sky upwelling reflectance at TOA")
+      errst = nf90_put_att(ncid, varid_ref_clear, "long_name", "Clear-sky upwelling reflectance at TOA")
+      errst = nf90_put_att(ncid, varid_bt_total,  "long_name", "All-sky upwelling brightness temperature at TOA")
+      errst = nf90_put_att(ncid, varid_bt_clear,  "long_name", "Clear-sky upwelling brightness temperature at TOA")
+      errst = nf90_put_att(ncid, varid_rad_total, "long_name", "All-sky upwelling radiance at TOA")
+      errst = nf90_put_att(ncid, varid_rad_clear, "long_name", "Clear-sky upwelling radiance at TOA")
+      
+      errst = nf90_put_att(ncid, varid_lon,       "units", "degrees_east")
+      errst = nf90_put_att(ncid, varid_lat,       "units", "degrees_north")
+      errst = nf90_put_att(ncid, varid_chan,      "units", "um")
+      errst = nf90_put_att(ncid, varid_ref_total, "units", "-")
+      errst = nf90_put_att(ncid, varid_ref_clear, "units", "-")
+      errst = nf90_put_att(ncid, varid_bt_total,  "units", "K")
+      errst = nf90_put_att(ncid, varid_bt_clear,  "units", "K")
+      errst = nf90_put_att(ncid, varid_rad_total, "units", "W/m2/sr/um")
+      errst = nf90_put_att(ncid, varid_rad_clear, "units", "W/m2/sr/um")
+      
+      attr_instrument = trim(s3com%opt%rttov%inst_name)//"/"//trim(s3com%opt%rttov%platform_name)
+      
+      errst = nf90_put_att(ncid, nf90_global, 'RTTOV_instrument', trim(attr_instrument))
+      
+      errst = nf90_enddef(ncid)
+      
+      errst = nf90_put_var(ncid, varid_lon,       model%lon_orig)
+      errst = nf90_put_var(ncid, varid_lat,       model%lat_orig)
+      errst = nf90_put_var(ncid, varid_chan,      s3com%rad%wavelength)
+      errst = nf90_put_var(ncid, varid_ref_total, gridded_f_ref_total)
+      errst = nf90_put_var(ncid, varid_ref_clear, gridded_f_ref_clear)
+      errst = nf90_put_var(ncid, varid_bt_total,  gridded_f_bt_total)
+      errst = nf90_put_var(ncid, varid_bt_clear,  gridded_f_bt_clear)
+      errst = nf90_put_var(ncid, varid_rad_total, gridded_f_rad_total)
+      errst = nf90_put_var(ncid, varid_rad_clear, gridded_f_rad_clear)
+      
+      errst = nf90_close(ncid)
+      
+   end subroutine write_output_rad
 
   ! Write atmospheric outputs
   subroutine write_output_atm(icon, oe, nml, atm)
