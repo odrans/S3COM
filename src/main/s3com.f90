@@ -88,8 +88,9 @@ program s3com_main
      if (nChunks .EQ. 1) then
         idx_start = 1; idx_end = npoints
      else
-        idx_start = (iChunk-1)*npoints_it+1; idx_end = iChunk*npoints_it
-        if (idx_end .gt. npoints) idx_end=npoints
+        idx_start = (iChunk-1)* nml%npoints_it + 1
+        idx_end = iChunk * nml%npoints_it
+        if (idx_end .gt. npoints) idx_end = npoints
      end if
 
      ! Subset the atmosphere for RTTOV

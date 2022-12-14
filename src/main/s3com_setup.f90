@@ -92,7 +92,6 @@ contains
 
     allocate(s3com_chunk%flag_rttov(s3com_chunk%npoints)); s3com_chunk%flag_rttov = .true.
 
-    s3com_chunk%npoints = s3com%npoints
     s3com_chunk%nmeas = s3com%nmeas
 
     allocate(s3com_chunk%rad%f_ref_total(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
