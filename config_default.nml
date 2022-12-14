@@ -5,12 +5,14 @@ suffix_out = ""
 month = 1
 flag_retrievals = FALSE
 flag_output_atm = FALSE
+flag_output_jac = TRUE
 npoints_it = 100
 nchannels = 2
 /
 
 &rttov_init
 path_rttov = ""
+do_jacobian_calc = TRUE
 do_opdep_calc = TRUE
 addrefrac = TRUE
 ir_scatt_model = 1
