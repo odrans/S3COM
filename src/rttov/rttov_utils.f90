@@ -38,18 +38,18 @@ module mod_rttov_utils
 
 contains
 
-  function idx_rttov(oe)
+  function idx_rttov(s3com)
 
-    type(type_s3com), intent(in) :: oe
+    type(type_s3com), intent(in) :: s3com
     integer(kind=4), dimension(:), allocatable :: idx_rttov
-    integer(kind=4), dimension(oe%npoints) :: idx_all
+    integer(kind=4), dimension(s3com%npoints) :: idx_all
     integer(kind=4) :: idx, i
 
     idx_all = 0
     idx = 1
 
-    do i = 1, oe%npoints
-       if(oe%flag_rttov(i)) then
+    do i = 1, s3com%npoints
+       if(s3com%flag_rttov(i)) then
           idx_all(idx) = i
           idx = idx + 1
        end if

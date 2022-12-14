@@ -61,10 +61,12 @@ module s3com_types
      integer(kind=4), dimension(:), allocatable :: &
           channel_list
      logical :: &
-          flag_retrievals, &
-          flag_output_atm, &
-          do_opdep_calc, &
-          addrefrac, &
+          flag_retrievals,  &
+          flag_output_atm,  &
+          flag_output_jac,  &
+          do_jacobian_calc, &
+          do_opdep_calc,    &
+          addrefrac,        &
           dom_rayleigh
           
   end type type_nml
@@ -81,7 +83,7 @@ module s3com_types
      real(dp) :: &
           time
      integer(kind=4), dimension(:), allocatable :: &
-          height ! height index
+          height, height_2 ! height index
      real(wp), dimension(:), allocatable :: &
           lon_orig,                           & !Longitude that won't be regridded (degrees east)
           lat_orig,                           & !Latitude  that won't be regridded (degress north)
@@ -126,7 +128,7 @@ module s3com_types
           idx_start,     & ! Starting index for subset profile
           idx_end          ! Ending index for subset profile
      integer(kind=4), dimension(:), allocatable :: &
-          height
+          height, height_2
      integer(kind=4), dimension(3) :: &
           time, &   ! day, month, year
           date      ! hour, minute, second
@@ -166,7 +168,7 @@ module s3com_types
           cdnc,                               & !Cloud droplet number concentration (1/m3)
           Reff                                  !Cloud liquid water effective radius (m)
   end type type_model
-
+  
   type type_rttov_opt
      integer ::       &
           dosolar,    &
@@ -200,6 +202,17 @@ module s3com_types
           f_rad_clear
   end type type_s3com_rad
 
+  type type_s3com_jac
+     real(kind=wp), dimension(:), allocatable ::   &
+          wavelength
+     real(kind=wp), dimension(:,:,:), allocatable :: &
+          p,                                         &
+          t,                                         &
+          cfrac,                                     &
+          clwde
+     logical :: do_jacobian_calc
+  end type type_s3com_jac
+  
   type type_s3com_atm
      real(kind=wp), dimension(:,:), allocatable :: &
           t,                                       &
@@ -231,6 +244,7 @@ module s3com_types
      type(type_nml) :: nml
      type(type_s3com_rad) :: rad
      type(type_s3com_atm) :: atm
+     type(type_s3com_jac) :: jac
      type(type_s3com_opt) :: opt
   end type type_s3com
 

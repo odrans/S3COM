@@ -95,6 +95,9 @@ contains
     model%date = (/0, 0, 0/)
     model%time = (/0, 0, 0/)
 
+    allocate(model%height(nlayers), source = 0)
+    allocate(model%height_2(nlevels), source = 0)
+    
     !! 2D fields
     allocate(model%lat(npoints), source = 0._wp)
     allocate(model%lon, model%lat_orig, model%lon_orig, &
@@ -123,6 +126,7 @@ contains
     type(type_model), intent(inout)   :: model
 
     deallocate(model%lat, model%lon, model%lat_orig, model%lon_orig, &
+         model%height, model%height_2, &
          model%topography, model%u_10m, model%v_10m, &
          model%ts, model%ps, model%q_2m, model%t_2m, &
          model%landmask, model%sunzenangle, model%sunazangle, &
@@ -166,6 +170,9 @@ contains
 
     model%lat_orig   = icon%lat_orig
     model%lon_orig   = icon%lon_orig
+    
+    model%height     = icon%height
+    model%height_2   = icon%height_2
     
     model%lat        = icon%lat
     model%lon        = icon%lon

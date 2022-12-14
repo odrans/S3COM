@@ -204,13 +204,30 @@ contains
        call s3com_error(routine_name,errmsg,errcode=errst)
     endif
 
-    ! errst = nf90_inq_varid(ncid, 'height', vid)
-    ! errst = nf90_get_var(ncid, vid, icon%height, start = (/1/), count = (/icon%nlevels/))
-    ! IF (errst /= 0) THEN
-    !    errmsg = "Error in nf90_get_var, var: height"
-    !    CALL s3com_error(routine_name,errmsg,errcode=errst)
-    ! ENDIF
+    errst = nf90_inq_varid(ncid, 'height', vid)
+    if (errst /= 0) then
+       errmsg = "Error in nf90_inq_varid, var: height"
+       call s3com_error(routine_name,errmsg,errcode=errst)
+    endif
+    
+    errst = nf90_get_var(ncid, vid, icon%height, start = (/1/), count = (/icon%nlayers/))
+    if (errst /= 0) then
+       errmsg = "Error in nf90_get_var, var: height"
+       call s3com_error(routine_name,errmsg,errcode=errst)
+    endif
 
+    errst = nf90_inq_varid(ncid, 'height_2', vid)
+    if (errst /= 0) then
+       errmsg = "Error in nf90_inq_varid, var: height_2"
+       call s3com_error(routine_name,errmsg,errcode=errst)
+    endif
+    
+    errst = nf90_get_var(ncid, vid, icon%height_2, start = (/1/), count = (/icon%nlevels/))
+    if (errst /= 0) then
+       errmsg = "Error in nf90_get_var, var: height_2"
+       call s3com_error(routine_name,errmsg,errcode=errst)
+    endif
+    
     icon%lon_orig = lon; icon%lat_orig = lat
 
     !!========================================================================================================================!!
@@ -390,7 +407,7 @@ contains
           endif
        case ('clc') !Cloud cover
           if (Lpoint) then
-             icon%clc(1:npoints,:) = x2(1:npoints,1:nlayers)
+             icon%clc(1:npoints,1:nlayers) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%clc)
           endif

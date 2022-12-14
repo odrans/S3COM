@@ -119,8 +119,8 @@ contains
     do i = 1, Npoints
        do j = 1, Nlayers
           if(icon%cdnc(i,j) .gt. 0) then
-             icon%Reff(i,j) = (a/2._wp)*(gamma((nu+1._wp+3._wp*b)/mu)/gamma((nu+1._wp+2._wp*b)/mu))*(icon%lwc(i,j) / icon%cdnc(i,j))**b*&
-                  (gamma((nu+1._wp)/mu)/gamma((nu+2._wp)/mu))**b
+             icon%Reff(i,j) = (a/2._wp)*(gamma((nu+1._wp+3._wp*b)/mu)/gamma((nu+1._wp+2._wp*b)/mu))*(icon%lwc(i,j) / &
+             icon%cdnc(i,j))**b*(gamma((nu+1._wp)/mu)/gamma((nu+2._wp)/mu))**b
           end if
        end do
     end do
@@ -150,7 +150,8 @@ contains
     icon%nlayers = nlayers
     icon%nlevels = nlevels
 
-    allocate(icon%height(nlevels), source = 0)
+    allocate(icon%height(nlayers), source = 0)
+    allocate(icon%height_2(nlevels), source = 0)
 
     !! 2D variables
     allocate(icon%lon(npoints), source = 0._wp)
@@ -177,7 +178,7 @@ contains
 
     type(type_icon), intent(inout) :: icon
 
-    deallocate(icon%height, icon%lon, icon%lat, icon%lon_orig, icon%lat_orig, &
+    deallocate(icon%height, icon%height_2, icon%lon, icon%lat, icon%lon_orig, icon%lat_orig, &
          icon%topography, icon%landmask, icon%ps, icon%ts, icon%t_2m, icon%q_2m, icon%u_10m, icon%v_10m, &
          icon%p, icon%z, icon%z_ifc, icon%p_ifc, icon%t_ifc, icon%q_ifc, &
          icon%t, icon%q, icon%clc, icon%clw, icon%cli, icon%qnc, icon%qr, icon%qs, icon%dz, &
