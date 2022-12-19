@@ -99,6 +99,7 @@ contains
 
     s3com_chunk%nlevels = s3com%nlevels
     s3com_chunk%nlayers = s3com%nlayers
+
     s3com_chunk%nmeas = s3com%nmeas
 
     s3com_chunk%jac%do_jacobian_calc=s3com%nml%do_jacobian_calc

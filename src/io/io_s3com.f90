@@ -184,6 +184,7 @@ contains
       errst = nf90_close(ncid)
       
    end subroutine write_output_rad
+
    
    !!Write Jacobian outputs calculated by RTTOV
    subroutine write_output_jac(s3com, model, nml)
@@ -315,6 +316,7 @@ contains
       
    end subroutine write_output_jac
    
+
   ! Write atmospheric outputs
   subroutine write_output_atm(icon, oe, nml, atm)
 
