@@ -52,9 +52,16 @@ module mod_rttov_interface
 
 #include "rttov_direct.interface"
 #include "rttov_parallel_direct.interface"
+#include "rttov_alloc_direct.interface"
+#include "rttov_k.interface"
+#include "rttov_parallel_k.interface"
+#include "rttov_alloc_k.interface"
 #include "rttov_read_coefs.interface"
 #include "rttov_dealloc_coefs.interface"
-#include "rttov_alloc_direct.interface"
+#include "rttov_init_emis_refl.interface"
+#include "rttov_init_prof.interface"
+#include "rttov_init_rad.interface"
+#include "rttov_init_transmission.interface"
 #include "rttov_user_options_checkinput.interface"
 #include "rttov_print_opts.interface"
 #include "rttov_print_profile.interface"
@@ -81,7 +88,7 @@ contains
     !!Local variables
     character(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2
     integer(kind=4) :: errorstatus, imonth, nchannels, atlas_type
-
+    
     imonth    = rttov_opt%month
     nChannels = rttov_opt%nchannels
 
@@ -129,7 +136,7 @@ contains
     opts%rt_ir%dom_nstreams            = s3com%nml%dom_nstreams       !Number of streams for Discrete Ordinates (DOM)
     opts%rt_ir%dom_rayleigh            = s3com%nml%dom_rayleigh !Enables Rayleigh multiple-scattering in solar DOM simulations
 
-    opts%rt_all%ozone_data             = .false. !Set the relevant flag to .TRUE. when supplying a profile of the given
+    opts%rt_all%ozone_data             = .false. !Set the relevant flag to .true. when supplying a profile of the given
     opts%rt_all%co2_data               = .false. !trace gas (ensure the coefficient file supports the gas)
     opts%rt_all%n2o_data               = .false.
     opts%rt_all%ch4_data               = .false.
@@ -138,12 +145,13 @@ contains
 
     opts%rt_mw%clw_data                = .false.
 
-    opts%config%verbose                = .false.  !If false only messages for fatal errors are output (default = true)
+    opts%config%verbose                = .true.  !If false only messages for fatal errors are output (default = true)
     opts%config%do_checkinput          = .true. !If true checks whether input profiles are within both absolute and regression
     !limits (default = true)
 
-    opts%rt_all%switchrad              = .true.
-
+    !opts%rt_all%switchrad              = .true. ! Input K perturbation in BT
+    opts%rt_all%switchrad              = .false. ! Input K perturbation in radiance
+    
     !!-----------------------------------------------------------------------------------------------------------------------!!
     !! 2. Read coefficients                                                                                                  !!
     !!-----------------------------------------------------------------------------------------------------------------------!!
@@ -211,7 +219,7 @@ contains
     endif
 
     s3com%rad%wavelength = 10000._wp / coefs%coef%ff_cwn(rttov_opt%channel_list(:))
-
+    
   end subroutine rttov_init
 
 end module mod_rttov_interface

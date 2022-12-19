@@ -45,7 +45,7 @@ program s3com_main
 
   implicit none
 
-  type(type_model)              :: model, rttov_atm
+  type(type_model)              :: model, rttov_atm  
   type(type_rttov_opt)          :: rttov_opt
   type(type_s3com)              :: s3com, s3com_chunk
   type(type_nml)                :: nml
