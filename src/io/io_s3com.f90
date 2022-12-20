@@ -242,7 +242,7 @@ contains
       write(*,*) "gridded_jac_cfrac OK"
       call map_point_to_ll(model%nlon, model%nlat, model%mode, x3=s3com%jac%clwde, y4=gridded_jac_deff)
       write(*,*) "gridded_jac_deff OK"
-      
+
       errst = nf90_create(fn_out_jac, NF90_CLOBBER, ncid)
       
       errst = nf90_def_dim(ncid, "lon",   model%nlon,    dimid_lon)

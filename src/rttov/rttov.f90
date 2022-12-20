@@ -407,9 +407,9 @@ contains
     ! For solar-only channels the perturbation in total(:) is *always* used
     ! It is harmless to specify inputs in both bt/total in any case: RTTOV will use the appropriate input for each channel
     
-    radiance_k%total(:) = 1._jprb!*coefs%coef%ff_cwn(1:nchanprof)**2*1E-7 ! W/m2/sr/um
-    radiance_k%bt(:) = 1._jprb ! deg K
-    
+    radiance_k%total(:) = 1._jprb
+    radiance_k%bt(:) = 1._jprb
+
     !! Call the Jacobian model
     if (nthreads <= 1) then
        call rttov_k(                       &
@@ -449,7 +449,7 @@ contains
             reflectance_k = reflectance_k, & ! inout BRDF Jacobians
             nthreads      = nthreads)        ! in    number of threads to use
     endif
-    
+
     if (errorstatus /= errorstatus_success) then
        write (*,*) 'rttov_k error'
        call rttov_exit(errorstatus)

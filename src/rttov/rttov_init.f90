@@ -121,9 +121,9 @@ contains
 
     opts%interpolation%addinterp       = .true.  !If true input profiles may be supplied on user-defined levels, and internal
     !interpolation is used (default = false)
-    opts%interpolation%interp_mode     = 1       !Interpolation method
-    !opts%interpolation%reg_limit_extrap = .TRUE.
-    
+    opts%interpolation%interp_mode     = 4       !Interpolation method
+    opts%interpolation%lgradp = .false.
+
     opts%dev%do_opdep_calc             = s3com%nml%do_opdep_calc !If false disables the RTTOV gas optical depth calculation (default = true)
     opts%rt_all%addrefrac              = s3com%nml%addrefrac  !If true RTTOV calculations accounts for atmospheric refraction (default = true)
     opts%rt_ir%addaerosl               = .false. !If true accounts for scattering due to aerosols (default = false)
@@ -145,7 +145,7 @@ contains
 
     opts%rt_mw%clw_data                = .false.
 
-    opts%config%verbose                = .true.  !If false only messages for fatal errors are output (default = true)
+    opts%config%verbose                = .false.  !If false only messages for fatal errors are output (default = true)
     opts%config%do_checkinput          = .true. !If true checks whether input profiles are within both absolute and regression
     !limits (default = true)
 
