@@ -120,14 +120,14 @@ contains
     endif
 
     opts%interpolation%addinterp       = .true.  !If true input profiles may be supplied on user-defined levels, and internal
-    !interpolation is used (default = false)
-    opts%interpolation%interp_mode     = 4       !Interpolation method
-    opts%interpolation%lgradp = .false.
+    opts%interpolation%interp_mode     = 1       !Interpolation method
+    opts%interpolation%lgradp          = .false.
 
     opts%dev%do_opdep_calc             = s3com%nml%do_opdep_calc !If false disables the RTTOV gas optical depth calculation (default = true)
     opts%rt_all%addrefrac              = s3com%nml%addrefrac  !If true RTTOV calculations accounts for atmospheric refraction (default = true)
     opts%rt_ir%addaerosl               = .false. !If true accounts for scattering due to aerosols (default = false)
     opts%rt_ir%addclouds               = .true.  !If true accounts for scattering due to clouds (default = false)
+
 
     opts%rt_ir%ir_scatt_model          = s3com%nml%ir_scatt_model      !Scattering model for emission source term:
     !1 => DOM; 2 => Chou-scaling
@@ -145,9 +145,9 @@ contains
 
     opts%rt_mw%clw_data                = .false.
 
-    opts%config%verbose                = .false.  !If false only messages for fatal errors are output (default = true)
-    opts%config%do_checkinput          = .true. !If true checks whether input profiles are within both absolute and regression
-    !limits (default = true)
+    opts%config%apply_reg_limits       = .true.  ! If true the regression limits are set as hard limits and replace the value. It will remove the warning in verbose.
+    opts%config%verbose                = .true.  ! If false only messages for fatal errors are output (default = true)
+    opts%config%do_checkinput          = .true.  ! If true checks whether input profiles are within both absolute and regression
 
     !opts%rt_all%switchrad              = .true. ! Input K perturbation in BT
     opts%rt_all%switchrad              = .false. ! Input K perturbation in radiance
