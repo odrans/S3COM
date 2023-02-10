@@ -130,7 +130,7 @@ program s3com_main
 
      call s3com_update(s3com, s3com_chunk)
 
-  end do loop_chunnks
+  end do loop_chunks
 
   ! Write output file
   call write_output(s3com, model, nml)
