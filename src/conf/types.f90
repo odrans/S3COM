@@ -33,7 +33,7 @@ module s3com_types
 
   private
   public :: wp, dp
-  public :: type_s3com, type_model, type_rttov_opt, type_nml, type_icon
+  public :: type_s3com, type_nwpsaf, type_model, type_rttov_opt, type_nml, type_icon
 
   !!Few kind definitions for variables
   integer, parameter :: sp = selected_real_kind(6, 37)
@@ -46,7 +46,8 @@ module s3com_types
           path_rttov, &
           fname_in, &
           path_out, &
-          suffix_out
+          suffix_out, &
+          model_name
      integer(kind=4) :: &
           npoints_it, &
           month, &
@@ -70,6 +71,61 @@ module s3com_types
           dom_rayleigh
           
   end type type_nml
+
+  !!Type containing variables from NWP-SAF simulations
+  type type_nwpsaf
+     integer(kind=4) :: &
+          npoints, &
+          nlevels, &
+          nlayers, &
+          nlat, &
+          nlon, &
+          mode
+     real(dp) :: &
+          time
+     integer(kind=4), dimension(:), allocatable :: &
+          height, height_2 ! height index
+     integer(kind=4), dimension(:), allocatable :: &
+          point,                            &
+          day,                              &
+          month,                            &
+          year
+     real(wp), dimension(:), allocatable :: &
+          lon,                              & !Longitude (degrees east)
+          lat,                              & !Latitude (degress north)
+          lon_orig,                         & !Longitude that won't be regridded (degrees east)
+          lat_orig,                         & !Latitude  that won't be regridded (degress north)
+          elevation,                        & !Surface height
+          lsm,                              & !Land/sea mask (0/1)
+          psurf,                            & !Surface pressure (Pa)
+          tsurf,                            & !Skin temperature (K)
+          t2m,                              & ! 2-m temperature (K)
+          q2m,                              & ! 2-m specific humidity
+          u10,                              & !U-component of wind (m/s)
+          v10                                 !V-component of wind (m/s)
+     real(wp), dimension(:,:), allocatable :: &
+          p,                                    & !Layer pressure (Pa)
+          p_ifc,                                & !Pressure at half-level center (Pa)
+          z,                                    & !Layer height (m)
+          z_ifc,                                & !Height at half-levels center (m)
+          t,                                    & !Temperature (K)
+          t_ifc,                                & !Temperature at half-levels center
+          q,                                    & !Specific humidity (kg/kg)
+          q_ifc,                                & !Specific humidity at half level center (kg/kg)
+          clc,                                  & !Total cloud fraction (0-1)
+          clw,                                  & !Specific cloud water content (kg/kg)
+          cli,                                  & !Specific cloud ice content (kg/kg)
+          qnc,                                  & !Cloud droplet number concentration (particules/kg)
+          qr,                                   & !Rain mixing ratio (kg/kg)
+          qs,                                   & !Snow mixing ratio (kg/kg)
+          dz,                                   & !Layer thickness (m)
+          rho,                                  & !Air density used for liquid clouds (kg/m3)
+          tv,                                   & !Virtual temperature (K)
+          lwc,                                  & !Liquid water content (kg/m3)
+          iwc,                                  & !Ice water content (kg/m3)
+          cdnc,                                 & !Cloud droplet number concentration (1/m3)
+          Reff                                    !Cloud liquid water effective radius (m)
+  end type type_nwpsaf
 
   !!Type containing variables from ICON simulations
   type type_icon
@@ -132,6 +188,8 @@ module s3com_types
      integer(kind=4), dimension(3) :: &
           time, &   ! day, month, year
           date      ! hour, minute, second
+     integer(kind=4), dimension(:), allocatable :: &
+          point
      real(wp), dimension(:), allocatable :: &
           lon_orig,                           & !Longitude that won't be regridded (degrees east)
           lat_orig,                           & !Latitude  that won't be regridded (degress north)
@@ -148,6 +206,7 @@ module s3com_types
           sunzenangle,                        & !Solar zenith angle
           sunazangle                            !Solar azimuth angle
      real(wp), dimension(:,:), allocatable :: &
+          o3,                                 & !ozone
           co2,                                & !Carbon dioxide
           ch4,                                & !Methane
           n2o,                                & !n2o

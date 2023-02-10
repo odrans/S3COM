@@ -80,7 +80,7 @@ program s3com_main
 
   ! Loop over data points, by chunks
   nChunks = n_chunks(npoints, nml%npoints_it)
-  loop_chunnks : do iChunk = 1, nChunks
+  loop_chunks : do iChunk = 1, nChunks
 
      write(6,*) ichunk, "/", nchunks
 

@@ -47,94 +47,118 @@ contains
       type(type_s3com), intent(in) :: s3com
       type(type_model), intent(in) :: model
       type(type_nml),   intent(in) :: nml
-      
+
       call write_output_rad(s3com, model, nml)
-      
+
       if (s3com%nml%flag_output_jac) then
          call write_output_jac(s3com, model, nml)
          write(*,*) "outputting jacobian results"
       endif
-      
+
       !if (nml%flag_output_atm) then
       !   call write_output_atm(icon, oe, nml, atm)
       !endif
-      
+
       !if (nml%flag_retrievals) then
       !   call write_output_ret(icon, oe, nml)
       !endif
-      
-   end subroutine write_output
-   
-   !!Write radiation outputs, mainly satellite measurements simulated by RTTOV
-   subroutine write_output_rad(s3com, model, nml)
-      
+
+    end subroutine write_output
+
+    !!Write radiation outputs, mainly satellite measurements simulated by RTTOV
+    subroutine write_output_rad(s3com, model, nml)
+
       !!Input variables
       type(type_s3com), intent(in) :: s3com
       type(type_model), intent(in) :: model
       type(type_nml),   intent(in) :: nml
-      
+
       !!Local variables
       real(kind=wp), dimension(model%nlon, model%nlat, nml%nchannels) :: &
-         gridded_f_ref_total, &
-         gridded_f_ref_clear, &
-         gridded_f_bt_total,  &
-         gridded_f_bt_clear,  &
-         gridded_f_rad_total, &
-         gridded_f_rad_clear
-         
+           gridded_f_ref_total, &
+           gridded_f_ref_clear, &
+           gridded_f_bt_total,  &
+           gridded_f_bt_clear,  &
+           gridded_f_rad_total, &
+           gridded_f_rad_clear
+
       integer(kind=4) :: ncid, errst
-      
+
       integer(kind=4) ::  &
-         varid_lon,       &
-         varid_lat,       &
-         varid_chan,      &
-         varid_ref_total, &
-         varid_ref_clear, &
-         varid_bt_total,  &
-         varid_bt_clear,  &
-         varid_rad_total, &
-         varid_rad_clear
-         
-      integer(kind=4) ::  &
-         dimid_lon,       &
-         dimid_lat,       &
-         dimid_chan,      &
-         dimid_latlon(2), &
-         dimid_latlonchan(3)
-         
+           varid_pnt,       &
+           varid_lon,       &
+           varid_lat,       &
+           varid_chan,      &
+           varid_ref_total, &
+           varid_ref_clear, &
+           varid_bt_total,  &
+           varid_bt_clear,  &
+           varid_rad_total, &
+           varid_rad_clear
+
+      integer(kind=4) ::      &
+           dimid_lon,         &
+           dimid_lat,         &
+           dimid_chan,        &
+           dimid_pnt,         &
+           dimid_latlon(2),   &
+           dimid_pntchan(2),  &
+           dimid_latlonchan(3)
+
       character(LEN = 256) :: fn_out_rad, suffix, attr_instrument
-      
+
       suffix = trim(nml%suffix_out)
       if(trim(suffix) .ne. "") suffix = "_"//trim(suffix)
-      
+
       fn_out_rad = trim(nml%path_out)//"S3COM"//trim(suffix)//"_rad.nc"
-      
-      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_ref_total, y3=gridded_f_ref_total)
-      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_ref_clear, y3=gridded_f_ref_clear)
-      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_bt_total,  y3=gridded_f_bt_total)
-      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_bt_clear,  y3=gridded_f_bt_clear)
-      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_rad_total, y3=gridded_f_rad_total)
-      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_rad_clear, y3=gridded_f_rad_clear)
-      
+
+      if(model%mode > 1) then
+         call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_ref_total, y3=gridded_f_ref_total)
+         call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_ref_clear, y3=gridded_f_ref_clear)
+         call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_bt_total,  y3=gridded_f_bt_total)
+         call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_bt_clear,  y3=gridded_f_bt_clear)
+         call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_rad_total, y3=gridded_f_rad_total)
+         call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%rad%f_rad_clear, y3=gridded_f_rad_clear)
+      end if
+
       errst = nf90_create(fn_out_rad, NF90_CLOBBER, ncid)
-      
-      errst = nf90_def_dim(ncid, "lon", model%nlon, dimid_lon)
-      errst = nf90_def_dim(ncid, "lat", model%nlat, dimid_lat)
+
       errst = nf90_def_dim(ncid, "chan", nml%nchannels, dimid_chan)
-      
-      dimid_latlon     = (/dimid_lon, dimid_lat/)
-      dimid_latlonchan = (/dimid_lon, dimid_lat, dimid_chan/)
-      
-      errst = nf90_def_var(ncid, "lon",       NF90_REAL, dimid_lon,        varid_lon)
-      errst = nf90_def_var(ncid, "lat",       NF90_REAL, dimid_lat,        varid_lat)
-      errst = nf90_def_var(ncid, "chan",      NF90_REAL, dimid_chan,       varid_chan)
-      errst = nf90_def_var(ncid, "ref_total", NF90_REAL, dimid_latlonchan, varid_ref_total)
-      errst = nf90_def_var(ncid, "ref_clear", NF90_REAL, dimid_latlonchan, varid_ref_clear)
-      errst = nf90_def_var(ncid, "bt_total",  NF90_REAL, dimid_latlonchan, varid_bt_total)
-      errst = nf90_def_var(ncid, "bt_clear",  NF90_REAL, dimid_latlonchan, varid_bt_clear)
-      errst = nf90_def_var(ncid, "rad_total", NF90_REAL, dimid_latlonchan, varid_rad_total)
-      errst = nf90_def_var(ncid, "rad_clear", NF90_REAL, dimid_latlonchan, varid_rad_clear)
-      
+      if(model%mode > 1) then
+         errst = nf90_def_dim(ncid, "lon", model%nlon, dimid_lon)
+         errst = nf90_def_dim(ncid, "lat", model%nlat, dimid_lat)
+
+         dimid_latlon     = (/dimid_lon, dimid_lat/)
+         dimid_latlonchan = (/dimid_lon, dimid_lat, dimid_chan/)
+      else
+         errst = nf90_def_dim(ncid, "point", model%npoints, dimid_pnt)
+         dimid_pntchan = (/dimid_pnt, dimid_chan/)
+      end if
+
+
+      if(model%mode > 1) then
+         errst = nf90_def_var(ncid, "lon",       NF90_REAL, dimid_lon,        varid_lon)
+         errst = nf90_def_var(ncid, "lat",       NF90_REAL, dimid_lat,        varid_lat)
+         errst = nf90_def_var(ncid, "chan",      NF90_REAL, dimid_chan,       varid_chan)
+         errst = nf90_def_var(ncid, "ref_total", NF90_REAL, dimid_latlonchan, varid_ref_total)
+         errst = nf90_def_var(ncid, "ref_clear", NF90_REAL, dimid_latlonchan, varid_ref_clear)
+         errst = nf90_def_var(ncid, "bt_total",  NF90_REAL, dimid_latlonchan, varid_bt_total)
+         errst = nf90_def_var(ncid, "bt_clear",  NF90_REAL, dimid_latlonchan, varid_bt_clear)
+         errst = nf90_def_var(ncid, "rad_total", NF90_REAL, dimid_latlonchan, varid_rad_total)
+         errst = nf90_def_var(ncid, "rad_clear", NF90_REAL, dimid_latlonchan, varid_rad_clear)
+      else
+         errst = nf90_def_var(ncid, "point",     NF90_REAL, dimid_pnt,   varid_pnt)
+         errst = nf90_def_var(ncid, "lon",       NF90_REAL, dimid_pnt,     varid_lon)
+         errst = nf90_def_var(ncid, "lat",       NF90_REAL, dimid_pnt,     varid_lat)
+         errst = nf90_def_var(ncid, "chan",      NF90_REAL, dimid_chan,    varid_chan)
+         errst = nf90_def_var(ncid, "ref_total", NF90_REAL, dimid_pntchan, varid_ref_total)
+         errst = nf90_def_var(ncid, "ref_clear", NF90_REAL, dimid_pntchan, varid_ref_clear)
+         errst = nf90_def_var(ncid, "bt_total",  NF90_REAL, dimid_pntchan, varid_bt_total)
+         errst = nf90_def_var(ncid, "bt_clear",  NF90_REAL, dimid_pntchan, varid_bt_clear)
+         errst = nf90_def_var(ncid, "rad_total", NF90_REAL, dimid_pntchan, varid_rad_total)
+         errst = nf90_def_var(ncid, "rad_clear", NF90_REAL, dimid_pntchan, varid_rad_clear)
+      end if
+
       errst = nf90_put_att(ncid, varid_lon,       "standard_name", "longitude")
       errst = nf90_put_att(ncid, varid_lat,       "standard_name", "latitude")
       errst = nf90_put_att(ncid, varid_chan,      "standard_name", "chan")
@@ -170,17 +194,28 @@ contains
       errst = nf90_put_att(ncid, nf90_global, 'RTTOV_instrument', trim(attr_instrument))
       
       errst = nf90_enddef(ncid)
-      
+
       errst = nf90_put_var(ncid, varid_lon,       model%lon_orig)
       errst = nf90_put_var(ncid, varid_lat,       model%lat_orig)
       errst = nf90_put_var(ncid, varid_chan,      s3com%rad%wavelength)
-      errst = nf90_put_var(ncid, varid_ref_total, gridded_f_ref_total)
-      errst = nf90_put_var(ncid, varid_ref_clear, gridded_f_ref_clear)
-      errst = nf90_put_var(ncid, varid_bt_total,  gridded_f_bt_total)
-      errst = nf90_put_var(ncid, varid_bt_clear,  gridded_f_bt_clear)
-      errst = nf90_put_var(ncid, varid_rad_total, gridded_f_rad_total)
-      errst = nf90_put_var(ncid, varid_rad_clear, gridded_f_rad_clear)
-      
+      if(model%mode > 1) then
+         errst = nf90_put_var(ncid, varid_ref_total, gridded_f_ref_total)
+         errst = nf90_put_var(ncid, varid_ref_clear, gridded_f_ref_clear)
+         errst = nf90_put_var(ncid, varid_bt_total,  gridded_f_bt_total)
+         errst = nf90_put_var(ncid, varid_bt_clear,  gridded_f_bt_clear)
+         errst = nf90_put_var(ncid, varid_rad_total, gridded_f_rad_total)
+         errst = nf90_put_var(ncid, varid_rad_clear, gridded_f_rad_clear)
+      else
+         errst = nf90_put_var(ncid, varid_pnt, model%point)
+         errst = nf90_put_var(ncid, varid_ref_total, s3com%rad%f_ref_total)
+         errst = nf90_put_var(ncid, varid_ref_clear, s3com%rad%f_ref_clear)
+         errst = nf90_put_var(ncid, varid_bt_total,  s3com%rad%f_bt_total)
+         errst = nf90_put_var(ncid, varid_bt_clear,  s3com%rad%f_bt_clear)
+         errst = nf90_put_var(ncid, varid_rad_total, s3com%rad%f_rad_total)
+         errst = nf90_put_var(ncid, varid_rad_clear, s3com%rad%f_rad_clear)
+      end if
+
+
       errst = nf90_close(ncid)
       
    end subroutine write_output_rad

@@ -86,7 +86,7 @@ contains
     type(type_s3com), intent(inout) :: s3com
 
     !!Local variables
-    character(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2
+    character(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2, file_format
     integer(kind=4) :: errorstatus, imonth, nchannels, atlas_type
     
     imonth    = rttov_opt%month
@@ -97,11 +97,14 @@ contains
        sat="_"//trim(adjustl(sat))//"_"
     end if
 
+    file_format = ".dat"
+    if(trim(inst_name(rttov_opt%instrument)) == "iasi") file_format = ".H5"
+
     coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/rttov13pred54L/rtcoef_"//&
-         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"_o3.dat"
+         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"_o3"//trim(file_format)
 
     cld_coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/cldaer_visir/sccldcoef_"//&
-         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//".dat"
+         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//trim(file_format)
 
     path_emis_atlas = trim(s3com%nml%path_rttov)//'/emis_data'
     path_brdf_atlas = trim(s3com%nml%path_rttov)//'/brdf_data'

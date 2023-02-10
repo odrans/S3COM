@@ -1,3 +1,4 @@
+
 !
 ! S3COM
 ! Copyright (c) 2022, University of Lille
@@ -29,8 +30,9 @@
 
 module mod_models
 
-  use s3com_types,         only: wp, type_icon, type_model, type_nml
+  use s3com_types,         only: wp, type_icon, type_model, type_nml, type_nwpsaf
   use mod_icon,            only: icon_load, icon_clear
+  use mod_nwpsaf,          only: nwpsaf_load, nwpsaf_clear
   use mod_utils_phys,      only: solar_angles
 
   implicit none
@@ -43,7 +45,7 @@ contains
   subroutine models_load(nml, model)
 
     ! Inputs
-    type(type_nml), intent(IN)     :: nml
+    type(type_nml), intent(IN)    :: nml
 
     ! Output variables
     type(type_model), intent(OUT) :: model
@@ -51,27 +53,45 @@ contains
     ! Internal
     integer(kind=4) :: nlayers, npoints
     type(type_icon) :: icon
+    type(type_nwpsaf) :: nwpsaf
 
     ! Load input data
-    call icon_load(nml%fname_in, icon)
+    select case (nml%model_name)
+    case ("ICON")
+       call icon_load(nml%fname_in, icon)
 
-    ! Coordinates
-    npoints = icon%npoints
-    nlayers = icon%nlayers
+       npoints = icon%npoints
+       nlayers = icon%nlayers
+    case ("NWPSAF")
+       call nwpsaf_load(nml%fname_in, nwpsaf)
+
+       npoints = nwpsaf%npoints
+       nlayers = nwpsaf%nlayers
+    end select
 
     ! Initialize model array
     call models_init(model, npoints, nlayers)
 
-    ! Set up part of the model with ICON data
-    call models_setup_icon(model, icon)
+    ! Set up model structure with input data
+    select case (nml%model_name)
+    case ("ICON")
+       call models_setup_icon(model, icon)
+    case ("NWPSAF")
+       call models_setup_nwpsaf(model, nwpsaf)
+    end select
 
     ! Set up solar angles corresponding to model data
     call models_setup_solar(model)
 
     ! Clear input data
-    call icon_clear(icon)
+    select case (nml%model_name)
+    case ("ICON")
+       call icon_clear(icon)
+    case ("NWPSAF")
+       call nwpsaf_clear(nwpsaf)
+    end select
 
-    write(*,*) "Model input loaded"
+    call model_verbose(nml, model)
 
   end subroutine models_load
 
@@ -97,7 +117,9 @@ contains
 
     allocate(model%height(nlayers), source = 0)
     allocate(model%height_2(nlevels), source = 0)
-    
+
+    allocate(model%point(npoints), source = 0)
+
     !! 2D fields
     allocate(model%lat(npoints), source = 0._wp)
     allocate(model%lon, model%lat_orig, model%lon_orig, &
@@ -109,7 +131,7 @@ contains
     !! 3D fields at atmospheric levels
     allocate(model%p(npoints, nlevels), source = 0._wp)
     allocate(model%t, model%q, model%co2, model%ch4, &
-         model%n2o, model%s2o, model%co, &
+         model%n2o, model%s2o, model%co, model%o3, &
          mold = model%p)
 
     !! 3D fields in atmospheric layers
@@ -170,10 +192,10 @@ contains
 
     model%lat_orig   = icon%lat_orig
     model%lon_orig   = icon%lon_orig
-    
+
     model%height     = icon%height
     model%height_2   = icon%height_2
-    
+
     model%lat        = icon%lat
     model%lon        = icon%lon
     model%topography = icon%topography
@@ -198,19 +220,107 @@ contains
 
   end subroutine models_setup_icon
 
+  subroutine models_setup_nwpsaf(model, nwpsaf)
+
+    ! Input variables
+    type(type_nwpsaf), intent(in)    :: nwpsaf
+
+    ! Output variables
+    type(type_model), intent(inout)   :: model
+
+    real(wp) :: hour, minute, sec
+    character(len=8) :: nwpsaf_date
+
+    ! Extract information from the NWPSAF time (%Y%m%d.%f)
+    ! ----------------------------------------------------------------------------------------------------
+    hour = 12
+    minute = 0
+    sec = 0
+
+    model%date(1) = nwpsaf%day(1)
+    model%date(2) = nwpsaf%month(1)
+    model%date(3) = nwpsaf%year(1)
+    if(model%npoints > 1) write(*,*) "Warning: The date from the first pixel is currently used (to be improved)"
+    ! ----------------------------------------------------------------------------------------------------
+
+    model%nlat       = nwpsaf%nlat
+    model%nlon       = nwpsaf%nlon
+    model%mode       = nwpsaf%mode
+
+    model%npoints    = nwpsaf%npoints
+    model%nlevels    = nwpsaf%nlevels
+    model%nlayers    = nwpsaf%nlayers
+
+    model%point = nwpsaf%point
+
+    model%lat_orig   = nwpsaf%lat_orig
+    model%lon_orig   = nwpsaf%lon_orig
+
+    model%height     = nwpsaf%height
+    model%height_2   = nwpsaf%height_2
+
+    model%lat        = nwpsaf%lat
+    model%lon        = nwpsaf%lon
+    model%topography = nwpsaf%elevation
+    model%u_10m      = nwpsaf%u10
+    model%v_10m      = nwpsaf%v10
+    model%ts         = nwpsaf%tsurf
+    model%ps         = nwpsaf%psurf
+    model%q_2m       = nwpsaf%q2m
+    model%t_2m       = nwpsaf%t2m
+    model%landmask   = nwpsaf%lsm
+
+    model%p          = nwpsaf%p_ifc
+    model%z          = nwpsaf%z_ifc
+    model%dz         = nwpsaf%dz
+    model%t          = nwpsaf%t_ifc
+    model%q          = nwpsaf%q_ifc
+    model%clc        = nwpsaf%clc
+    model%iwc        = nwpsaf%iwc
+    model%lwc        = nwpsaf%lwc
+    model%reff       = nwpsaf%reff
+    model%cdnc       = nwpsaf%cdnc
+
+  end subroutine models_setup_nwpsaf
+
   subroutine models_setup_solar(model)
 
     type(type_model), intent(inout)   :: model
+    real(wp) :: lon
 
     integer(kind = 4) :: i
 
     do i = 1, model%npoints
 
-       call solar_angles(model%lat(i), model%lon(i), model%date, model%time, &
-            model%sunzenangle(i), model%sunazangle(i))
+       ! This function requires longitude to be (-180, 180)
+       lon = model%lon(i)
+       if(lon > 180) lon = model%lon(i) - 360
 
+       call solar_angles(model%lat(i), lon, model%date, model%time, &
+            model%sunzenangle(i), model%sunazangle(i))
     end do
 
   end subroutine models_setup_solar
+
+  subroutine model_verbose(nml, model)
+
+    type(type_nml), intent(in)   :: nml
+    type(type_model), intent(in)   :: model
+
+    character(16), dimension(3), parameter :: mode_desc = (/"track", "lon-lat", "lat-lon"/)
+
+    write(*,*)
+    write(*,*) "-----------------------------------------------------------------"
+    write(*,"(1X, A)") "Physical model"
+    write(*,"(2X, A, 1X, A)") "- name:", trim(nml%model_name)
+    write(*,"(2X, A, 1X, A)") "- input file: ", trim(nml%fname_in)
+    write(*,"(2X, A, 1X, A)") "- grid: type:", trim(mode_desc(model%mode))
+    if(model%mode == 1) write(*,"(10X, A, 1X, I5)") "npoints:", model%npoints
+    if(model%mode > 1) write(*,"(10X, A, 1X, I5, 2(1X, A, 1X, I3), A)") "npoints:", model%npoints, "(nlat:", model%nlat,", nlon:", model%nlon, ")"
+    write(*,"(10X, A, 1X, I3)") "nlayers:", model%nlayers
+    write(*,*) "-----------------------------------------------------------------"
+
+  end subroutine model_verbose
+
 
 end module mod_models

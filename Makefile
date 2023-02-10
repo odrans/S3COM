@@ -62,6 +62,7 @@ PATH_NCDF_INC = $(PATH_NETCDF_F)/include
 PATH_NCDF_LIB = $(PATH_NETCDF_F)/lib
 
 PATH_HDF5_LIB = $(PATH_HDF5)/lib
+PATH_HDF5_INC = $(PATH_HDF5)/include
 
 RTTOV_PATH       = $(PATH_RTTOV)
 RTTOV_LIB_PATH   = $(RTTOV_PATH)/lib
@@ -91,10 +92,12 @@ LIST_OBJ_CONF = $(obj)/types.o \
 LIST_OBJ_MAIN = $(obj)/s3com_setup.o
 
 LIST_OBJ_MODELS = $(obj)/models_icon.o \
+        $(obj)/models_nwpsaf.o \
         $(obj)/models.o
 
 LIST_OBJ_IO = $(obj)/io_utils.o \
         $(obj)/io_namelist.o \
+		$(obj)/io_nwpsaf.o \
 		$(obj)/io_icon.o \
 		$(obj)/io_s3com.o
 
@@ -118,7 +121,7 @@ LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO)
 # -------------------------------------------------------------------------------------------------------------------------------
 FLAGS_NCDF = -I$(PATH_NCDF_INC) -L${PATH_NCDF_LIB} -lnetcdff -L${PATH_NCDF_C_LIB} -lnetcdf -Wl,-rpath,${PATH_NCDF_LIB} -Wl,-rpath,${PATH_NCDF_C_LIB}
 FLAGS_RTTOV = -I${RTTOV_INC_PATH} -L${RTTOV_LIB_PATH} $(RTTOV_LIBS)
-FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${PATH_HDF5_LIB}
+FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${PATH_HDF5_LIB} -I${PATH_HDF5_INC}
 ##FLAGS_LOCAL = -L$(lib) -lmodels -l_io -l_oe -lrttovml -lmain -lutils
 FLAGS_LOCAL = -L$(lib) -lmodels -l_io -lrttovml -lmain -lutils -lconf
 
@@ -178,6 +181,9 @@ $(obj)/s3com_setup.o : $(DIR_MAIN)/s3com_setup.f90
 $(obj)/models_icon.o : $(DIR_MODELS)/models_icon.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
+$(obj)/models_nwpsaf.o : $(DIR_MODELS)/models_nwpsaf.f90
+	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
+
 $(obj)/models.o : $(DIR_MODELS)/models.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -203,6 +209,9 @@ $(obj)/io_s3com.o : $(DIR_IO)/io_s3com.f90
 
 $(obj)/io_icon.o : $(DIR_IO)/io_icon.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
+
+$(obj)/io_nwpsaf.o : $(DIR_IO)/io_nwpsaf.f90
+	$(F90) $(F90FLAGS) $(FLAG_HDF5) -I$(PATH_NCDF_INC) -c $< -o $@
 
 $(obj)/io_namelist.o : $(DIR_IO)/io_namelist.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@

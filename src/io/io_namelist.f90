@@ -60,15 +60,16 @@ contains
   subroutine read_namelist(file_path, nml)
 
     character(len=*),  intent(in)  :: file_path
-    integer                        :: file_unit, iostat
+    integer                        :: file_unit, iostat, i
 
     ! Namelist variables
-    character(len=256) :: fname_in, path_rttov, path_out, suffix_out
+    character(len=256) :: fname_in, path_rttov, path_out, suffix_out, model_name
     logical :: flag_retrievals, flag_output_atm, flag_output_jac, do_jacobian_calc, do_opdep_calc, addrefrac, dom_rayleigh
 
     integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
          ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads
     integer(kind = 4), dimension(:), allocatable :: channel_list
+    integer(kind = 4), dimension(2) :: channel_seq
 
     type(type_nml), intent(out)        :: nml
 
@@ -82,7 +83,8 @@ contains
          flag_output_atm, &
          flag_output_jac, &
          npoints_it, &
-         nchannels
+         nchannels, &
+         model_name
 
     namelist /rttov_init/ &
          path_rttov, &
@@ -97,9 +99,11 @@ contains
 
     namelist /rttov/ &
          channel_list, &
+         channel_seq, &
          platform, &
          satellite, &
          instrument
+
     ! Namelist definition===============================
 
     call open_namelist(file_path, file_unit, iostat)
@@ -120,6 +124,8 @@ contains
        return
     end if
 
+    if(channel_seq(1) > 0) channel_list = (/(i, i= channel_seq(1), channel_seq(2), 1)/)
+
     nml%path_rttov = path_rttov
     nml%path_out = path_out
     nml%suffix_out = suffix_out
@@ -128,6 +134,7 @@ contains
     nml%month = month
     nml%npoints_it = npoints_it
     nml%nchannels = nchannels
+    nml%model_name = model_name
     nml%channel_list = channel_list
     nml%platform = platform
     nml%satellite = satellite

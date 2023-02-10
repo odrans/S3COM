@@ -8,6 +8,7 @@ flag_output_atm = FALSE
 flag_output_jac = TRUE
 npoints_it = 100
 nchannels = 2
+model_name = 'ICON'
 /
 
 &rttov_init
@@ -27,4 +28,5 @@ platform = 9
 satellite = 2
 instrument = 13
 channel_list = 1, 2
+channel_seq = 0, 0
 /
