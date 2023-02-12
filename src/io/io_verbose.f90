@@ -110,7 +110,7 @@ contains
 
     flag_gases = any([opts%dev%do_opdep_calc, opts%rt_all%addrefrac])
 
-    write(nstreams_char, '(I3)') s3com%nml%dom_nstreams
+    write(nstreams_char, '(I3)') rttov_opt%dom_nstreams
 
     mmr_cldaer = 1
     if(.NOT. rttov_opt%mmr_cldaer) mmr_cldaer = 2
@@ -118,11 +118,11 @@ contains
     gas_rttov_used = [rttov_opt%ozone_data, rttov_opt%co2_data, rttov_opt%n2o_data, &
          rttov_opt%ch4_data, rttov_opt%co_data, rttov_opt%so2_data]
 
-    ir_model = ir_scatt_model(s3com%nml%ir_scatt_model)
-    if(s3com%nml%ir_scatt_model == 1) ir_model = trim(ir_model)//" (nstream: "//trim(adjustl(nstreams_char))//")"
+    ir_model = ir_scatt_model(rttov_opt%ir_scatt_model)
+    if(rttov_opt%ir_scatt_model == 1) ir_model = trim(ir_model)//" (nstream: "//trim(adjustl(nstreams_char))//")"
 
-    vis_model = vis_scatt_model(s3com%nml%vis_scatt_model)
-    if(s3com%nml%vis_scatt_model == 1) vis_model = trim(vis_model)//" (nstream: "//trim(adjustl(nstreams_char))//")"
+    vis_model = vis_scatt_model(rttov_opt%vis_scatt_model)
+    if(rttov_opt%vis_scatt_model == 1) vis_model = trim(vis_model)//" (nstream: "//trim(adjustl(nstreams_char))//")"
 
     write(*,*)
     write(*,'(A)') hyphens

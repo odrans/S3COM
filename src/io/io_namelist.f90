@@ -67,10 +67,11 @@ contains
 
     ! Namelist variables
     character(len=256) :: fname_in, path_rttov, path_out, suffix_out, model_name
-    logical :: flag_retrievals, flag_output_atm, flag_output_jac, do_jacobian_calc, do_opdep_calc, addrefrac, dom_rayleigh
+    logical :: flag_retrievals, flag_output_atm, flag_output_jac, do_jacobian_calc, &
+         do_opdep_calc, add_refrac, dom_rayleigh, mmr_cldaer, ozone_data, add_aerosols, add_clouds
 
     integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
-         ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads
+         ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads, ice_scheme, clw_scheme
     integer(kind = 4), dimension(:), allocatable :: channel_list
     integer(kind = 4), dimension(2) :: channel_seq
 
@@ -89,17 +90,6 @@ contains
          nchannels, &
          model_name
 
-    namelist /rttov_init/ &
-         path_rttov, &
-         do_jacobian_calc, &
-         do_opdep_calc, &
-         addrefrac, &
-         ir_scatt_model, &
-         vis_scatt_model, &
-         dom_nstreams, &
-         dom_rayleigh, &
-         rttov_nthreads
-
     namelist /rttov/ &
          channel_list, &
          channel_seq, &
@@ -107,15 +97,31 @@ contains
          satellite, &
          instrument
 
+    namelist /rttov_init/ &
+         path_rttov, &
+         do_jacobian_calc, &
+         do_opdep_calc, &
+         ir_scatt_model, &
+         vis_scatt_model, &
+         dom_nstreams, &
+         dom_rayleigh, &
+         rttov_nthreads, &
+         ice_scheme, &
+         clw_scheme, &
+         mmr_cldaer, &
+         ozone_data, &
+         add_refrac, &
+         add_aerosols, &
+         add_clouds
+
     ! Namelist definition===============================
 
     call open_namelist(file_path, file_unit, iostat)
 
     read (nml=general, iostat=iostat, unit=file_unit)
     allocate(channel_list(nchannels))
-
-    read (nml=rttov_init, iostat=iostat, unit=file_unit)
     read (nml=rttov, iostat=iostat, unit=file_unit)
+    read (nml=rttov_init, iostat=iostat, unit=file_unit)
 
     call close_namelist(file_path, file_unit, iostat)
 
@@ -136,7 +142,6 @@ contains
     nml%instrument = instrument
     nml%do_jacobian_calc = do_jacobian_calc
     nml%do_opdep_calc = do_opdep_calc
-    nml%addrefrac = addrefrac
     nml%ir_scatt_model = ir_scatt_model
     nml%vis_scatt_model = vis_scatt_model
     nml%dom_rayleigh = dom_rayleigh
@@ -144,6 +149,14 @@ contains
     nml%rttov_nthreads = rttov_nthreads
     nml%flag_output_atm = flag_output_atm
     nml%flag_output_jac = flag_output_jac
+    nml%ice_scheme = ice_scheme
+    nml%clw_scheme = clw_scheme
+    nml%mmr_cldaer = mmr_cldaer
+    nml%ozone_data = ozone_data
+    nml%add_aerosols = add_aerosols
+    nml%add_clouds = add_clouds
+    nml%add_refrac = add_refrac
+
 
   end subroutine read_namelist
 

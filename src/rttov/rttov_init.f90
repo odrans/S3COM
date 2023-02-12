@@ -128,17 +128,17 @@ contains
     opts%interpolation%interp_mode     = 1       !Interpolation method
     opts%interpolation%lgradp          = .false.
 
-    opts%dev%do_opdep_calc             = s3com%nml%do_opdep_calc !If false disables the RTTOV gas optical depth calculation (default = true)
-    opts%rt_all%addrefrac              = s3com%nml%addrefrac  !If true RTTOV calculations accounts for atmospheric refraction (default = true)
-    opts%rt_ir%addaerosl               = .false. !If true accounts for scattering due to aerosols (default = false)
-    opts%rt_ir%addclouds               = .true.  !If true accounts for scattering due to clouds (default = false)
+    opts%dev%do_opdep_calc             = rttov_opt%do_opdep_calc !If false disables the RTTOV gas optical depth calculation (default = true)
+    opts%rt_all%addrefrac              = rttov_opt%add_refrac  !If true RTTOV calculations accounts for atmospheric refraction (default = true)
+    opts%rt_ir%addaerosl               = rttov_opt%add_aerosols !If true accounts for scattering due to aerosols (default = false)
+    opts%rt_ir%addclouds               = rttov_opt%add_clouds  !If true accounts for scattering due to clouds (default = false)
 
-    opts%rt_ir%ir_scatt_model          = s3com%nml%ir_scatt_model      !Scattering model for emission source term:
+    opts%rt_ir%ir_scatt_model          = rttov_opt%ir_scatt_model      !Scattering model for emission source term:
     !1 => DOM; 2 => Chou-scaling
-    opts%rt_ir%vis_scatt_model         = s3com%nml%vis_scatt_model       !Scattering model for solar source term:
+    opts%rt_ir%vis_scatt_model         = rttov_opt%vis_scatt_model       !Scattering model for solar source term:
     !1 => DOM; 2 => single-scattering; 3 => MFASIS
-    opts%rt_ir%dom_nstreams            = s3com%nml%dom_nstreams       !Number of streams for Discrete Ordinates (DOM)
-    opts%rt_ir%dom_rayleigh            = s3com%nml%dom_rayleigh       !Enables Rayleigh multiple-scattering in solar DOM simulations
+    opts%rt_ir%dom_nstreams            = rttov_opt%dom_nstreams       !Number of streams for Discrete Ordinates (DOM)
+    opts%rt_ir%dom_rayleigh            = rttov_opt%dom_rayleigh       !Enables Rayleigh multiple-scattering in solar DOM simulations
 
     opts%rt_all%ozone_data             = rttov_opt%ozone_data !Set the relevant flag to .true. when supplying a profile of the given
     opts%rt_all%co2_data               = rttov_opt%co2_data !trace gas (ensure the coefficient file supports the gas)

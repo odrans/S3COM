@@ -56,12 +56,24 @@ contains
     rttov_opt%nchannels  = nml%nchannels
     rttov_opt%nthreads = nml%rttov_nthreads
 
-    rttov_opt%gas_units = 1 ! Units: kg/kg
-    rttov_opt%mmr_cldaer = .false.
-    rttov_opt%ice_scheme = 3
-    rttov_opt%clw_scheme = 2
+    rttov_opt%ir_scatt_model = nml%ir_scatt_model
+    rttov_opt%vis_scatt_model = nml%vis_scatt_model
 
-    rttov_opt%ozone_data = .false. !Set the relevant flag to .true. when supplying a profile of the given
+    rttov_opt%do_opdep_calc = nml%do_opdep_calc
+    rttov_opt%dom_nstreams = nml%dom_nstreams
+    rttov_opt%dom_rayleigh = nml%dom_rayleigh
+
+    rttov_opt%add_refrac = nml%add_refrac
+    rttov_opt%add_clouds = nml%add_clouds
+    rttov_opt%add_aerosols = nml%add_aerosols
+
+    rttov_opt%gas_units = 1 ! Units: kg/kg
+    rttov_opt%mmr_cldaer = nml%mmr_cldaer
+
+    rttov_opt%ice_scheme = nml%ice_scheme
+    rttov_opt%clw_scheme = nml%clw_scheme
+
+    rttov_opt%ozone_data = nml%ozone_data !Set the relevant flag to .true. when supplying a profile of the given
     rttov_opt%co2_data   = .false. !trace gas (ensure the coefficient file supports the gas)
     rttov_opt%n2o_data   = .false.
     rttov_opt%ch4_data   = .false.

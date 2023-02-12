@@ -58,7 +58,10 @@ module s3com_types
           ir_scatt_model, &
           vis_scatt_model, &
           dom_nstreams, &
-          rttov_nthreads
+          rttov_nthreads, &
+          gas_unit, &
+          ice_scheme, &
+          clw_scheme
      integer(kind=4), dimension(:), allocatable :: &
           channel_list
      logical :: &
@@ -67,9 +70,12 @@ module s3com_types
           flag_output_jac,  &
           do_jacobian_calc, &
           do_opdep_calc,    &
-          addrefrac,        &
-          dom_rayleigh
-          
+          dom_rayleigh,     &
+          mmr_cldaer,       &
+          ozone_data,       &
+          add_refrac,        &
+          add_clouds, &
+          add_aerosols
   end type type_nml
 
   !!Type containing variables from NWP-SAF simulations
@@ -239,7 +245,10 @@ module s3com_types
           month,      &
           gas_units,   &
           ice_scheme, &
-          clw_scheme
+          clw_scheme, &
+          ir_scatt_model, &
+          vis_scatt_model, &
+          dom_nstreams
      logical :: &
           mmr_cldaer, &
           ozone_data, &
@@ -247,8 +256,12 @@ module s3com_types
           n2o_data  , &
           ch4_data  , &
           co_data   , &
-          so2_data
-
+          so2_data, &
+          add_clouds, &
+          add_aerosols, &
+          add_refrac, &
+          do_opdep_calc, &
+          dom_rayleigh
      integer, dimension(:), allocatable :: &
           channel_list
      character(len = 32) :: &
