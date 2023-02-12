@@ -268,7 +268,7 @@ contains
     !!--------------------------------------------------------------------------------------------------------------------!!
 
     !!Gas units for profiles
-    profiles(1:nprof)%gas_units = 1 ! Units: kg/kg
+    profiles(1:nprof)%gas_units = rttov_opt%gas_units
 
     !!Loop over all profiles and read data for each one
     do iprof = 1, nprof
@@ -318,7 +318,7 @@ contains
        profiles(iprof)%sunzenangle = rttov_atm%sunzenangle(idx_prof)
        profiles(iprof)%sunazangle  = rttov_atm%sunazangle(idx_prof)
 
-       profiles(iprof)%mmr_cldaer = .false. !Logical flag to set cloud and aerosol
+       profiles(iprof)%mmr_cldaer = rttov_opt%mmr_cldaer !Logical flag to set cloud and aerosol
        !Units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
 
        ! Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
@@ -328,11 +328,11 @@ contains
        profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)
 
        ! Ice cloud input profiles
-       profiles(iprof)%ice_scheme = 3 !Cloud ice water scheme: 1=Baum; 2=Baran 2014; 3=Baran 2018
+       profiles(iprof)%ice_scheme = rttov_opt%ice_scheme !Cloud ice water scheme: 1=Baum; 2=Baran 2014; 3=Baran 2018
        profiles(iprof)%cloud(6,:) = rttov_atm%iwc(idx_prof,:)*1E3 !(kg/m3 -> g/m3)
 
        ! Liquid cloud input profiles
-       profiles(:)%clw_scheme = 2 !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
+       profiles(:)%clw_scheme = rttov_opt%clw_scheme !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
        profiles(iprof)%clwde(:) = rttov_atm%reff(idx_prof,:)*2.0 ! Need the diameter
 
     enddo

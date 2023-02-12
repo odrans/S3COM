@@ -236,7 +236,19 @@ module s3com_types
           platform,   &
           satellite,  &
           instrument, &
-          month
+          month,      &
+          gas_units,   &
+          ice_scheme, &
+          clw_scheme
+     logical :: &
+          mmr_cldaer, &
+          ozone_data, &
+          co2_data  , &
+          n2o_data  , &
+          ch4_data  , &
+          co_data   , &
+          so2_data
+
      integer, dimension(:), allocatable :: &
           channel_list
      character(len = 32) :: &

@@ -31,8 +31,9 @@ module mod_io_namelist
   !! Inspired by https://cerfacs.fr/coop/fortran-namelist-workedex
 
   use, intrinsic :: iso_fortran_env, only: stderr => error_unit
-  use s3com_types,         only: type_nml
-
+  use s3com_types, only: type_nml
+  use mod_io_verbose, only: verbose_namelist
+  
   implicit none
 
   private
@@ -42,7 +43,7 @@ contains
 
   type(type_nml) function namelist_load() result(nml)
 
-    character(len=256) :: fname_nml
+    character(len=256) :: fname_nml, fn_out_rad
 
     ! Set the namelist file
     if(command_argument_count().ne.1) then
@@ -50,12 +51,14 @@ contains
        stop
     else
        call get_command_argument(1, fname_nml)
-       write(*,*) "Namelist file: ", trim(fname_nml)
     endif
 
     call read_namelist(fname_nml, nml)
 
+    call verbose_namelist(fname_nml, nml)
+
   end function namelist_load
+
 
   subroutine read_namelist(file_path, nml)
 
@@ -107,10 +110,6 @@ contains
     ! Namelist definition===============================
 
     call open_namelist(file_path, file_unit, iostat)
-    if (iostat /= 0) then
-       !! write here what to do if opening failed"
-       return
-    end if
 
     read (nml=general, iostat=iostat, unit=file_unit)
     allocate(channel_list(nchannels))
@@ -119,10 +118,6 @@ contains
     read (nml=rttov, iostat=iostat, unit=file_unit)
 
     call close_namelist(file_path, file_unit, iostat)
-    if (iostat /= 0) then
-       !! write here what to do if reading failed"
-       return
-    end if
 
     if(channel_seq(1) > 0) channel_list = (/(i, i= channel_seq(1), channel_seq(2), 1)/)
 
@@ -155,8 +150,7 @@ contains
   !! Namelist helpers
 
   subroutine open_namelist(file_path, file_unit, iostat)
-    !! Check whether file exists, with consitent error message
-    !! return the file unit
+
     character(len=*),  intent(in)  :: file_path
     integer,  intent(out) :: file_unit, iostat
 
@@ -168,9 +162,7 @@ contains
   end subroutine open_namelist
 
   subroutine close_namelist(file_path, file_unit, iostat)
-    !! Check the reading was OK
-    !! return error line IF not
-    !! close the unit
+
     character(len=*),  intent(in)  :: file_path
     character(len=1000) :: line
     integer,  intent(in) :: file_unit, iostat

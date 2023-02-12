@@ -56,6 +56,18 @@ contains
     rttov_opt%nchannels  = nml%nchannels
     rttov_opt%nthreads = nml%rttov_nthreads
 
+    rttov_opt%gas_units = 1 ! Units: kg/kg
+    rttov_opt%mmr_cldaer = .false.
+    rttov_opt%ice_scheme = 3
+    rttov_opt%clw_scheme = 2
+
+    rttov_opt%ozone_data = .false. !Set the relevant flag to .true. when supplying a profile of the given
+    rttov_opt%co2_data   = .false. !trace gas (ensure the coefficient file supports the gas)
+    rttov_opt%n2o_data   = .false.
+    rttov_opt%ch4_data   = .false.
+    rttov_opt%co_data    = .false.
+    rttov_opt%so2_data   = .false.
+
     allocate(rttov_opt%channel_list(rttov_opt%nchannels))
 
     rttov_opt%channel_list = nml%channel_list

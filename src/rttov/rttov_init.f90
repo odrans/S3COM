@@ -45,6 +45,8 @@ module mod_rttov_interface
 
   use rttov_unix_env, only: rttov_exit
 
+  use mod_io_verbose, only: verbose_rttov
+
   implicit none
 
   private
@@ -88,9 +90,9 @@ contains
     !!Local variables
     character(len=256) :: coef_filename, cld_coef_filename, sat, path_emis_atlas, path_brdf_atlas, path_rttov_2, file_format
     integer(kind=4) :: errorstatus, imonth, nchannels, atlas_type
-    
+
     imonth    = rttov_opt%month
-    nChannels = rttov_opt%nchannels
+    nchannels = rttov_opt%nchannels
 
     if (rttov_opt%satellite .ne. 0) then
        write(sat,*) rttov_opt%satellite
@@ -131,30 +133,29 @@ contains
     opts%rt_ir%addaerosl               = .false. !If true accounts for scattering due to aerosols (default = false)
     opts%rt_ir%addclouds               = .true.  !If true accounts for scattering due to clouds (default = false)
 
-
     opts%rt_ir%ir_scatt_model          = s3com%nml%ir_scatt_model      !Scattering model for emission source term:
     !1 => DOM; 2 => Chou-scaling
     opts%rt_ir%vis_scatt_model         = s3com%nml%vis_scatt_model       !Scattering model for solar source term:
     !1 => DOM; 2 => single-scattering; 3 => MFASIS
     opts%rt_ir%dom_nstreams            = s3com%nml%dom_nstreams       !Number of streams for Discrete Ordinates (DOM)
-    opts%rt_ir%dom_rayleigh            = s3com%nml%dom_rayleigh !Enables Rayleigh multiple-scattering in solar DOM simulations
+    opts%rt_ir%dom_rayleigh            = s3com%nml%dom_rayleigh       !Enables Rayleigh multiple-scattering in solar DOM simulations
 
-    opts%rt_all%ozone_data             = .false. !Set the relevant flag to .true. when supplying a profile of the given
-    opts%rt_all%co2_data               = .false. !trace gas (ensure the coefficient file supports the gas)
-    opts%rt_all%n2o_data               = .false.
-    opts%rt_all%ch4_data               = .false.
-    opts%rt_all%co_data                = .false.
-    opts%rt_all%so2_data               = .false.
+    opts%rt_all%ozone_data             = rttov_opt%ozone_data !Set the relevant flag to .true. when supplying a profile of the given
+    opts%rt_all%co2_data               = rttov_opt%co2_data !trace gas (ensure the coefficient file supports the gas)
+    opts%rt_all%n2o_data               = rttov_opt%n2o_data
+    opts%rt_all%ch4_data               = rttov_opt%ch4_data
+    opts%rt_all%co_data                = rttov_opt%co_data
+    opts%rt_all%so2_data               = rttov_opt%so2_data
 
     opts%rt_mw%clw_data                = .false.
 
     opts%config%apply_reg_limits       = .true.  ! If true the regression limits are set as hard limits and replace the value. It will remove the warning in verbose.
-    opts%config%verbose                = .true.  ! If false only messages for fatal errors are output (default = true)
+    opts%config%verbose                = .false.  ! If false only messages for fatal errors are output (default = true)
     opts%config%do_checkinput          = .true.  ! If true checks whether input profiles are within both absolute and regression
 
     !opts%rt_all%switchrad              = .true. ! Input K perturbation in BT
     opts%rt_all%switchrad              = .false. ! Input K perturbation in radiance
-    
+
     !!-----------------------------------------------------------------------------------------------------------------------!!
     !! 2. Read coefficients                                                                                                  !!
     !!-----------------------------------------------------------------------------------------------------------------------!!
@@ -222,7 +223,10 @@ contains
     endif
 
     s3com%rad%wavelength = 10000._wp / coefs%coef%ff_cwn(rttov_opt%channel_list(:))
-    
+
+    call verbose_rttov(s3com, rttov_opt, opts)
+
   end subroutine rttov_init
+
 
 end module mod_rttov_interface

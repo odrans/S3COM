@@ -34,6 +34,7 @@ module mod_models
   use mod_icon,            only: icon_load, icon_clear
   use mod_nwpsaf,          only: nwpsaf_load, nwpsaf_clear
   use mod_utils_phys,      only: solar_angles
+  use mod_io_verbose,      only: verbose_model
 
   implicit none
 
@@ -91,7 +92,7 @@ contains
        call nwpsaf_clear(nwpsaf)
     end select
 
-    call model_verbose(nml, model)
+    call verbose_model(nml, model)
 
   end subroutine models_load
 
@@ -301,26 +302,6 @@ contains
     end do
 
   end subroutine models_setup_solar
-
-  subroutine model_verbose(nml, model)
-
-    type(type_nml), intent(in)   :: nml
-    type(type_model), intent(in)   :: model
-
-    character(16), dimension(3), parameter :: mode_desc = (/"track", "lon-lat", "lat-lon"/)
-
-    write(*,*)
-    write(*,*) "-----------------------------------------------------------------"
-    write(*,"(1X, A)") "Physical model"
-    write(*,"(2X, A, 1X, A)") "- name:", trim(nml%model_name)
-    write(*,"(2X, A, 1X, A)") "- input file: ", trim(nml%fname_in)
-    write(*,"(2X, A, 1X, A)") "- grid: type:", trim(mode_desc(model%mode))
-    if(model%mode == 1) write(*,"(10X, A, 1X, I5)") "npoints:", model%npoints
-    if(model%mode > 1) write(*,"(10X, A, 1X, I5, 2(1X, A, 1X, I3), A)") "npoints:", model%npoints, "(nlat:", model%nlat,", nlon:", model%nlon, ")"
-    write(*,"(10X, A, 1X, I3)") "nlayers:", model%nlayers
-    write(*,*) "-----------------------------------------------------------------"
-
-  end subroutine model_verbose
 
 
 end module mod_models

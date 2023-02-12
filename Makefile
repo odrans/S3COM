@@ -96,6 +96,7 @@ LIST_OBJ_MODELS = $(obj)/models_icon.o \
         $(obj)/models.o
 
 LIST_OBJ_IO = $(obj)/io_utils.o \
+        $(obj)/io_verbose.o \
         $(obj)/io_namelist.o \
 		$(obj)/io_nwpsaf.o \
 		$(obj)/io_icon.o \
@@ -114,7 +115,7 @@ LIST_OBJ_RTTOVML = $(obj)/rttov_utils.o \
 		   $(obj)/rttov_init.o \
 		   $(obj)/rttov_setup.o
 
-LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_IO) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_MAIN)
+LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_IO) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_MAIN)
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of flags related to each libraries + final flag
@@ -212,6 +213,9 @@ $(obj)/io_icon.o : $(DIR_IO)/io_icon.f90
 
 $(obj)/io_nwpsaf.o : $(DIR_IO)/io_nwpsaf.f90
 	$(F90) $(F90FLAGS) $(FLAG_HDF5) -I$(PATH_NCDF_INC) -c $< -o $@
+
+$(obj)/io_verbose.o : $(DIR_IO)/io_verbose.f90
+	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
 
 $(obj)/io_namelist.o : $(DIR_IO)/io_namelist.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
