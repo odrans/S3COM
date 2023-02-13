@@ -53,9 +53,15 @@ module mod_rttov_interface
 #include "rttov_direct.interface"
 #include "rttov_parallel_direct.interface"
 #include "rttov_alloc_direct.interface"
+
 #include "rttov_k.interface"
 #include "rttov_parallel_k.interface"
 #include "rttov_alloc_k.interface"
+
+#include "rttov_tl.interface"
+#include "rttov_parallel_tl.interface"
+#include "rttov_alloc_tl.interface"
+
 #include "rttov_read_coefs.interface"
 #include "rttov_dealloc_coefs.interface"
 #include "rttov_init_emis_refl.interface"
@@ -98,8 +104,9 @@ contains
     end if
 
     coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/rttov13pred54L/rtcoef_"//&
-         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"_o3.dat"
-
+         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"-shifted_7gas.dat"
+                                                                                                    !"_o3co2.dat"
+    write(6,*) "coef_filename: ", coef_filename
     cld_coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/cldaer_visir/sccldcoef_"//&
          trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//".dat"
 
@@ -219,7 +226,7 @@ contains
     endif
 
     s3com%rad%wavelength = 10000._wp / coefs%coef%ff_cwn(rttov_opt%channel_list(:))
-    
+
   end subroutine rttov_init
 
 end module mod_rttov_interface

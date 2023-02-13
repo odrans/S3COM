@@ -70,6 +70,11 @@ contains
          s3com%rad%f_bt_clear, s3com%rad%f_rad_total, s3com%rad%f_rad_clear, &
          mold = s3com%rad%y)
     
+    allocate(s3com%tl%y(npoints, nmeas), source = 0._wp)
+    allocate(s3com%tl%f, s3com%tl%f_ref_total, s3com%tl%f_ref_clear, s3com%tl%f_bt_total, &
+         s3com%tl%f_bt_clear, s3com%tl%f_rad_total, s3com%tl%f_rad_clear, &
+         mold = s3com%tl%y)
+         
     allocate(s3com%jac%p(npoints, nlevels, nmeas), source = 0._wp)
     allocate(s3com%jac%t(npoints, nlevels, nmeas), source = 0._wp)
     
@@ -102,13 +107,19 @@ contains
 
     s3com_chunk%nmeas = s3com%nmeas
 
-    s3com_chunk%jac%do_jacobian_calc=s3com%nml%do_jacobian_calc
+    s3com_chunk%jac%do_jacobian_calc = s3com%nml%do_jacobian_calc
+    s3com_chunk%tl%do_tl_calc        = s3com%nml%do_tl_calc
 
     allocate(s3com_chunk%rad%f_ref_total(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
     allocate(s3com_chunk%rad%f_ref_clear, s3com_chunk%rad%f_bt_total, &
          s3com_chunk%rad%f_bt_clear, s3com_chunk%rad%f_rad_total, s3com_chunk%rad%f_rad_clear, &
          mold = s3com_chunk%rad%f_ref_total)
     
+    allocate(s3com_chunk%tl%f_ref_total(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
+    allocate(s3com_chunk%tl%f_ref_clear, s3com_chunk%tl%f_bt_total, &
+         s3com_chunk%tl%f_bt_clear, s3com_chunk%tl%f_rad_total, s3com_chunk%tl%f_rad_clear, &
+         mold = s3com_chunk%tl%f_ref_total)
+         
     allocate(s3com_chunk%jac%p(s3com_chunk%npoints, s3com_chunk%nlevels, s3com_chunk%nmeas), source = 0._wp)
     allocate(s3com_chunk%jac%t(s3com_chunk%npoints, s3com_chunk%nlevels, s3com_chunk%nmeas), source = 0._wp)
     
@@ -128,30 +139,45 @@ contains
     integer(kind=4) :: idx_start, idx_end, nmeas, npoints, nlevels, nlayers
 
     idx_start = s3com_chunk%idx_start
-    idx_end = s3com_chunk%idx_end
-    nmeas = s3com_chunk%nmeas
-    npoints = s3com_chunk%npoints
-    nlevels = s3com_chunk%nlevels
-    nlayers = s3com_chunk%nlayers
+    idx_end   = s3com_chunk%idx_end
+    nmeas     = s3com_chunk%nmeas
+    npoints   = s3com_chunk%npoints
+    nlevels   = s3com_chunk%nlevels
+    nlayers   = s3com_chunk%nlayers
     
     ! Radiation data
     s3com%rad%f_ref_total(idx_start:idx_end, 1:nmeas) = s3com_chunk%rad%f_ref_total(1:npoints, 1:nmeas)
     s3com%rad%f_ref_clear(idx_start:idx_end, 1:nmeas) = s3com_chunk%rad%f_ref_clear(1:npoints, 1:nmeas)
-    s3com%rad%f_bt_total(idx_start:idx_end, 1:nmeas) = s3com_chunk%rad%f_bt_total(1:npoints, 1:nmeas)
-    s3com%rad%f_bt_clear(idx_start:idx_end, 1:nmeas) = s3com_chunk%rad%f_bt_clear(1:npoints, 1:nmeas)
+    s3com%rad%f_bt_total(idx_start:idx_end, 1:nmeas)  = s3com_chunk%rad%f_bt_total(1:npoints, 1:nmeas)
+    s3com%rad%f_bt_clear(idx_start:idx_end, 1:nmeas)  = s3com_chunk%rad%f_bt_clear(1:npoints, 1:nmeas)
     s3com%rad%f_rad_total(idx_start:idx_end, 1:nmeas) = s3com_chunk%rad%f_rad_total(1:npoints, 1:nmeas)
     s3com%rad%f_rad_clear(idx_start:idx_end, 1:nmeas) = s3com_chunk%rad%f_rad_clear(1:npoints, 1:nmeas)
 
-      deallocate(s3com_chunk%rad%f_ref_total, s3com_chunk%rad%f_ref_clear, s3com_chunk%rad%f_bt_total, &
-                 s3com_chunk%rad%f_bt_clear, s3com_chunk%rad%f_rad_total, s3com_chunk%rad%f_rad_clear)
-
+    deallocate(s3com_chunk%rad%f_ref_total, s3com_chunk%rad%f_ref_clear, s3com_chunk%rad%f_bt_total, &
+               s3com_chunk%rad%f_bt_clear, s3com_chunk%rad%f_rad_total, s3com_chunk%rad%f_rad_clear)
+    
+    ! Tangent linear data
+    s3com%tl%f_ref_total(idx_start:idx_end, 1:nmeas) = s3com_chunk%tl%f_ref_total(1:npoints, 1:nmeas)
+    s3com%tl%f_ref_clear(idx_start:idx_end, 1:nmeas) = s3com_chunk%tl%f_ref_clear(1:npoints, 1:nmeas)
+    s3com%tl%f_bt_total(idx_start:idx_end, 1:nmeas)  = s3com_chunk%tl%f_bt_total(1:npoints, 1:nmeas)
+    s3com%tl%f_bt_clear(idx_start:idx_end, 1:nmeas)  = s3com_chunk%tl%f_bt_clear(1:npoints, 1:nmeas)
+    s3com%tl%f_rad_total(idx_start:idx_end, 1:nmeas) = s3com_chunk%tl%f_rad_total(1:npoints, 1:nmeas)
+    s3com%tl%f_rad_clear(idx_start:idx_end, 1:nmeas) = s3com_chunk%tl%f_rad_clear(1:npoints, 1:nmeas)
+    
+    s3com%tl%do_tl_calc = s3com_chunk%tl%do_tl_calc
+    
+    deallocate(s3com_chunk%tl%f_ref_total, s3com_chunk%tl%f_ref_clear, s3com_chunk%tl%f_bt_total, &
+               s3com_chunk%tl%f_bt_clear, s3com_chunk%tl%f_rad_total, s3com_chunk%tl%f_rad_clear)
+    
+    ! Jacobian data
     s3com%jac%p(idx_start:idx_end, 1:nlevels, 1:nmeas) = s3com_chunk%jac%p(1:npoints, 1:nlevels, 1:nmeas)
     s3com%jac%t(idx_start:idx_end, 1:nlevels, 1:nmeas) = s3com_chunk%jac%t(1:npoints, 1:nlevels, 1:nmeas)
     
-    s3com%jac%cfrac(idx_start:idx_end, 1:nlayers, 1:nmeas)  = s3com_chunk%jac%cfrac(1:npoints, 1:nlayers, 1:nmeas)
+    s3com%jac%cfrac(idx_start:idx_end, 1:nlayers, 1:nmeas) = s3com_chunk%jac%cfrac(1:npoints, 1:nlayers, 1:nmeas)
     s3com%jac%clwde(idx_start:idx_end, 1:nlayers, 1:nmeas) = s3com_chunk%jac%clwde(1:npoints, 1:nlayers, 1:nmeas)
     
     s3com%jac%do_jacobian_calc = s3com_chunk%jac%do_jacobian_calc
+    
     deallocate(s3com_chunk%jac%p, s3com_chunk%jac%t, s3com_chunk%jac%cfrac, s3com_chunk%jac%clwde)
     
     ! General
@@ -160,6 +186,5 @@ contains
     return
 
   end subroutine s3com_update
-
 
 end module mod_s3com_setup

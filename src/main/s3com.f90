@@ -63,7 +63,8 @@ program s3com_main
 
   ! Temporary: setting the viewing satellite angles
   zenangle = 0._wp; azangle = 0._wp
-
+  !zenangle = 52._wp; azangle = 0._wp
+   
   ! Load atmospheric data from selected models (`model` created)
   call models_load(nml, model)
 
@@ -83,7 +84,7 @@ program s3com_main
   loop_chunnks : do iChunk = 1, nChunks
 
      write(6,*) ichunk, "/", nchunks
-
+     
      ! Compute starting and end points for the chunk
      if (nChunks .EQ. 1) then
         idx_start = 1; idx_end = npoints
@@ -129,7 +130,8 @@ program s3com_main
      end if
 
      call s3com_update(s3com, s3com_chunk)
-
+     !write(6,*) "sunzenangle", model%sunzenangle(ichunk)
+     !write(6,*) "sunazangle", model%sunazangle(ichunk)
   end do loop_chunnks
 
   ! Write output file

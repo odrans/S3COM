@@ -64,7 +64,9 @@ module s3com_types
           flag_retrievals,  &
           flag_output_atm,  &
           flag_output_jac,  &
+          flag_output_tl,   &
           do_jacobian_calc, &
+          do_tl_calc,       &
           do_opdep_calc,    &
           addrefrac,        &
           dom_rayleigh
@@ -213,6 +215,21 @@ module s3com_types
      logical :: do_jacobian_calc
   end type type_s3com_jac
   
+  type type_s3com_tl
+     real(kind=wp), dimension(:), allocatable ::   &
+          wavelength
+     real(kind=wp), dimension(:,:), allocatable :: &
+          y,                                       &
+          f,                                       &
+          f_ref_total,                             &
+          f_ref_clear,                             &
+          f_bt_total,                              &
+          f_bt_clear,                              &
+          f_rad_total,                             &
+          f_rad_clear
+     logical :: do_tl_calc
+  end type type_s3com_tl
+  
   type type_s3com_atm
      real(kind=wp), dimension(:,:), allocatable :: &
           t,                                       &
@@ -245,6 +262,7 @@ module s3com_types
      type(type_s3com_rad) :: rad
      type(type_s3com_atm) :: atm
      type(type_s3com_jac) :: jac
+     type(type_s3com_tl)  :: tl
      type(type_s3com_opt) :: opt
   end type type_s3com
 

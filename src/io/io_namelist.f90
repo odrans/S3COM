@@ -64,7 +64,9 @@ contains
 
     ! Namelist variables
     character(len=256) :: fname_in, path_rttov, path_out, suffix_out
-    logical :: flag_retrievals, flag_output_atm, flag_output_jac, do_jacobian_calc, do_opdep_calc, addrefrac, dom_rayleigh
+    logical :: flag_retrievals, flag_output_atm, flag_output_jac, flag_output_tl, &
+       do_jacobian_calc, do_tl_calc, do_opdep_calc, &
+       addrefrac, dom_rayleigh
 
     integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
          ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads
@@ -81,12 +83,14 @@ contains
          flag_retrievals, &
          flag_output_atm, &
          flag_output_jac, &
+         flag_output_tl,  &
          npoints_it, &
          nchannels
 
     namelist /rttov_init/ &
          path_rttov, &
          do_jacobian_calc, &
+         do_tl_calc, &
          do_opdep_calc, &
          addrefrac, &
          ir_scatt_model, &
@@ -133,6 +137,7 @@ contains
     nml%satellite = satellite
     nml%instrument = instrument
     nml%do_jacobian_calc = do_jacobian_calc
+    nml%do_tl_calc = do_tl_calc
     nml%do_opdep_calc = do_opdep_calc
     nml%addrefrac = addrefrac
     nml%ir_scatt_model = ir_scatt_model
@@ -142,6 +147,7 @@ contains
     nml%rttov_nthreads = rttov_nthreads
     nml%flag_output_atm = flag_output_atm
     nml%flag_output_jac = flag_output_jac
+    nml%flag_output_tl = flag_output_tl
 
   end subroutine read_namelist
 
