@@ -11,7 +11,6 @@ Fields in bold (with `NA` as default values) must be edited before running S3COM
 | **fname_in** | **Input file name** | **NA** |
 | path_out | Path for output files | "./" |
 | suffix_out | suffix to be used in output files | "" |
-| month | Month of the simulations | 1 |
 | flag_retrievals | Turn on cloud retrievals | FALSE |
 | flag_output_atm | Output atmospheric variables (S3COM_atm.nc) | FALSE |
 | flag_output_jac | Output Jacobian variables (S3COM_jac.nc) | FALSE |
