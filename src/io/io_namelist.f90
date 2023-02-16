@@ -70,7 +70,7 @@ contains
     logical :: flag_retrievals, flag_output_atm, flag_output_jac, do_jacobian_calc, &
          do_opdep_calc, add_refrac, dom_rayleigh, mmr_cldaer, ozone_data, add_aerosols, add_clouds
 
-    integer(kind = 4) :: month, npoints_it, nchannels, platform, satellite, instrument, &
+    integer(kind = 4) :: npoints_it, nchannels, platform, satellite, instrument, &
          ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads, ice_scheme, clw_scheme
     integer(kind = 4), dimension(:), allocatable :: channel_list
     integer(kind = 4), dimension(2) :: channel_seq
@@ -82,7 +82,6 @@ contains
          fname_in, &
          path_out, &
          suffix_out, &
-         month, &
          flag_retrievals, &
          flag_output_atm, &
          flag_output_jac, &
@@ -132,7 +131,6 @@ contains
     nml%suffix_out = suffix_out
     nml%fname_in = fname_in
     nml%flag_retrievals = flag_retrievals
-    nml%month = month
     nml%npoints_it = npoints_it
     nml%nchannels = nchannels
     nml%model_name = model_name

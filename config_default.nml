@@ -2,7 +2,6 @@
 fname_in = ""
 path_out = "./"
 suffix_out = ""
-month = 1
 flag_retrievals = FALSE
 flag_output_atm = FALSE
 flag_output_jac = TRUE
