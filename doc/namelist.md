@@ -1,12 +1,14 @@
 ## S3COM namelist configuration
 
-The default configuration namelist file is `config_default.nml`. Fields in bold (with `NA` as default values) must be edited before running S3COM.
+The default configuration namelist file is `config_default.nml`. 
+
+Fields in bold (with `NA` as default values) must be edited before running S3COM.
 
 #### General 
 
 | Parameter Name | Description | Default |
 | --- | --- | --- | 
-| **fname_in** | **Input file name** | NA |
+| **fname_in** | **Input file name** | **NA** |
 | path_out | Path for output files | "./" |
 | suffix_out | suffix to be used in output files | "" |
 | month | Month of the simulations | 1 |
@@ -35,7 +37,7 @@ See the [RTTOV general documentation](https://nwp-saf.eumetsat.int/site/download
 
 | Parameter Name | Description | Default |
 | --- | --- | --- | 
-| **path_rttov** | **Path to RTTOV** | NA |
+| **path_rttov** | **Path to RTTOV** | **NA** |
 | rttov_nthreads | Number of threads in RTTOV (MPI required) | 1 |
 | do_jacobian_calc | | FALSE |
 | do_opdep_calc | Include gaseous absorption | TRUE |
