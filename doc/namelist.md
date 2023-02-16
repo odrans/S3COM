@@ -31,6 +31,8 @@ Check the RTTOV website for the [list of selected instruments](https://nwp-saf.e
 
 #### RTTOV initialization
 
+See the [RTTOV general documentation](https://nwp-saf.eumetsat.int/site/download/documentation/rtm/docs_rttov13/users_guide_rttov13_v1.2.pdf) for more details on some of these parameters.
+
 | Parameter Name | Description | Default |
 | --- | --- | --- | 
 | path_rttov | Path to RTTOV | NA |
