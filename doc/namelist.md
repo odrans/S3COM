@@ -36,7 +36,7 @@ Check the RTTOV website for the [list of selected instruments](https://nwp-saf.e
 | path_rttov | Path to RTTOV | NA |
 | rttov_nthreads | Number of threads in RTTOV (MPI required) | 1 |
 | do_jacobian_calc | | FALSE |
-| do_opdep_calc | | TRUE |
+| do_opdep_calc | Include gaseous absorption | TRUE |
 | ir_scatt_model | Infrared scattering model (1: DOM, 2: Chou-scaling) | 1 |
 | vis_scatt_model | Visible scattering model (1: DOM, 2: Single-scattering, 3: MFASIS) | 1 |
 | dom_nstreams | Number of streams used in DOM | 8 |
