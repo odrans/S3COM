@@ -1,6 +1,6 @@
 ## S3COM namelist configuration
 
-The default configuration namelist file is `config_default.nml`. Fields in bold (associated with `NA` as default values) must be edited before running S3COM.
+The default configuration namelist file is `config_default.nml`. Fields in bold (with `NA` as default values) must be edited before running S3COM.
 
 #### General 
 
