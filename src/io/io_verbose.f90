@@ -71,7 +71,7 @@ contains
     type(type_nml), intent(in)   :: nml
     type(type_model), intent(in)   :: model
 
-    character(16), dimension(3), parameter :: mode_desc = (/"track", "lon-lat", "lat-lon"/)
+    character(len=7), dimension(3), parameter :: mode_desc = (/"track  ", "lon-lat", "lat-lon"/)
 
     write(*,*)
     write(*,'(A)') hyphens
@@ -80,7 +80,14 @@ contains
     write(*,'(2X, A)') "- Grid description:"
     write(*,"(4X, A, 1X, A)") "| type:", trim(mode_desc(model%mode))
     if(model%mode == 1) write(*,"(4X, A, 1X, I5)") "| npoints:", model%npoints
-    if(model%mode > 1) write(*,"(4X, A, 1X, I5, 2(1X, A, 1X, I3), A)") "| npoints:", model%npoints, "(nlat:", model%nlat,", nlon:", model%nlon, ")"
+    if(model%mode > 1) then
+      write(*,"(4X, A, 1X, I5, &
+         2(1X, A, 1X, I3), A)") "| npoints:", model%npoints, &
+         "(nlat:", model%nlat,", nlon:", model%nlon, ")"
+    end if
+
+
+
     write(*,"(4X, A, 1X, I3)") "| nlayers:", model%nlayers
     write(*,'(A)') hyphens
 
@@ -93,14 +100,15 @@ contains
     type(type_s3com), intent(in) :: s3com
     type(rttov_options), intent(in) :: opts
 
-    character(len = 32), dimension(2), parameter :: ir_scatt_model = (/"DOM", "Chou-scaling"/)
-    character(len = 32), dimension(3), parameter :: vis_scatt_model = (/"DOM", "Single-scattering", "MFASIS"/)
-    character(len = 64), dimension(2), parameter :: gas_units = (/"kg/kg over moist air", "ppmv over moist air"/)
-    character(len = 64), dimension(2), parameter :: cld_units = (/"kg/kg over moist air", "g m-3"/)
-    character(len = 64), dimension(2), parameter :: aer_units = (/"kg/kg over moist air", "cm-3"/)
-    character(len = 64), dimension(6), parameter :: gas_rttov = (/"O3", "CO2", "N2O", "CH4", "CO", "SO2"/)
-    character(len = 64), dimension(3), parameter :: ice_scheme = (/"Baum", "Baran 2014", "Baran 2018"/)
-    character(len = 64), dimension(2), parameter :: clw_scheme = (/"OPAC", "Deff"/)
+    character(len = 12), dimension(2), parameter :: ir_scatt_model = (/"DOM         ", "Chou-scaling"/)
+    character(len=17), dimension(3), parameter :: vis_scatt_model = (/"DOM              ", &
+    "Single-scattering", "MFASIS           "/)
+    character(len = 19), dimension(2), parameter :: gas_units = (/"kg/kg over moist air ", "ppmv over moist air  "/)
+    character(len = 20), dimension(2), parameter :: cld_units = (/"kg/kg over moist air", "g m-3               "/)
+    character(len = 20), dimension(2), parameter :: aer_units = (/"kg/kg over moist air", "cm-3                "/)
+    character(len = 3), dimension(6), parameter :: gas_rttov = (/"O3 ", "CO2", "N2O", "CH4", "CO ", "SO2"/)
+    character(len = 10), dimension(3), parameter :: ice_scheme = (/"Baum      ", "Baran 2014", "Baran 2018"/)
+    character(len = 4), dimension(2), parameter :: clw_scheme = (/"OPAC", "Deff"/)
 
     logical, dimension(6) :: gas_rttov_used
 
@@ -132,14 +140,16 @@ contains
     write(*,'(2X, A)') "- Instrument:"
     write(*,'(4X, A, 1X, A)') "| name/platform:", trim(s3com%opt%rttov%inst_name)//"/"//trim(s3com%opt%rttov%platform_name)
     write(*,'(4X, A, 1X, I4)') "| nchannels:", rttov_opt%nchannels
-    write(*,'(4X, A, 2(1X, F6.3, 1X, A))') "| wavelength range:", minval(s3com%rad%wavelength), "-", maxval(s3com%rad%wavelength), "um"
+    write(*,'(4X, A, 2(1X, F6.3, 1X, A))') "| wavelength range:", &
+    minval(s3com%rad%wavelength), "-", maxval(s3com%rad%wavelength), "um"
     write(*,'(2X, A)') "- Radiative transfer:"
     write(*,'(4X, A, 1X, A)') "| IR model:", ir_model
     write(*,'(4X, A, 1X, A)') "| VIS model:", vis_model
     write(*,'(2X, A)') "- Atmosphere:"
     write(*,'(4X, 4(A))') "| gases: ", write_bool(flag_gases)
     if(flag_gases) then
-       write(*,'(6X, 4(A))') "| absorption: ", write_bool(opts%dev%do_opdep_calc), "; refraction: ", write_bool(opts%rt_all%addrefrac)
+       write(*,'(6X, 4(A))') "| absorption: ", write_bool(opts%dev%do_opdep_calc), &
+                             "; refraction: ", write_bool(opts%rt_all%addrefrac)
        write(*,'(6X, A, $)') "| from RTTOV: "
        do i = 1, size(gas_rttov)
           if (.NOT.gas_rttov_used(i)) then
@@ -157,7 +167,8 @@ contains
     end if
     write(*,'(4X, A, 1X, A, 1X, A, 1X, I3)') "| clouds:", write_bool(opts%rt_ir%addclouds)
     if(opts%rt_ir%addclouds) then
-       write(*,'(6X, 5(A))') "| schemes: ", "ice: ", trim(ice_scheme(rttov_opt%ice_scheme)), " ; liquid: ", trim(clw_scheme(rttov_opt%clw_scheme))
+       write(*,'(6X, 5(A))') "| schemes: ", "ice: ", trim(ice_scheme(rttov_opt%ice_scheme)), &
+                             " ; liquid: ", trim(clw_scheme(rttov_opt%clw_scheme))
        write(*,'(6X, 2(A))') "| input units: ", trim(cld_units(mmr_cldaer))
     end if
     write(*,'(4X, A, 1X, A)') "| aerosols:", write_bool(opts%rt_ir%addaerosl)
