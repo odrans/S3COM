@@ -68,13 +68,15 @@ module s3com_types
           flag_retrievals,  &
           flag_output_atm,  &
           flag_output_jac,  &
+          flag_output_k_tl, &
           do_jacobian_calc, &
+          do_k_tl_calc,     &
           do_opdep_calc,    &
           dom_rayleigh,     &
           mmr_cldaer,       &
           ozone_data,       &
-          add_refrac,        &
-          add_clouds, &
+          add_refrac,       &
+          add_clouds,       &
           add_aerosols
   end type type_nml
 
@@ -296,7 +298,15 @@ module s3com_types
           clwde
      logical :: do_jacobian_calc
   end type type_s3com_jac
-  
+
+  type type_s3com_k_tl
+     real(kind=wp), dimension(:), allocatable ::   &
+          wavelength
+     real(kind=wp), dimension(:,:,:), allocatable :: &
+          t
+     logical :: do_k_tl_calc
+  end type type_s3com_k_tl
+    
   type type_s3com_atm
      real(kind=wp), dimension(:,:), allocatable :: &
           t,                                       &
@@ -329,6 +339,7 @@ module s3com_types
      type(type_s3com_rad) :: rad
      type(type_s3com_atm) :: atm
      type(type_s3com_jac) :: jac
+     type(type_s3com_k_tl) :: k_tl
      type(type_s3com_opt) :: opt
   end type type_s3com
 

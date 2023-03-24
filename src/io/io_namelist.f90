@@ -60,60 +60,65 @@ contains
   end function namelist_load
 
 
-  subroutine read_namelist(file_path, nml)
-
-    character(len=*),  intent(in)  :: file_path
-    integer                        :: file_unit, iostat, i
-
-    ! Namelist variables
-    character(len=256) :: fname_in, path_rttov, path_out, suffix_out, model_name
-    logical :: flag_retrievals, flag_output_atm, flag_output_jac, do_jacobian_calc, &
-         do_opdep_calc, add_refrac, dom_rayleigh, mmr_cldaer, ozone_data, add_aerosols, add_clouds
-
-    integer(kind = 4) :: npoints_it, nchannels, platform, satellite, instrument, &
+   subroutine read_namelist(file_path, nml)
+      
+      character(len=*), intent(in) :: file_path
+      integer :: file_unit, iostat, i
+      
+      ! Namelist variables
+      character(len=256) :: fname_in, path_rttov, path_out, suffix_out, model_name
+      logical :: &
+         flag_retrievals, flag_output_atm, flag_output_jac, flag_output_k_tl, &
+         do_jacobian_calc, do_k_tl_calc, do_opdep_calc, &
+         add_refrac, dom_rayleigh, mmr_cldaer, ozone_data, add_aerosols, add_clouds
+         
+      integer(kind = 4) :: &
+         npoints_it, nchannels, platform, satellite, instrument, &
          ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads, ice_scheme, clw_scheme
-    integer(kind = 4), dimension(:), allocatable :: channel_list
-    integer(kind = 4), dimension(2) :: channel_seq
-
-    type(type_nml), intent(out)        :: nml
-
-    ! Namelist definition===============================
-    namelist /general/ &
-         fname_in, &
-         path_out, &
-         suffix_out, &
-         flag_retrievals, &
-         flag_output_atm, &
-         flag_output_jac, &
-         npoints_it, &
-         nchannels, &
+      integer(kind = 4), dimension(:), allocatable :: channel_list
+      integer(kind = 4), dimension(2) :: channel_seq
+      
+      type(type_nml), intent(out)        :: nml
+      
+      ! Namelist definition===============================
+      namelist /general/   &
+         fname_in,         &
+         path_out,         &
+         suffix_out,       &
+         flag_retrievals,  &
+         flag_output_atm,  &
+         flag_output_jac,  &
+         flag_output_k_tl, &
+         npoints_it,       &
+         nchannels,        &
          model_name
-
-    namelist /rttov/ &
+      
+      namelist /rttov/ &
+         platform,     &
+         satellite,    &
+         instrument,   &
          channel_list, &
-         channel_seq, &
-         platform, &
-         satellite, &
-         instrument
-
-    namelist /rttov_init/ &
-         path_rttov, &
-         do_jacobian_calc, &
-         do_opdep_calc, &
-         ir_scatt_model, &
-         vis_scatt_model, &
-         dom_nstreams, &
-         dom_rayleigh, &
-         rttov_nthreads, &
-         ice_scheme, &
-         clw_scheme, &
-         mmr_cldaer, &
-         ozone_data, &
-         add_refrac, &
-         add_aerosols, &
+         channel_seq
+      
+      namelist /rttov_init/ &
+         path_rttov,        &
+         rttov_nthreads,    &
+         do_jacobian_calc,  &
+         do_k_tl_calc,      &
+         do_opdep_calc,     &
+         ir_scatt_model,    &
+         vis_scatt_model,   &
+         dom_nstreams,      &
+         dom_rayleigh,      &
+         ice_scheme,        &
+         clw_scheme,        &
+         mmr_cldaer,        &
+         ozone_data,        &
+         add_refrac,        &
+         add_aerosols,      &
          add_clouds
-
-    ! Namelist definition===============================
+      
+      ! Namelist definition===============================
 
     call open_namelist(file_path, file_unit, iostat)
 
@@ -130,7 +135,6 @@ contains
     nml%path_out = path_out
     nml%suffix_out = suffix_out
     nml%fname_in = fname_in
-    nml%flag_retrievals = flag_retrievals
     nml%npoints_it = npoints_it
     nml%nchannels = nchannels
     nml%model_name = model_name
@@ -139,14 +143,17 @@ contains
     nml%satellite = satellite
     nml%instrument = instrument
     nml%do_jacobian_calc = do_jacobian_calc
+    nml%do_k_tl_calc = do_k_tl_calc
     nml%do_opdep_calc = do_opdep_calc
     nml%ir_scatt_model = ir_scatt_model
     nml%vis_scatt_model = vis_scatt_model
     nml%dom_rayleigh = dom_rayleigh
     nml%dom_nstreams = dom_nstreams
     nml%rttov_nthreads = rttov_nthreads
+    nml%flag_retrievals = flag_retrievals
     nml%flag_output_atm = flag_output_atm
     nml%flag_output_jac = flag_output_jac
+    nml%flag_output_k_tl = flag_output_k_tl
     nml%ice_scheme = ice_scheme
     nml%clw_scheme = clw_scheme
     nml%mmr_cldaer = mmr_cldaer
@@ -154,7 +161,6 @@ contains
     nml%add_aerosols = add_aerosols
     nml%add_clouds = add_clouds
     nml%add_refrac = add_refrac
-
 
   end subroutine read_namelist
 

@@ -53,11 +53,17 @@ module mod_rttov_interface
   public :: rttov_init
 
 #include "rttov_direct.interface"
-#include "rttov_parallel_direct.interface"
-#include "rttov_alloc_direct.interface"
+#include "rttov_tl.interface"
 #include "rttov_k.interface"
+
+#include "rttov_parallel_direct.interface"
+#include "rttov_parallel_tl.interface"
 #include "rttov_parallel_k.interface"
+
+#include "rttov_alloc_direct.interface"
+#include "rttov_alloc_tl.interface"
 #include "rttov_alloc_k.interface"
+
 #include "rttov_read_coefs.interface"
 #include "rttov_dealloc_coefs.interface"
 #include "rttov_init_emis_refl.interface"
@@ -103,7 +109,7 @@ contains
     if(trim(inst_name(rttov_opt%instrument)) == "iasi") file_format = ".H5"
 
     coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/rttov13pred54L/rtcoef_"//&
-         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"_o3"//trim(file_format)
+    trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"-shifted_7gas"//trim(file_format)
 
     cld_coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/cldaer_visir/sccldcoef_"//&
          trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//trim(file_format)

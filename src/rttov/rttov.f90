@@ -76,11 +76,17 @@ module mod_rttov
   public :: run_rttov, opts, coefs, emis_atlas, brdf_atlas
 
 #include "rttov_direct.interface"
-#include "rttov_parallel_direct.interface"
-#include "rttov_alloc_direct.interface"
+#include "rttov_tl.interface"
 #include "rttov_k.interface"
+
+#include "rttov_parallel_direct.interface"
+#include "rttov_parallel_tl.interface"
 #include "rttov_parallel_k.interface"
+
+#include "rttov_alloc_direct.interface"
+#include "rttov_alloc_tl.interface"
 #include "rttov_alloc_k.interface"
+
 #include "rttov_read_coefs.interface"
 #include "rttov_dealloc_coefs.interface"
 #include "rttov_init_emis_refl.interface"
@@ -92,12 +98,12 @@ module mod_rttov
 #include "rttov_print_profile.interface"
 #include "rttov_skipcommentline.interface"
 
-  !!Use emissivity atlas
+! Use emissivity atlas
 #include "rttov_setup_emis_atlas.interface"
 #include "rttov_get_emis.interface"
 #include "rttov_deallocate_emis_atlas.interface"
 
-  !!Use BRDF atlas
+! Use BRDF atlas
 #include "rttov_setup_brdf_atlas.interface"
 #include "rttov_get_brdf.interface"
 #include "rttov_deallocate_brdf_atlas.interface"
@@ -112,15 +118,20 @@ module mod_rttov
   logical(kind=jplm),      pointer :: calcemis(:)      => null() ! Flag to indicate calculation of emissivity within RTTOV
   type(rttov_emissivity),  pointer :: emissivity(:)    => null() ! Input/output surface emissivity
   type(rttov_emissivity),  pointer :: emissivity_k(:)  => null() ! Emissivity Jacobians
+  type(rttov_emissivity),  pointer :: emissivity_tl(:)  => null() ! Input/output surface emissivity perturbations
   logical(kind=jplm),      pointer :: calcrefl(:)      => null() ! Flag to indicate calculation of BRDF within RTTOV
   type(rttov_reflectance), pointer :: reflectance(:)   => null() ! Input/output surface BRDF
   type(rttov_reflectance), pointer :: reflectance_k(:) => null() ! Reflectance Jacobians
+  type(rttov_reflectance), pointer :: reflectance_tl(:) => null() ! Input/output surface BRDF perturbations
   type(rttov_profile),     pointer :: profiles(:)      => null() ! Input profiles
   type(rttov_profile),     pointer :: profiles_k(:)    => null() ! Output Jacobians
+  type(rttov_profile),     pointer :: profiles_tl(:)    => null() ! Input atmospheric profile and surface variable perturbations
   type(rttov_transmission)         :: transmission               ! Output transmittances
   type(rttov_transmission)         :: transmission_k             ! Transmittance Jacobians
+  type(rttov_transmission)         :: transmission_tl             ! Output transmittance perturbations
   type(rttov_radiance)             :: radiance                   ! Output radiances
   type(rttov_radiance)             :: radiance_k                 ! Radiance Jacobians
+  type(rttov_radiance)             :: radiance_tl                 ! Output radiance, BT and BRF perturbations
   type(rttov_opt_param)            :: cld_opt_param              ! Input cloud optical parameters
   type(rttov_emis_atlas_data)      :: emis_atlas                 ! Data structure for emissivity atlas
   type(rttov_brdf_atlas_data)      :: brdf_atlas                 ! Data structure for BRDF atlas
@@ -138,6 +149,7 @@ module mod_rttov
   integer(kind=jpim) :: nchanprof
 
   real(kind=jprb)    :: trans_out(10)
+  real(kind=jprb), parameter :: tl_perturbation = -0.01_jprb
 
   ! Loop variables
   integer(kind=jpim) :: j, jch
@@ -189,7 +201,8 @@ contains
     !in general one can simulate a different number of channels for each profile.
 
     nchanprof = nchannels * nprof
-        
+    
+    !! K model
     if(s3com%jac%do_jacobian_calc) then
     
     !!Allocate structures for rttov_k
@@ -220,8 +233,41 @@ contains
        write(*,*) 'allocation error for rttov_k structures'
        call rttov_exit(errorstatus)
     endif
-    
-    else
+   
+   !! TL model
+   else if(s3com%k_tl%do_k_tl_calc) then
+   
+   !!Allocate structures for rttov_tl
+   call rttov_alloc_tl(                  &
+        errorstatus,                     &
+        1_jpim,                          & !1 => allocate
+        nprof,                           &
+        nchanprof,                       &
+        nlevels,                         &
+        chanprof,                        &
+        opts,                            &
+        profiles,                        &
+        profiles_tl,                     &
+        coefs,                           &
+        transmission,                    &
+        transmission_tl,                 &
+        radiance,                        &
+        radiance_tl,                     &
+        calcemis       = calcemis,       &
+        emissivity     = emissivity,     &
+        emissivity_tl  = emissivity_tl,  &
+        calcrefl       = calcrefl,       &
+        reflectance    = reflectance,    &
+        reflectance_tl = reflectance_tl, &
+        init           = .true._jplm)
+   
+   if (errorstatus /= errorstatus_success) then
+      write(*,*) 'allocation error for rttov_tl structures'
+      call rttov_exit(errorstatus)
+   endif
+   
+   !! Direct model
+   else
     
     !!Allocate structures for rttov_direct
     call rttov_alloc_direct(                 &
@@ -391,255 +437,366 @@ contains
     !!Use default cloud top BRDF for simple cloud in VIS/NIR channels
     reflectance(:)%refl_cloud_top = 0._jprb
 
-    !!--------------------------------------------------------------------------------------------------------------------!!
-    !! 7. Call RTTOV direct or K model                                                                                    !!
-    !!--------------------------------------------------------------------------------------------------------------------!!
-
-    if(s3com%jac%do_jacobian_calc) then
-
-       ! The input/output K variables must be initialised to zero before every call to rttov_k:
-
-       ! Initialise RTTOV Jacobian structures to zero
-       call rttov_init_prof(profiles_k(:))
-       call rttov_init_rad(radiance_k)
-       call rttov_init_transmission(transmission_k)
-       call rttov_init_emis_refl(emissivity_k, reflectance_k)
-
-       ! Set input perturbation in radiance_k:
-       ! If switchrad is true the perturbation in bt(:) is used for "thermal" channels
-       ! If switchrad is false the perturbation in total(:) is used
-       ! For solar-only channels the perturbation in total(:) is *always* used
-       ! It is harmless to specify inputs in both bt/total in any case: RTTOV will use the appropriate input for each channel
-
-       radiance_k%total(:) = 1._jprb
-       radiance_k%bt(:) = 1._jprb
-
-       !! Call the Jacobian model
-       if (nthreads <= 1) then
-          call rttov_k(                       &
-               errorstatus,                   & ! out   error flag
-               chanprof,                      & ! in    channel and profile index structure
-               opts,                          & ! in    options structure
-               profiles,                      & ! in    profile array
-               profiles_k,                    & ! inout Jacobian array
-               coefs,                         & ! in    coefficients structure
-               transmission,                  & ! inout computed transmittances
-               transmission_k,                & ! inout transmittance Jacobians
-               radiance,                      & ! inout computed radiances
-               radiance_k,                    & ! inout input radiance/BT perturbation
-               calcemis      = calcemis,      & ! in    flag for internal emissivity calcs
-               emissivity    = emissivity,    & ! inout input/output emissivities per channel
-               emissivity_k  = emissivity_k,  & ! inout emissivity Jacobians
-               calcrefl      = calcrefl,      & ! in    flag for internal BRDF calcs
-               reflectance   = reflectance,   & ! inout input/output BRDFs per channel
-               reflectance_k = reflectance_k)   ! inout BRDF Jacobians
-       else
-          call rttov_parallel_k(              &
-               errorstatus,                   & ! out   error flag
-               chanprof,                      & ! in    channel and profile index structure
-               opts,                          & ! in     options structure
-               profiles,                      & ! in    profile array
-               profiles_k,                    & ! inout Jacobian array
-               coefs,                         & ! in    coefficients structure
-               transmission,                  & ! inout computed transmittances
-               transmission_k,                & ! inout transmittance Jacobians
-               radiance,                      & ! inout computed radiances
-               radiance_k,                    & ! inout input radiance/BT perturbation
-               calcemis      = calcemis,      & ! in    flag for internal emissivity calcs
-               emissivity    = emissivity,    & ! inout input/output emissivities per channel
-               emissivity_k  = emissivity_k,  & ! inout emissivity Jacobians
-               calcrefl      = calcrefl,      & ! in    flag for internal BRDF calcs
-               reflectance   = reflectance,   & ! inout input/output BRDFs per channel
-               reflectance_k = reflectance_k, & ! inout BRDF Jacobians
-               nthreads      = nthreads)        ! in    number of threads to use
-       endif
-
-       if (errorstatus /= errorstatus_success) then
-          write (*,*) 'rttov_k error'
-          call rttov_exit(errorstatus)
-       endif
-
-    else
-
-       !! Call the direct model
-       if (nthreads <= 1) then
-          call rttov_direct(               &
-               errorstatus,                & ! out   error flag
-               chanprof,                   & ! in    channel and profile index structure
-               opts,                       & ! in    options structure
-               profiles,                   & ! in    profile array
-               coefs,                      & ! in    coefficients structure
-               transmission,               & ! inout computed transmittances
-               radiance,                   & ! inout computed radiances
-               calcemis      = calcemis,   & ! in    flag for internal emissivity calcs
-               emissivity    = emissivity, & ! inout input/output emissivities per channel
-               calcrefl      = calcrefl,   & ! in    flag for internal BRDF calcs
-               reflectance   = reflectance)  ! inout input/output BRDFs per channel
-       else
-          call rttov_parallel_direct(              &
-               errorstatus,                   & ! out   error flag
-               chanprof,                      & ! in    channel and profile index structure
-               opts,                          & ! in    options structure
-               profiles,                      & ! in    profile array
-               coefs,                         & ! in    coefficients structure
-               transmission,                  & ! inout computed transmittances
-               radiance,                      & ! inout computed radiances
-               calcemis      = calcemis,      & ! in    flag for internal emissivity calcs
-               emissivity    = emissivity,    & ! inout input/output emissivities per channel
-               calcrefl      = calcrefl,      & ! in    flag for internal BRDF calcs
-               reflectance   = reflectance,   & ! inout input/output BRDFs per channel
-               nthreads      = nthreads)        ! in    number of threads to use
-       endif
-
-       if (errorstatus /= errorstatus_success) then
-          write (*,*) 'rttov_direct error'
-          call rttov_exit(errorstatus)
-       endif
-
-    endif
-
-    !!Output the results
-
-    if(s3com%jac%do_jacobian_calc) then
-
-       do iprof = 1, nprof
-
-          idx_prof = list_points(iprof)
-          joff = (iprof-1_jpim) * nchannels
-          ichan = 1
-
-          do j = 1+joff, nchannels+joff
-
-             s3com%rad%f_ref_total(idx_prof,ichan) = radiance%refl(j)
-             s3com%rad%f_ref_clear(idx_prof,ichan) = radiance%refl_clear(j)
-             s3com%rad%f_bt_total(idx_prof,ichan)  = radiance%bt(j)
-             s3com%rad%f_bt_clear(idx_prof,ichan)  = radiance%bt_clear(j)
-             s3com%rad%f_rad_total(idx_prof,ichan) = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-             s3com%rad%f_rad_clear(idx_prof,ichan) = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-
-             do ilev = 1, profiles_k(ichan)%nlevels
-
-                s3com%jac%p(idx_prof,ilev,ichan) = profiles_k(ichan)%p(ilev)
-                s3com%jac%t(idx_prof,ilev,ichan) = profiles_k(ichan)%t(ilev)
-
-             enddo
-
-             do ilay = 1, profiles_k(ichan)%nlevels-1
-
-                s3com%jac%cfrac(idx_prof,ilay,ichan) = profiles_k(ichan)%cfrac(ilay)
-                s3com%jac%clwde(idx_prof,ilay,ichan) = profiles_k(ichan)%clwde(ilay)
-
-             enddo
-
-             ichan = ichan + 1
-
-          enddo
-
-       enddo
-
-    else
-
-       do iprof = 1, nprof
-
-          idx_prof = list_points(iprof)
-          joff = (iprof-1_jpim) * nchannels
-          ichan = 1
-
-          do j = 1+joff, nchannels+joff
-
-             s3com%rad%f_ref_total(idx_prof,ichan) = radiance%refl(j)
-             s3com%rad%f_ref_clear(idx_prof,ichan) = radiance%refl_clear(j)
-             s3com%rad%f_bt_total(idx_prof,ichan)  = radiance%bt(j)
-             s3com%rad%f_bt_clear(idx_prof,ichan)  = radiance%bt_clear(j)
-             s3com%rad%f_rad_total(idx_prof,ichan) = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-             s3com%rad%f_rad_clear(idx_prof,ichan) = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-
-             ! s3com%brdf(idx_prof,ichan)         = reflectance(j)%refl_out
-             ! s3com%emissivity(idx_prof,ichan)   = emissivity(j)%emis_out
-
-             ichan = ichan + 1
-
-          enddo
-
-       enddo
-
-    endif
-
-    !!--------------------------------------------------------------------------------------------------------------------!!
-    !! 8. Deallocate all RTTOV arrays and structures                                                                      !!
-    !!--------------------------------------------------------------------------------------------------------------------!!
+   !!--------------------------------------------------------------------------------------------------------------------------!!
+   !! 7. Call RTTOV K, TL or direct model                                                                                      !!
+   !!--------------------------------------------------------------------------------------------------------------------------!!
+   
+   !! K model
+   if(s3com%jac%do_jacobian_calc) then
+      
+      ! Initialise RTTOV Jacobian structures to zero
+      call rttov_init_prof(profiles_k(:))
+      call rttov_init_rad(radiance_k)
+      call rttov_init_transmission(transmission_k)
+      call rttov_init_emis_refl(emissivity_k, reflectance_k)
+      
+      ! Set input perturbation in radiance_k:
+      radiance_k%total(:) = 1._jprb
+      radiance_k%bt(:) = 1._jprb
+      
+      !! Call the Jacobian model
+      if (nthreads <= 1) then
+         call rttov_k(                       &
+              errorstatus,                   & ! out   error flag
+              chanprof,                      & ! in    channel and profile index structure
+              opts,                          & ! in    options structure
+              profiles,                      & ! in    profile array
+              profiles_k,                    & ! inout Jacobian array
+              coefs,                         & ! in    coefficients structure
+              transmission,                  & ! inout computed transmittances
+              transmission_k,                & ! inout transmittance Jacobians
+              radiance,                      & ! inout computed radiances
+              radiance_k,                    & ! inout input radiance/BT perturbation
+              calcemis      = calcemis,      & ! in    flag for internal emissivity calcs
+              emissivity    = emissivity,    & ! inout input/output emissivities per channel
+              emissivity_k  = emissivity_k,  & ! inout emissivity Jacobians
+              calcrefl      = calcrefl,      & ! in    flag for internal BRDF calcs
+              reflectance   = reflectance,   & ! inout input/output BRDFs per channel
+              reflectance_k = reflectance_k)   ! inout BRDF Jacobians
+      else
+         call rttov_parallel_k(              &
+              errorstatus,                   & ! out   error flag
+              chanprof,                      & ! in    channel and profile index structure
+              opts,                          & ! in     options structure
+              profiles,                      & ! in    profile array
+              profiles_k,                    & ! inout Jacobian array
+              coefs,                         & ! in    coefficients structure
+              transmission,                  & ! inout computed transmittances
+              transmission_k,                & ! inout transmittance Jacobians
+              radiance,                      & ! inout computed radiances
+              radiance_k,                    & ! inout input radiance/BT perturbation
+              calcemis      = calcemis,      & ! in    flag for internal emissivity calcs
+              emissivity    = emissivity,    & ! inout input/output emissivities per channel
+              emissivity_k  = emissivity_k,  & ! inout emissivity Jacobians
+              calcrefl      = calcrefl,      & ! in    flag for internal BRDF calcs
+              reflectance   = reflectance,   & ! inout input/output BRDFs per channel
+              reflectance_k = reflectance_k, & ! inout BRDF Jacobians
+              nthreads      = nthreads)        ! in    number of threads to use
+      endif
+      
+      if (errorstatus /= errorstatus_success) then
+         write (*,*) 'rttov_k error'
+         call rttov_exit(errorstatus)
+      endif
+      
+      do iprof = 1, nprof
+         
+         idx_prof = list_points(iprof)
+         joff = (iprof-1_jpim) * nchannels
+         ichan = 1
+         
+         do j = 1+joff, nchannels+joff
+            
+            ! Radiances, BTs and BRFs
+            s3com%rad%f_rad_total(idx_prof,ichan) = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            s3com%rad%f_rad_clear(idx_prof,ichan) = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            s3com%rad%f_bt_total(idx_prof,ichan)  = radiance%bt(j)
+            s3com%rad%f_bt_clear(idx_prof,ichan)  = radiance%bt_clear(j)
+            s3com%rad%f_ref_total(idx_prof,ichan) = radiance%refl(j)
+            s3com%rad%f_ref_clear(idx_prof,ichan) = radiance%refl_clear(j)
+            
+            ! Jacobian profiles
+            do ilev = 1, profiles_k(ichan)%nlevels
+               
+               !s3com%jac%p(idx_prof,ilev,ichan) = profiles_k(ichan)%p(ilev)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
+               s3com%jac%t(idx_prof,ilev,ichan) = profiles_k(ichan)%t(ilev)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
+               !write(6,*) s3com%jac%t(idx_prof,ilev,ichan)
+            enddo
+            
+            !do ilay = 1, profiles_k(ichan)%nlevels-1
+               
+               !s3com%jac%cfrac(idx_prof,ilay,ichan) = profiles_k(ichan)%cfrac(ilay)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
+               !s3com%jac%clwde(idx_prof,ilay,ichan) = profiles_k(ichan)%clwde(ilay)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
+               
+            !enddo
+            
+            ichan = ichan + 1
+            
+         enddo
+         
+      enddo
+      
+   !! TL model --> Jacobian profile calculations only
+   else if (s3com%k_tl%do_k_tl_calc) then
+      
+      call rttov_init_prof(profiles_tl(:))
+      call rttov_init_rad(radiance_tl)
+      call rttov_init_transmission(transmission_tl)
+      call rttov_init_emis_refl(emissivity_tl, reflectance_tl)
+      
+      do iprof = 1, nprof
+         
+         idx_prof = list_points(iprof)
+         joff = (iprof-1_jpim) * nchannels
+         ichan = 1
+         
+         do j = 1+joff, nchannels+joff
+            
+            s3com%rad%f_rad_total(idx_prof,ichan) = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            s3com%rad%f_rad_clear(idx_prof,ichan) = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            s3com%rad%f_bt_total(idx_prof,ichan)  = radiance%bt(j)
+            s3com%rad%f_bt_clear(idx_prof,ichan)  = radiance%bt_clear(j)
+            s3com%rad%f_ref_total(idx_prof,ichan) = radiance%refl(j)
+            s3com%rad%f_ref_clear(idx_prof,ichan) = radiance%refl_clear(j)
+            
+            do ilev = 1, nlevels
+               
+               profiles_tl(iprof)%t(ilev) = tl_perturbation * profiles(iprof)%t(ilev)
+               
+               !! Call the tangent linear model
+               if (nthreads <= 1) then
+                  call rttov_tl(                        &
+                       errorstatus,                     &
+                       chanprof,                        &
+                       opts,                            &
+                       profiles,                        &
+                       profiles_tl,                     &
+                       coefs,                           &
+                       transmission,                    &
+                       transmission_tl,                 &
+                       radiance,                        &
+                       radiance_tl,                     &
+                       calcemis       = calcemis,       &
+                       emissivity     = emissivity,     &
+                       emissivity_tl  = emissivity_tl,  &
+                       calcrefl       = calcrefl,       &
+                       reflectance    = reflectance,    &
+                       reflectance_tl = reflectance_tl)
+               else
+                  call rttov_parallel_tl(               &
+                       errorstatus,                     &
+                       chanprof,                        &
+                       opts,                            &
+                       profiles,                        &
+                       profiles_tl,                     &
+                       coefs,                           &
+                       transmission,                    &
+                       transmission_tl,                 &
+                       radiance,                        &
+                       radiance_tl,                     &
+                       calcemis       = calcemis,       &
+                       emissivity     = emissivity,     &
+                       emissivity_tl  = emissivity_tl,  &
+                       calcrefl       = calcrefl,       &
+                       reflectance    = reflectance,    &
+                       reflectance_tl = reflectance_tl, &
+                       nthreads       = nthreads)
+               endif
+               
+               if (errorstatus /= errorstatus_success) then
+                  write (*,*) 'rttov_tl error'
+                  call rttov_exit(errorstatus)
+               endif
+               
+               s3com%k_tl%t(idx_prof,ilev,ichan) = (radiance_tl%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7) / &
+                                                   (profiles_tl(iprof)%t(ilev))
+               write(6,*) s3com%k_tl%t(idx_prof,ilev,ichan)
+               
+               profiles_tl(iprof)%t(ilev) = 0._jprb
+               
+            enddo
+            
+            ichan = ichan + 1
+            
+         enddo
+         
+      enddo
+      
+   !! Direct model
+   else
+      
+      !! Call the direct model
+      if (nthreads <= 1) then
+         call rttov_direct(              &
+              errorstatus,               & ! out   error flag
+              chanprof,                  & ! in    channel and profile index structure
+              opts,                      & ! in    options structure
+              profiles,                  & ! in    profile array
+              coefs,                     & ! in    coefficients structure
+              transmission,              & ! inout computed transmittances
+              radiance,                  & ! inout computed radiances
+              calcemis    = calcemis,    & ! in    flag for internal emissivity calcs
+              emissivity  = emissivity,  & ! inout input/output emissivities per channel
+              calcrefl    = calcrefl,    & ! in    flag for internal BRDF calcs
+              reflectance = reflectance)  ! inout input/output BRDFs per channel
+      else
+         call rttov_parallel_direct(     &
+              errorstatus,               & ! out   error flag
+              chanprof,                  & ! in    channel and profile index structure
+              opts,                      & ! in    options structure
+              profiles,                  & ! in    profile array
+              coefs,                     & ! in    coefficients structure
+              transmission,              & ! inout computed transmittances
+              radiance,                  & ! inout computed radiances
+              calcemis    = calcemis,    & ! in    flag for internal emissivity calcs
+              emissivity  = emissivity,  & ! inout input/output emissivities per channel
+              calcrefl    = calcrefl,    & ! in    flag for internal BRDF calcs
+              reflectance = reflectance, & ! inout input/output BRDFs per channel
+              nthreads    = nthreads)      ! in    number of threads to use
+      endif
+      
+      if (errorstatus /= errorstatus_success) then
+         write (*,*) 'rttov_direct error'
+         call rttov_exit(errorstatus)
+      endif
+      
+      do iprof = 1, nprof
+         
+         idx_prof = list_points(iprof)
+         joff = (iprof-1_jpim) * nchannels
+         ichan = 1
+         
+         do j = 1+joff, nchannels+joff
+            
+            ! Radiances, BTs and BRFs
+            s3com%rad%f_rad_total(idx_prof,ichan) = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            s3com%rad%f_rad_clear(idx_prof,ichan) = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            s3com%rad%f_bt_total(idx_prof,ichan)  = radiance%bt(j)
+            s3com%rad%f_bt_clear(idx_prof,ichan)  = radiance%bt_clear(j)
+            s3com%rad%f_ref_total(idx_prof,ichan) = radiance%refl(j)
+            s3com%rad%f_ref_clear(idx_prof,ichan) = radiance%refl_clear(j)
+            
+            !s3com%brdf(idx_prof,ichan)         = reflectance(j)%refl_out
+            !s3com%emissivity(idx_prof,ichan)   = emissivity(j)%emis_out
+            
+            ichan = ichan + 1
+            
+         enddo
+         
+      enddo
+      
+   endif
+   
+   !!--------------------------------------------------------------------------------------------------------------------------!!
+   !! 8. Deallocate all RTTOV arrays and structures                                                                            !!
+   !!--------------------------------------------------------------------------------------------------------------------------!!
+   
+   ! K model
+   if(s3com%jac%do_jacobian_calc) then
+      
+      !!Deallocate structures for rttov_k
+      call rttov_alloc_k(                &
+           errorstatus,                  &
+           0_jpim,                       & !0 => deallocate
+           nprof,                        &
+           nchanprof,                    &
+           nlevels,                      &
+           chanprof,                     &
+           opts,                         &
+           profiles,                     &
+           profiles_k,                   &
+           coefs,                        &
+           transmission,                 &
+           transmission_k,               &
+           radiance,                     &
+           radiance_k,                   &
+           calcemis      = calcemis,     &
+           emissivity    = emissivity,   &
+           emissivity_k  = emissivity_k, &
+           calcrefl      = calcrefl,     &
+           reflectance   = reflectance,  &
+           reflectance_k = reflectance_k)
+      
+      if (errorstatus /= errorstatus_success) then
+         write(*,*) 'deallocation error for rttov_k structures'
+         call rttov_exit(errorstatus)
+      endif
+      
+   !! TL model
+   else if (s3com%k_tl%do_k_tl_calc) then
+   
+      !! Deallocate structures for rttov_tl
+      call rttov_alloc_tl(                 &
+           errorstatus,                    &
+           0_jpim,                         & !0 => deallocate
+           nprof,                          &
+           nchanprof,                      &
+           nlevels,                        &
+           chanprof,                       &
+           opts,                           &
+           profiles,                       &
+           profiles_tl,                    &
+           coefs,                          &
+           transmission,                   &
+           transmission_tl,                &
+           radiance,                       &
+           radiance_tl,                    &
+           calcemis       = calcemis,      &
+           emissivity     = emissivity,    &
+           emissivity_tl  = emissivity_tl, &
+           calcrefl       = calcrefl,      &
+           reflectance    = reflectance,   &
+          reflectance_tl = reflectance_tl)
+      
+      if (errorstatus /= errorstatus_success) then
+         write(*,*) 'deallocation error for rttov_tl structures'
+         call rttov_exit(errorstatus)
+      endif
+   
+   !! Direct
+   else
+   
+      !!Deallocate structures for rttov_direct
+      call rttov_alloc_direct(         &
+           errorstatus,                &
+           0_jpim,                     & !0 => deallocate
+           nprof,                      &
+           nchanprof,                  &
+           nlevels,                    &
+           chanprof,                   &
+           opts,                       &
+           profiles,                   &
+           coefs,                      &
+           transmission,               &
+           radiance,                   &
+           calcemis      = calcemis,   &
+           emissivity    = emissivity, &
+           calcrefl      = calcrefl,   &
+           reflectance   = reflectance)
+      
+      if (errorstatus /= errorstatus_success) then
+         write(*,*) 'deallocation error for rttov_direct structures'
+         call rttov_exit(errorstatus)
+      endif
+      
+   endif
     
-    if(s3com%jac%do_jacobian_calc) then
-    
-    !!Deallocate structures for rttov_k
-    call rttov_alloc_k(                &
-         errorstatus,                  &
-         0_jpim,                       & !0 => deallocate
-         nprof,                        &
-         nchanprof,                    &
-         nlevels,                      &
-         chanprof,                     &
-         opts,                         &
-         profiles,                     &
-         profiles_k,                   &
-         coefs,                        &
-         transmission,                 &
-         transmission_k,               &
-         radiance,                     &
-         radiance_k,                   &
-         calcemis      = calcemis,     &
-         emissivity    = emissivity,   &
-         emissivity_k  = emissivity_k, &
-         calcrefl      = calcrefl,     &
-         reflectance   = reflectance,  &
-         reflectance_k = reflectance_k)
-
-    if (errorstatus /= errorstatus_success) then
-       write(*,*) 'deallocation error for rttov_k structures'
-       call rttov_exit(errorstatus)
-    endif
-    
-    else
-    
-    !!Deallocate structures for rttov_direct
-    call rttov_alloc_direct(         &
-         errorstatus,                &
-         0_jpim,                     & !0 => deallocate
-         nprof,                      &
-         nchanprof,                  &
-         nlevels,                    &
-         chanprof,                   &
-         opts,                       &
-         profiles,                   &
-         coefs,                      &
-         transmission,               &
-         radiance,                   &
-         calcemis      = calcemis,   &
-         emissivity    = emissivity, &
-         calcrefl      = calcrefl,   &
-         reflectance   = reflectance)
-
-    if (errorstatus /= errorstatus_success) then
-       write(*,*) 'deallocation error for rttov_direct structures'
-       call rttov_exit(errorstatus)
-    endif
-    
-    endif
-    
-    if (dealloc) then
-       call rttov_dealloc_coefs(errorstatus, coefs)
-
-       if (errorstatus /= errorstatus_success) then
-          write(*,*) 'coefs deallocation error'
-       endif
-
-       call rttov_deallocate_emis_atlas(emis_atlas) !Deallocate emissivity atlas
-
-       if (opts%rt_ir%addsolar) then
-          call rttov_deallocate_brdf_atlas(brdf_atlas) !Deallocate BRDF atlas
-       endif
-    endif
-
-  end subroutine run_rttov
+   if (dealloc) then
+      
+      call rttov_dealloc_coefs(errorstatus, coefs)
+      
+      if (errorstatus /= errorstatus_success) then
+         write(*,*) 'coefs deallocation error'
+      endif
+      
+      call rttov_deallocate_emis_atlas(emis_atlas) !Deallocate emissivity atlas
+      
+      if (opts%rt_ir%addsolar) then
+         call rttov_deallocate_brdf_atlas(brdf_atlas) !Deallocate BRDF atlas
+      endif
+      
+   endif
+   
+   end subroutine run_rttov
 
 end module mod_rttov
