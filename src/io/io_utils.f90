@@ -30,15 +30,78 @@
 
 module mod_io_utils
 
+  use netcdf
   use mod_utils_fort, only: s3com_error
   use s3com_types,    only: wp
 
   implicit none
 
   private
-  public :: map_point_to_ll, map_ll_to_point
+  public :: map_point_to_ll, map_ll_to_point, extract_coordinates
 
 contains
+
+  subroutine extract_coordinates(fname, nlayers, npoints)
+
+    ! Parameters
+    integer, parameter :: nmax_dim = 5
+
+    ! Inputs
+    character(len=*), intent(in) :: fname
+
+    ! Inputs/Outputs
+    integer, intent(inout) :: nlayers, npoints
+
+    ! Local variables
+    character(len=256) :: errmsg, dimname(nmax_dim)
+    integer :: dimsize(NMAX_DIM)
+    integer :: ncid, ndims, idim, nvars, recdim, ngatts
+    integer :: nlat, nlon, ierr
+
+    ! Initialize error flag
+    ierr = 0
+
+    ! Check the opening of the NetCDF file
+    ierr = nf90_open(fname, nf90_nowrite, ncid)
+    if (ierr /= nf90_noerr) then
+       errmsg = "Couldn't open " // trim(fname) // " - Error code: " // trim(nf90_strerror(ierr))
+       return
+    endif
+
+    ! Check the dimensions (track or lat-lon)
+    ierr = nf90_inquire(ncid, ndims, nvars, ngatts, recdim)
+    if (ierr /= nf90_noerr) then
+       errmsg = "Error in nf90_inquire - Error code: " // trim(nf90_strerror(ierr))
+       return
+    endif
+
+    ! Get dimension sizes
+    do idim = 1, ndims
+       ierr = nf90_inquire_dimension(ncid, idim, dimname(idim), dimsize(idim))
+       if (ierr /= nf90_noerr) then
+          errmsg = "Error in nf90_inquire_dimension - Dimension: " // trim(dimname(idim)) // " - Error code: " // trim(nf90_strerror(ierr))
+          return
+       endif
+       if (trim(dimname(idim)) == "lon") then
+          nlon = dimsize(idim)
+       elseif (trim(dimname(idim)) == "height") then
+          nlayers = dimsize(idim)
+       elseif (trim(dimname(idim)) == "lat") then
+          nlat = dimsize(idim)
+       elseif (trim(dimname(idim)) == "point") then
+          npoints = dimsize(idim)
+       endif
+    end do
+
+    ! Compute number of points if not specified
+    if (npoints == 0) then
+       npoints = nlat * nlon
+    endif
+
+  end subroutine extract_coordinates
+
+
+
 
   !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   ! SUBROUTINE map_point_to_ll

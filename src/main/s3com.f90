@@ -135,10 +135,6 @@ program s3com_main
   ! Write output file
   call write_output(s3com, model, nml)
 
-  ! write(*,*)
-  ! write(*,*) s3com%rad%wavelength(1), s3com%rad%wavelength(5)
-  ! write(*,*) abs(0.741737 - s3com%rad%f_ref_total(1,1)), abs(0.2682695 - s3com%rad%f_ref_total(1,5))
-
   ! Deallocate arrays
   call models_deinit(model)
 

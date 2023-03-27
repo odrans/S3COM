@@ -30,7 +30,7 @@
 module mod_nwpsaf
 
   use s3com_types,         only: wp, type_nwpsaf
-  use mod_io_icon,         only: extract_coordinates
+  use mod_io_utils,         only: extract_coordinates
   use mod_io_nwpsaf,       only: nwpsaf_read
 
   use s3com_config,        only: rd, rv, epsilon, mu, nu, a, b, Q_ext, rholiq

@@ -221,7 +221,7 @@ $(obj)/io_namelist.o : $(DIR_IO)/io_namelist.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 
 $(obj)/io_utils.o : $(DIR_IO)/io_utils.f90
-	$(F90) $(F90FLAGS) -c $< -o $@
+	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 ## Objects for subroutines in ./src/rttov
