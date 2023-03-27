@@ -41,67 +41,82 @@ module mod_io_utils
 
 contains
 
-  subroutine extract_coordinates(fname, nlayers, npoints)
+subroutine extract_coordinates(fname, nlayers, npoints)
 
-    ! Parameters
-    integer, parameter :: nmax_dim = 5
+    !!Parameters
+    character(LEN=64), parameter :: routine_name = 'extract_coordinates'
+    integer, parameter :: NMAX_DIM = 5
 
-    ! Inputs
-    character(len=*), intent(in) :: fname
+    !!Inputs
+    character(LEN=256), intent(in) :: fname
 
-    ! Inputs/Outputs
-    integer, intent(inout) :: nlayers, npoints
+    !!Inputs/Outputs
+    integer(kind = 4), intent(inout) :: nlayers, npoints
 
-    ! Local variables
-    character(len=256) :: errmsg, dimname(nmax_dim)
-    integer :: dimsize(NMAX_DIM)
-    integer :: ncid, ndims, idim, nvars, recdim, ngatts
-    integer :: nlat, nlon, ierr
+    !!Local variables
+    character(LEN=256) :: errmsg, straux
+    character(LEN=256) :: dimname(NMAX_DIM)
 
-    ! Initialize error flag
-    ierr = 0
+    integer(KinD=4)                    :: idim, dimsize(NMAX_DIM)
+    integer(KinD=4)                    :: ncid, ndims, nvars, ngatts, recdim, errst
+    integer(KinD=4)                    :: nlat, nlon
 
-    ! Check the opening of the NetCDF file
-    ierr = nf90_open(fname, nf90_nowrite, ncid)
-    if (ierr /= nf90_noerr) then
-       errmsg = "Couldn't open " // trim(fname) // " - Error code: " // trim(nf90_strerror(ierr))
-       return
+    !!========================================================================================================================!!
+    !! Checking the opening of the ICON input NetCDF file                                                                     !!
+    !!========================================================================================================================!!
+
+    errst = nf90_open(fname, nf90_nowrite, ncid)
+    if (errst/=0)  then
+       errmsg = "Couldn't open "//trim(fname)
+       call s3com_error(routine_name,errmsg)
     endif
 
-    ! Check the dimensions (track or lat-lon)
-    ierr = nf90_inquire(ncid, ndims, nvars, ngatts, recdim)
-    if (ierr /= nf90_noerr) then
-       errmsg = "Error in nf90_inquire - Error code: " // trim(nf90_strerror(ierr))
-       return
+    !!========================================================================================================================!!
+
+    !!========================================================================================================================!!
+    !! Checking the dimensions (track or lat-lon)                                                                             !!
+    !!========================================================================================================================!!
+
+    errst = nf90_inquire(ncid, ndims, nvars, ngatts, recdim)
+    if (errst /= 0) then
+       errmsg = "Error in nf90_inquire"
+       call s3com_error(routine_name, errmsg, errcode=errst)
     endif
 
-    ! Get dimension sizes
-    do idim = 1, ndims
-       ierr = nf90_inquire_dimension(ncid, idim, dimname(idim), dimsize(idim))
-       if (ierr /= nf90_noerr) then
-          errmsg = "Error in nf90_inquire_dimension - Dimension: " // trim(dimname(idim)) // " - Error code: " // trim(nf90_strerror(ierr))
-          return
+    npoints = 0
+
+    do idim = 1,ndims
+       errst = nf90_Inquire_Dimension(ncid, idim, NAME=dimname(idim), LEN=dimsize(idim))
+       if (errst /= 0) then
+          write(straux, *) idim
+          errmsg = "Error in nf90_Inquire_Dimension, idim: "//trim(straux)
+          call s3com_error(routine_name, errmsg)
        endif
-       if (trim(dimname(idim)) == "lon") then
+
+       if (trim(dimname(idim)) .eq. 'lon') then
           nlon = dimsize(idim)
-       elseif (trim(dimname(idim)) == "height") then
+       endif
+
+       if (trim(dimname(idim)) .eq. 'height') then
           nlayers = dimsize(idim)
-       elseif (trim(dimname(idim)) == "lat") then
+       endif
+
+       if (trim(dimname(idim)) .eq. 'lat') then
           nlat = dimsize(idim)
-       elseif (trim(dimname(idim)) == "point") then
+       endif
+
+       if (trim(dimname(idim)) .eq. 'point') then
           npoints = dimsize(idim)
        endif
-    end do
 
-    ! Compute number of points if not specified
-    if (npoints == 0) then
-       npoints = nlat * nlon
-    endif
+    enddo
+
+    !!========================================================================================================================!!
+
+    if(npoints .eq. 0) npoints = nlon * nlat
+
 
   end subroutine extract_coordinates
-
-
-
 
   !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   ! SUBROUTINE map_point_to_ll
