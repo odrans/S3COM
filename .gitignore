@@ -32,5 +32,6 @@
 *.app
 s3com
 
-# Temporary files
+# Temporary & save files
 *~
+*#*
