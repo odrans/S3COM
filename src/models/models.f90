@@ -124,7 +124,7 @@ contains
     !! 2D fields
     allocate(model%lat(npoints), source = 0._wp)
     allocate(model%lon, model%lat_orig, model%lon_orig, &
-         model%topography, model%u_10m, model%v_10m, &
+         model%topography, model%u_10m, model%v_10m, model%cod, &
          model%ts, model%ps, model%q_2m, model%t_2m, &
          model%landmask, model%sunzenangle, model%sunazangle, &
          mold = model%lat)
@@ -138,7 +138,7 @@ contains
     !! 3D fields in atmospheric layers
     allocate(model%z(npoints, nlayers), source = 0._wp)
     allocate(model%dz, model%clc, model%reff, model%cdnc, &
-         model%iwc, model%lwc, &
+         model%iwc, model%lwc, model%beta_ext, &
          mold = model%z)
 
   end subroutine models_init
@@ -150,13 +150,13 @@ contains
 
     deallocate(model%lat, model%lon, model%lat_orig, model%lon_orig, &
          model%height, model%height_2, &
-         model%topography, model%u_10m, model%v_10m, &
+         model%topography, model%u_10m, model%v_10m, model%cod, &
          model%ts, model%ps, model%q_2m, model%t_2m, &
          model%landmask, model%sunzenangle, model%sunazangle, &
          model%p, model%t, model%q, model%co2, model%ch4, &
          model%n2o, model%s2o, model%co, &
          model%z, model%dz, model%clc, model%reff, model%cdnc, &
-         model%iwc, model%lwc)
+         model%iwc, model%lwc, model%beta_ext)
 
   end subroutine models_deinit
 
@@ -207,17 +207,19 @@ contains
     model%q_2m       = icon%q_2m
     model%t_2m       = icon%t_2m
     model%landmask   = icon%landmask
+    model%cod        = icon%cod
 
-    model%p          = icon%p_ifc
-    model%z          = icon%z_ifc
-    model%dz         = icon%dz
-    model%t          = icon%t_ifc
-    model%q          = icon%q_ifc
-    model%clc        = icon%clc
-    model%iwc        = icon%iwc
-    model%lwc        = icon%lwc
-    model%reff       = icon%reff
-    model%cdnc       = icon%cdnc
+    model%p        = icon%p_ifc
+    model%t        = icon%t_ifc
+    model%q        = icon%q_ifc
+    model%z        = icon%z !icon%z_ifc
+    model%dz       = icon%dz
+    model%clc      = icon%clc
+    model%iwc      = icon%iwc
+    model%lwc      = icon%lwc
+    model%reff     = icon%reff
+    model%cdnc     = icon%cdnc
+    model%beta_ext = icon%beta_ext
 
   end subroutine models_setup_icon
 

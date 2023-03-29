@@ -610,7 +610,7 @@ contains
                
                s3com%k_tl%t(idx_prof,ilev,ichan) = (radiance_tl%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7) / &
                                                    (profiles_tl(iprof)%t(ilev))
-               write(6,*) s3com%k_tl%t(idx_prof,ilev,ichan)
+               !write(6,*) s3com%k_tl%t(idx_prof,ilev,ichan)
                
                profiles_tl(iprof)%t(ilev) = 0._jprb
                

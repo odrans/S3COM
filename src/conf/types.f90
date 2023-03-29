@@ -149,18 +149,19 @@ module s3com_types
      integer(kind=4), dimension(:), allocatable :: &
           height, height_2 ! height index
      real(wp), dimension(:), allocatable :: &
-          lon_orig,                           & !Longitude that won't be regridded (degrees east)
-          lat_orig,                           & !Latitude  that won't be regridded (degress north)
-          lon,                                & !Longitude (degrees east)
-          lat,                                & !Latitude (degress north)
-          topography,                         & !Surface height
-          landmask,                           & !Land/sea mask (0/1)
-          ps,                                 & !Surface pressure (Pa)
-          ts,                                 & !Skin temperature (K)
-          t_2m,                                & !2m temperature (K)
-          q_2m,                                & !2m specific water vapor content (kg/kg)
-          u_10m,                              & !U-component of wind (m/s)
-          v_10m                                !V-component of wind (m/s)
+          lon_orig,                         & !Longitude that won't be regridded (degrees east)
+          lat_orig,                         & !Latitude  that won't be regridded (degress north)
+          lon,                              & !Longitude (degrees east)
+          lat,                              & !Latitude (degress north)
+          topography,                       & !Surface height
+          landmask,                         & !Land/sea mask (0/1)
+          ps,                               & !Surface pressure (Pa)
+          ts,                               & !Skin temperature (K)
+          t_2m,                             & !2m temperature (K)
+          q_2m,                             & !2m specific water vapor content (kg/kg)
+          u_10m,                            & !U-component of wind (m/s)
+          v_10m,                            & !V-component of wind (m/s)
+          cod
      real(wp), dimension(:,:), allocatable :: &
           p,                                    & !Layer pressure (Pa)
           p_ifc,                                & !Pressure at half-level center (Pa)
@@ -179,10 +180,13 @@ module s3com_types
           dz,                                   & !Layer thickness (m)
           rho,                                  & !Air density used for liquid clouds (kg/m3)
           tv,                                   & !Virtual temperature (K)
+          es_w,                                 & !Saturation vapour pressure of liquid water (Pa)
+          es_i,                                 & !Saturation vapour pressure of ice water (Pa)
           lwc,                                  & !Liquid water content (kg/m3)
           iwc,                                  & !Ice water content (kg/m3)
           cdnc,                                 & !Cloud droplet number concentration (1/m3)
-          Reff                                    !Cloud liquid water effective radius (m)
+          reff,                                 & !Cloud liquid water effective radius (m)
+          beta_ext                                !Cloud droplet extinction coefficient (1/m)
   end type type_icon
 
   !! Type containing variables stored for model outputs
@@ -211,6 +215,7 @@ module s3com_types
           q_2m,                               & !2m specific water vapor content (kg/kg)
           u_10m,                              & !U-component of wind (m/s)
           v_10m,                              & !V-component of wind (m/s)
+          cod,                                & !Cloud optical depth (-)
           sunzenangle,                        & !Solar zenith angle
           sunazangle                            !Solar azimuth angle
      real(wp), dimension(:,:), allocatable :: &
@@ -233,7 +238,8 @@ module s3com_types
           lwc,                                & !Liquid water content (kg/m3)
           iwc,                                & !Ice water content (kg/m3)
           cdnc,                               & !Cloud droplet number concentration (1/m3)
-          Reff                                  !Cloud liquid water effective radius (m)
+          reff,                               & !Cloud liquid water effective radius (m)
+          beta_ext
   end type type_model
   
   type type_rttov_opt
@@ -308,13 +314,15 @@ module s3com_types
   end type type_s3com_k_tl
     
   type type_s3com_atm
+     real(kind=wp), dimension(:), allocatable :: &
+        cod
      real(kind=wp), dimension(:,:), allocatable :: &
-          t,                                       &
           z,                                       &
-          clc,                                     &
+          dz,                                      &
+          lwc,                                     &
           cdnc,                                    &
           reff,                                    &
-          lwc
+          beta_ext
   end type type_s3com_atm
 
   type type_s3com_opt
