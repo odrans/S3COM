@@ -31,12 +31,12 @@ module mod_io_verbose
 
   use s3com_types, only: type_nml, type_model, type_s3com, type_rttov_opt
   use rttov_types, only: rttov_options
+  use rttov_const, only: version, release
 
   implicit none
 
   character(len=*), parameter :: hyphens = "-------------------------------------------------------------------"
   character(len=*), parameter :: s3com_version = "v0.9.0-beta"
-  character(len=*), parameter :: rttov_version = "v13.2"
 
   private
   public :: verbose_namelist, verbose_model, verbose_rttov
@@ -126,7 +126,7 @@ contains
 
     write(*,*)
     write(*,'(A)') hyphens
-    write(*,'(1X, A)') "Radiative model: RTTOV ("//rttov_version//")"
+    write(*,'(1X, A, I2, A, I1, A)') "Radiative model: RTTOV (", version, ".", release, ")"
     write(*,'(2X, A, 1X, A)') "- Path:", trim(s3com%nml%path_rttov)
     write(*,'(2X, A, 1X, I3)') "- # parallel threads:", rttov_opt%nthreads
     write(*,'(2X, A)') "- Instrument:"

@@ -381,7 +381,12 @@ contains
        profiles(:)%clw_scheme = rttov_opt%clw_scheme !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
        profiles(iprof)%clwde(:) = rttov_atm%reff(idx_prof,:)*2.0 ! Need the diameter
 
+       !! call rttov_print_profile (profiles(iprof))
+
+
     enddo
+
+
 
     !!--------------------------------------------------------------------------------------------------------------------!!
     !! 6. Specify surface emissivity and reflectance                                                                      !!
@@ -535,7 +540,7 @@ contains
          enddo
          
       enddo
-      
+
    !! TL model --> Jacobian profile calculations only
    else if (s3com%k_tl%do_k_tl_calc) then
       
