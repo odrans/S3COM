@@ -32,7 +32,7 @@ module mod_io_icon
   use netcdf
   use s3com_types, only: wp, dp, type_icon
   use mod_utils_fort, only: s3com_error
-  use mod_io_utils, only: map_ll_to_point
+  use mod_io_utils, only: map_ll_to_point, check_netcdf_status
 
   implicit none
 
@@ -102,135 +102,79 @@ contains
 
     npoints = icon%npoints; nlevels = icon%nlevels; nlayers = icon%nlayers
 
-    !!========================================================================================================================!!
-    !! Checking the opening of the ICON input NetCDF file                                                                     !!
-    !!========================================================================================================================!!
-
+    ! Open the NetCDF file
     errst = nf90_open(fname, nf90_nowrite, ncid)
-    if (errst/=0)  then
-       errmsg = "Couldn't open "//trim(fname)
-       call s3com_error(routine_name,errmsg)
-    endif
+    call check_netcdf_status(errst, 'nf90_open')
 
-    !!========================================================================================================================!!
-
-    !!========================================================================================================================!!
-    !! Checking the dimensions (track or lat-lon)                                                                             !!
-    !!========================================================================================================================!!
-
+    ! Get the number of dimensions, variables, global attributes, and the unlimitted dimension ID
     errst = nf90_inquire(ncid, ndims, nvars, ngatts, recdim)
-    if (errst /= 0) then
-       errmsg = "Error in nf90_inquire"
-       call s3com_error(routine_name, errmsg, errcode=errst)
-    endif
+    call check_netcdf_status(errst, 'nf90_inquire')
 
     Llat = .false.; Llon = .false.; Lpoint = .false.
 
+    ! Get the dimension IDs and names
     do idim = 1,ndims
        errst = nf90_Inquire_Dimension(ncid, idim, NAME=dimname(idim), LEN=dimsize(idim))
-       if (errst /= 0) then
-          write(straux, *) idim
-          errmsg = "Error in nf90_Inquire_Dimension, idim: "//trim(straux)
-          call s3com_error(routine_name, errmsg)
-       endif
+        call check_netcdf_status(errst, 'nf90_Inquire_Dimension')
 
-       ! IF ((trim(dimname(idim)) .EQ. 'height') .AND. (nlevels > dimsize(idim))) THEN
-       !    errmsg = 'Number of levels selected is greater than in input file '//trim(fname)
-       !    CALL s3com_error(routine_name, errmsg)
-       ! ENDIF
+        if (trim(dimname(idim)) .eq. 'point') then
+           Lpoint = .true.
+           if (npoints /= dimsize(idim)) then
+              errmsg = 'Number of points selected is greater than in input file '//trim(fname)
+              call s3com_error(routine_name,errmsg)
+           endif
+        endif
 
-       if (trim(dimname(idim)) .eq. 'point') then
-          Lpoint = .true.
-          if (npoints /= dimsize(idim)) then
-             errmsg = 'Number of points selected is greater than in input file '//trim(fname)
-             call s3com_error(routine_name,errmsg)
-          endif
-       endif
+        if (trim(dimname(idim)) .eq. 'lon') then
+           Llon = .true.; icon%nlon = dimsize(idim)
+        endif
 
-       if (trim(dimname(idim)) .eq. 'lon') then
-          Llon = .true.; icon%nlon = dimsize(idim)
-       endif
+        if (trim(dimname(idim)) .eq. 'lat') then
+           Llat = .true.; icon%nlat = dimsize(idim)
+        endif
+     enddo
+     allocate(lon(icon%nlon), lat(icon%nlat))
 
-       if (trim(dimname(idim)) .eq. 'lat') then
-          Llat = .true.; icon%nlat = dimsize(idim)
-       endif
-    enddo
+     ! Extract coordinates
+     ! ---------------------------------------------------------------------------------------------------------------
+     if (Llon .and. Llat) then ! 2D mode
+        if (npoints /= icon%nlon*icon%nlat) then
+           errmsg = 'Number of points selected is different from indicated in input file '//trim(fname)
+           call s3com_error(routine_name,errmsg)
+        endif
+        lon = -1.0E30; lat = -1.0E30
+        icon%mode = 2 ! Don't know yet if (lon,lat) or (lat,lon) at this point
+     else if (Lpoint) then ! 1D mode
+        icon%nlon = npoints
+        icon%nlat = npoints
+        icon%mode = 1
+     else
+        errmsg = trim(fname)//' file contains wrong dimensions'
+        call s3com_error(routine_name,errmsg)
+     endif
 
-    allocate(lon(icon%nlon), lat(icon%nlat))
+     errst = nf90_inq_varid(ncid, 'lon', vid)
+     call check_netcdf_status(errst, 'nf90_inq_varid')
+     errst = nf90_get_var(ncid, vid, lon, start = (/1/), count = (/icon%nlon/))
+     call check_netcdf_status(errst, 'nf90_get_var')
 
-    !!========================================================================================================================!!
+     errst = nf90_inq_varid(ncid, 'lat', vid)
+     call check_netcdf_status(errst, 'nf90_inq_varid')
+     errst = nf90_get_var(ncid, vid, lat, start = (/1/), count = (/icon%nlat/))
+     call check_netcdf_status(errst, 'nf90_get_var')
 
-    !!========================================================================================================================!!
-    !! Extract coordinates                                                                                                    !!
-    !!========================================================================================================================!!
+     errst = nf90_inq_varid(ncid, 'height', vid)
+     call check_netcdf_status(errst, 'nf90_inq_varid')
+     errst = nf90_get_var(ncid, vid, icon%height, start = (/1/), count = (/icon%nlayers/))
+     call check_netcdf_status(errst, 'nf90_get_var')
 
-    if (Llon .and. Llat) then ! 2D mode
-       if (npoints /= icon%nlon*icon%nlat) then
-          errmsg = 'Number of points selected is different from indicated in input file '//trim(fname)
-          call s3com_error(routine_name,errmsg)
-       endif
-       lon = -1.0E30; lat = -1.0E30
-       icon%mode = 2 ! Don't know yet if (lon,lat) or (lat,lon) at this point
-    else if (Lpoint) then ! 1D mode
-       icon%nlon = npoints
-       icon%nlat = npoints
-       icon%mode = 1
-    else
-       errmsg = trim(fname)//' file contains wrong dimensions'
-       call s3com_error(routine_name,errmsg)
-    endif
+     errst = nf90_inq_varid(ncid, 'height_2', vid)
+     call check_netcdf_status(errst, 'nf90_inq_varid')
+     errst = nf90_get_var(ncid, vid, icon%height_2, start = (/1/), count = (/icon%nlevels/))
+     call check_netcdf_status(errst, 'nf90_get_var')
 
-    errst = nf90_inq_varid(ncid, 'lon', vid)
-    if (errst /= 0) then
-       errmsg = "Error in nf90_inq_varid, var: lon"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
-
-    errst = nf90_get_var(ncid, vid, lon, start = (/1/), count = (/icon%nlon/))
-    if (errst /= 0) then
-       errmsg = "Error in nf90_get_var, var: lon"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
-
-    errst = nf90_inq_varid(ncid, 'lat', vid)
-    if (errst /= 0) then
-       errmsg = "Error in nf90_inq_varid, var: lat"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
-
-    errst = nf90_get_var(ncid, vid, lat, start = (/1/), count = (/icon%nlat/))
-    if (errst /= 0) then
-       errmsg = "Error in nf90_get_var, var: lat"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
-
-    errst = nf90_inq_varid(ncid, 'height', vid)
-    if (errst /= 0) then
-       errmsg = "Error in nf90_inq_varid, var: height"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
-    
-    errst = nf90_get_var(ncid, vid, icon%height, start = (/1/), count = (/icon%nlayers/))
-    if (errst /= 0) then
-       errmsg = "Error in nf90_get_var, var: height"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
-
-    errst = nf90_inq_varid(ncid, 'height_2', vid)
-    if (errst /= 0) then
-       errmsg = "Error in nf90_inq_varid, var: height_2"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
-    
-    errst = nf90_get_var(ncid, vid, icon%height_2, start = (/1/), count = (/icon%nlevels/))
-    if (errst /= 0) then
-       errmsg = "Error in nf90_get_var, var: height_2"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
-    
-    icon%lon_orig = lon; icon%lat_orig = lat
-
-    !!========================================================================================================================!!
+     icon%lon_orig = lon; icon%lat_orig = lat
+     ! ---------------------------------------------------------------------------------------------------------------
 
     !!========================================================================================================================!!
     !! Extract all variables                                                                                                  !!
@@ -239,28 +183,22 @@ contains
     do vid = 1, nvars
        vdimid = 0
        errst = nf90_Inquire_Variable(ncid, vid, NAME=vname, ndims=vrank, dimids=vdimid)
-       if (errst /= 0) then
-          write(straux, *) vid
-          errmsg = 'Error in nf90_Inquire_Variable, vid '//trim(straux)
-          call s3com_error(routine_name,errmsg,errcode=errst)
-       endif
+       call check_netcdf_status(errst, 'nf90_Inquire_Variable')
 
        !!Read in into temporary array of correct shape
-       if (vrank == 0) then
+       select case (vrank)
+       case (0)
           errst = nf90_get_var(ncid, vid, x0, start=(/1/), count=(/1/))
-       endif
-       if (vrank == 1) then
+       case (1)
           dim1 = dimsize(vdimid(1))
           allocate(x1(dim1))
           errst = nf90_get_var(ncid, vid, x1, start=(/1/), count=(/dim1/))
-       endif
-       if (vrank == 2) then
+       case (2)
           dim1 = dimsize(vdimid(1))
           dim2 = dimsize(vdimid(2))
           allocate(x2(dim1,dim2))
           errst = nf90_get_var(ncid, vid, x2, start=(/1,1/), count=(/dim1,dim2/))
-       endif
-       if (vrank == 3) then
+       case (3)
           dim1 = dimsize(vdimid(1))
           dim2 = dimsize(vdimid(2))
           dim3 = dimsize(vdimid(3))
@@ -276,16 +214,14 @@ contains
                 call s3com_error(routine_name,errmsg)
              endif
           endif
-       endif
-       if (vrank == 4) then
+       case (4)
           dim1 = dimsize(vdimid(1))
           dim2 = dimsize(vdimid(2))
           dim3 = dimsize(vdimid(3))
           dim4 = dimsize(vdimid(4))
           allocate(x4(dim1,dim2,dim3,dim4))
           errst = nf90_get_var(ncid, vid, x4, start=(/1,1,1,1/), count=(/dim1,dim2,dim3,dim4/))
-       endif
-       if (vrank == 5) then
+       case (5)
           dim1 = dimsize(vdimid(1))
           dim2 = dimsize(vdimid(2))
           dim3 = dimsize(vdimid(3))
@@ -293,12 +229,8 @@ contains
           dim5 = dimsize(vdimid(5))
           allocate(x5(dim1,dim2,dim3,dim4,dim5))
           errst = nf90_get_var(ncid, vid, x5, start=(/1,1,1,1,1/), count=(/dim1,dim2,dim3,dim4,dim5/))
-       endif
-       if (errst /= 0) then
-          write(straux, *)  vid
-          errmsg = 'Error in nf90_get_var, vid '//trim(straux)
-          call s3com_error(routine_name,errmsg,errcode=errst)
-       endif
+       end select
+       call check_netcdf_status(errst, 'nf90_get_var')
 
        !!Map to the right input argument
        select case (trim(vname))
@@ -491,10 +423,7 @@ contains
     deallocate(ll)
 
     errst = nf90_close(ncid)
-    if (errst /= 0) then
-       errmsg = "Error in nf90_close"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
+    call check_netcdf_status(errst, 'nf90_close')
 
 
   end subroutine icon_read

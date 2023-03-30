@@ -381,7 +381,8 @@ contains
        profiles(:)%clw_scheme = rttov_opt%clw_scheme !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
        profiles(iprof)%clwde(:) = rttov_atm%reff(idx_prof,:)*2.0 ! Need the diameter
 
-       !! call rttov_print_profile (profiles(iprof))
+       ! call rttov_print_profile (profiles(iprof))
+       ! stop
 
 
     enddo
