@@ -94,7 +94,7 @@ contains
     integer(KinD=4)                    :: npoints, nlevels, nlayers
     integer, dimension(:), allocatable :: plon, plat
 
-    real(wp), dimension(:), allocatable :: lat, lon, ll, height
+    real(wp), dimension(:), allocatable :: lat, lon, ll
     real(wp), allocatable               :: x1(:), x2(:,:), x3(:,:,:), x4(:,:,:,:), x5(:,:,:,:,:) ! Temporary arrays
     real(dp), dimension(1) :: x0
 

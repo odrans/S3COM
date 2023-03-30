@@ -32,7 +32,7 @@ module mod_io_nwpsaf
   use netcdf
   use s3com_types, only: wp, dp, type_nwpsaf
   use mod_utils_fort, only: s3com_error
-  use mod_io_utils, only: map_ll_to_point
+  use mod_io_utils, only: map_ll_to_point, check_netcdf_status
 
   implicit none
 
@@ -41,8 +41,8 @@ module mod_io_nwpsaf
 
   !!Types to be used as arrays of pointers
   type var1d
-     character(LEN=16) :: name
-     character(LEN=16) :: units
+     character(len=16) :: name
+     character(len=16) :: units
      integer :: dimsid(3)
      integer :: dimssz(2)
      integer :: vid
@@ -51,8 +51,8 @@ module mod_io_nwpsaf
   end type var1d
 
   type var2d
-     character(LEN=16) :: name
-     character(LEN=16) :: units
+     character(len=16) :: name
+     character(len=16) :: units
      integer :: dimsid(4)
      integer :: dimssz(3)
      integer :: vid
@@ -61,8 +61,8 @@ module mod_io_nwpsaf
   end type var2d
 
   type var3d
-     character(LEN=16) :: name
-     character(LEN=16) :: units
+     character(len=16) :: name
+     character(len=16) :: units
      integer :: dimsid(5)
      integer :: dimssz(4)
      integer :: vid
@@ -75,72 +75,75 @@ contains
   subroutine nwpsaf_read(fname, nwpsaf)
 
     !!Parameters
-    character(LEN=64), parameter :: routine_name = 'READ_NWPSAF'
+    character(len=64), parameter :: routine_name = 'READ_NWPSAF'
     integer, parameter :: NMAX_DIM = 5
 
     !!Inputs
-    character(LEN=256), intent(in) :: fname
+    character(len=256), intent(in) :: fname
 
     !!Inputs/Outputs
     type(type_nwpsaf), intent(inout) :: nwpsaf
 
     !!Local variables
-    character(LEN=256) :: errmsg, straux
-    character(LEN=256) :: dimname(NMAX_DIM), vname
+    character(len=256) :: errmsg, straux
+    character(len=256) :: vname, dimname(nmax_dim)
 
-    integer(KinD=4)                    :: idim, dimsize(NMAX_DIM), vdimid(NMAX_DIM)
-    integer(KinD=4)                    :: ncid, ndims, nvars, ngatts, recdim, errst, vid, vrank
-    integer(KinD=4)                    :: dim1, dim2, dim3, dim4, dim5, i, j, k
-    integer(KinD=4)                    :: npoints, nlevels, nlayers
-    integer, dimension(:), allocatable :: plon, plat
+    integer(kind=4)                    :: dimsize(NMAX_DIM), vdimid(NMAX_DIM), idim
+    integer(kind=4)                    :: ncid, ndims, nvars, ngatts, recdim, status, vid, vrank
+    integer(kind=4)                    :: dim1, dim2, dim3, dim4, dim5, i
+    integer(kind=4)                    :: npoints, nlevels, nlayers
 
-    real(wp), dimension(:), allocatable :: lat, lon, ll, height
+    real(wp), dimension(:), allocatable :: lat, lon
     real(wp), allocatable               :: x1(:), x2(:,:), x3(:,:,:), x4(:,:,:,:), x5(:,:,:,:,:) ! Temporary arrays
     real(dp), dimension(1) :: x0
 
-    logical :: Llat, Llon, Lpoint
+    logical :: Lpoint
 
     npoints = nwpsaf%npoints; nlevels = nwpsaf%nlevels; nlayers = nwpsaf%nlayers
 
-    !!========================================================================================================================!!
-    !! Checking the opening of the NWPSAF input NetCDF file                                                                     !!
-    !!========================================================================================================================!!
+    ! Open the file
+    status = nf90_open(fname, nf90_nowrite, ncid)
+    call check_netcdf_status(status, "nf90_open")
 
-    errst = nf90_open(fname, nf90_nowrite, ncid)
-    if (errst/=0)  then
-       errmsg = "Couldn't open "//trim(fname)
-       call s3com_error(routine_name,errmsg)
-    endif
+    ! Get the number of dimensions, variables, global attributes, and the unlimitted dimension ID
+    status = nf90_inquire(ncid, ndims, nvars, ngatts, recdim)
+    call check_netcdf_status(status, "nf90_inquire")
 
-    errst = nf90_inquire(ncid, ndims, nvars, ngatts, recdim)
-    !!========================================================================================================================!!
+    ! Get the dimension IDs and sizes
+    dimname(:) = ""
+    dimsize(:) = 0
+    do idim = 1,ndims
+       status = nf90_Inquire_Dimension(ncid, idim, name=dimname(idim), len=dimsize(idim))
+    enddo
 
-    !!========================================================================================================================!!
-    !! Checking the dimensions (track or lat-lon)                                                                             !!
-    !!========================================================================================================================!!
     Lpoint = .true.
-    !!========================================================================================================================!!
 
-    !!========================================================================================================================!!
-    !! Extract coordinates                                                                                                    !!
-    !!========================================================================================================================!!
     nwpsaf%nlon = npoints
     nwpsaf%nlat = npoints
     nwpsaf%mode = 1
 
     allocate(lon(nwpsaf%nlon), lat(nwpsaf%nlat))
 
-    errst = nf90_inq_varid(ncid, 'lon', vid)
-    errst = nf90_get_var(ncid, vid, lon, start = (/1/), count = (/nwpsaf%nlon/))
+    ! Load all dimensions
+    status = nf90_inq_varid(ncid, 'lon', vid)
+    call check_netcdf_status(status, "nf90_inq_varid")
+    status = nf90_get_var(ncid, vid, lon, start = (/1/), count = (/nwpsaf%nlon/))
+    call check_netcdf_status(status, "nf90_get_var")
 
-    errst = nf90_inq_varid(ncid, 'lat', vid)
-    errst = nf90_get_var(ncid, vid, lat, start = (/1/), count = (/nwpsaf%nlat/))
+    status = nf90_inq_varid(ncid, 'lat', vid)
+    call check_netcdf_status(status, "nf90_inq_varid")
+    status = nf90_get_var(ncid, vid, lat, start = (/1/), count = (/nwpsaf%nlat/))
+    call check_netcdf_status(status, "nf90_get_var")
 
-    errst = nf90_inq_varid(ncid, 'height', vid)
-    errst = nf90_get_var(ncid, vid, nwpsaf%height, start = (/1/), count = (/nwpsaf%nlayers/))
+    status = nf90_inq_varid(ncid, 'height', vid)
+    call check_netcdf_status(status, "nf90_inq_varid")
+    status = nf90_get_var(ncid, vid, nwpsaf%height, start = (/1/), count = (/nwpsaf%nlayers/))
+    call check_netcdf_status(status, "nf90_get_var")
 
-    errst = nf90_inq_varid(ncid, 'height_2', vid)
-    errst = nf90_get_var(ncid, vid, nwpsaf%height_2, start = (/1/), count = (/nwpsaf%nlevels/))
+    status = nf90_inq_varid(ncid, 'height_2', vid)
+    call check_netcdf_status(status, "nf90_inq_varid")
+    status = nf90_get_var(ncid, vid, nwpsaf%height_2, start = (/1/), count = (/nwpsaf%nlevels/))
+    call check_netcdf_status(status, "nf90_get_var")
 
     nwpsaf%lon = lon; nwpsaf%lat = lat
     nwpsaf%lon_orig = lon; nwpsaf%lat_orig = lat
@@ -157,34 +160,28 @@ contains
     do vid = 1, nvars
 
        vdimid = 0
-       errst = nf90_Inquire_Variable(ncid, vid, NAME=vname, ndims=vrank, dimids=vdimid)
-       if (errst /= 0) then
-          write(straux, *) vid
-          errmsg = 'Error in nf90_Inquire_Variable, vid '//trim(straux)
-          call s3com_error(routine_name,errmsg,errcode=errst)
-       endif
+       status = nf90_Inquire_Variable(ncid, vid, name=vname, ndims=vrank, dimids=vdimid)
+       call check_netcdf_status(status, "nf90_Inquire_Variable")
 
-       !!Read in into temporary array of correct shape
-       if (vrank == 0) then
-          errst = nf90_get_var(ncid, vid, x0, start=(/1/), count=(/1/))
-       endif
-       if (vrank == 1) then
+       !! Read in into temporary array of correct shape
+       select case (vrank)
+        case (0)
+          status = nf90_get_var(ncid, vid, x0, start=(/1/), count=(/1/))
+       case (1)
           dim1 = dimsize(vdimid(1))
           allocate(x1(dim1))
-          errst = nf90_get_var(ncid, vid, x1, start=(/1/), count=(/dim1/))
-       endif
-       if (vrank == 2) then
+          status = nf90_get_var(ncid, vid, x1, start=(/1/), count=(/dim1/))
+       case (2)
           dim1 = dimsize(vdimid(1))
           dim2 = dimsize(vdimid(2))
           allocate(x2(dim1,dim2))
-          errst = nf90_get_var(ncid, vid, x2, start=(/1,1/), count=(/dim1,dim2/))
-       endif
-       if (vrank == 3) then
+          status = nf90_get_var(ncid, vid, x2, start=(/1,1/), count=(/dim1,dim2/))
+       case (3)
           dim1 = dimsize(vdimid(1))
           dim2 = dimsize(vdimid(2))
           dim3 = dimsize(vdimid(3))
           allocate(x3(dim1,dim2,dim3))
-          errst = nf90_get_var(ncid, vid, x3, start=(/1,1,1/), count=(/dim1,dim2,dim3/))
+          status = nf90_get_var(ncid, vid, x3, start=(/1,1,1/), count=(/dim1,dim2,dim3/))
           if ((nwpsaf%mode == 2) .or. (nwpsaf%mode == 3)) then
              if ((dim1 == nwpsaf%nlon) .and. (dim2 == nwpsaf%nlat)) then
                 nwpsaf%mode = 2
@@ -195,29 +192,23 @@ contains
                 call s3com_error(routine_name,errmsg)
              endif
           endif
-       endif
-       if (vrank == 4) then
+       case (4)
           dim1 = dimsize(vdimid(1))
           dim2 = dimsize(vdimid(2))
           dim3 = dimsize(vdimid(3))
           dim4 = dimsize(vdimid(4))
           allocate(x4(dim1,dim2,dim3,dim4))
-          errst = nf90_get_var(ncid, vid, x4, start=(/1,1,1,1/), count=(/dim1,dim2,dim3,dim4/))
-       endif
-       if (vrank == 5) then
+          status = nf90_get_var(ncid, vid, x4, start=(/1,1,1,1/), count=(/dim1,dim2,dim3,dim4/))
+       case (5)
           dim1 = dimsize(vdimid(1))
           dim2 = dimsize(vdimid(2))
           dim3 = dimsize(vdimid(3))
           dim4 = dimsize(vdimid(4))
           dim5 = dimsize(vdimid(5))
           allocate(x5(dim1,dim2,dim3,dim4,dim5))
-          errst = nf90_get_var(ncid, vid, x5, start=(/1,1,1,1,1/), count=(/dim1,dim2,dim3,dim4,dim5/))
-       endif
-       if (errst /= 0) then
-          write(straux, *)  vid
-          errmsg = 'Error in nf90_get_var, vid '//trim(straux)
-          call s3com_error(routine_name,errmsg,errcode=errst)
-       endif
+          status = nf90_get_var(ncid, vid, x5, start=(/1,1,1,1,1/), count=(/dim1,dim2,dim3,dim4,dim5/))
+       end select
+       call check_netcdf_status(status, "nf90_get_var")
 
        ! Map to the right input argument
        select case (trim(vname))
@@ -232,7 +223,7 @@ contains
        case ('psurf') ! Surface pressure
           nwpsaf%psurf(1:npoints) = x1(1:npoints)
        case ('tsurf') ! Skin temperature
-             nwpsaf%tsurf(1:npoints) = x1(1:npoints)
+          nwpsaf%tsurf(1:npoints) = x1(1:npoints)
        case ('t2m') ! Temperature in 2m
           nwpsaf%t2m(1:npoints) = x1(1:npoints)
        case ('u10') ! Zonal wind in 10 m
@@ -246,29 +237,29 @@ contains
        case ('year') ! Meridional wind in 10 m
           nwpsaf%year(1:npoints) = x1(1:npoints)
 
-      ! 3D variables
+          ! 3D variables
        case ('altitude') !Geometric height at full level center
-             nwpsaf%z(1:npoints,:) = x2(1:npoints,1:nlayers)
+          nwpsaf%z(1:npoints,:) = x2(1:npoints,1:nlayers)
        case ('altitudeh') !Geometric height at half level center
-             nwpsaf%z_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
+          nwpsaf%z_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
        case ('temph') !Temperature at half level center
-             nwpsaf%t_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
+          nwpsaf%t_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
        case ('paph') !Pressures at half level center
-             nwpsaf%p_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
+          nwpsaf%p_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
        case ('humh') !Specific humidity at half level center
-             nwpsaf%q_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
+          nwpsaf%q_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
        case ('pap') !Air pressure
-             nwpsaf%p(1:npoints,:) = x2(1:npoints,1:nlayers)
+          nwpsaf%p(1:npoints,:) = x2(1:npoints,1:nlayers)
        case ('temp') !Air temperature
-             nwpsaf%t(1:npoints,:) = x2(1:npoints,1:nlayers)
+          nwpsaf%t(1:npoints,:) = x2(1:npoints,1:nlayers)
        case ('hum') !Specific humidity
-             nwpsaf%q(1:npoints,:) = x2(1:npoints,1:nlayers)
+          nwpsaf%q(1:npoints,:) = x2(1:npoints,1:nlayers)
        case ('cc') !Cloud cover
           nwpsaf%clc(1:npoints,1:nlayers) = x2(1:npoints,1:nlayers)
-       case ('clw') !Specific cloud water content
-          nwpsaf%clw(1:npoints,:) = x2(1:npoints,1:nlayers)
-       case ('cli') !Specific cloud ice content
-          nwpsaf%cli(1:npoints,:) = x2(1:npoints,1:nlayers)
+       case ('lwc') !Specific cloud water content
+          nwpsaf%lwc(1:npoints,:) = x2(1:npoints,1:nlayers)
+       case ('iwc') !Specific cloud ice content
+          nwpsaf%iwc(1:npoints,:) = x2(1:npoints,1:nlayers)
        end select
 
        ! Free memory
@@ -282,12 +273,8 @@ contains
 
     !!=======================================================================================================================!!
 
-    errst = nf90_close(ncid)
-    if (errst /= 0) then
-       errmsg = "Error in nf90_close"
-       call s3com_error(routine_name,errmsg,errcode=errst)
-    endif
-
+    status = nf90_close(ncid)
+    call check_netcdf_status(status, "nf90_close")
 
   end subroutine nwpsaf_read
 

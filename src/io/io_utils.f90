@@ -37,9 +37,20 @@ module mod_io_utils
   implicit none
 
   private
-  public :: map_point_to_ll, map_ll_to_point, extract_coordinates
+  public :: map_point_to_ll, map_ll_to_point, extract_coordinates, check_netcdf_status
 
 contains
+
+  subroutine check_netcdf_status(status, location)
+    integer, intent(in) :: status
+    character(len=*), intent(in) :: location
+
+    if (status /= nf90_noerr) then
+       write(*,*) "Error at ", location, ": ", trim(nf90_strerror(status))
+       stop
+    end if
+  end subroutine check_netcdf_status
+
 
 subroutine extract_coordinates(fname, nlayers, npoints)
 
@@ -58,40 +69,22 @@ subroutine extract_coordinates(fname, nlayers, npoints)
     character(LEN=256) :: dimname(NMAX_DIM)
 
     integer(KinD=4)                    :: idim, dimsize(NMAX_DIM)
-    integer(KinD=4)                    :: ncid, ndims, nvars, ngatts, recdim, errst
+    integer(KinD=4)                    :: ncid, ndims, nvars, ngatts, recdim, status
     integer(KinD=4)                    :: nlat, nlon
 
-    !!========================================================================================================================!!
-    !! Checking the opening of the ICON input NetCDF file                                                                     !!
-    !!========================================================================================================================!!
+    ! Open the netcdf file
+    status = nf90_open(fname, nf90_nowrite, ncid)
+    call check_netcdf_status(status, "nf90_open")
 
-    errst = nf90_open(fname, nf90_nowrite, ncid)
-    if (errst/=0)  then
-       errmsg = "Couldn't open "//trim(fname)
-       call s3com_error(routine_name,errmsg)
-    endif
-
-    !!========================================================================================================================!!
-
-    !!========================================================================================================================!!
-    !! Checking the dimensions (track or lat-lon)                                                                             !!
-    !!========================================================================================================================!!
-
-    errst = nf90_inquire(ncid, ndims, nvars, ngatts, recdim)
-    if (errst /= 0) then
-       errmsg = "Error in nf90_inquire"
-       call s3com_error(routine_name, errmsg, errcode=errst)
-    endif
+    ! Get the number of dimensions
+    status = nf90_inquire(ncid, ndims, nvars, ngatts, recdim)
+    call check_netcdf_status(status, "nf90_inquire")
 
     npoints = 0
 
     do idim = 1,ndims
-       errst = nf90_Inquire_Dimension(ncid, idim, NAME=dimname(idim), LEN=dimsize(idim))
-       if (errst /= 0) then
-          write(straux, *) idim
-          errmsg = "Error in nf90_Inquire_Dimension, idim: "//trim(straux)
-          call s3com_error(routine_name, errmsg)
-       endif
+       status = nf90_Inquire_Dimension(ncid, idim, NAME=dimname(idim), LEN=dimsize(idim))
+       call check_netcdf_status(status, "nf90_inquire_dimension")
 
        if (trim(dimname(idim)) .eq. 'lon') then
           nlon = dimsize(idim)
@@ -114,7 +107,6 @@ subroutine extract_coordinates(fname, nlayers, npoints)
     !!========================================================================================================================!!
 
     if(npoints .eq. 0) npoints = nlon * nlat
-
 
   end subroutine extract_coordinates
 

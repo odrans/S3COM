@@ -245,13 +245,10 @@ contains
       integer(kind=4) :: &
          varid_lon,      &
          varid_lat,      &
-         varid_lay,      &
          varid_lev,      &
          varid_chan,     &
-         varid_jac_p,    &
-         varid_jac_t,    &
-         varid_jac_clc,  &
-         varid_jac_deff
+         varid_jac_t
+
          
       integer(kind=4) ::         &
          dimid_lon,              &

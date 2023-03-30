@@ -230,7 +230,7 @@ contains
     type(type_model), intent(inout)   :: model
 
     real(wp) :: hour, minute, sec
-    character(len=8) :: nwpsaf_date
+    ! character(len=8) :: nwpsaf_date
 
     ! Extract information from the NWPSAF time (%Y%m%d.%f)
     ! ----------------------------------------------------------------------------------------------------

@@ -73,7 +73,7 @@ contains
     type(type_nwpsaf), intent(inout) :: nwpsaf
 
     ! Internal
-    integer(kind=4) :: i, j, nlevels, nlayers, npoints
+    integer(kind=4) :: nlevels, nlayers, npoints
 
     nlevels = nwpsaf%nlevels
     nlayers = nwpsaf%nlayers
@@ -81,6 +81,9 @@ contains
 
     nwpsaf%q2m(1:npoints) = nwpsaf%q(1:npoints, nlayers) ! NWPSAF doesn't include 2-m specific humidity
     nwpsaf%p_ifc(:,1) = 1E-2 ! RTTOV requires values strictly greater than 0
+
+    ! NWPSAF doesn't include cloud effective radius, set to 0 for now. Not used for ice clouds anyway.
+    !! nwpsaf%reff = 0._wp
 
     !   ! Atmospheric structure
     !   ! ----------------------------------------------------------------------------------------------------
@@ -159,25 +162,47 @@ contains
 
     !! 2D variables
     allocate(nwpsaf%lon(npoints), source = 0._wp)
-    allocate(nwpsaf%lat,nwpsaf%lat_orig, nwpsaf%lon_orig, nwpsaf%elevation, nwpsaf%lsm, &
-         nwpsaf%psurf, nwpsaf%tsurf, nwpsaf%t2m, nwpsaf%q2m, nwpsaf%u10, nwpsaf%v10, &
-         mold = nwpsaf%lon)
+    allocate(nwpsaf%lat(npoints), source = 0._wp)
+    allocate(nwpsaf%lat_orig(npoints), source = 0._wp)
+    allocate(nwpsaf%lon_orig(npoints), source = 0._wp)
+    allocate(nwpsaf%elevation(npoints), source = 0._wp)
+    allocate(nwpsaf%lsm(npoints), source = 0._wp)
+    allocate(nwpsaf%psurf(npoints), source = 0._wp)
+    allocate(nwpsaf%tsurf(npoints), source = 0._wp)
+    allocate(nwpsaf%t2m(npoints), source = 0._wp)
+    allocate(nwpsaf%q2m(npoints), source = 0._wp)
+    allocate(nwpsaf%u10(npoints), source = 0._wp)
+    allocate(nwpsaf%v10(npoints), source = 0._wp)
 
     allocate(nwpsaf%point(npoints), source = 0)
-    allocate(nwpsaf%month, nwpsaf%year, nwpsaf%day, &
-         mold = nwpsaf%point)
+    allocate(nwpsaf%month(npoints), source = 0)
+    allocate(nwpsaf%year(npoints), source = 0)
+    allocate(nwpsaf%day(npoints), source = 0)
 
     !! 3D variables on atmospheric levels
     allocate(nwpsaf%z_ifc(npoints, nlevels), source = 0._wp)
-    allocate(nwpsaf%p_ifc, nwpsaf%t_ifc, nwpsaf%q_ifc, &
-         mold = nwpsaf%z_ifc)
+    allocate(nwpsaf%t_ifc(npoints, nlevels), source = 0._wp)
+    allocate(nwpsaf%p_ifc(npoints, nlevels), source = 0._wp)
+    allocate(nwpsaf%q_ifc(npoints, nlevels), source = 0._wp)
 
     !! 3D variables in atmospheric layers
     allocate(nwpsaf%z(npoints, nlayers), source = 0._wp)
-    allocate(nwpsaf%p, nwpsaf%t, nwpsaf%q, nwpsaf%clc, nwpsaf%clw, nwpsaf%cli, &
-         nwpsaf%qnc, nwpsaf%qr, nwpsaf%qs, nwpsaf%dz, nwpsaf%rho, nwpsaf%tv, nwpsaf%lwc, &
-         nwpsaf%iwc, nwpsaf%cdnc, nwpsaf%reff, &
-         mold = nwpsaf%z)
+    allocate(nwpsaf%t(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%p(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%q(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%clc(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%clw(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%cli(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%qnc(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%qr(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%qs(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%dz(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%rho(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%tv(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%lwc(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%iwc(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%cdnc(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%reff(npoints, nlayers), source = 0._wp)
 
   end subroutine nwpsaf_init
 
@@ -190,7 +215,7 @@ contains
          nwpsaf%elevation, nwpsaf%lsm, nwpsaf%psurf, nwpsaf%tsurf, nwpsaf%t2m, nwpsaf%q2m, nwpsaf%u10, nwpsaf%v10, &
          nwpsaf%p, nwpsaf%z, nwpsaf%z_ifc, nwpsaf%p_ifc, nwpsaf%t_ifc, nwpsaf%q_ifc, &
          nwpsaf%t, nwpsaf%q, nwpsaf%clc, nwpsaf%clw, nwpsaf%cli, nwpsaf%qnc, nwpsaf%qr, nwpsaf%qs, nwpsaf%dz, &
-         nwpsaf%rho, nwpsaf%tv, nwpsaf%lwc, nwpsaf%iwc, nwpsaf%cdnc, nwpsaf%Reff, &
+         nwpsaf%rho, nwpsaf%tv, nwpsaf%lwc, nwpsaf%iwc, nwpsaf%cdnc, nwpsaf%reff, &
          nwpsaf%day, nwpsaf%month, nwpsaf%year, nwpsaf%point)
 
   end subroutine nwpsaf_clear

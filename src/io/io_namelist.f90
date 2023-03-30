@@ -43,7 +43,7 @@ contains
 
   type(type_nml) function namelist_load() result(nml)
 
-    character(len=256) :: fname_nml, fn_out_rad
+    character(len=256) :: fname_nml
 
     ! Set the namelist file
     if(command_argument_count().ne.1) then

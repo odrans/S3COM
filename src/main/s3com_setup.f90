@@ -91,8 +91,6 @@ contains
 
     type(type_s3com), intent(out) :: s3com_chunk
 
-    integer(kind=4) :: npoints
-
     s3com_chunk%idx_start = idx_start
     s3com_chunk%idx_end = idx_end
     s3com_chunk%npoints = idx_end - idx_start + 1

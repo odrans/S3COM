@@ -104,8 +104,8 @@ contains
 
     logical, dimension(6) :: gas_rttov_used
 
-    integer(4) :: nstream, i, mmr_cldaer
-    character(len=32) :: ir_model, vis_model, nstreams_char, testchar, testchar2
+    integer(4) :: i, mmr_cldaer
+    character(len=32) :: ir_model, vis_model, nstreams_char
     logical :: flag_gases
 
     flag_gases = any([opts%dev%do_opdep_calc, opts%rt_all%addrefrac])
