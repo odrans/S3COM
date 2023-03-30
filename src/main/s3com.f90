@@ -39,6 +39,7 @@ program s3com_main
   use mod_utils_math,      only: n_chunks
   use mod_io_s3com,        only: write_output
   use mod_rttov_utils,     only: idx_rttov
+  use mod_cld_mie, only: cld_mie_load
   !  use mod_oe_utils,        only: idx_ice
   !  use mod_model_cloud,     only: init_zcloud, init_cloudprof
   !  use mod_oe_run,          only: oe_run
@@ -52,11 +53,13 @@ program s3com_main
 
   real(kind=wp) :: zenangle, azangle
 
-  integer(kind=4), dimension(:), allocatable :: idx_iwp, idx_oe
+  !! integer(kind=4), dimension(:), allocatable :: idx_iwp, idx_oe
   integer(kind=4) :: nchunks, idx_start, idx_end, ichunk
-  integer(kind=4) :: nlayers, npoints, npoints_it
+  integer(kind=4) :: nlayers, npoints
 
-  logical :: flag_oe
+  !! logical :: flag_oe
+
+  call cld_mie_load()
 
   ! Read namelist file
   nml = namelist_load()

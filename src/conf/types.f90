@@ -34,6 +34,7 @@ module s3com_types
   private
   public :: wp, dp
   public :: type_s3com, type_nwpsaf, type_model, type_rttov_opt, type_nml, type_icon
+  public :: type_cld, type_cld_mie
 
   !!Few kind definitions for variables
   integer, parameter :: sp = selected_real_kind(6, 37)
@@ -343,7 +344,31 @@ module s3com_types
      type(type_s3com_opt) :: opt
   end type type_s3com
 
+  type type_cld_mie
+     integer(kind=4) :: &
+          nang, &
+          nchan, &
+          nrad, &
+          nmom
+     integer(kind=4), dimension(:), allocatable :: &
+          chan_id
+     real(kind=wp), dimension(:), allocatable :: &
+          chan_wl, &
+          radius, &
+          angle
+     real(kind=wp), dimension(:,:), allocatable :: &
+          Cext, &
+          Csca, &
+          Cabs, &
+          w0
+     real(kind=wp), dimension(:,:,:), allocatable :: &
+          pha, &
+          legcoef
+  end type type_cld_mie
 
+  type type_cld
+     type(type_cld_mie) :: mie
+  end type type_cld
 
   !!Type containing variables used by S3COM for retrievals
   type type_s3com_obsolete
