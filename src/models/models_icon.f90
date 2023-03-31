@@ -32,7 +32,7 @@ module mod_icon
    use s3com_types,  only: wp, type_icon
    use mod_io_icon,  only: icon_read
    use mod_io_utils, only: extract_coordinates
-   use s3com_config, only: rd, rv, epsilon, mu, nu, a, b, Q_ext, rholiq
+   use s3com_config, only: rd, rv, epsilon, mu, nu, a, b, Q_ext, rholiq, lwp_lay_threshold
    
    implicit none
    
@@ -118,7 +118,7 @@ module mod_icon
             enddo
          enddo
          
-         icon%reff = icon%reff * 1E6 ! m to um (default input in RTTOV)
+         icon%reff = icon%reff * 1E6 !m to um (default input in RTTOV)
          
          !! Cloud liquid droplet extinction coefficient (m-1)
          do i = 1, npoints
@@ -134,6 +134,18 @@ module mod_icon
             icon%cod(i) = 0._wp
             do j = 1, nlayers
                icon%cod(i) = icon%cod(i) + icon%beta_ext(i,j)*icon%dz(i,j)
+            enddo
+         enddo
+         
+         !! Cloud liquid water effective radius at cloud top (um)
+         do i = 1, npoints
+            do j = 1, nlayers
+               if (icon%lwc(i,j)*1E3*icon%dz(i,j) .gt. lwp_lay_threshold .and. icon%cod(i) .gt. 5._wp) then
+                  icon%ztop_liq_idx(i) = j
+                  icon%reff_top(i) = icon%reff(i,icon%ztop_liq_idx(i))
+                  !write(*,*) icon%ztop_liq_idx(i), icon%reff_top(i)
+                  exit
+               endif
             enddo
          enddo
          
@@ -153,11 +165,12 @@ module mod_icon
          
          allocate(icon%height(nlayers), source = 0)
          allocate(icon%height_2(nlevels), source = 0)
+         allocate(icon%ztop_liq_idx(npoints), source = 0)
          
          !! 2D variables
          allocate(icon%lon(npoints), source = 0._wp)
          allocate(icon%lat, icon%lon_orig, icon%lat_orig, icon%topography, icon%landmask, &
-                  icon%ps, icon%ts, icon%t_2m, icon%q_2m, icon%u_10m, icon%v_10m, icon%cod, &
+                  icon%ps, icon%ts, icon%t_2m, icon%q_2m, icon%u_10m, icon%v_10m, icon%cod, icon%reff_top, &
                   mold = icon%lon)
          
          !! 3D variables on atmospheric levels
@@ -182,7 +195,7 @@ module mod_icon
                     icon%topography, icon%landmask, icon%ps, icon%ts, icon%t_2m, icon%q_2m, icon%u_10m, icon%v_10m, icon%cod, &
                     icon%p, icon%z, icon%z_ifc, icon%p_ifc, icon%t_ifc, icon%q_ifc, &
                     icon%t, icon%q, icon%clc, icon%clw, icon%cli, icon%qnc, icon%qr, icon%qs, icon%dz, &
-                    icon%rho, icon%tv, icon%lwc, icon%iwc, icon%cdnc, icon%reff, icon%beta_ext)
+                    icon%rho, icon%tv, icon%lwc, icon%iwc, icon%cdnc, icon%reff, icon%beta_ext, icon%ztop_liq_idx, icon%reff_top)
          
       end subroutine icon_clear
       

@@ -124,7 +124,7 @@ contains
     !! 2D fields
     allocate(model%lat(npoints), source = 0._wp)
     allocate(model%lon, model%lat_orig, model%lon_orig, &
-         model%topography, model%u_10m, model%v_10m, model%cod, &
+         model%topography, model%u_10m, model%v_10m, model%cod, model%reff_top, &
          model%ts, model%ps, model%q_2m, model%t_2m, &
          model%landmask, model%sunzenangle, model%sunazangle, &
          mold = model%lat)
@@ -150,7 +150,7 @@ contains
 
     deallocate(model%lat, model%lon, model%lat_orig, model%lon_orig, &
          model%height, model%height_2, &
-         model%topography, model%u_10m, model%v_10m, model%cod, &
+         model%topography, model%u_10m, model%v_10m, model%cod, model%reff_top, &
          model%ts, model%ps, model%q_2m, model%t_2m, &
          model%landmask, model%sunzenangle, model%sunazangle, &
          model%p, model%t, model%q, model%co2, model%ch4, &
@@ -208,6 +208,7 @@ contains
     model%t_2m       = icon%t_2m
     model%landmask   = icon%landmask
     model%cod        = icon%cod
+    model%reff_top   = icon%reff_top
 
     model%p        = icon%p_ifc
     model%t        = icon%t_ifc

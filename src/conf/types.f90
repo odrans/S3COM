@@ -147,7 +147,9 @@ module s3com_types
      real(dp) :: &
           time
      integer(kind=4), dimension(:), allocatable :: &
-          height, height_2 ! height index
+          height,                                  &
+          height_2,                                & ! height index
+          ztop_liq_idx
      real(wp), dimension(:), allocatable :: &
           lon_orig,                         & !Longitude that won't be regridded (degrees east)
           lat_orig,                         & !Latitude  that won't be regridded (degress north)
@@ -161,7 +163,8 @@ module s3com_types
           q_2m,                             & !2m specific water vapor content (kg/kg)
           u_10m,                            & !U-component of wind (m/s)
           v_10m,                            & !V-component of wind (m/s)
-          cod
+          cod,                              & !Cloud optical depth (-)
+          reff_top                            !Cloud droplet effective radius at cloud top (um)
      real(wp), dimension(:,:), allocatable :: &
           p,                                    & !Layer pressure (Pa)
           p_ifc,                                & !Pressure at half-level center (Pa)
@@ -216,6 +219,7 @@ module s3com_types
           u_10m,                              & !U-component of wind (m/s)
           v_10m,                              & !V-component of wind (m/s)
           cod,                                & !Cloud optical depth (-)
+          reff_top,                           & !Cloud droplet effective radius at cloud top (um)
           sunzenangle,                        & !Solar zenith angle
           sunazangle                            !Solar azimuth angle
      real(wp), dimension(:,:), allocatable :: &

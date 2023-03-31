@@ -448,8 +448,9 @@ contains
       type(type_model), intent(in) :: model
       type(type_nml),   intent(in) :: nml
       
+      !!Local variables
       real(kind=wp), dimension(model%nlon, model%nlat) :: &
-         gridded_atm_cod
+         gridded_atm_cod, gridded_atm_reff_top
       real(kind=wp), dimension(model%nlon, model%nlat, model%nlayers) :: &
          gridded_atm_z,                                                  &
          gridded_atm_dz,                                                 &
@@ -464,13 +465,15 @@ contains
          varid_atm_lon,      &
          varid_atm_lat,      &
          varid_atm_lay,      &
+         varid_atm_cod,      &
+         varid_atm_reff_top, &
          varid_atm_z,        &
          varid_atm_dz,       &
          varid_atm_lwc,      &
          varid_atm_cdnc,     &
          varid_atm_reff,     &
-         varid_atm_beta_ext, &
-         varid_atm_cod
+         varid_atm_beta_ext
+         
          
       integer(kind=4) ::  &
          dimid_lon,       &
@@ -487,6 +490,7 @@ contains
       fn_out_atm = trim(nml%path_out)//"S3COM"//trim(suffix)//"_atm.nc"
       
       call map_point_to_ll(model%nlon, model%nlat, model%mode, x1=model%cod,      y2=gridded_atm_cod)
+      call map_point_to_ll(model%nlon, model%nlat, model%mode, x1=model%reff_top, y2=gridded_atm_reff_top)
       call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=model%z,        y3=gridded_atm_z)
       call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=model%dz,       y3=gridded_atm_dz)
       call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=model%lwc,      y3=gridded_atm_lwc)
@@ -507,6 +511,7 @@ contains
       errst = nf90_def_var(ncid, "lat",      NF90_REAL, dimid_lat,       varid_atm_lat)
       errst = nf90_def_var(ncid, "lay",      NF90_REAL, dimid_lay,       varid_atm_lay)
       errst = nf90_def_var(ncid, "cod",      NF90_REAL, dimid_latlon,    varid_atm_cod)
+      errst = nf90_def_var(ncid, "reff_top", NF90_REAL, dimid_latlon,    varid_atm_reff_top)
       errst = nf90_def_var(ncid, "alt",      NF90_REAL, dimid_latlonlay, varid_atm_z)
       errst = nf90_def_var(ncid, "dz",       NF90_REAL, dimid_latlonlay, varid_atm_dz)
       errst = nf90_def_var(ncid, "lwc",      NF90_REAL, dimid_latlonlay, varid_atm_lwc)
@@ -518,6 +523,7 @@ contains
       errst = nf90_put_att(ncid, varid_atm_lat,      "standard_name", "latitude")
       errst = nf90_put_att(ncid, varid_atm_lay,      "standard_name", "layer")
       errst = nf90_put_att(ncid, varid_atm_cod,      "standard_name", "cod")
+      errst = nf90_put_att(ncid, varid_atm_reff_top, "standard_name", "reff_top")
       errst = nf90_put_att(ncid, varid_atm_z,        "standard_name", "altitude")
       errst = nf90_put_att(ncid, varid_atm_dz,       "standard_name", "dz")
       errst = nf90_put_att(ncid, varid_atm_lwc,      "standard_name", "lwc")
@@ -529,6 +535,7 @@ contains
       errst = nf90_put_att(ncid, varid_atm_lat,      "long_name", "Latitude")
       errst = nf90_put_att(ncid, varid_atm_lay,      "long_name", "Layer index")
       errst = nf90_put_att(ncid, varid_atm_cod,      "long_name", "Cloud optical depth")
+      errst = nf90_put_att(ncid, varid_atm_reff_top, "long_name", "Cloud droplet effective radius at cloud top")
       errst = nf90_put_att(ncid, varid_atm_z,        "long_name", "Altitude")
       errst = nf90_put_att(ncid, varid_atm_dz,       "long_name", "Layer thickness")
       errst = nf90_put_att(ncid, varid_atm_lwc,      "long_name", "Liquid water content")
@@ -540,6 +547,7 @@ contains
       errst = nf90_put_att(ncid, varid_atm_lat,      "units", "degrees_north")
       errst = nf90_put_att(ncid, varid_atm_lay,      "units", "")
       errst = nf90_put_att(ncid, varid_atm_cod,      "units", "")
+      errst = nf90_put_att(ncid, varid_atm_reff_top, "units", "um")
       errst = nf90_put_att(ncid, varid_atm_z,        "units", "m")
       errst = nf90_put_att(ncid, varid_atm_dz,       "units", "m")
       errst = nf90_put_att(ncid, varid_atm_lwc,      "units", "kg/m3")
@@ -557,6 +565,7 @@ contains
       errst = nf90_put_var(ncid, varid_atm_lat,      model%lat_orig)
       errst = nf90_put_var(ncid, varid_atm_lay,      model%height)
       errst = nf90_put_var(ncid, varid_atm_cod,      gridded_atm_cod)
+      errst = nf90_put_var(ncid, varid_atm_reff_top, gridded_atm_reff_top)
       errst = nf90_put_var(ncid, varid_atm_z,        gridded_atm_z)
       errst = nf90_put_var(ncid, varid_atm_dz,       gridded_atm_dz)
       errst = nf90_put_var(ncid, varid_atm_lwc,      gridded_atm_lwc)
