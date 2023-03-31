@@ -371,7 +371,7 @@ contains
        profiles(iprof)%cfrac(:) = rttov_atm%clc(idx_prof,:)
 
        ! Used by OPAC
-       profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)
+       profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3 -> g/m3)
 
        ! Ice cloud input profiles
        profiles(iprof)%ice_scheme = rttov_opt%ice_scheme !Cloud ice water scheme: 1=Baum; 2=Baran 2014; 3=Baran 2018
@@ -610,7 +610,7 @@ contains
                
                s3com%k_tl%t(idx_prof,ilev,ichan) = (radiance_tl%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7) / &
                                                    (profiles_tl(iprof)%t(ilev))
-               write(6,*) s3com%k_tl%t(idx_prof,ilev,ichan)
+               !write(6,*) s3com%k_tl%t(idx_prof,ilev,ichan)
                
                profiles_tl(iprof)%t(ilev) = 0._jprb
                
