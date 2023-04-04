@@ -70,11 +70,13 @@ contains
       logical :: &
          flag_retrievals, flag_output_atm, flag_output_jac, flag_output_k_tl, &
          do_jacobian_calc, do_k_tl_calc, do_opdep_calc, &
-         add_refrac, dom_rayleigh, mmr_cldaer, ozone_data, add_aerosols, add_clouds
+         add_refrac, dom_rayleigh, mmr_cldaer, ozone_data, add_aerosols, add_clouds, &
+         user_cld_opt_param
          
       integer(kind = 4) :: &
          npoints_it, nchannels, platform, satellite, instrument, &
-         ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads, ice_scheme, clw_scheme
+         ir_scatt_model, vis_scatt_model, dom_nstreams, rttov_nthreads, ice_scheme, clw_scheme, &
+         dom_nmoments
       integer(kind = 4), dimension(:), allocatable :: channel_list
       integer(kind = 4), dimension(2) :: channel_seq
       
@@ -109,7 +111,9 @@ contains
          ir_scatt_model,    &
          vis_scatt_model,   &
          dom_nstreams,      &
+         dom_nmoments,      &
          dom_rayleigh,      &
+         user_cld_opt_param , &
          ice_scheme,        &
          clw_scheme,        &
          mmr_cldaer,        &
@@ -149,6 +153,7 @@ contains
     nml%vis_scatt_model = vis_scatt_model
     nml%dom_rayleigh = dom_rayleigh
     nml%dom_nstreams = dom_nstreams
+    nml%dom_nmoments = dom_nmoments
     nml%rttov_nthreads = rttov_nthreads
     nml%flag_retrievals = flag_retrievals
     nml%flag_output_atm = flag_output_atm
@@ -161,6 +166,7 @@ contains
     nml%add_aerosols = add_aerosols
     nml%add_clouds = add_clouds
     nml%add_refrac = add_refrac
+    nml%user_cld_opt_param = user_cld_opt_param
 
   end subroutine read_namelist
 

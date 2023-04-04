@@ -29,7 +29,7 @@
 
 program s3com_main
 
-  use s3com_types,         only: wp, type_rttov_opt, type_nml, type_model, type_s3com
+  use s3com_types,         only: wp, type_rttov_opt, type_nml, type_model, type_s3com, type_cld
   use mod_io_namelist,     only: namelist_load
   use mod_rttov_interface, only: rttov_init
   use mod_rttov_setup,     only: rttov_setup_opt, rttov_setup_atm
@@ -38,7 +38,7 @@ program s3com_main
   use mod_models,          only: models_load, models_deinit
   use mod_utils_math,      only: n_chunks
   use mod_io_s3com,        only: write_output
-  use mod_rttov_utils,     only: idx_rttov
+  use mod_rttov_utils,     only: find_idx_rttov
   use mod_cld_mie, only: cld_mie_load
   !  use mod_oe_utils,        only: idx_ice
   !  use mod_model_cloud,     only: init_zcloud, init_cloudprof
@@ -50,6 +50,7 @@ program s3com_main
   type(type_rttov_opt)          :: rttov_opt
   type(type_s3com)              :: s3com, s3com_chunk
   type(type_nml)                :: nml
+  type(type_cld)                :: cld
 
   real(kind=wp) :: zenangle, azangle
 
@@ -59,10 +60,11 @@ program s3com_main
 
   !! logical :: flag_oe
 
-  call cld_mie_load()
-
   ! Read namelist file
   nml = namelist_load()
+
+  ! Load cloud optical properties
+  call cld_mie_load(nml, cld)
 
   ! Temporary: setting the viewing satellite angles
   zenangle = 0._wp; azangle = 0._wp
@@ -75,7 +77,7 @@ program s3com_main
   npoints = s3com%npoints
   nlayers = s3com%nlayers
 
-  ! Setup the RTTOV optics (`rttov_opt` created)
+  ! Setup the RTTOV options (`rttov_opt` created)
   call rttov_setup_opt(nml, zenangle, azangle, rttov_opt, s3com)
 
   ! Initialize RTTOV (loading surface data and optical properties)
@@ -113,7 +115,7 @@ program s3com_main
         ! idx_iwp = idx_ice(atm_oe,.TRUE.)
         ! atm_oe%flag_rttov(idx_iwp) = .TRUE.
 
-        ! idx_oe = idx_rttov(atm_oe)
+        ! idx_oe = find_idx_rttov(atm_oe)
         ! IF (SIZE(idx_oe) .EQ. 0) THEN
         !    CYCLE
         ! ENDIF
@@ -127,7 +129,9 @@ program s3com_main
      else
 
         s3com_chunk%flag_rttov(:) = .TRUE.
-        call run_rttov(rttov_atm, rttov_opt, s3com_chunk, dealloc = .FALSE.)
+        call run_rttov(rttov_atm, rttov_opt, s3com_chunk, cld, dealloc = .FALSE.)
+
+        write(*,*) s3com_chunk%rad%f_ref_total
 
      end if
 

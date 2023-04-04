@@ -85,7 +85,7 @@ contains
     type(type_icon), intent(inout) :: icon
 
     !!Local variables
-    character(LEN=256) :: errmsg, straux
+    character(LEN=256) :: errmsg
     character(LEN=256) :: dimname(NMAX_DIM), vname
 
     integer(KinD=4)                    :: idim, dimsize(NMAX_DIM), vdimid(NMAX_DIM)

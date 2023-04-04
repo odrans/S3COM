@@ -55,7 +55,6 @@ contains
 subroutine extract_coordinates(fname, nlayers, npoints)
 
     !!Parameters
-    character(LEN=64), parameter :: routine_name = 'extract_coordinates'
     integer, parameter :: NMAX_DIM = 5
 
     !!Inputs
@@ -65,7 +64,6 @@ subroutine extract_coordinates(fname, nlayers, npoints)
     integer(kind = 4), intent(inout) :: nlayers, npoints
 
     !!Local variables
-    character(LEN=256) :: errmsg, straux
     character(LEN=256) :: dimname(NMAX_DIM)
 
     integer(KinD=4)                    :: idim, dimsize(NMAX_DIM)

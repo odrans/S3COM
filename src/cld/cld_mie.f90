@@ -32,36 +32,32 @@ module mod_cld_mie
   use netcdf
   use rttov_const, only :errorstatus_success
   use parkind1, ONLY : jprb
-  use s3com_types, only: type_cld_mie, type_cld
+  use s3com_types, only: type_cld_mie, type_cld, type_nml
+  use mod_io_utils, only: check_netcdf_status
+  use mod_cld_legcoef, only: cld_legcoef_load
 
   implicit none
-
-#include "rttov_legcoef_calc.interface"
 
   private
   public :: cld_mie_load
 
 contains
 
-  subroutine check_netcdf_status(status, location)
-    integer, intent(in) :: status
-    character(len=*), intent(in) :: location
-
-    if (status /= nf90_noerr) then
-       write(*,*) "Error at ", location, ": ", trim(nf90_strerror(status))
-       stop
-    end if
-  end subroutine check_netcdf_status
-
   ! Load the Mie scattering optical properties
-  subroutine cld_mie_load()
+  subroutine cld_mie_load(nml, cld)
 
-    type(type_cld) :: cld
+    type(type_nml), intent(in) :: nml
+
+    type(type_cld), intent(out) :: cld
     type(type_cld_mie) :: cld_mie
+
+    cld_mie%nmom = nml%dom_nmoments
+
+    cld_mie%fn_mie = "/home/b/b380333/mie_scat_liqcld_eos_2_modis.nc"
 
     call cld_mie_read(cld_mie)
 
-    call cld_mie_legcoef(cld_mie)
+    call cld_legcoef_load(cld_mie)
 
     cld%mie = cld_mie
 
@@ -77,7 +73,7 @@ contains
     integer :: status
 
     ! Open the file
-    status = nf90_open("/home/b/b380333/mie_scat_liqcld_eos_2_modis.nc", nf90_nowrite, ncid)
+    status = nf90_open(cld_mie%fn_mie, nf90_nowrite, ncid)
     call check_netcdf_status(status, "nf90_open")
 
     ! Read the number of wavelengths
@@ -126,6 +122,13 @@ contains
     status = nf90_get_var(ncid, varid, cld_mie%Cext)
     call check_netcdf_status(status, "nf90_get_var")
 
+    ! Read the single scattering albedo
+    allocate(cld_mie%w0(cld_mie%nrad, cld_mie%nchan))
+    status = nf90_inq_varid(ncid, "w0", varid)
+    call check_netcdf_status(status, "nf90_inq_varid")
+    status = nf90_get_var(ncid, varid, cld_mie%w0)
+    call check_netcdf_status(status, "nf90_get_var")
+
     ! Read the phase function
     allocate(cld_mie%pha(cld_mie%nang, cld_mie%nrad, cld_mie%nchan))
     status = nf90_inq_varid(ncid, "phase_function", varid)
@@ -136,40 +139,15 @@ contains
     status = nf90_close(ncid)
     call check_netcdf_status(status, "nf90_close")
 
+    allocate(cld_mie%Csca(cld_mie%nrad, cld_mie%nchan))
+    cld_mie%Csca = cld_mie%Cext * cld_mie%w0
+
+    allocate(cld_mie%Cabs(cld_mie%nrad, cld_mie%nchan))
+    cld_mie%Cabs = cld_mie%Cext * (1. - cld_mie%w0)
+
   end subroutine cld_mie_read
 
-  ! Compute Legendre coefficients from phase function
-  subroutine cld_mie_legcoef(cld_mie)
 
-    type(type_cld_mie) :: cld_mie
-
-    integer :: wvl_id, size_id, status, nleg
-    real(jprb), allocatable, dimension(:) :: pha, angle, legcoef
-
-    cld_mie%nmom = 128
-
-    nleg = cld_mie%nmom + 1
-
-    allocate(cld_mie%legcoef(nleg, cld_mie%nrad, cld_mie%nchan))
-
-    allocate(pha(cld_mie%nang))
-    allocate(angle(cld_mie%nang))
-    allocate(legcoef(nleg))
-
-    angle = cld_mie%angle
-
-    do wvl_id = 1, cld_mie%nchan
-       do size_id = 1, cld_mie%nrad
-         pha(:) = cld_mie%pha(:, size_id, wvl_id)
-         call rttov_legcoef_calc(status, pha, angle, cld_mie%nmom, legcoef)
-         !! cld_mie%legcoef(:, size_id, wvl_id) = legcoef
-         if (status /= errorstatus_success) write(*,*) "rttov_legcoef_calc failed"
-      end do
-   end do
-
-   deallocate(pha, angle, legcoef)
-
- end subroutine cld_mie_legcoef
 
 
 end module mod_cld_mie

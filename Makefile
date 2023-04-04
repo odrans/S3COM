@@ -26,20 +26,52 @@
 #  History
 #  Jan 2022 - O. Sourdeval - Original version
 
+ # module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 \
+ #    openmpi/4.1.2-intel-2021.5.0 \
+ #    parallel-netcdf/1.12.2-openmpi-4.1.2-intel-2021.5.0 \
+ #    netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 \
+ #    netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 \
+ #    hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0 \
+ #    eccodes/2.21.0-intel-2021.5.0
+
+
+ # module gcc/11.2.0-gcc-11.2.0 \
+ #    openmpi/4.1.2-gcc-11.2.0 \
+ #    parallel-netcdf/1.12.2-openmpi-4.1.2-gcc-11.2.0 \
+ #    netcdf-fortran/4.5.3-openmpi-4.1.2-gcc-11.2.0 \
+ #    netcdf-c/4.8.1-openmpi-4.1.2-gcc-11.2.0 \
+ #    hdf5/1.12.1-openmpi-4.1.2-gcc-11.2.0 \
+ #    eccodes/2.21.0-gcc-11.2.0
+
 prog = s3com
 
-F90      = ifort
-F90FLAGS = -module $(mod) -fpp -qopenmp -g -debug extended  -fp-stack-check -warn all
-# F90FLAGS = -module $(mod) -fpp -qopenmp -march=core-avx2 -g -O3 -debug -traceback -check bounds
-# F90FLAGS = -module $(mod) -fp-model source -qopenmp -g -O3 -debug -traceback -check bounds
+F90      = gfortran
+
+ifeq ($(F90),gfortran)
+    F90FLAGS_DEBUG = -g -Wall -Wextra -pedantic -std=f2008 -fbounds-check -fimplicit-none -fcheck=all -ffpe-trap=invalid,zero,overflow
+    F90FLAGS = -J$(mod) -cpp -fopenmp -ffree-line-length-none $(F90FLAGS_DEBUG)
+else ifeq ($(F90),ifort)
+    F90FLAGS = -module $(mod) -fpp -qopenmp -g -debug extended  -fp-stack-check -warn all
+else
+    $(error Unsupported compiler: $(F90))
+endif
 
 # Let's start with setting up some paths
 # ---------------------------------------------------------------------------------------------------------------------------------------
 PATH_S3COM = $(HOME)/github/S3COM
-PATH_RTTOV = /work/bb1036/rttov_share/rttov132
-PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-2k3cmu
-PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g
-PATH_HDF5 = /sw/spack-levante/hdf5-1.12.1-tvymb5
+ifeq ($(F90),gfortran)
+    PATH_RTTOV = /work/bb1036/rttov_share/rttov132-gcc
+    PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-6qheqr
+    PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-jlxcfz
+    PATH_HDF5 = /sw/spack-levante/hdf5-1.12.1-kxfaux
+else ifeq ($(F90),ifort)
+    PATH_RTTOV = /work/bb1036/rttov_share/rttov132-intel
+    PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-2k3cmu
+    PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g
+    PATH_HDF5 = /sw/spack-levante/hdf5-1.12.1-tvymb5
+endif
+
+
 # ---------------------------------------------------------------------------------------------------------------------------------------
 
 ## Following up paths (do not edit!)
@@ -91,7 +123,9 @@ LIB_MODELS = $(lib)/libmodels.a
 LIST_OBJ_CONF = $(obj)/types.o \
         $(obj)/config.o
 
-LIST_OBJ_CLD = $(obj)/cld_mie.o
+LIST_OBJ_CLD = $(obj)/cld_legcoef.o \
+        $(obj)/cld_mie.o \
+        $(obj)/cld_phys_sb.o
 
 LIST_OBJ_MAIN = $(obj)/s3com_setup.o
 
@@ -119,7 +153,7 @@ LIST_OBJ_RTTOVML = $(obj)/rttov_utils.o \
 		   $(obj)/rttov_init.o \
 		   $(obj)/rttov_setup.o
 
-LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_CLD) $(LIST_OBJ_IO) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_MAIN)
+LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_IO) $(LIST_OBJ_CLD) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_MAIN)
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of flags related to each libraries + final flag
@@ -186,6 +220,12 @@ $(obj)/s3com_setup.o : $(DIR_MAIN)/s3com_setup.f90
 # -------------------------------------------------------------------------------------------------------------------------------
 $(obj)/cld_mie.o : $(DIR_CLD)/cld_mie.f90
 	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
+
+$(obj)/cld_legcoef.o : $(DIR_CLD)/cld_legcoef.f90
+	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
+
+$(obj)/cld_phys_sb.o : $(DIR_CLD)/cld_phys_sb.f90
+	$(F90) $(F90FLAGS) -I $(PATH_NCDF_INC) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -248,7 +288,7 @@ $(obj)/rttov_setup.o : $(DIR_RTTOV)/rttov_setup.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
 $(obj)/rttov_utils.o : $(DIR_RTTOV)/rttov_utils.f90
-	$(F90) $(F90FLAGS) -c $< -o $@
+	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 
 ## Objects for subroutines in ./src/utils

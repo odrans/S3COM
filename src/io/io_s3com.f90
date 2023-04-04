@@ -253,12 +253,12 @@ contains
       integer(kind=4) ::         &
          dimid_lon,              &
          dimid_lat,              &
-         dimid_lay,              &
+!!         dimid_lay,              &
          dimid_lev,              &
          dimid_chan,             &
          dimid_latlon(2),        &
          dimid_latlonchan(3),    &
-         dimid_latlonlaychan(4), &
+!!         dimid_latlonlaychan(4), &
          dimid_latlonlevchan(4)
          
       character(LEN = 256) :: fn_out_jac, suffix, attr_instrument
@@ -277,13 +277,13 @@ contains
       
       errst = nf90_def_dim(ncid, "lon",   model%nlon,    dimid_lon)
       errst = nf90_def_dim(ncid, "lat",   model%nlat,    dimid_lat)
-      !errst = nf90_def_dim(ncid, "layer", model%nlayers, dimid_lay)
+      ! errst = nf90_def_dim(ncid, "layer", model%nlayers, dimid_lay)
       errst = nf90_def_dim(ncid, "level", model%nlevels, dimid_lev)
       errst = nf90_def_dim(ncid, "chan",  nml%nchannels, dimid_chan)
       
       dimid_latlon        = (/dimid_lon, dimid_lat/)
       dimid_latlonchan    = (/dimid_lon, dimid_lat, dimid_chan/)
-      dimid_latlonlaychan = (/dimid_lon, dimid_lat, dimid_lay, dimid_chan/)
+      ! dimid_latlonlaychan = (/dimid_lon, dimid_lat, dimid_lay, dimid_chan/)
       dimid_latlonlevchan = (/dimid_lon, dimid_lat, dimid_lev, dimid_chan/)
       
       errst = nf90_def_var(ncid, "lon",      NF90_REAL, dimid_lon,           varid_lon)

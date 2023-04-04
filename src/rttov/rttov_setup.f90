@@ -61,6 +61,7 @@ contains
 
     rttov_opt%do_opdep_calc = nml%do_opdep_calc
     rttov_opt%dom_nstreams = nml%dom_nstreams
+    rttov_opt%dom_nmoments = nml%dom_nmoments
     rttov_opt%dom_rayleigh = nml%dom_rayleigh
 
     rttov_opt%add_refrac = nml%add_refrac
@@ -70,6 +71,7 @@ contains
     rttov_opt%gas_units = 1 ! Units: kg/kg
     rttov_opt%mmr_cldaer = nml%mmr_cldaer
 
+    rttov_opt%user_cld_opt_param = nml%user_cld_opt_param
     rttov_opt%ice_scheme = nml%ice_scheme
     rttov_opt%clw_scheme = nml%clw_scheme
 
@@ -129,7 +131,10 @@ contains
     rttov_atm%iwc         = model%iwc(idx_start:idx_end,:)
     rttov_atm%lwc         = model%lwc(idx_start:idx_end,:)
     rttov_atm%reff        = model%reff(idx_start:idx_end,:)
+    rttov_atm%cdnc        = model%cdnc(idx_start:idx_end,:)
 
   end subroutine rttov_setup_atm
+
+
 
 end module mod_rttov_setup

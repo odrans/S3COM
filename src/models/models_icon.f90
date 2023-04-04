@@ -34,6 +34,7 @@ module mod_icon
   use mod_io_utils,        only: extract_coordinates
 
   use s3com_config,        only: rd, rv, epsilon, mu, nu, a, b, Q_ext, rholiq
+  use mod_cld_phys_sb,     only: re_sb
 
   implicit none
 
@@ -120,17 +121,17 @@ contains
     do i = 1, Npoints
        do j = 1, Nlayers
           if(icon%cdnc(i,j) .gt. 0) then
-             icon%Reff(i,j) = (a/2._wp)*(gamma((nu+1._wp+3._wp*b)/mu)/gamma((nu+1._wp+2._wp*b)/mu))*(icon%lwc(i,j) / &
-             icon%cdnc(i,j))**b*(gamma((nu+1._wp)/mu)/gamma((nu+2._wp)/mu))**b
+             icon%reff(i,j) = re_sb(icon%lwc(i,j), icon%cdnc(i,j), 1)
           end if
        end do
     end do
+
     icon%Reff = icon%Reff * 1E6 !! m to um (default input in RTTOV)
 
-    !!Cloud extinction coefficient in m-1
+    ! Cloud extinction coefficient in m-1
     ! icon%beta_ext = (3._wp/4._wp)*(Q_ext/rholiq)*(icon%lwc/icon%Reff)
 
-    ! !!Layer thickness
+    !!Layer thickness
     ! icon%dz_cod(:,1:nlevels-1) = ((rd*icon%tv)/grav)*(log(icon%p(:,1:nlevels+1)/icon%p(:,1:nlevels)))
 
     ! !!Cloud optical depth
@@ -186,5 +187,7 @@ contains
          icon%rho, icon%tv, icon%lwc, icon%iwc, icon%cdnc, icon%Reff)
 
   end subroutine icon_clear
+
+
 
 end module mod_icon

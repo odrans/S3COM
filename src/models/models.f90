@@ -173,14 +173,14 @@ contains
 
     ! Extract information from the ICON time (%Y%m%d.%f)
     ! ----------------------------------------------------------------------------------------------------
-    hour = (icon%time - int(icon%time)) * 24; model%time(1) = int(hour)
+    hour = real(icon%time - int(icon%time), wp) * 24._wp; model%time(1) = int(hour)
     minute = (hour - int(hour)) * 60; model%time(2) = int(minute)
     sec = (minute - int(minute)) * 60; model%time(3) = int(sec)
 
     write(icon_date, "(I8)") int(icon%time)
-    read(icon_date(1:4), "(I)") model%date(3)
-    read(icon_date(5:6), "(I)") model%date(2)
-    read(icon_date(7:8), "(I)") model%date(1)
+    read(icon_date(1:4), "(I4)") model%date(3)
+    read(icon_date(5:6), "(I2)") model%date(2)
+    read(icon_date(7:8), "(I2)") model%date(1)
     ! ----------------------------------------------------------------------------------------------------
 
     model%nlat       = icon%nlat

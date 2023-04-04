@@ -85,7 +85,7 @@ contains
     type(type_nwpsaf), intent(inout) :: nwpsaf
 
     !!Local variables
-    character(len=256) :: errmsg, straux
+    character(len=256) :: errmsg
     character(len=256) :: vname, dimname(nmax_dim)
 
     integer(kind=4)                    :: dimsize(NMAX_DIM), vdimid(NMAX_DIM), idim
@@ -215,7 +215,7 @@ contains
 
           ! 2D variables
        case ('point') ! point
-          nwpsaf%point(1:npoints) = x1(1:npoints)
+          nwpsaf%point(1:npoints) = int(x1(1:npoints))
        case ('elevation') ! Orography
           nwpsaf%elevation(1:npoints) = x1(1:npoints)
        case ('lsm') ! Land-sea mask
@@ -231,11 +231,11 @@ contains
        case ('v10') ! Meridional wind in 10 m
           nwpsaf%v10(1:npoints) = x1(1:npoints)
        case ('day') ! Meridional wind in 10 m
-          nwpsaf%day(1:npoints) = x1(1:npoints)
+          nwpsaf%day(1:npoints) = int(x1(1:npoints))
        case ('month') ! Meridional wind in 10 m
-          nwpsaf%month(1:npoints) = x1(1:npoints)
+          nwpsaf%month(1:npoints) = int(x1(1:npoints))
        case ('year') ! Meridional wind in 10 m
-          nwpsaf%year(1:npoints) = x1(1:npoints)
+          nwpsaf%year(1:npoints) = int(x1(1:npoints))
 
           ! 3D variables
        case ('altitude') !Geometric height at full level center

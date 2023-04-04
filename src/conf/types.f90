@@ -59,6 +59,7 @@ module s3com_types
           ir_scatt_model, &
           vis_scatt_model, &
           dom_nstreams, &
+          dom_nmoments, &
           rttov_nthreads, &
           gas_unit, &
           ice_scheme, &
@@ -66,6 +67,7 @@ module s3com_types
      integer(kind=4), dimension(:), allocatable :: &
           channel_list
      logical :: &
+          user_cld_opt_param, &
           flag_retrievals,  &
           flag_output_atm,  &
           flag_output_jac,  &
@@ -234,7 +236,7 @@ module s3com_types
           lwc,                                & !Liquid water content (kg/m3)
           iwc,                                & !Ice water content (kg/m3)
           cdnc,                               & !Cloud droplet number concentration (1/m3)
-          Reff                                  !Cloud liquid water effective radius (m)
+          Reff
   end type type_model
   
   type type_rttov_opt
@@ -251,7 +253,8 @@ module s3com_types
           clw_scheme, &
           ir_scatt_model, &
           vis_scatt_model, &
-          dom_nstreams
+          dom_nstreams, &
+          dom_nmoments
      logical :: &
           mmr_cldaer, &
           ozone_data, &
@@ -264,7 +267,8 @@ module s3com_types
           add_aerosols, &
           add_refrac, &
           do_opdep_calc, &
-          dom_rayleigh
+          dom_rayleigh, &
+          user_cld_opt_param
      integer, dimension(:), allocatable :: &
           channel_list
      character(len = 32) :: &
@@ -273,6 +277,22 @@ module s3com_types
      real(wp) :: &
           zenangle, azangle
   end type type_rttov_opt
+
+  type type_rttov_cld_opt_param
+     integer :: &
+          nmom
+     integer, dimension(:), allocatable :: &
+          mom
+     real(wp), dimension(:), allocatable :: &
+          phangle
+     real(wp), dimension(:,:), allocatable :: &
+          abs, &
+          sca, &
+          bpr
+     real(wp), dimension(:,:,:), allocatable :: &
+          legcoef, &
+          pha
+  end type type_rttov_cld_opt_param
 
   !!Type containing variables used by S3COM for retrievals
   type type_s3com_rad
@@ -350,8 +370,11 @@ module s3com_types
           nchan, &
           nrad, &
           nmom
+     character(len=128) :: &
+          fn_mie,          &
+          fn_legcoef
      integer(kind=4), dimension(:), allocatable :: &
-          chan_id
+          chan_id, mom
      real(kind=wp), dimension(:), allocatable :: &
           chan_wl, &
           radius, &

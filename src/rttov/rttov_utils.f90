@@ -30,15 +30,17 @@
 module mod_rttov_utils
 
   use s3com_types, only: wp, type_s3com
+  use rttov_const, only: errorstatus_success
+  use rttov_unix_env, only: rttov_exit
 
   implicit none
 
   private
-  public :: idx_rttov
+  public :: find_idx_rttov, check_rttov_status
 
 contains
 
-  function idx_rttov(s3com)
+  function find_idx_rttov(s3com) result(idx_rttov)
 
     type(type_s3com), intent(in) :: s3com
     integer(kind=4), dimension(:), allocatable :: idx_rttov
@@ -61,6 +63,18 @@ contains
 
     return
 
-  end function idx_rttov
+  end function find_idx_rttov
+
+  subroutine check_rttov_status(status, location)
+
+    integer, intent(in) :: status
+    character(len=*), intent(in) :: location
+
+    if (status /= errorstatus_success) then
+       write(6,*) location
+       call rttov_exit(status)
+    endif
+  end subroutine check_rttov_status
+
 
 end module mod_rttov_utils
