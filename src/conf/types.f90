@@ -77,7 +77,8 @@ module s3com_types
           ozone_data,       &
           add_refrac,       &
           add_clouds,       &
-          add_aerosols
+          add_aerosols,     &
+          switchrad
   end type type_nml
 
   !!Type containing variables from NWP-SAF simulations
@@ -163,8 +164,10 @@ module s3com_types
           q_2m,                             & !2m specific water vapor content (kg/kg)
           u_10m,                            & !U-component of wind (m/s)
           v_10m,                            & !V-component of wind (m/s)
+          lwp,                              & !Liquid water path (g/m2)
+          iwp,                              & !Ice water path (g/m2)
           cod,                              & !Cloud optical depth (-)
-          reff_top                            !Cloud droplet effective radius at cloud top (um)
+          reff_top                            !Cloud droplet effective radius at cloud top (µm)
      real(wp), dimension(:,:), allocatable :: &
           p,                                    & !Layer pressure (Pa)
           p_ifc,                                & !Pressure at half-level center (Pa)
@@ -177,7 +180,7 @@ module s3com_types
           clc,                                  & !Total cloud fraction (0-1)
           clw,                                  & !Specific cloud water content (kg/kg)
           cli,                                  & !Specific cloud ice content (kg/kg)
-          qnc,                                  & !Cloud droplet number concentration (particules/kg)
+          qnc,                                  & !Cloud droplet number concentration (kg-1)
           qr,                                   & !Rain mixing ratio (kg/kg)
           qs,                                   & !Snow mixing ratio (kg/kg)
           dz,                                   & !Layer thickness (m)
@@ -187,9 +190,9 @@ module s3com_types
           es_i,                                 & !Saturation vapour pressure of ice water (Pa)
           lwc,                                  & !Liquid water content (kg/m3)
           iwc,                                  & !Ice water content (kg/m3)
-          cdnc,                                 & !Cloud droplet number concentration (1/m3)
-          reff,                                 & !Cloud liquid water effective radius (m)
-          beta_ext                                !Cloud droplet extinction coefficient (1/m)
+          cdnc,                                 & !Cloud droplet number concentration (cm-3)
+          reff,                                 & !Cloud droplet effective radius (µm)
+          beta_ext                                !Cloud droplet extinction coefficient (m-1)
   end type type_icon
 
   !! Type containing variables stored for model outputs
@@ -218,6 +221,8 @@ module s3com_types
           q_2m,                               & !2m specific water vapor content (kg/kg)
           u_10m,                              & !U-component of wind (m/s)
           v_10m,                              & !V-component of wind (m/s)
+          lwp,                                & !Liquid water path (g/m2)
+          iwp,                                & !Ice water path (g/m2)
           cod,                                & !Cloud optical depth (-)
           reff_top,                           & !Cloud droplet effective radius at cloud top (um)
           sunzenangle,                        & !Solar zenith angle
@@ -236,14 +241,14 @@ module s3com_types
           t,                                  & !Temperature (K)
           q,                                  & !Specific humidity (kg/kg)
           clc,                                & !Total cloud fraction (0-1)
-          qnc,                                & !Cloud droplet number concentration (particules/kg)
+          qnc,                                & !Cloud droplet number concentration (kg-1)
           qr,                                 & !Rain mixing ratio (kg/kg)
           qs,                                 & !Snow mixing ratio (kg/kg)
           lwc,                                & !Liquid water content (kg/m3)
           iwc,                                & !Ice water content (kg/m3)
-          cdnc,                               & !Cloud droplet number concentration (1/m3)
-          reff,                               & !Cloud liquid water effective radius (m)
-          beta_ext
+          cdnc,                               & !Cloud droplet number concentration (cm-3)
+          reff,                               & !Cloud droplet effective radius (µm)
+          beta_ext                              !Cloud droplet extinction coefficient (m-1)
   end type type_model
   
   type type_rttov_opt
@@ -272,6 +277,7 @@ module s3com_types
           add_clouds, &
           add_aerosols, &
           add_refrac, &
+          switchrad,  &
           do_opdep_calc, &
           dom_rayleigh
      integer, dimension(:), allocatable :: &
@@ -301,11 +307,14 @@ module s3com_types
   type type_s3com_jac
      real(kind=wp), dimension(:), allocatable ::   &
           wavelength
+     real(kind=wp), dimension(:,:), allocatable ::   &
+          lwp
      real(kind=wp), dimension(:,:,:), allocatable :: &
           p,                                         &
           t,                                         &
           cfrac,                                     &
-          clwde
+          clwde,                                     &
+          cdnc
      logical :: do_jacobian_calc
   end type type_s3com_jac
 

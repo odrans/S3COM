@@ -172,7 +172,7 @@ contains
     type(type_model), intent(in) :: rttov_atm
     type(type_rttov_opt), intent(in) :: rttov_opt
     
-    logical, intent(IN) :: dealloc !Flag to determine whether to deallocate RTTOV types
+    logical, intent(in) :: dealloc !Flag to determine whether to deallocate RTTOV types
 
     !!Inout/Outputs variables
     type(type_s3com), intent(inout) :: s3com
@@ -188,7 +188,7 @@ contains
     nthreads = rttov_opt%nthreads
 
     list_points = idx_rttov(s3com)
-    nprof = size(list_points); nlevels = rttov_atm%nlevels
+    nprof = size(list_points); nlevels = rttov_atm%nlevels; nlayers = rttov_atm%nlayers
 
     if (nprof .eq. 0) return
 
@@ -270,23 +270,23 @@ contains
    else
     
     !!Allocate structures for rttov_direct
-    call rttov_alloc_direct(                 &
-         errorstatus,                   &
-         1_jpim,                        & !1 => allocate
-         nprof,                         &
-         nchanprof,                     &
-         nlevels,                       &
-         chanprof,                      &
-         opts,                          &
-         profiles,                      &
-         coefs,                         &
-         transmission,                  &
-         radiance,                      &
-         calcemis      = calcemis,      &
-         emissivity    = emissivity,    &
-         calcrefl      = calcrefl,      &
-         reflectance   = reflectance,   &
-         init          = .true._jplm)
+    call rttov_alloc_direct(          &
+         errorstatus,                 &
+         1_jpim,                      & !1 => allocate
+         nprof,                       &
+         nchanprof,                   &
+         nlevels,                     &
+         chanprof,                    &
+         opts,                        &
+         profiles,                    &
+         coefs,                       &
+         transmission,                &
+         radiance,                    &
+         calcemis    = calcemis,      &
+         emissivity  = emissivity,    &
+         calcrefl    = calcrefl,      &
+         reflectance = reflectance,   &
+         init        = .true._jplm)
 
     if (errorstatus /= errorstatus_success) then
        write(*,*) 'allocation error for rttov_direct structures'
@@ -380,6 +380,9 @@ contains
        ! Liquid cloud input profiles
        profiles(:)%clw_scheme = rttov_opt%clw_scheme !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
        profiles(iprof)%clwde(:) = rttov_atm%reff(idx_prof,:)*2.0 ! Need the diameter
+       
+       !profiles(iprof)%lwp = rttov_atm%lwp(idx_prof)
+       !profiles(iprof)%cdnc(:) = rttov_atm%cdnc(idx_prof,:)
 
     enddo
 
@@ -515,19 +518,20 @@ contains
             s3com%rad%f_ref_total(idx_prof,ichan) = radiance%refl(j)
             s3com%rad%f_ref_clear(idx_prof,ichan) = radiance%refl_clear(j)
             
+            !Jacobian
+            !s3com%jac%lwp(idx_prof,ichan) = profiles_k(ichan)%lwp(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
+            
             ! Jacobian profiles
             do ilev = 1, profiles_k(ichan)%nlevels
-               
                !s3com%jac%p(idx_prof,ilev,ichan) = profiles_k(ichan)%p(ilev)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
                s3com%jac%t(idx_prof,ilev,ichan) = profiles_k(ichan)%t(ilev)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
                !write(6,*) s3com%jac%t(idx_prof,ilev,ichan)
             enddo
             
-            !do ilay = 1, profiles_k(ichan)%nlevels-1
-               
+            !do ilay = 1, profiles_k(ichan)%nlayers
+               !s3com%jac%cdnc(idx_prof,ilay,ichan) = profiles_k(ichan)%cdnc(ilay)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
                !s3com%jac%cfrac(idx_prof,ilay,ichan) = profiles_k(ichan)%cfrac(ilay)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
                !s3com%jac%clwde(idx_prof,ilay,ichan) = profiles_k(ichan)%clwde(ilay)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7
-               
             !enddo
             
             ichan = ichan + 1
@@ -552,12 +556,12 @@ contains
          
          do j = 1+joff, nchannels+joff
             
-            s3com%rad%f_rad_total(idx_prof,ichan) = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-            s3com%rad%f_rad_clear(idx_prof,ichan) = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
-            s3com%rad%f_bt_total(idx_prof,ichan)  = radiance%bt(j)
-            s3com%rad%f_bt_clear(idx_prof,ichan)  = radiance%bt_clear(j)
-            s3com%rad%f_ref_total(idx_prof,ichan) = radiance%refl(j)
-            s3com%rad%f_ref_clear(idx_prof,ichan) = radiance%refl_clear(j)
+            !s3com%rad%f_rad_total(idx_prof,ichan) = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            !s3com%rad%f_rad_clear(idx_prof,ichan) = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            !s3com%rad%f_bt_total(idx_prof,ichan)  = radiance%bt(j)
+            !s3com%rad%f_bt_clear(idx_prof,ichan)  = radiance%bt_clear(j)
+            !s3com%rad%f_ref_total(idx_prof,ichan) = radiance%refl(j)
+            !s3com%rad%f_ref_clear(idx_prof,ichan) = radiance%refl_clear(j)
             
             do ilev = 1, nlevels
                
@@ -615,6 +619,13 @@ contains
                profiles_tl(iprof)%t(ilev) = 0._jprb
                
             enddo
+            
+            s3com%rad%f_rad_total(idx_prof,ichan) = radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            s3com%rad%f_rad_clear(idx_prof,ichan) = radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7 !(W/m2/sr/um)
+            s3com%rad%f_bt_total(idx_prof,ichan)  = radiance%bt(j)
+            s3com%rad%f_bt_clear(idx_prof,ichan)  = radiance%bt_clear(j)
+            s3com%rad%f_ref_total(idx_prof,ichan) = radiance%refl(j)
+            s3com%rad%f_ref_clear(idx_prof,ichan) = radiance%refl_clear(j)
             
             ichan = ichan + 1
             

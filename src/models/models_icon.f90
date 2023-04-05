@@ -83,7 +83,7 @@ module mod_icon
          icon%dz(:,1:nlayers) = abs(icon%z_ifc(:,1:nlayers) - icon%z(:,1:nlayers)) * 2._wp
          
          !! Atmospheric moisture
-         !! ----------------------------------------------------------------------------------------------------
+         !! ---------------------------------------------------------------------------------------------------------------------
          !! Virtual temperature
          icon%tv = icon%t * (1 + 0.608 * icon%q)
          
@@ -105,26 +105,32 @@ module mod_icon
          !! Cloud ice water content (kg/m3)
          icon%iwc = icon%cli * icon%rho
          
-         !! Cloud liquid droplet number concentration (particules/m3)
-         icon%cdnc = icon%qnc * icon%rho
+         !! Liquid water path (g/m2)
+         icon%lwp = sum((icon%lwc*1e3) * icon%dz)
          
-         !! Cloud liquid water effective radius (m)
+         !! Ice water path (g/m2)
+         icon%iwp = sum((icon%iwc*1e3) * icon%dz)
+         
+         !! Cloud droplet number concentration (m-3 --> cm-3)
+         icon%cdnc = (icon%qnc * icon%rho) * 1e-6
+         
+         !! Cloud droplet effective radius (m --> µm)
          do i = 1, npoints
             do j = 1, nlayers
                if(icon%cdnc(i,j) .gt. 0) then
                   icon%reff(i,j) = (a/2._wp)*(gamma((nu+1._wp+3._wp*b)/mu)/gamma((nu+1._wp+2._wp*b)/mu))*(icon%lwc(i,j) / &
-                                   icon%cdnc(i,j))**b*(gamma((nu+1._wp)/mu)/gamma((nu+2._wp)/mu))**b
+                                   icon%cdnc(i,j)*1e6)**b*(gamma((nu+1._wp)/mu)/gamma((nu+2._wp)/mu))**b
                endif
             enddo
          enddo
          
-         icon%reff = icon%reff * 1E6 !m to um (default input in RTTOV)
+         icon%reff = icon%reff * 1e6 !m to µm (default input in RTTOV)
          
-         !! Cloud liquid droplet extinction coefficient (m-1)
+         !! Cloud droplet extinction coefficient (m-1)
          do i = 1, npoints
             do j = 1, nlayers
                if(icon%reff(i,j) .gt. 0) then
-                  icon%beta_ext(i,j) = (3._wp/4._wp)*(Q_ext/rholiq)*(icon%lwc(i,j)/(icon%reff(i,j)*1E-6))
+                  icon%beta_ext(i,j) = (3._wp/4._wp)*(Q_ext/rholiq)*(icon%lwc(i,j)/(icon%reff(i,j)*1e-6))
                endif
             enddo
          enddo
@@ -137,10 +143,10 @@ module mod_icon
             enddo
          enddo
          
-         !! Cloud liquid water effective radius at cloud top (um)
+         !! Cloud droplet effective radius at cloud top (um)
          do i = 1, npoints
             do j = 1, nlayers
-               if (icon%lwc(i,j)*1E3*icon%dz(i,j) .gt. lwp_lay_threshold .and. icon%cod(i) .gt. 5._wp) then
+               if (icon%lwc(i,j)*1e3*icon%dz(i,j) .gt. lwp_lay_threshold .and. icon%cod(i) .gt. 5._wp) then
                   icon%ztop_liq_idx(i) = j
                   icon%reff_top(i) = icon%reff(i,icon%ztop_liq_idx(i))
                   !write(*,*) icon%ztop_liq_idx(i), icon%reff_top(i)
@@ -170,7 +176,7 @@ module mod_icon
          !! 2D variables
          allocate(icon%lon(npoints), source = 0._wp)
          allocate(icon%lat, icon%lon_orig, icon%lat_orig, icon%topography, icon%landmask, &
-                  icon%ps, icon%ts, icon%t_2m, icon%q_2m, icon%u_10m, icon%v_10m, icon%cod, icon%reff_top, &
+                  icon%ps, icon%ts, icon%t_2m, icon%q_2m, icon%u_10m, icon%v_10m, icon%lwp, icon%iwp, icon%cod, icon%reff_top, &
                   mold = icon%lon)
          
          !! 3D variables on atmospheric levels
@@ -195,7 +201,8 @@ module mod_icon
                     icon%topography, icon%landmask, icon%ps, icon%ts, icon%t_2m, icon%q_2m, icon%u_10m, icon%v_10m, icon%cod, &
                     icon%p, icon%z, icon%z_ifc, icon%p_ifc, icon%t_ifc, icon%q_ifc, &
                     icon%t, icon%q, icon%clc, icon%clw, icon%cli, icon%qnc, icon%qr, icon%qs, icon%dz, &
-                    icon%rho, icon%tv, icon%lwc, icon%iwc, icon%cdnc, icon%reff, icon%beta_ext, icon%ztop_liq_idx, icon%reff_top)
+                    icon%rho, icon%tv, icon%lwc, icon%iwc, icon%lwp, icon%iwp, icon%cdnc, icon%reff, icon%beta_ext, &
+                    icon%ztop_liq_idx, icon%reff_top)
          
       end subroutine icon_clear
       

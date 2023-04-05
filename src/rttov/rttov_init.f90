@@ -160,8 +160,8 @@ contains
     opts%config%do_checkinput          = .true.  ! If true checks whether input profiles are within both absolute and regression
 
     !opts%rt_all%switchrad              = .true. ! Input K perturbation in BT
-    opts%rt_all%switchrad              = .false. ! Input K perturbation in radiance
-
+    !opts%rt_all%switchrad              = .false. ! Input K perturbation in radiance
+    opts%rt_all%switchrad              = rttov_opt%switchrad !Input K perturbation in radiance (false) or in BT (true)
     !!-----------------------------------------------------------------------------------------------------------------------!!
     !! 2. Read coefficients                                                                                                  !!
     !!-----------------------------------------------------------------------------------------------------------------------!!

@@ -70,7 +70,7 @@ contains
       logical :: &
          flag_retrievals, flag_output_atm, flag_output_jac, flag_output_k_tl, &
          do_jacobian_calc, do_k_tl_calc, do_opdep_calc, &
-         add_refrac, dom_rayleigh, mmr_cldaer, ozone_data, add_aerosols, add_clouds
+         add_refrac, dom_rayleigh, mmr_cldaer, ozone_data, add_aerosols, add_clouds, switchrad
          
       integer(kind = 4) :: &
          npoints_it, nchannels, platform, satellite, instrument, &
@@ -116,7 +116,8 @@ contains
          ozone_data,        &
          add_refrac,        &
          add_aerosols,      &
-         add_clouds
+         add_clouds,        &
+         switchrad
       
       ! Namelist definition===============================
 
@@ -161,6 +162,7 @@ contains
     nml%add_aerosols = add_aerosols
     nml%add_clouds = add_clouds
     nml%add_refrac = add_refrac
+    nml%switchrad = switchrad
 
   end subroutine read_namelist
 

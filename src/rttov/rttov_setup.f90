@@ -66,6 +66,7 @@ contains
     rttov_opt%add_refrac = nml%add_refrac
     rttov_opt%add_clouds = nml%add_clouds
     rttov_opt%add_aerosols = nml%add_aerosols
+    rttov_opt%switchrad = nml%switchrad
 
     rttov_opt%gas_units = 1 ! Units: kg/kg
     rttov_opt%mmr_cldaer = nml%mmr_cldaer
@@ -118,6 +119,7 @@ contains
     rttov_atm%q_2m        = model%q_2m(idx_start:idx_end)
     rttov_atm%u_10m       = model%u_10m(idx_start:idx_end)
     rttov_atm%v_10m       = model%v_10m(idx_start:idx_end)
+    rttov_atm%lwp         = model%lwp(idx_start:idx_end)
     rttov_atm%sunzenangle = model%sunzenangle(idx_start:idx_end)
     rttov_atm%sunazangle  = model%sunazangle(idx_start:idx_end)
 
@@ -129,6 +131,7 @@ contains
     rttov_atm%iwc         = model%iwc(idx_start:idx_end,:)
     rttov_atm%lwc         = model%lwc(idx_start:idx_end,:)
     rttov_atm%reff        = model%reff(idx_start:idx_end,:)
+    rttov_atm%cdnc        = model%cdnc(idx_start:idx_end,:)
 
   end subroutine rttov_setup_atm
 

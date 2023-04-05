@@ -124,21 +124,21 @@ contains
     !! 2D fields
     allocate(model%lat(npoints), source = 0._wp)
     allocate(model%lon, model%lat_orig, model%lon_orig, &
-         model%topography, model%u_10m, model%v_10m, model%cod, model%reff_top, &
+         model%topography, model%u_10m, model%v_10m, model%lwp, model%iwp, model%cod, model%reff_top, &
          model%ts, model%ps, model%q_2m, model%t_2m, &
          model%landmask, model%sunzenangle, model%sunazangle, &
          mold = model%lat)
 
     !! 3D fields at atmospheric levels
-    allocate(model%p(npoints, nlevels), source = 0._wp)
-    allocate(model%t, model%q, model%co2, model%ch4, &
+    allocate(model%zh(npoints, nlevels), source = 0._wp)
+    allocate(model%p, model%t, model%q, model%co2, model%ch4, &
          model%n2o, model%s2o, model%co, model%o3, &
-         mold = model%p)
+         mold = model%zh)
 
     !! 3D fields in atmospheric layers
     allocate(model%z(npoints, nlayers), source = 0._wp)
     allocate(model%dz, model%clc, model%reff, model%cdnc, &
-         model%iwc, model%lwc, model%beta_ext, &
+         model%lwc, model%iwc, model%beta_ext, &
          mold = model%z)
 
   end subroutine models_init
@@ -155,8 +155,8 @@ contains
          model%landmask, model%sunzenangle, model%sunazangle, &
          model%p, model%t, model%q, model%co2, model%ch4, &
          model%n2o, model%s2o, model%co, &
-         model%z, model%dz, model%clc, model%reff, model%cdnc, &
-         model%iwc, model%lwc, model%beta_ext)
+         model%zh, model%z, model%dz, model%clc, model%reff, model%cdnc, &
+         model%lwc, model%iwc, model%lwp, model%iwp, model%beta_ext)
 
   end subroutine models_deinit
 
@@ -213,11 +213,14 @@ contains
     model%p        = icon%p_ifc
     model%t        = icon%t_ifc
     model%q        = icon%q_ifc
-    model%z        = icon%z !icon%z_ifc
+    model%zh       = icon%z_ifc
+    model%z        = icon%z
     model%dz       = icon%dz
     model%clc      = icon%clc
-    model%iwc      = icon%iwc
     model%lwc      = icon%lwc
+    model%iwc      = icon%iwc
+    model%lwp      = icon%lwp
+    model%iwp      = icon%iwp
     model%reff     = icon%reff
     model%cdnc     = icon%cdnc
     model%beta_ext = icon%beta_ext

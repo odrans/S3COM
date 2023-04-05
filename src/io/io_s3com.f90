@@ -164,7 +164,7 @@ contains
 
       errst = nf90_put_att(ncid, varid_lon,       "standard_name", "longitude")
       errst = nf90_put_att(ncid, varid_lat,       "standard_name", "latitude")
-      errst = nf90_put_att(ncid, varid_chan,      "standard_name", "chan")
+      errst = nf90_put_att(ncid, varid_chan,      "standard_name", "channel")
       errst = nf90_put_att(ncid, varid_ref_total, "standard_name", "ref_total")
       errst = nf90_put_att(ncid, varid_ref_clear, "standard_name", "ref_clear")
       errst = nf90_put_att(ncid, varid_bt_total,  "standard_name", "bt_total")
@@ -233,13 +233,17 @@ contains
       type(type_nml),   intent(in) :: nml
       
       !!Local variables
+      real(kind=wp), dimension(model%nlon, model%nlat, nml%nchannels) :: &
+         gridded_jac_lwp
+         
       real(kind=wp), dimension(model%nlon, model%nlat, model%nlevels, nml%nchannels) :: &
          gridded_jac_p, &
          gridded_jac_t
-      
+         
       real(kind=wp), dimension(model%nlon, model%nlat, model%nlayers, nml%nchannels) :: &
-         gridded_jac_clc, &
-         gridded_jac_deff
+         gridded_jac_clc,                                                               &
+         gridded_jac_deff,                                                              &
+         gridded_jac_cdnc
          
       integer(kind=4) :: ncid, errst
       
@@ -249,10 +253,12 @@ contains
          varid_lay,      &
          varid_lev,      &
          varid_chan,     &
+         varid_jac_lwp,  &
          varid_jac_p,    &
          varid_jac_t,    &
          varid_jac_clc,  &
-         varid_jac_deff
+         varid_jac_deff, &
+         varid_jac_cdnc
          
       integer(kind=4) ::         &
          dimid_lon,              &
@@ -272,16 +278,18 @@ contains
       
       fn_out_jac = trim(nml%path_out)//"S3COM"//trim(suffix)//"_k.nc"
       
+      call map_point_to_ll(model%nlon, model%nlat, model%mode, x2=s3com%jac%lwp,   y3=gridded_jac_lwp)
       call map_point_to_ll(model%nlon, model%nlat, model%mode, x3=s3com%jac%p,     y4=gridded_jac_p)
       call map_point_to_ll(model%nlon, model%nlat, model%mode, x3=s3com%jac%t,     y4=gridded_jac_t)
       call map_point_to_ll(model%nlon, model%nlat, model%mode, x3=s3com%jac%cfrac, y4=gridded_jac_clc)
       call map_point_to_ll(model%nlon, model%nlat, model%mode, x3=s3com%jac%clwde, y4=gridded_jac_deff)
-
+      call map_point_to_ll(model%nlon, model%nlat, model%mode, x3=s3com%jac%cdnc,  y4=gridded_jac_cdnc)
+      
       errst = nf90_create(fn_out_jac, NF90_CLOBBER, ncid)
       
       errst = nf90_def_dim(ncid, "lon",   model%nlon,    dimid_lon)
       errst = nf90_def_dim(ncid, "lat",   model%nlat,    dimid_lat)
-      !errst = nf90_def_dim(ncid, "layer", model%nlayers, dimid_lay)
+      errst = nf90_def_dim(ncid, "layer", model%nlayers, dimid_lay)
       errst = nf90_def_dim(ncid, "level", model%nlevels, dimid_lev)
       errst = nf90_def_dim(ncid, "chan",  nml%nchannels, dimid_chan)
       
@@ -292,43 +300,69 @@ contains
       
       errst = nf90_def_var(ncid, "lon",      NF90_REAL, dimid_lon,           varid_lon)
       errst = nf90_def_var(ncid, "lat",      NF90_REAL, dimid_lat,           varid_lat)
-      errst = nf90_def_var(ncid, "chan",     NF90_REAL, dimid_chan,          varid_chan)
       !errst = nf90_def_var(ncid, "lay",      NF90_REAL, dimid_lay,           varid_lay)
+      !errst = nf90_def_var(ncid, "lev",      NF90_REAL, dimid_lev,           varid_lev)
+      errst = nf90_def_var(ncid, "lay",      NF90_REAL, dimid_lay,           varid_lay)
       errst = nf90_def_var(ncid, "lev",      NF90_REAL, dimid_lev,           varid_lev)
-      !errst = nf90_def_var(ncid, "jac_p",    NF90_REAL, dimid_latlonlevchan, varid_jac_p)
+      errst = nf90_def_var(ncid, "chan",     NF90_REAL, dimid_chan,          varid_chan)
+      errst = nf90_def_var(ncid, "k_lwp",    NF90_REAL, dimid_latlonchan,    varid_jac_lwp)
+      !errst = nf90_def_var(ncid, "k_p",    NF90_REAL, dimid_latlonlevchan, varid_jac_p)
       errst = nf90_def_var(ncid, "k_t",    NF90_REAL, dimid_latlonlevchan, varid_jac_t)
-      !errst = nf90_def_var(ncid, "jac_clc",  NF90_REAL, dimid_latlonlaychan, varid_jac_clc)
-      !errst = nf90_def_var(ncid, "jac_reff", NF90_REAL, dimid_latlonlaychan, varid_jac_deff)
+      !errst = nf90_def_var(ncid, "k_clc",  NF90_REAL, dimid_latlonlaychan, varid_jac_clc)
+      !errst = nf90_def_var(ncid, "k_deff", NF90_REAL, dimid_latlonlaychan, varid_jac_deff)
+      errst = nf90_def_var(ncid, "k_cdnc", NF90_REAL, dimid_latlonlaychan, varid_jac_cdnc)
       
       errst = nf90_put_att(ncid, varid_lon,      "standard_name", "longitude")
       errst = nf90_put_att(ncid, varid_lat,      "standard_name", "latitude")
-      !errst = nf90_put_att(ncid, varid_lay,      "standard_name", "layer")
+      !errst = nf90_put_att(ncid, varid_lay,      "standard_name", "layer index")
+      !errst = nf90_put_att(ncid, varid_lev,      "standard_name", "level index")
+      errst = nf90_put_att(ncid, varid_lay,      "standard_name", "layer")
       errst = nf90_put_att(ncid, varid_lev,      "standard_name", "level")
-      errst = nf90_put_att(ncid, varid_chan,     "standard_name", "chan")
-      !errst = nf90_put_att(ncid, varid_jac_p,    "standard_name", "p_jac")
+      errst = nf90_put_att(ncid, varid_chan,     "standard_name", "channel")
+      errst = nf90_put_att(ncid, varid_jac_lwp,  "standard_name", "k_lwp")
+      !errst = nf90_put_att(ncid, varid_jac_p,    "standard_name", "k_p")
       errst = nf90_put_att(ncid, varid_jac_t,    "standard_name", "k_t")
-      !errst = nf90_put_att(ncid, varid_jac_clc,  "standard_name", "clc_jac")
-      !errst = nf90_put_att(ncid, varid_jac_deff, "standard_name", "deff_jac")
+      !errst = nf90_put_att(ncid, varid_jac_clc,  "standard_name", "k_clc")
+      !errst = nf90_put_att(ncid, varid_jac_deff, "standard_name", "k_deff")
+      errst = nf90_put_att(ncid, varid_jac_cdnc,  "standard_name", "k_cdnc")
       
       errst = nf90_put_att(ncid, varid_lon,      "long_name", "Longitude")
       errst = nf90_put_att(ncid, varid_lat,      "long_name", "Latitude")
       !errst = nf90_put_att(ncid, varid_lay,      "long_name", "Layer index")
-      errst = nf90_put_att(ncid, varid_lev,      "long_name", "Level index")
+      !errst = nf90_put_att(ncid, varid_lev,      "long_name", "Level index")
+      errst = nf90_put_att(ncid, varid_lay,      "long_name", "Layer altitude")
+      errst = nf90_put_att(ncid, varid_lev,      "long_name", "Level altitude")
       errst = nf90_put_att(ncid, varid_chan,     "long_name", "Central wavelength of instrument channel")
+      errst = nf90_put_att(ncid, varid_jac_lwp,  "long_name", "Liquid water path Jacobian")
       !errst = nf90_put_att(ncid, varid_jac_p,    "long_name", "Pressure Jacobian")
       errst = nf90_put_att(ncid, varid_jac_t,    "long_name", "Temperature Jacobian")
       !errst = nf90_put_att(ncid, varid_jac_clc,  "long_name", "Cloud cover Jacobian")
       !errst = nf90_put_att(ncid, varid_jac_deff, "long_name", "Cloud droplet effective diameter Jacobian")
+      errst = nf90_put_att(ncid, varid_jac_cdnc, "long_name", "Cloud droplet number concentration Jacobian")
       
-      errst = nf90_put_att(ncid, varid_lon,      "units", "degrees_east")
-      errst = nf90_put_att(ncid, varid_lat,      "units", "degrees_north")
-      !errst = nf90_put_att(ncid, varid_lay,      "units", "")
-      errst = nf90_put_att(ncid, varid_lev,      "units", "")
-      errst = nf90_put_att(ncid, varid_chan,     "units", "um")
-      !errst = nf90_put_att(ncid, varid_jac_p,    "units", "(W/m2/sr/um)/hPa")
-      errst = nf90_put_att(ncid, varid_jac_t,    "units", "(W/m2/sr/um)/K")
-      !errst = nf90_put_att(ncid, varid_jac_clc,  "units", "(W/m2/sr/um)")
-      !errst = nf90_put_att(ncid, varid_jac_deff, "units", "(W/m2/sr/um)/um")
+      errst = nf90_put_att(ncid, varid_lon,   "units", "degrees_east")
+      errst = nf90_put_att(ncid, varid_lat,   "units", "degrees_north")
+      errst = nf90_put_att(ncid, varid_chan,  "units", "µm")
+      errst = nf90_put_att(ncid, varid_lay,   "units", "m")
+      errst = nf90_put_att(ncid, varid_lev,   "units", "m")
+      
+      if (s3com%nml%switchrad == .false.) then !Input K perturbation in radiance (W/m2/sr/µm)
+         errst = nf90_put_att(ncid, varid_jac_lwp,  "units", "(W/m2/sr/µm)/(g/m2)")
+         !errst = nf90_put_att(ncid, varid_jac_p,    "units", "(W/m2/sr/um)/hPa")
+         errst = nf90_put_att(ncid, varid_jac_t,    "units", "(W/m2/sr/µm)/K")
+         !errst = nf90_put_att(ncid, varid_jac_clc,  "units", "(W/m2/sr/um)")
+         !errst = nf90_put_att(ncid, varid_jac_deff, "units", "(W/m2/sr/um)/um")
+         errst = nf90_put_att(ncid, varid_jac_cdnc, "units", "(W/m2/sr/µm)/cm-3")
+      endif
+      
+      if (s3com%nml%switchrad  == .true.) then !Input K perturbation in BT (K)
+         errst = nf90_put_att(ncid, varid_jac_lwp,  "units", "K/(g/m2)")
+         !errst = nf90_put_att(ncid, varid_jac_p,    "units", "K/hPa")
+         errst = nf90_put_att(ncid, varid_jac_t,    "units", "K/K")
+         !errst = nf90_put_att(ncid, varid_jac_clc,  "units", "K")
+         !errst = nf90_put_att(ncid, varid_jac_deff, "units", "K/µm")
+         errst = nf90_put_att(ncid, varid_jac_cdnc, "units", "K/cm-3")
+      endif
       
       attr_instrument = trim(s3com%opt%rttov%inst_name)//"/"//trim(s3com%opt%rttov%platform_name)
       
@@ -339,12 +373,16 @@ contains
       errst = nf90_put_var(ncid, varid_lon,      model%lon_orig)
       errst = nf90_put_var(ncid, varid_lat,      model%lat_orig)
       !errst = nf90_put_var(ncid, varid_lay,      model%height)
-      errst = nf90_put_var(ncid, varid_lev,      model%height_2)
+      !errst = nf90_put_var(ncid, varid_lev,      model%height_2)
+      errst = nf90_put_var(ncid, varid_lay,      model%z)
+      errst = nf90_put_var(ncid, varid_lev,      model%zh)
       errst = nf90_put_var(ncid, varid_chan,     s3com%rad%wavelength)
+      errst = nf90_put_var(ncid, varid_jac_lwp,  gridded_jac_lwp)
       !errst = nf90_put_var(ncid, varid_jac_p,    gridded_jac_p)
       errst = nf90_put_var(ncid, varid_jac_t,    gridded_jac_t)
       !errst = nf90_put_var(ncid, varid_jac_clc,  gridded_jac_clc)
       !errst = nf90_put_var(ncid, varid_jac_deff, gridded_jac_deff)
+      errst = nf90_put_var(ncid, varid_jac_cdnc, gridded_jac_cdnc)
       
       errst = nf90_close(ncid)
       
@@ -422,7 +460,7 @@ contains
       errst = nf90_put_att(ncid, varid_k_tl_lat,  "units", "degrees_north")
       errst = nf90_put_att(ncid, varid_k_tl_lev,  "units", "")
       errst = nf90_put_att(ncid, varid_k_tl_chan, "units", "um")
-      errst = nf90_put_att(ncid, varid_k_tl_t,    "units", "W/m2/sr/um/K")
+      errst = nf90_put_att(ncid, varid_k_tl_t,    "units", "(W/m2/sr/um)/K")
       
       attr_instrument = trim(s3com%opt%rttov%inst_name)//"/"//trim(s3com%opt%rttov%platform_name)
       
@@ -551,9 +589,9 @@ contains
       errst = nf90_put_att(ncid, varid_atm_z,        "units", "m")
       errst = nf90_put_att(ncid, varid_atm_dz,       "units", "m")
       errst = nf90_put_att(ncid, varid_atm_lwc,      "units", "kg/m3")
-      errst = nf90_put_att(ncid, varid_atm_cdnc,     "units", "particules/m3")
-      errst = nf90_put_att(ncid, varid_atm_reff,     "units", "um")
-      errst = nf90_put_att(ncid, varid_atm_beta_ext, "units", "1/m")
+      errst = nf90_put_att(ncid, varid_atm_cdnc,     "units", "cm-3")
+      errst = nf90_put_att(ncid, varid_atm_reff,     "units", "µm")
+      errst = nf90_put_att(ncid, varid_atm_beta_ext, "units", "m-1")
       
       attr_instrument = trim(s3com%opt%rttov%inst_name)//"/"//trim(s3com%opt%rttov%platform_name)
       
