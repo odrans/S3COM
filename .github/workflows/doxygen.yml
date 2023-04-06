@@ -16,15 +16,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Doxygen Action
+        uses: mattnotmitt/doxygen-action@1.9.5
+        with:
+          working-directory: .
+          doxyfile-path: ./doc/Doxygen/Doxyfile
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: doc/Doxygen/html
-
-      - name: Doxygen Action
-        uses: mattnotmitt/doxygen-action@1.9.5
-        with:
-          working-directory: .
-          doxyfile-path: doc/Doxygen
