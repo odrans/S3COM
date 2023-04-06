@@ -36,7 +36,7 @@ module mod_rttov_utils
   implicit none
 
   private
-  public :: find_idx_rttov, check_rttov_status
+  public :: find_idx_rttov, check_rttov_status, get_rttov_model
 
 contains
 
@@ -75,6 +75,22 @@ contains
        call rttov_exit(status)
     endif
   end subroutine check_rttov_status
+
+  function get_rttov_model(s3com) result(model)
+
+    type(type_s3com), intent(in) :: s3com
+    character(len=8) :: model
+
+    if(s3com%jac%do_jacobian_calc) then
+       model = "jacobian"
+    else if(s3com%k_tl%do_k_tl_calc) then
+       model = "TL"
+    else
+       model = "direct"
+    endif
+
+  end function get_rttov_model
+
 
 
 end module mod_rttov_utils

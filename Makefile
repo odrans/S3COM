@@ -45,10 +45,10 @@
 
 prog = s3com
 
-F90      = gfortran
+F90 = gfortran
 
 ifeq ($(F90),gfortran)
-    F90FLAGS_DEBUG = -g -Wall -Wextra -pedantic -std=f2008 -fbounds-check -fimplicit-none -fcheck=all -ffpe-trap=invalid,zero,overflow
+    F90FLAGS_DEBUG = -g -Wall -Wextra -pedantic -std=f2008 -fbounds-check -fimplicit-none -ffpe-trap=invalid,zero,overflow
     F90FLAGS = -J$(mod) -cpp -fopenmp -ffree-line-length-none $(F90FLAGS_DEBUG)
 else ifeq ($(F90),ifort)
     F90FLAGS = -module $(mod) -fpp -qopenmp -g -debug extended  -fp-stack-check -warn all
@@ -149,8 +149,13 @@ LIST_OBJ_UTILS = $(obj)/utils_fort.o \
 		 $(obj)/utils_phys.o
 
 LIST_OBJ_RTTOVML = $(obj)/rttov_utils.o \
+		   $(obj)/rttov_opts.o \
+		   $(obj)/rttov_coefs.o \
+		   $(obj)/rttov_atlas.o \
+		   $(obj)/rttov_direct.o \
+		   $(obj)/rttov_k.o \
+		   $(obj)/rttov_tl.o \
 		   $(obj)/rttov.o \
-		   $(obj)/rttov_init.o \
 		   $(obj)/rttov_setup.o
 
 LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_IO) $(LIST_OBJ_CLD) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_MAIN)
@@ -161,7 +166,6 @@ LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_IO) $(LIST_OBJ_CLD) $(L
 FLAGS_NCDF = -I$(PATH_NCDF_INC) -L${PATH_NCDF_LIB} -lnetcdff -L${PATH_NCDF_C_LIB} -lnetcdf -Wl,-rpath,${PATH_NCDF_LIB} -Wl,-rpath,${PATH_NCDF_C_LIB}
 FLAGS_RTTOV = -I${RTTOV_INC_PATH} -L${RTTOV_LIB_PATH} $(RTTOV_LIBS)
 FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${PATH_HDF5_LIB} -I${PATH_HDF5_INC}
-##FLAGS_LOCAL = -L$(lib) -lmodels -l_io -l_oe -lrttovml -lmain -lutils
 FLAGS_LOCAL = -L$(lib) -lmodels -l_io -lrttovml -lmain -lcld -lutils -lconf
 
 FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
@@ -278,7 +282,22 @@ $(obj)/io_utils.o : $(DIR_IO)/io_utils.f90
 
 ## Objects for subroutines in ./src/rttov
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/rttov_init.o : $(DIR_RTTOV)/rttov_init.f90
+$(obj)/rttov_atlas.o : $(DIR_RTTOV)/rttov_atlas.f90
+	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
+
+$(obj)/rttov_opts.o : $(DIR_RTTOV)/rttov_opts.f90
+	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
+
+$(obj)/rttov_coefs.o : $(DIR_RTTOV)/rttov_coefs.f90
+	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
+
+$(obj)/rttov_direct.o : $(DIR_RTTOV)/rttov_direct.f90
+	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
+
+$(obj)/rttov_k.o : $(DIR_RTTOV)/rttov_k.f90
+	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
+
+$(obj)/rttov_tl.o : $(DIR_RTTOV)/rttov_tl.f90
 	$(F90) $(F90FLAGS) -I $(RTTOV_INC_PATH) -I $(RTTOV_MOD_PATH) -L $(RTTOV_LIB_PATH) -c $< -o $@
 
 $(obj)/rttov.o : $(DIR_RTTOV)/rttov.f90

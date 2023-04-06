@@ -31,7 +31,9 @@ program s3com_main
 
   use s3com_types,         only: wp, type_rttov_opt, type_nml, type_model, type_s3com, type_cld
   use mod_io_namelist,     only: namelist_load
-  use mod_rttov_interface, only: rttov_init
+  use mod_rttov_atlas,     only: rttov_atlas_init, rttov_atlas_deinit
+  use mod_rttov_opts,      only: rttov_opts_init
+  use mod_rttov_coefs,     only: rttov_coefs_init, rttov_coefs_deinit
   use mod_rttov_setup,     only: rttov_setup_opt, rttov_setup_atm
   use mod_rttov,           only: run_rttov
   use mod_s3com_setup,     only: s3com_init, s3com_subset, s3com_update
@@ -39,7 +41,7 @@ program s3com_main
   use mod_utils_math,      only: n_chunks
   use mod_io_s3com,        only: write_output
   use mod_rttov_utils,     only: find_idx_rttov
-  use mod_cld_mie, only: cld_mie_load
+  use mod_cld_mie,         only: cld_mie_load
   !  use mod_oe_utils,        only: idx_ice
   !  use mod_model_cloud,     only: init_zcloud, init_cloudprof
   !  use mod_oe_run,          only: oe_run
@@ -63,9 +65,6 @@ program s3com_main
   ! Read namelist file
   nml = namelist_load()
 
-  ! Load cloud optical properties
-  call cld_mie_load(nml, cld)
-
   ! Temporary: setting the viewing satellite angles
   zenangle = 0._wp; azangle = 0._wp
 
@@ -81,7 +80,15 @@ program s3com_main
   call rttov_setup_opt(nml, zenangle, azangle, rttov_opt, s3com)
 
   ! Initialize RTTOV (loading surface data and optical properties)
-  call rttov_init(rttov_opt, s3com)
+  ! Structures are created and allocated internally, no outputs here
+  call rttov_opts_init(rttov_opt, s3com)
+  call rttov_coefs_init(rttov_opt, s3com)
+  call rttov_atlas_init(rttov_opt, s3com)
+
+  ! Load cloud optical properties
+  if (rttov_opt%user_cld_opt_param) then
+      call cld_mie_load(s3com, cld)
+  end if
 
   ! Loop over data points, by chunks
   nChunks = n_chunks(npoints, nml%npoints_it)
@@ -129,7 +136,7 @@ program s3com_main
      else
 
         s3com_chunk%flag_rttov(:) = .TRUE.
-        call run_rttov(rttov_atm, rttov_opt, s3com_chunk, cld, dealloc = .FALSE.)
+        call run_rttov(rttov_atm, rttov_opt, s3com_chunk, cld)
 
         write(*,*) s3com_chunk%rad%f_ref_total
 
@@ -144,5 +151,8 @@ program s3com_main
 
   ! Deallocate arrays
   call models_deinit(model)
+
+  call rttov_coefs_deinit()
+  call rttov_atlas_deinit()
 
 end program s3com_main

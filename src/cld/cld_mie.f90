@@ -32,7 +32,7 @@ module mod_cld_mie
   use netcdf
   use rttov_const, only :errorstatus_success
   use parkind1, ONLY : jprb
-  use s3com_types, only: type_cld_mie, type_cld, type_nml
+  use s3com_types, only: type_cld_mie, type_cld, type_s3com
   use mod_io_utils, only: check_netcdf_status
   use mod_cld_legcoef, only: cld_legcoef_load
 
@@ -44,16 +44,20 @@ module mod_cld_mie
 contains
 
   ! Load the Mie scattering optical properties
-  subroutine cld_mie_load(nml, cld)
+  subroutine cld_mie_load(s3com, cld)
 
-    type(type_nml), intent(in) :: nml
+    type(type_s3com), intent(in) :: s3com
 
     type(type_cld), intent(out) :: cld
     type(type_cld_mie) :: cld_mie
 
-    cld_mie%nmom = nml%dom_nmoments
+    character(len = 128) :: dir_mie, inst_id
 
-    cld_mie%fn_mie = "/home/b/b380333/mie_scat_liqcld_eos_2_modis.nc"
+    dir_mie = trim(s3com%nml%path_s3com)//"/data/cld_optprop"
+    inst_id = trim(s3com%opt%rttov%platform_name)//trim(s3com%opt%rttov%sat_name)//trim(s3com%opt%rttov%inst_name)
+
+    cld_mie%nmom = s3com%nml%dom_nmoments
+    cld_mie%fn_mie = trim(dir_mie)//"/mie_scat_liqcld_"//trim(inst_id)//".nc"
 
     call cld_mie_read(cld_mie)
 

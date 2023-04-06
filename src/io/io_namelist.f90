@@ -66,7 +66,7 @@ contains
       integer :: file_unit, iostat, i
       
       ! Namelist variables
-      character(len=256) :: fname_in, path_rttov, path_out, suffix_out, model_name
+      character(len=256) :: fname_in, path_rttov, path_out, suffix_out, model_name, path_s3com
       logical :: &
          flag_retrievals, flag_output_atm, flag_output_jac, flag_output_k_tl, &
          do_jacobian_calc, do_k_tl_calc, do_opdep_calc, &
@@ -86,6 +86,7 @@ contains
       namelist /general/   &
          fname_in,         &
          path_out,         &
+         path_s3com,       &
          suffix_out,       &
          flag_retrievals,  &
          flag_output_atm,  &
@@ -136,6 +137,7 @@ contains
     if(channel_seq(1) > 0) channel_list = (/(i, i= channel_seq(1), channel_seq(2), 1)/)
 
     nml%path_rttov = path_rttov
+    nml%path_s3com = path_s3com
     nml%path_out = path_out
     nml%suffix_out = suffix_out
     nml%fname_in = fname_in

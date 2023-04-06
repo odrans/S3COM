@@ -44,6 +44,7 @@ module s3com_types
   ! Namelist
   type type_nml
      character(len=256) :: &
+          path_s3com, &
           path_rttov, &
           fname_in, &
           path_out, &
@@ -273,7 +274,8 @@ module s3com_types
           channel_list
      character(len = 32) :: &
           platform_name, &
-          inst_name
+          inst_name, &
+          sat_name
      real(wp) :: &
           zenangle, azangle
   end type type_rttov_opt

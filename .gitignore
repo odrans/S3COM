@@ -35,3 +35,6 @@ s3com
 # Temporary & save files
 *~
 *#*
+
+# Legendre coefficient files
+data/cld_opt/*_legcoef_*
