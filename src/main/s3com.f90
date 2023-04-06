@@ -138,7 +138,7 @@ program s3com_main
         s3com_chunk%flag_rttov(:) = .TRUE.
         call run_rttov(rttov_atm, rttov_opt, s3com_chunk, cld)
 
-        write(*,*) s3com_chunk%rad%f_ref_total
+        ! write(*,*) s3com_chunk%rad%f_ref_total
 
      end if
 
