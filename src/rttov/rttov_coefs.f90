@@ -78,7 +78,6 @@ contains
     cld_coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/cldaer_visir/sccldcoef_"//&
          trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//trim(file_format)
 
-    write(*,*) "coef_filename:", trim(cld_coef_filename)
     s3com%opt%rttov%platform_name = platform_name(rttov_opt%platform)
     s3com%opt%rttov%inst_name = inst_name(rttov_opt%instrument)
 

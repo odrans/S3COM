@@ -37,4 +37,4 @@ s3com
 *#*
 
 # Legendre coefficient files
-data/cld_opt/*_legcoef_*
+*_legcoef_*

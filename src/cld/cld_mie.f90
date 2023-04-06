@@ -26,7 +26,10 @@
 ! History
 ! Jan 2022 - O. Sourdeval - Original version
 !
-
+! Description:
+!> @file
+!!   Allocate and load the user-defined Mie cloud properties
+!!
 module mod_cld_mie
 
   use netcdf
@@ -43,38 +46,86 @@ module mod_cld_mie
 
 contains
 
-  ! Load the Mie scattering optical properties
+  !> @brief
+  !!   General call to subroutines needed to load optical properties for liquid clouds from user-defined files
+  !!
+  !! @details
+  !!
+  !!   This initializes and sets the `cld%mie` structure, which contains user-defined liquid cloud optical properties needed by RTTOV.
+  !!
+  !!   These properties are read from netCDF files, currently expected to be located in $PATH/data/opt_prop. Current properties are
+  !!   generated from a Mie code. They are loaded for a given instrument. S3COM stops if the property files are not found.
+  !!
+  !!   These stored Mie optical properties later required by RTTOV are:
+  !!   - the absorption cross-section (in um^2)
+  !!   - the scattering cross-section (in um^2)
+  !!   - the phase function for defined angles
+  !!   - the legendre coefficients of the phase function
+  !!
+  !!   Important: Note that all cloud properties are defined for a normalized droplet size distribution n(r)!
+  !!   This means that the integral of n(r) is here 1, and converting the absorption and scattering cross-sections to the
+  !!   total absorption and scattering coefficients (typically in km^-1) requires multiplying by the droplet number concentration.
+  !!
+  !! @param[out]    cld                   cld structure (currently only contains cld%mie)
+  !! @param[in]     s3com                 s3com structure
   subroutine cld_mie_load(s3com, cld)
 
     type(type_s3com), intent(in) :: s3com
-
     type(type_cld), intent(out) :: cld
-    type(type_cld_mie) :: cld_mie
 
-    character(len = 128) :: dir_mie, inst_id
+    type(type_cld_mie) :: cld_mie
+    character(len = 128) :: dir_mie, inst_id, fn_mie
+    logical :: file_exists
 
     dir_mie = trim(s3com%nml%path_s3com)//"/data/cld_optprop"
     inst_id = trim(s3com%opt%rttov%platform_name)//trim(s3com%opt%rttov%sat_name)//trim(s3com%opt%rttov%inst_name)
+    fn_mie = trim(dir_mie)//"/mie_scat_liqcld_"//trim(inst_id)//".nc"
 
+    inquire(file=fn_mie, exist=file_exists)
+    if (.not. file_exists) then
+       write(6,*) fn_mie, "does not exist. Check or use RTTOV parameterizations for cloud properties"
+    end if
+
+    ! Read the optical properties from cld_mie%fn_mie
+    call cld_mie_read(fn_mie, cld_mie)
+
+    ! Load the corresponding legendre polynomial coeficients (on nmom moments)
     cld_mie%nmom = s3com%nml%dom_nmoments
-    cld_mie%fn_mie = trim(dir_mie)//"/mie_scat_liqcld_"//trim(inst_id)//".nc"
-
-    call cld_mie_read(cld_mie)
-
     call cld_legcoef_load(cld_mie)
 
     cld%mie = cld_mie
 
   end subroutine cld_mie_load
 
-  ! Read the Mie scattering data from a netCDF file
-  subroutine cld_mie_read(cld_mie)
 
-    integer :: ncid
-    type(type_cld_mie) :: cld_mie
+  !> @brief
+  !!   Initializes the cld_mie structure and loads the Mie scattering data from a netCDF file
+  !!
+  !! @details
+  !!
+  !!   This reads Mie optical properties from a user-defined NetCDF file and stores them in the `cld_mie` structure.
+  !!   The following variables are set in `cld_mie`:
+  !!   - nchan: number of wavelengths for the given instrument
+  !!   - nrad: number of radius on which Mie properties are defined
+  !!   - nang: number of angles on which the phase function is computed
+  !!   - chan_id: ID of the instrument channel in RTTOV
+  !!   - radius: effective radii (in um)
+  !!   - angle: phase function angles (in degrees)
+  !!   - Csca: the scattering cross-section coefficient (in um^2). Computed as Cext * w0, with
+  !!   Cext the extinction cross-section and w0 the single-scattering albedo
+  !!   - Cabs: the absorption cross-section coefficient (in um^2). Computed as Cext * (1-w0).
+  !!   - pha: the phase function
+  !!
+  !! @param[in]     fn_mie                name of the netCDF file containing the Mie scattering data
+  !! @param[out]    cld_mie               cld_mie structure
+  subroutine cld_mie_read(fn_mie, cld_mie)
 
-    integer :: varid
-    integer :: status
+    character(len = 128), intent(in) :: fn_mie
+    type(type_cld_mie), intent(out) :: cld_mie
+
+    integer :: ncid, varid, status
+
+    cld_mie%fn_mie = fn_mie
 
     ! Open the file
     status = nf90_open(cld_mie%fn_mie, nf90_nowrite, ncid)
@@ -150,8 +201,5 @@ contains
     cld_mie%Cabs = cld_mie%Cext * (1. - cld_mie%w0)
 
   end subroutine cld_mie_read
-
-
-
 
 end module mod_cld_mie
