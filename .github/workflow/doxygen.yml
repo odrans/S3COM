@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - user_mie
   pull_request:
 
 jobs:
@@ -12,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Generate Doxygen Documentation
-      uses: mattnotmitt/doxygen-action@v1.9.5
+    - name: Doxygen Action
+      uses: mattnotmitt/doxygen-action@1.9.5
       with:
-        working-directory: 'src/'
-        doxyfile-path: 'doc/Doxygen'
+        working-directory: 'doc/Doxygen'
