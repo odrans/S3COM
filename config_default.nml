@@ -1,7 +1,8 @@
 &general
-fname_in = ""
+path_s3com = ""
 path_out = "./"
 suffix_out = ""
+fname_in = ""
 flag_retrievals = FALSE
 flag_output_atm = FALSE
 flag_output_jac = FALSE
@@ -21,14 +22,15 @@ channel_seq = 0, 0
 
 &rttov_init
 path_rttov = ''
-rttov_nthreads = 1
 do_jacobian_calc = FALSE
-do_k_tl_calc = TRUE
 do_opdep_calc = TRUE
 ir_scatt_model = 1
 vis_scatt_model = 1
 dom_nstreams = 8
+dom_nmoments = 128
 dom_rayleigh = TRUE
+rttov_nthreads = 1
+user_cld_opt_param = TRUE
 ice_scheme = 3
 clw_scheme = 2
 mmr_cldaer = FALSE
