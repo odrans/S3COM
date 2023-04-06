@@ -254,7 +254,7 @@ contains
 
     logical   PASS1
     integer(kind=4)   DELTA, LEAP
-    double precision  DEC, DEN, ECLONG, GMST, HA, JD, LMST, &
+    real(wp)  DEC, DEN, ECLONG, GMST, HA, JD, LMST, &
          MNANOM, MNLONG, NUM, OBLQEC, PI, RA, &
          RPD, REFRAC, TIME, TWOPI
 

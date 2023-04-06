@@ -34,6 +34,7 @@ module s3com_types
   private
   public :: wp, dp
   public :: type_s3com, type_nwpsaf, type_model, type_rttov_opt, type_nml, type_icon
+  public :: type_cld, type_cld_mie
 
   !!Few kind definitions for variables
   integer, parameter :: sp = selected_real_kind(6, 37)
@@ -43,6 +44,7 @@ module s3com_types
   ! Namelist
   type type_nml
      character(len=256) :: &
+          path_s3com, &
           path_rttov, &
           fname_in, &
           path_out, &
@@ -58,6 +60,7 @@ module s3com_types
           ir_scatt_model, &
           vis_scatt_model, &
           dom_nstreams, &
+          dom_nmoments, &
           rttov_nthreads, &
           gas_unit, &
           ice_scheme, &
@@ -65,6 +68,7 @@ module s3com_types
      integer(kind=4), dimension(:), allocatable :: &
           channel_list
      logical :: &
+          user_cld_opt_param, &
           flag_retrievals,  &
           flag_output_atm,  &
           flag_output_jac,  &
@@ -233,7 +237,7 @@ module s3com_types
           lwc,                                & !Liquid water content (kg/m3)
           iwc,                                & !Ice water content (kg/m3)
           cdnc,                               & !Cloud droplet number concentration (1/m3)
-          Reff                                  !Cloud liquid water effective radius (m)
+          Reff
   end type type_model
   
   type type_rttov_opt
@@ -250,7 +254,8 @@ module s3com_types
           clw_scheme, &
           ir_scatt_model, &
           vis_scatt_model, &
-          dom_nstreams
+          dom_nstreams, &
+          dom_nmoments
      logical :: &
           mmr_cldaer, &
           ozone_data, &
@@ -263,15 +268,33 @@ module s3com_types
           add_aerosols, &
           add_refrac, &
           do_opdep_calc, &
-          dom_rayleigh
+          dom_rayleigh, &
+          user_cld_opt_param
      integer, dimension(:), allocatable :: &
           channel_list
      character(len = 32) :: &
           platform_name, &
-          inst_name
+          inst_name, &
+          sat_name
      real(wp) :: &
           zenangle, azangle
   end type type_rttov_opt
+
+  type type_rttov_cld_opt_param
+     integer :: &
+          nmom
+     integer, dimension(:), allocatable :: &
+          mom
+     real(wp), dimension(:), allocatable :: &
+          phangle
+     real(wp), dimension(:,:), allocatable :: &
+          abs, &
+          sca, &
+          bpr
+     real(wp), dimension(:,:,:), allocatable :: &
+          legcoef, &
+          pha
+  end type type_rttov_cld_opt_param
 
   !!Type containing variables used by S3COM for retrievals
   type type_s3com_rad
@@ -343,7 +366,34 @@ module s3com_types
      type(type_s3com_opt) :: opt
   end type type_s3com
 
+  type type_cld_mie
+     integer(kind=4) :: &
+          nang, &
+          nchan, &
+          nrad, &
+          nmom
+     character(len=128) :: &
+          fn_mie,          &
+          fn_legcoef
+     integer(kind=4), dimension(:), allocatable :: &
+          chan_id, mom
+     real(kind=wp), dimension(:), allocatable :: &
+          chan_wl, &
+          radius, &
+          angle
+     real(kind=wp), dimension(:,:), allocatable :: &
+          Cext, &
+          Csca, &
+          Cabs, &
+          w0
+     real(kind=wp), dimension(:,:,:), allocatable :: &
+          pha, &
+          legcoef
+  end type type_cld_mie
 
+  type type_cld
+     type(type_cld_mie) :: mie
+  end type type_cld
 
   !!Type containing variables used by S3COM for retrievals
   type type_s3com_obsolete
