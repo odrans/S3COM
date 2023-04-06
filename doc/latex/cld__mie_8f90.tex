@@ -1,0 +1,51 @@
+\hypertarget{cld__mie_8f90}{}\doxysection{/\+Users/odran/github/\+S3\+COM/src/cld/cld\+\_\+mie.f90 File Reference}
+\label{cld__mie_8f90}\index{/Users/odran/github/S3COM/src/cld/cld\_mie.f90@{/Users/odran/github/S3COM/src/cld/cld\_mie.f90}}
+
+
+Allocate and load the user-\/defined Mie cloud properties.  
+
+
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \mbox{\hyperlink{cld__mie_8f90_ab52fe6d2fa8b4c0b89e1faad61fb1eb5}{mod\+\_\+cld\+\_\+mie\+::cld\+\_\+mie\+\_\+load}} (s3com, cld)
+\begin{DoxyCompactList}\small\item\em General call to subroutines needed to load optical properties for liquid clouds from user-\/defined files. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Allocate and load the user-\/defined Mie cloud properties. 
+
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{cld__mie_8f90_ab52fe6d2fa8b4c0b89e1faad61fb1eb5}\label{cld__mie_8f90_ab52fe6d2fa8b4c0b89e1faad61fb1eb5}} 
+\index{cld\_mie.f90@{cld\_mie.f90}!cld\_mie\_load@{cld\_mie\_load}}
+\index{cld\_mie\_load@{cld\_mie\_load}!cld\_mie.f90@{cld\_mie.f90}}
+\doxysubsubsection{\texorpdfstring{cld\_mie\_load()}{cld\_mie\_load()}}
+{\footnotesize\ttfamily subroutine, public mod\+\_\+cld\+\_\+mie\+::cld\+\_\+mie\+\_\+load (\begin{DoxyParamCaption}\item[{type(type\+\_\+s3com), intent(in)}]{s3com,  }\item[{type(type\+\_\+cld), intent(out)}]{cld }\end{DoxyParamCaption})}
+
+
+
+General call to subroutines needed to load optical properties for liquid clouds from user-\/defined files. 
+
+This initializes and sets the {\ttfamily cldmie} structure, which contains user-\/defined liquid cloud optical properties needed by RTTOV.
+
+These properties are read from net\+CDF files, currently expected to be located in \$\+PATH/data/opt\+\_\+prop. Current properties are generated from a Mie code. They are loaded for a given instrument. S3\+COM stops if the property files are not found.
+
+These stored Mie optical properties later required by RTTOV are\+:
+\begin{DoxyItemize}
+\item the absorption cross-\/section (in um$^\wedge$2)
+\item the scattering cross-\/section (in um$^\wedge$2)
+\item the phase function for defined angles
+\item the legendre coefficients of the phase function
+\end{DoxyItemize}
+
+Important\+: Note that all cloud properties are defined for a normalized droplet size distribution n(r)! This means that the integral of n(r) is here 1, and converting the absorption and scattering cross-\/sections to the total absorption and scattering coefficients (typically in km$^\wedge$-\/1) requires multiplying by the droplet number concentration.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em cld} & cld structure (currently only contains cldmie) \\
+\hline
+\mbox{\texttt{ in}}  & {\em s3com} & s3com structure \\
+\hline
+\end{DoxyParams}

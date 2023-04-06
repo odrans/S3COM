@@ -25,7 +25,7 @@
 !
 ! History
 ! Jan 2022 - O. Sourdeval - Original version
-!
+
 ! Description:
 !> @file
 !!   Allocate and load the user-defined Mie cloud properties
