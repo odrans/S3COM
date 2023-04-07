@@ -74,7 +74,7 @@ contains
   end subroutine icon_load
 
   !> @brief Process NWPSAF data structure
-  !! @detail This subroutine processes the NWPSAF data structure to obtain the required variables for S3COM.
+  !! @details This subroutine processes the NWPSAF data structure to obtain the required variables for S3COM.
   !! @note Current processing steps:
   !! - The layer depth is approximated to twice the difference between the interface and the layer center.
   !! - The moist air density is computed from the pressure and virtual temperature. Used to convert cloud properties from @units{kg/kg} to @units{kg/m3}.
@@ -154,7 +154,7 @@ contains
   end subroutine icon_process
 
   !> @brief Initialize ICON data structure
-  !! @detail This subroutine initializes the ICON data structure by allocating the required arrays.
+  !! @details This subroutine initializes the ICON data structure by allocating the required arrays.
   !! All arrays are initialized to zero.
   !! @param[inout] nwpsaf ICON data structure
   subroutine icon_init(npoints, nlayers, icon)
@@ -193,7 +193,7 @@ contains
   end subroutine icon_init
 
   !> @brief Free ICON data structure
-  !! @detail This subroutine frees the ICON data structure by deallocating the required arrays.
+  !! @details This subroutine frees the ICON data structure by deallocating the required arrays.
   !! @param[inout] nwpsaf ICON data structure
   subroutine icon_free(icon)
 

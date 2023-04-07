@@ -27,7 +27,7 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-!> @brief Ensemble of subroutine useful to load and process NWPSAF model simulations
+!> @brief Ensemble of subroutines useful to load and process NWPSAF model simulations
 !! @warning Due to NWPSAF being based on one-moment microphysics, only the cloud water content is provided.
 !! Therefore, only ice clouds are currently simulated in S3COM for NWPSAF (using the Baran 2018 scheme).
 !! @todo Add support for liquid clouds by finding how to reconstruct the droplet size distribution from LWC.
@@ -76,7 +76,7 @@ contains
   end subroutine nwpsaf_load
 
   !> @brief Process NWPSAF data structure
-  !! @detail This subroutine processes the NWPSAF data structure to obtain the required variables for S3COM.
+  !! @details This subroutine processes the NWPSAF data structure to obtain the required variables for S3COM.
   !! @note Current approximations:
   !! - NWPSAF doesn't include 2-m specific humidity, so it is set to the specific humidity at surface level
   !! - NWPSAF doesn't include cloud effective radius, set to 0 for now. Not used for ice clouds anyway.
@@ -101,7 +101,7 @@ contains
   end subroutine nwpsaf_process
 
   !> @brief Initialize NWPSAF data structure
-  !! @detail This subroutine initializes the NWPSAF data structure by allocating the required arrays.
+  !! @details This subroutine initializes the NWPSAF data structure by allocating the required arrays.
   !! All arrays are initialized to zero.
   !! @param[inout] nwpsaf NWPSAF data structure
   subroutine nwpsaf_init(npoints, nlayers, nwpsaf)
@@ -161,7 +161,7 @@ contains
   end subroutine nwpsaf_init
 
   !> @brief Free NWPSAF data structure
-  !! @detail This subroutine frees the NWPSAF data structure by deallocating the required arrays.
+  !! @details This subroutine frees the NWPSAF data structure by deallocating the required arrays.
   !! @param[inout] nwpsaf NWPSAF data structure
   subroutine nwpsaf_free(nwpsaf)
 
