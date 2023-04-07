@@ -40,7 +40,7 @@ module mod_models
   implicit none
 
   private
-  public :: models_load, models_init, models_free
+  public :: models_load, models_free
 
 contains
 
@@ -52,10 +52,10 @@ contains
   subroutine models_load(nml, model)
 
     ! Inputs
-    type(type_nml), intent(IN)    :: nml
+    type(type_nml), intent(in)    :: nml
 
     ! Output variables
-    type(type_model), intent(OUT) :: model
+    type(type_model), intent(out) :: model
 
     ! Internal
     integer(kind=4) :: nlayers, npoints
@@ -105,6 +105,7 @@ contains
   !> @brief Initialize the `model` data structure
   !! @details This subroutine initializes the `model` structure by allocating the required arrays.
   !! All arrays are initialized to zero.
+  !! @todo Not all arrays are initialized to zero. Redo following the NWPSAF procedure.
   !! @param[in] npoints Number of points in the model simulation
   !! @param[in] nlayers Number of layers in the model simulation
   !! @param[out] model Model data structure containing all necessary variables for S3COM

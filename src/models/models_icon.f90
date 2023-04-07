@@ -47,14 +47,14 @@ contains
   !> @brief Load ICON model simulations
   !! @details This subroutine loads ICON model simulations from a NetCDF file and processes them to obtain the required variables for S3COM.
   !! @param[in] fname Input NetCDF file name containing ICON simulations
-  !! @param[inout] icon ICON data structure
+  !! @param[out] icon ICON data structure
   subroutine icon_load(fname, icon)
 
     ! Inputs
     character(LEN=256), intent(in) :: fname
 
     ! Inputs/Outputs
-    type(type_icon), intent(inout) :: icon
+    type(type_icon), intent(out) :: icon
 
     ! Internal
     integer(kind=4) :: nlayers, npoints
@@ -153,6 +153,7 @@ contains
   !> @brief Initialize ICON data structure
   !! @details This subroutine initializes the ICON data structure by allocating the required arrays.
   !! All arrays are initialized to zero.
+  !! @todo Not all arrays are initialized to zero. Redo following the NWPSAF procedure.
   !! @param[in] npoints Number of grid points
   !! @param[in] nlayers Number of vertical layers
   !! @param[inout] icon ICON data structure
