@@ -31,7 +31,7 @@
 module mod_models
 
   use s3com_types,         only: wp, type_icon, type_model, type_nml, type_nwpsaf
-  use mod_icon,            only: icon_load, icon_clear
+  use mod_icon,            only: icon_load, icon_free
   use mod_nwpsaf,          only: nwpsaf_load, nwpsaf_free
   use mod_utils_phys,      only: solar_angles
   use mod_io_verbose,      only: verbose_model
@@ -87,7 +87,7 @@ contains
     ! Clear input data
     select case (nml%model_name)
     case ("ICON")
-       call icon_clear(icon)
+       call icon_free(icon)
     case ("NWPSAF")
        call nwpsaf_free(nwpsaf)
     end select

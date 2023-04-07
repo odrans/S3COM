@@ -27,6 +27,7 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
+!> @brief Ensemble of subroutines useful to load and process ICON model simulations
 module mod_icon
 
   use s3com_types,         only: wp, type_icon
@@ -39,10 +40,14 @@ module mod_icon
   implicit none
 
   private
-  public :: icon_load, icon_clear
+  public :: icon_load, icon_free
 
 contains
 
+  !> @brief Load ICON model simulations
+  !! @details This subroutine loads ICON model simulations from a NetCDF file and processes them to obtain the required variables for S3COM.
+  !! @param[in] fname Input NetCDF file name containing ICON simulations
+  !! @param[inout] nwpsaf ICON data structure
   subroutine icon_load(fname, icon)
 
     ! Inputs
@@ -68,7 +73,15 @@ contains
 
   end subroutine icon_load
 
-
+  !> @brief Process NWPSAF data structure
+  !! @detail This subroutine processes the NWPSAF data structure to obtain the required variables for S3COM.
+  !! @note Current processing steps:
+  !! - The layer depth is approximated to twice the difference between the interface and the layer center.
+  !! - The moist air density is computed from the pressure and virtual temperature. Used to convert cloud properties from @units{kg/kg} to @units{kg/m3}.
+  !! - The effective radius is computed from the water content and number concentration consistently with the Seifert and Beheng (2005) scheme used in ICON
+  !! - All quantities in SI units except for the effective radius which is in @units{um}.
+  !! @todo Why not compute dz from ifc(i+1) - ifc(i)?
+  !! @param[inout] nwpsaf NWPSAF data structure
   subroutine icon_process(icon)
 
     type(type_icon), intent(inout) :: icon
@@ -140,6 +153,10 @@ contains
 
   end subroutine icon_process
 
+  !> @brief Initialize ICON data structure
+  !! @detail This subroutine initializes the ICON data structure by allocating the required arrays.
+  !! All arrays are initialized to zero.
+  !! @param[inout] nwpsaf ICON data structure
   subroutine icon_init(npoints, nlayers, icon)
 
     type(type_icon) :: icon
@@ -175,8 +192,10 @@ contains
 
   end subroutine icon_init
 
-
-  subroutine icon_clear(icon)
+  !> @brief Free ICON data structure
+  !! @detail This subroutine frees the ICON data structure by deallocating the required arrays.
+  !! @param[inout] nwpsaf ICON data structure
+  subroutine icon_free(icon)
 
     type(type_icon), intent(inout) :: icon
 
@@ -186,7 +205,7 @@ contains
          icon%t, icon%q, icon%clc, icon%clw, icon%cli, icon%qnc, icon%qr, icon%qs, icon%dz, &
          icon%rho, icon%tv, icon%lwc, icon%iwc, icon%cdnc, icon%Reff)
 
-  end subroutine icon_clear
+  end subroutine icon_free
 
 
 
