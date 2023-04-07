@@ -41,6 +41,9 @@ module mod_io_nwpsaf
 
 contains
 
+  !> @brief Import model simulation data from the NWPSAF NetCDF file
+  !! @param[in] fname NetCDF file name
+  !! @param[inout] nwpsaf NWPSAF data structure
   subroutine nwpsaf_read(fname, nwpsaf)
 
     !!Parameters

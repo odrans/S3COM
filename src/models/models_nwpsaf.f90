@@ -27,6 +27,10 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
+!> @brief Ensemble of subroutine useful to load and process NWPSAF model simulations
+!! @warning Due to NWPSAF being based on one-moment microphysics, only the cloud water content is provided.
+!! Therefore, only ice clouds are currently simulated in S3COM for NWPSAF (using the Baran 2018 scheme).
+!! @todo Add support for liquid clouds by finding how to reconstruct the droplet size distribution from LWC.
 module mod_nwpsaf
 
   use s3com_types,         only: wp, type_nwpsaf
@@ -38,10 +42,14 @@ module mod_nwpsaf
   implicit none
 
   private
-  public :: nwpsaf_load, nwpsaf_clear
+  public :: nwpsaf_load, nwpsaf_free
 
 contains
 
+  !> @brief Load NWPSAF model simulations
+  !! @details This subroutine loads NWPSAF model simulations from a NetCDF file and processes them to obtain the required variables for S3COM.
+  !! @param[in] fname Input NetCDF file name containing NWPSAF simulations
+  !! @param[inout] nwpsaf NWPSAF data structure
   subroutine nwpsaf_load(fname, nwpsaf)
 
     ! Inputs
@@ -67,7 +75,12 @@ contains
 
   end subroutine nwpsaf_load
 
-
+  !> @brief Process NWPSAF data structure
+  !! @detail This subroutine processes the NWPSAF data structure to obtain the required variables for S3COM.
+  !! @note Current approximations:
+  !! - NWPSAF doesn't include 2-m specific humidity, so it is set to the specific humidity at surface level
+  !! - NWPSAF doesn't include cloud effective radius, set to 0 for now. Not used for ice clouds anyway.
+  !! @param[inout] nwpsaf NWPSAF data structure
   subroutine nwpsaf_process(nwpsaf)
 
     type(type_nwpsaf), intent(inout) :: nwpsaf
@@ -87,9 +100,13 @@ contains
 
   end subroutine nwpsaf_process
 
+  !> @brief Initialize NWPSAF data structure
+  !! @detail This subroutine initializes the NWPSAF data structure by allocating the required arrays.
+  !! All arrays are initialized to zero.
+  !! @param[inout] nwpsaf NWPSAF data structure
   subroutine nwpsaf_init(npoints, nlayers, nwpsaf)
 
-    type(type_nwpsaf) :: nwpsaf
+    type(type_nwpsaf), intent(inout) :: nwpsaf
     integer(kind=4), intent(in) :: npoints, nlayers
     integer(kind=4) :: nlevels
 
@@ -143,8 +160,10 @@ contains
 
   end subroutine nwpsaf_init
 
-
-  subroutine nwpsaf_clear(nwpsaf)
+  !> @brief Free NWPSAF data structure
+  !! @detail This subroutine frees the NWPSAF data structure by deallocating the required arrays.
+  !! @param[inout] nwpsaf NWPSAF data structure
+  subroutine nwpsaf_free(nwpsaf)
 
     type(type_nwpsaf), intent(inout) :: nwpsaf
 
@@ -155,6 +174,6 @@ contains
          nwpsaf%rho, nwpsaf%tv, nwpsaf%lwc, nwpsaf%iwc, nwpsaf%cdnc, nwpsaf%reff, &
          nwpsaf%day, nwpsaf%month, nwpsaf%year, nwpsaf%point)
 
-  end subroutine nwpsaf_clear
+  end subroutine nwpsaf_free
 
 end module mod_nwpsaf
