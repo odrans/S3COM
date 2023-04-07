@@ -180,13 +180,13 @@ contains
     allocate(nwpsaf%day(npoints), source = 0)
 
     !! 3D variables on atmospheric levels
-    allocate(nwpsaf%z_ifc(npoints, nlevels), source = 0._wp)
+    allocate(nwpsaf%altitudeh(npoints, nlevels), source = 0._wp)
     allocate(nwpsaf%t_ifc(npoints, nlevels), source = 0._wp)
     allocate(nwpsaf%p_ifc(npoints, nlevels), source = 0._wp)
     allocate(nwpsaf%q_ifc(npoints, nlevels), source = 0._wp)
 
     !! 3D variables in atmospheric layers
-    allocate(nwpsaf%z(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%altitude(npoints, nlayers), source = 0._wp)
     allocate(nwpsaf%t(npoints, nlayers), source = 0._wp)
     allocate(nwpsaf%p(npoints, nlayers), source = 0._wp)
     allocate(nwpsaf%q(npoints, nlayers), source = 0._wp)
@@ -213,7 +213,7 @@ contains
 
     deallocate(nwpsaf%height, nwpsaf%height_2, nwpsaf%lon, nwpsaf%lat, nwpsaf%lon_orig, nwpsaf%lat_orig, &
          nwpsaf%elevation, nwpsaf%lsm, nwpsaf%psurf, nwpsaf%tsurf, nwpsaf%t2m, nwpsaf%q2m, nwpsaf%u10, nwpsaf%v10, &
-         nwpsaf%p, nwpsaf%z, nwpsaf%z_ifc, nwpsaf%p_ifc, nwpsaf%t_ifc, nwpsaf%q_ifc, &
+         nwpsaf%p, nwpsaf%altitude, nwpsaf%altitudeh, nwpsaf%p_ifc, nwpsaf%t_ifc, nwpsaf%q_ifc, &
          nwpsaf%t, nwpsaf%q, nwpsaf%clc, nwpsaf%clw, nwpsaf%cli, nwpsaf%qnc, nwpsaf%qr, nwpsaf%qs, nwpsaf%dz, &
          nwpsaf%rho, nwpsaf%tv, nwpsaf%lwc, nwpsaf%iwc, nwpsaf%cdnc, nwpsaf%reff, &
          nwpsaf%day, nwpsaf%month, nwpsaf%year, nwpsaf%point)

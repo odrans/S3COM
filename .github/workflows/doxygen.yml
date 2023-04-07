@@ -3,7 +3,7 @@ name: Doxygen
 on:
   push:
     branches:
-      - main
+      - main2
   pull_request:
 
 jobs:

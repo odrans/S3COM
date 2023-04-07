@@ -94,7 +94,6 @@ contains
 
   end subroutine cld_mie_load
 
-
   !> @brief
   !!   Initializes the cld_mie structure and loads the Mie scattering data from a netCDF file
   !!

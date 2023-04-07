@@ -272,7 +272,7 @@ contains
     model%landmask   = nwpsaf%lsm
 
     model%p          = nwpsaf%p_ifc
-    model%z          = nwpsaf%z_ifc
+    model%z          = nwpsaf%altitudeh
     model%dz         = nwpsaf%dz
     model%t          = nwpsaf%t_ifc
     model%q          = nwpsaf%q_ifc

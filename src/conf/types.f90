@@ -120,8 +120,8 @@ module s3com_types
      real(wp), dimension(:,:), allocatable :: &
           p,                  &      !< Layer pressure @units{Pa}
           p_ifc,              &      !< Pressure at half-level center @units{Pa}
-          z,                  &      !< Layer height @units{m}
-          z_ifc,              &      !< Height at half-levels center @units{m}
+          altitude,           &      !< Layer height @units{m}
+          altitudeh,          &      !< Height at half-levels center @units{m}
           t,                  &      !< Temperature @units{K}
           t_ifc,              &      !< Temperature at half-levels center @units{K}
           q,                  &      !< Specific humidity @units{kg/kg}
