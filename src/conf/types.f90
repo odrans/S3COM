@@ -349,7 +349,7 @@ module s3com_types
   end type type_s3com_jac
 
   !> @brief S3COM structure for Tangent Linear calculations
-  !! This structure contains Jacobians that are computed using the TL model of RTTOV.
+  !! @details This structure contains Jacobians that are computed using the TL model of RTTOV.
   !! @warning This structure is not yet fully tested for all configurations. Use with caution.
   type type_s3com_k_tl
      real(kind=wp), dimension(:), allocatable ::   &
@@ -360,7 +360,7 @@ module s3com_types
   end type type_s3com_k_tl
 
   !> @brief S3COM structure for atmospheric profiles
-  !! The atmospheric profiles are stored exactly as they have been used for forward model calculations
+  !! @details The atmospheric profiles are stored exactly as they have been used for forward model calculations
   !! When retrievals are activated, these can deviate from model outputs as the atmospheric model can be modified.
   !! When retrievals are not activated, these are identical to model outputs.
   type type_s3com_atm
@@ -380,7 +380,7 @@ module s3com_types
   end type type_s3com_opt
 
   !> @brief Overall S3COM structure
-  !! This structure contains all the variables used by S3COM for forward model simulations and retrievals
+  !! @details This structure contains all the variables used by S3COM for forward model simulations and retrievals
   !! It also stores all relevant output variables
   type type_s3com
      integer(kind=4), dimension(3) :: &
