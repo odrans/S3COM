@@ -127,11 +127,6 @@ module s3com_types
           hum,                 &      !< Specific humidity @units{kg/kg} @input
           humh,                &      !< Specific humidity at half level center @units{kg/kg} @input
           cc,                  &      !< Total cloud fraction (0-1) @input
-          clw,                 &      !< Specific cloud water content @units{kg/kg}
-          cli,                 &      !< Specific cloud ice content @units{kg/kg}
-          qnc,                 &      !< Cloud droplet number concentration @units{\# m^-3}
-          qr,                  &      !< Rain mixing ratio @units{kg/kg}
-          qs,                  &      !< Snow mixing ratio @units{kg/kg}
           dz,                  &      !< Layer thickness @units{m}
           rho,                 &      !< Air density used for liquid clouds @units{kg m^-3}
           tv,                  &      !< Virtual temperature @units{K}
