@@ -75,7 +75,7 @@ module s3com_types
           flag_output_jac,      &    !< Flag to specify if Jacobian matrices should be output
           flag_output_k_tl,     &    !< Flag to specify if K matrices should be output
           do_jacobian_calc,     &    !< Flag to specify if Jacobian matrices should be calculated
-          do_k_tl_calc,         &    !< Flag to specify if K matrices should be calculated
+          do_k_tl_calc,         &    !< Flag to specify if K matrices should be calculated via TL
           do_opdep_calc,        &    !< If false, disables the RTTOV gas optical depth calculation (default = true)
           dom_rayleigh,         &    !< If true, Rayleigh scattering is included in the DOM model
           mmr_cldaer,           &    !< Cloud and aerosol units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
@@ -209,7 +209,7 @@ module s3com_types
           time,                &     !< Time of the day, UTC @units{/hour, minute, second/}
           date                       !< Day of the year @units{/day, month, year/}
      integer(wpi), dimension(:), allocatable :: &
-          point
+          point                      !< Point index
      real(wp), dimension(:), allocatable :: &
           lon,                 &     !< Longitude @units{degrees East}
           lat,                 &     !< Latitude @units{degrees North}
@@ -345,7 +345,7 @@ module s3com_types
           t,                   &   !< Jacobian of the forward model with respect to the temperature @units{W m-2 sr-1 um-1 K-1}
           cfrac,               &   !< Jacobian of the forward model with respect to the cloud fraction @units{W m-2 sr-1 um-1}
           clwde                    !< Jacobian of the forward model with respect to the cloud droplet effective diameter @units{W m-2 sr-1 um-1 um-1}
-     logical :: do_jacobian_calc
+     logical :: do_jacobian_calc   !< Flag to specify if Jacobian matrices should be calculated
   end type type_s3com_jac
 
   !> @brief S3COM structure for Tangent Linear calculations
@@ -356,7 +356,7 @@ module s3com_types
           wavelength               !< Wavelength @units{um}
      real(kind=wp), dimension(:,:,:), allocatable :: &
           t                        !< Jacobian of the forward model with respect to the pressure @units{W m-2 sr-1 um-1 Pa-1}
-     logical :: do_k_tl_calc
+     logical :: do_k_tl_calc       !< Flag to specify if K matrices should be calculated via TL
   end type type_s3com_k_tl
 
   !> @brief S3COM structure for atmospheric profiles
