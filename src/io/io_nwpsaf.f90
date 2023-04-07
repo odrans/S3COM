@@ -39,16 +39,6 @@ module mod_io_nwpsaf
   private
   public :: nwpsaf_read
 
-  type var3d
-     character(len=16) :: name
-     character(len=16) :: units
-     integer :: dimsid(5)
-     integer :: dimssz(4)
-     integer :: vid
-     logical :: lout
-     real(wp), pointer, dimension(:,:,:) :: pntr
-  end type var3d
-
 contains
 
   subroutine nwpsaf_read(fname, nwpsaf)
