@@ -105,6 +105,8 @@ contains
   !> @brief Initialize the `model` data structure
   !! @details This subroutine initializes the `model` structure by allocating the required arrays.
   !! All arrays are initialized to zero.
+  !! @param[in] npoints Number of points in the model simulation
+  !! @param[in] nlayers Number of layers in the model simulation
   !! @param[out] model Model data structure containing all necessary variables for S3COM
   subroutine models_init(model, npoints, nlayers)
 
