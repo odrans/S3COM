@@ -374,7 +374,7 @@ module s3com_types
   end type type_s3com_atm
 
   !> @brief Structure containing all S3COM options
-  !! This stores the radiative transfer options relevant to the S3COM code
+  !! @details This stores the radiative transfer options relevant to the S3COM code
   type type_s3com_opt
      type(type_rttov_opt) :: rttov   !< RTTOV options
   end type type_s3com_opt
