@@ -245,39 +245,39 @@ module s3com_types
   end type type_model
 
   !> @brief Structure containing main RTTOV options
-  !! @details Used to link the namelist and the rttov_opts structure
+  !! @details Data from namelist are indicated with @input
   type type_rttov_opt
      integer(wpi) ::           &
-          dosolar,             &     !< Activation of solar radiation calculations
-          nchannels,           &     !< Number of instrument channels to simulate
-          nthreads,            &     !< Number of threads for RTTOV calculations (if openMP is available)
-          platform,            &     !< Platform ID for RTTOV
-          satellite,           &     !< Satellite ID for RTTOV
-          instrument,          &     !< Instrument ID for RTTOV
+          dosolar,             &     !< Activation of solar radiation calculations (0: false, 1: true)
+          nchannels,           &     !< Number of instrument channels to simulate @input
+          nthreads,            &     !< Number of threads for RTTOV calculations (if openMP is available) @input
+          platform,            &     !< Platform ID for RTTOV @input
+          satellite,           &     !< Satellite ID for RTTOV @input
+          instrument,          &     !< Instrument ID for RTTOV @input
           month,               &     !< Month of the year, used to load surface brdf and emissivity data
           gas_units,           &     !< Gas units for atmospheric profiles (1: kg/kg; 2: ppmv over moist air; 0: ppmv over dry air)
-          ice_scheme,          &     !< Scheme used for ice cloud optical properties: 1=Baum; 2=Baran 2014; 3=Baran 2018. Not relevant if `user_cld_opt_param` is true.
-          clw_scheme,          &     !< Scheme used for liquid cloud optical properties: 1=OPAC; 2=Deff
-          ir_scatt_model,      &     !< Scattering model for IR source term: 1=DOM; 2=Chou-scaling
-          vis_scatt_model,     &     !< Scattering model for solar source term: 1=DOM; 2=single-scattering; 3=MFASIS
-          dom_nstreams,        &     !< Number of streams for discrete ordinate method
-          dom_nmoments               !< Number of moments for discrete ordinate method
+          ice_scheme,          &     !< Scheme used for ice cloud optical properties: 1=Baum; 2=Baran 2014; 3=Baran 2018. Not relevant if `user_cld_opt_param` is true. @input
+          clw_scheme,          &     !< Scheme used for liquid cloud optical properties: 1=OPAC; 2=Deff @input
+          ir_scatt_model,      &     !< Scattering model for IR source term: 1=DOM; 2=Chou-scaling @input
+          vis_scatt_model,     &     !< Scattering model for solar source term: 1=DOM; 2=single-scattering; 3=MFASIS @input
+          dom_nstreams,        &     !< Number of streams for discrete ordinate method @input
+          dom_nmoments               !< Number of moments for discrete ordinate method @input
      logical ::                &
-          mmr_cldaer,          &     !< Cloud and aerosol units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
-          ozone_data,          &     !< True when supplying a profile of ozone, false to use RTTOV climatologies
+          mmr_cldaer,          &     !< Cloud and aerosol units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer) @input
+          ozone_data,          &     !< True when supplying a profile of ozone, false to use RTTOV climatologies @input
           co2_data,            &     !< True when supplying a profile of CO2, false to use RTTOV climatologies
           n2o_data,            &     !< True when supplying a profile of N2O, false to use RTTOV climatologies
           ch4_data,            &     !< True when supplying a profile of CH4, false to use RTTOV climatologies
           co_data,             &     !< True when supplying a profile of CO, false to use RTTOV climatologies
           so2_data,            &     !< True when supplying a profile of SO2, false to use RTTOV climatologies
-          add_clouds,          &     !< True to add clouds to the RTTOV calculations
-          add_aerosols,        &     !< True to add aerosols to the RTTOV calculations
-          add_refrac,          &     !< True to add atmospheric refraction
-          do_opdep_calc,       &     !< If false, disables the RTTOV gas optical depth calculation
-          dom_rayleigh,        &     !< If false, disables the RTTOV Rayleigh scattering calculation
-          user_cld_opt_param         !< If true, users can supply their own cloud optical properties (`ice_scheme` and `clw_scheme` are then not used)
+          add_clouds,          &     !< True to add clouds to the RTTOV calculations @input
+          add_aerosols,        &     !< True to add aerosols to the RTTOV calculations @input
+          add_refrac,          &     !< True to add atmospheric refraction @input
+          do_opdep_calc,       &     !< If false, disables the RTTOV gas optical depth calculation @input
+          dom_rayleigh,        &     !< If false, disables the RTTOV Rayleigh scattering calculation @input
+          user_cld_opt_param         !< If true, users can supply their own cloud optical properties (`ice_scheme` and `clw_scheme` are then not used) @input
      integer, dimension(:), allocatable :: &
-          channel_list               !< List of channels to simulate
+          channel_list               !< List of channels to simulate @input
      character(len = 32) ::    &
           platform_name,       &     !< Platform name
           inst_name,           &     !< Instrument name
