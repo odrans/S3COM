@@ -10,7 +10,6 @@ var NAVTREEINDEX0 =
 "namespacemembers_func.html":[1,1,1],
 "namespacemod__cld__legcoef.html":[1,0,0],
 "namespacemod__cld__mie.html":[1,0,1],
-"namespacemod__cld__mie.html#a046ea982281564dd653bc98d0174951e":[1,0,1,2],
 "namespacemod__cld__mie.html#a527f0f6d5d6f03458e2905a1c6061701":[1,0,1,1],
 "namespacemod__cld__mie.html#ab52fe6d2fa8b4c0b89e1faad61fb1eb5":[1,0,1,0],
 "namespaces.html":[1,0],

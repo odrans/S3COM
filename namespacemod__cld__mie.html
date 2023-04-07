@@ -135,9 +135,6 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:ab52fe6d2fa8b4c0b89e1faad61fb1eb5"><td class="memItemLeft" align="right" valign="top">subroutine, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__cld__mie.html#ab52fe6d2fa8b4c0b89e1faad61fb1eb5">cld_mie_load</a> (s3com, cld)</td></tr>
 <tr class="memdesc:ab52fe6d2fa8b4c0b89e1faad61fb1eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">General call to subroutines needed to load optical properties for liquid clouds from user-defined files.  <a href="namespacemod__cld__mie.html#ab52fe6d2fa8b4c0b89e1faad61fb1eb5">More...</a><br /></td></tr>
 <tr class="separator:ab52fe6d2fa8b4c0b89e1faad61fb1eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a046ea982281564dd653bc98d0174951e"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__cld__mie.html#a046ea982281564dd653bc98d0174951e">sll_hdf5_file_create</a> (filename, file_id, error)</td></tr>
-<tr class="memdesc:a046ea982281564dd653bc98d0174951e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create HDF5 file.  <a href="namespacemod__cld__mie.html#a046ea982281564dd653bc98d0174951e">More...</a><br /></td></tr>
-<tr class="separator:a046ea982281564dd653bc98d0174951e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a527f0f6d5d6f03458e2905a1c6061701"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__cld__mie.html#a527f0f6d5d6f03458e2905a1c6061701">cld_mie_read</a> (fn_mie, cld_mie)</td></tr>
 <tr class="memdesc:a527f0f6d5d6f03458e2905a1c6061701"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the cld_mie structure and loads the Mie scattering data from a netCDF file.  <a href="namespacemod__cld__mie.html#a527f0f6d5d6f03458e2905a1c6061701">More...</a><br /></td></tr>
 <tr class="separator:a527f0f6d5d6f03458e2905a1c6061701"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -241,63 +238,6 @@ Functions/Subroutines</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">fn_mie</td><td>name of the netCDF file containing the Mie scattering data </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">cld_mie</td><td>cld_mie structure </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a046ea982281564dd653bc98d0174951e" name="a046ea982281564dd653bc98d0174951e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a046ea982281564dd653bc98d0174951e">&#9670;&#160;</a></span>sll_hdf5_file_create()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine mod_cld_mie::sll_hdf5_file_create </td>
-          <td>(</td>
-          <td class="paramtype">character(len=*), intent(in)&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(hid_t), intent(out)&#160;</td>
-          <td class="paramname"><em>file_id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(hid_t), intent(out)&#160;</td>
-          <td class="paramname"><em>error</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create HDF5 file. </p>
-<p >To use this subroutine HDF5_ENABLE should be set to ON in CMake configuration </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>file name </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">error</td><td>error code </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file_id</td><td>unit number </td></tr>
   </table>
   </dd>
 </dl>
