@@ -128,7 +128,7 @@ module s3com_types
           hum,                 &      !< Specific humidity @units{kg/kg} @input
           humh,                &      !< Specific humidity at half level center @units{kg/kg} @input
           cc,                  &      !< Total cloud fraction (0-1) @input
-          dz,                  &      !< Layer thickness @units{m}
+          dz,                  &      !< Geometrical thickness of layer @units{m}
           rho,                 &      !< Air density used for liquid clouds @units{kg m^-3}
           tv,                  &      !< Virtual temperature @units{K}
           lwc,                 &      !< Liquid water content @units{kg m^-3} @input
@@ -200,11 +200,11 @@ module s3com_types
           nlat,                &     !< Number of latitude points in the grid
           nlon,                &     !< Number of longitude points in the grid
           mode,                &     !< Model grid type (1: track, 2: lon-lat, 3: lat-lon)
-          idx_start,           &     !< Starting index for the subset grid
-          idx_end                    !< Ending index for the subset grid
+          idx_start,           &     !< Starting point index for the subset grid
+          idx_end                    !< Ending point index for the subset grid
      integer(wpi), dimension(:), allocatable :: &
-          height,              &     !< Index of vertical layers @input
-          height_2                   !< Index of vertical levels @input
+          height,              &     !< Index of vertical layers
+          height_2                   !< Index of vertical levels
      integer(wpi), dimension(3) :: &
           time,                &     !< Time of the day, UTC @units{/hour, minute, second/}
           date                       !< Day of the year @units{/day, month, year/}
@@ -216,18 +216,17 @@ module s3com_types
           lon_orig,            &     !< Longitude that won't be regridded @units{degrees East}
           lat_orig,            &     !< Latitude that won't be regridded @units{degrees North}
           topography,          &     !< Surface height @units{m}
-          landmask,            &     !< Land/sea mask (0/1) @input
+          landmask,            &     !< Land/sea mask (0/1)
           ps,                  &     !< Surface pressure @units{Pa}
           ts,                  &     !< Skin temperature @units{K}
           t_2m,                &     !< 2-m temperature @units{K}
           q_2m,                &     !< 2-m specific humidity @units{kg/kg}
-          u_10m,               &     !< Zonal 10-m wind @units{m/s} @input
+          u_10m,               &     !< Zonal 10-m wind @units{m/s}
           v_10m,               &     !< Meridional 10-m wind @units{m/s}
           sunzenangle,         &     !< Solar zenith angle @units{degrees}
           sunazangle                 !< Solar azimuth angle @units{degrees}
      real(wp), dimension(:,:), allocatable :: &
           o3,                  &     !< Ozone concentrations on model levels for user-defined gas profiles, see namelist configuration @units{gas_unit}
-          !! @note These are set to zero if not provided by the model and are only considered if RTTOV is set to not used climatological profiles.
           co2,                 &     !< CO2 concentrations, similarly to o3
           ch4,                 &     !< CH4 concentrations, similarly to o3
           n2o,                 &     !< N2O concentrations, similarly to o3
@@ -235,14 +234,14 @@ module s3com_types
           co,                  &     !< CO concentrations, similarly to o3
           p,                   &     !< Pressure on model levels @units{Pa}
           z,                   &     !< Altitude on model levels @units{m}
-          dz,                  &     !< Model layer thickness @units{m}
+          dz,                  &     !< Geometrical thickness of model layer @units{m}
           t,                   &     !< Temperature on model levels @units{K}
           q,                   &     !< Specific humidity on model levels @units{kg/kg}
-          clc,                 &     !< Total cloud fraction in model layer (0-1) @input
+          clc,                 &     !< Total cloud fraction in model layer (0-1)
           lwc,                 &     !< Liquid water content in model layer @units{kg/m3}
           iwc,                 &     !< Ice water content in model layer @units{kg/m3}
           cdnc,                &     !< Cloud droplet number concentration in model layer @units{\# m^-3}
-          Reff                       !< Liquid water cloud effective radius in model layer @units{m}
+          reff                       !< Liquid water cloud effective radius in model layer @units{m}
   end type type_model
   
   type type_rttov_opt
