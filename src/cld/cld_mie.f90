@@ -94,21 +94,6 @@ contains
 
   end subroutine cld_mie_load
 
-  !> @brief Create HDF5 file
-!> @details To use this subroutine HDF5_ENABLE should be set to ON
-!> in CMake configuration
-subroutine sll_hdf5_file_create(filename,file_id,error)
-  character(len=*) , intent(in)  :: filename  !< file name
-  integer(hid_t)   , intent(out) :: &
-       file_id, &   !< unit number
-       error     !< error code
-
-  call H5open_f(error)
-  SLL_ASSERT(error==0)
-  call H5Fcreate_f(filename,H5F_ACC_TRUNC_F,file_id,error)
-  SLL_ASSERT(error==0)
-end subroutine sll_hdf5_file_create
-
 
   !> @brief
   !!   Initializes the cld_mie structure and loads the Mie scattering data from a netCDF file
