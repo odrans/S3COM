@@ -40,7 +40,7 @@ module mod_models
   implicit none
 
   private
-  public :: models_load, models_init, models_free, models_setup_icon, models_setup_solar
+  public :: models_load, models_init, models_free
 
 contains
 
