@@ -24,10 +24,16 @@
 ! OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 !
 ! History
-! Jan 2022 - O. Sourdeval - Original version
+! Apr 2023 - O. Sourdeval - Original version
 !
 
-!> Module dealing with computing and loading the coefficients of the Legendre polynomials
+!> @brief Module dealing with computing and loading the coefficients of the Legendre polynomials
+!! @details
+!! This module contains the following functions:
+!! - `cld_legcoef_load` : Export the coefficients of Legendre polynomials expansion of the phase function
+!! - `cld_legcoef_compute` : Compute the Legendre polynomials expansion coefficients from the phase function
+!! - `cld_legcoef_read` : Read the Legendre polynomials expansion coefficients from a netCDF file
+!! - `cld_legcoef_write` : Write the Legendre polynomials expansion coefficients in a netCDF file
 module mod_cld_legcoef
 
   use netcdf
@@ -45,9 +51,15 @@ module mod_cld_legcoef
 
 contains
 
+  !> @brief Export the coefficients of Legendre polynomials expansion of the phase function
+  !! @details
+  !! This subroutine writes the coefficients of Legendre polynomials expansion of the phase function in the cld_mie structure.
+  !! The coefficients are either computed from the phase function or read from a netCDF file. If that files does not exist, it is created.
+  !! The new netcdf file has the same name as `fn_mie` but with the extension "_legcoef_nmom_.nc", with nmom the number of Legendre polynomials used.
+  !! @param[inout] cld_mie       Structure containing Mie optical properties
   subroutine cld_legcoef_load(cld_mie)
 
-    type(type_cld_mie) :: cld_mie
+    type(type_cld_mie), intent(inout) :: cld_mie
 
     logical :: legcoef_exist
 
@@ -65,10 +77,14 @@ contains
 
   end subroutine cld_legcoef_load
   
-  ! Compute Legendre coefficients from phase function
+  !> @brief Compute the Legendre polynomials expansion coefficients from the phase function
+  !! @details
+  !! The internal RTTOV function `rttov_legcoef_calc` is used to compute the coefficients from the phase function in `cld_mie`.
+  !! The coefficients are then stored in `cld_mie%legcoef`.
+  !! @param[inout] cld_mie       Structure containing Mie optical properties
   subroutine cld_legcoef_compute(cld_mie)
 
-    type(type_cld_mie) :: cld_mie
+    type(type_cld_mie), intent(inout) :: cld_mie
 
     integer :: wvl_id, size_id, status, nleg
     real(jprb), allocatable, dimension(:) :: pha, angle, legcoef
@@ -98,7 +114,10 @@ contains
 
   end subroutine cld_legcoef_compute
 
-  ! Read the Legendre data
+  !> @brief Read the Legendre polynomials expansion coefficients from a netCDF file
+  !! @details
+  !! Legendre expansion coefficients are read from the netCDF file `cld_mie%fn_legcoef` and stored in `cld_mie%legcoef`.
+  !! @param[inout] cld_mie       Structure containing Mie optical properties
   subroutine cld_legcoef_read(cld_mie)
 
     integer :: ncid
@@ -124,7 +143,10 @@ contains
   end subroutine cld_legcoef_read
 
 
-  ! Write the Legendre data to a netCDF file
+  !> @brief Write the Legendre polynomials expansion coefficients to a netCDF file
+  !! @details
+  !! Legendre expansion coefficients created by `cld_legcoef_compute` are written to the netCDF file `cld_mie%fn_legcoef`.
+  !! @param[in] cld_mie       Structure containing Mie optical properties
   subroutine cld_legcoef_write(cld_mie)
 
     integer :: ncid
@@ -158,7 +180,9 @@ contains
 
   end subroutine cld_legcoef_write
 
-  ! Output the name of the netcdf file containing the legendre coeficients
+  !> @brief Finds the name of the netCDF file containing the Legendre coefficients
+  !! @param[in] fn            Name of the netCDF file containing the Mie coefficients
+  !! @return                  Name of the netCDF file containing the Legendre coefficients
   function fn_legcoef(fn, nmom) result(fn_new)
 
     character(len=*), intent(in) :: fn
@@ -186,8 +210,5 @@ contains
     end if
 
   end function fn_legcoef
-
-
-
 
 end module mod_cld_legcoef

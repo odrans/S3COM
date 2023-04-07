@@ -24,10 +24,13 @@
 ! OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 !
 ! History
-! Jan 2022 - O. Sourdeval - Original version
+! Apr 2023 - O. Sourdeval - Original version
 
-!> @brief
-!! Allocate and load the user-defined Mie cloud properties
+!> @brief Allocate and load the user-defined Mie cloud properties
+!! @details
+!!  This module contains the subroutines needed to load the user-defined Mie cloud properties:
+!!  - `cld_mie_load`: general call to subroutines needed to load optical properties for liquid clouds from user-defined files
+!!  - `cld_mie_read`: initializes the cld_mie structure and loads the Mie scattering data from a netCDF file
 module mod_cld_mie
 
   use netcdf
