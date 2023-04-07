@@ -79,8 +79,8 @@ contains
     nlayers = nwpsaf%nlayers
     npoints = nwpsaf%npoints
 
-    nwpsaf%q2m(1:npoints) = nwpsaf%q(1:npoints, nlayers) ! NWPSAF doesn't include 2-m specific humidity
-    nwpsaf%p_ifc(:,1) = 1E-2 ! RTTOV requires values strictly greater than 0
+    nwpsaf%q2m(1:npoints) = nwpsaf%hum(1:npoints, nlayers) ! NWPSAF doesn't include 2-m specific humidity
+    nwpsaf%paph(:,1) = 1E-2 ! RTTOV requires values strictly greater than 0
 
     ! NWPSAF doesn't include cloud effective radius, set to 0 for now. Not used for ice clouds anyway.
     !! nwpsaf%reff = 0._wp
@@ -181,16 +181,16 @@ contains
 
     !! 3D variables on atmospheric levels
     allocate(nwpsaf%altitudeh(npoints, nlevels), source = 0._wp)
-    allocate(nwpsaf%t_ifc(npoints, nlevels), source = 0._wp)
-    allocate(nwpsaf%p_ifc(npoints, nlevels), source = 0._wp)
-    allocate(nwpsaf%q_ifc(npoints, nlevels), source = 0._wp)
+    allocate(nwpsaf%temph(npoints, nlevels), source = 0._wp)
+    allocate(nwpsaf%paph(npoints, nlevels), source = 0._wp)
+    allocate(nwpsaf%humh(npoints, nlevels), source = 0._wp)
 
     !! 3D variables in atmospheric layers
     allocate(nwpsaf%altitude(npoints, nlayers), source = 0._wp)
-    allocate(nwpsaf%t(npoints, nlayers), source = 0._wp)
-    allocate(nwpsaf%p(npoints, nlayers), source = 0._wp)
-    allocate(nwpsaf%q(npoints, nlayers), source = 0._wp)
-    allocate(nwpsaf%clc(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%temp(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%pap(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%hum(npoints, nlayers), source = 0._wp)
+    allocate(nwpsaf%cc(npoints, nlayers), source = 0._wp)
     allocate(nwpsaf%clw(npoints, nlayers), source = 0._wp)
     allocate(nwpsaf%cli(npoints, nlayers), source = 0._wp)
     allocate(nwpsaf%qnc(npoints, nlayers), source = 0._wp)
@@ -213,8 +213,8 @@ contains
 
     deallocate(nwpsaf%height, nwpsaf%height_2, nwpsaf%lon, nwpsaf%lat, nwpsaf%lon_orig, nwpsaf%lat_orig, &
          nwpsaf%elevation, nwpsaf%lsm, nwpsaf%psurf, nwpsaf%tsurf, nwpsaf%t2m, nwpsaf%q2m, nwpsaf%u10, nwpsaf%v10, &
-         nwpsaf%p, nwpsaf%altitude, nwpsaf%altitudeh, nwpsaf%p_ifc, nwpsaf%t_ifc, nwpsaf%q_ifc, &
-         nwpsaf%t, nwpsaf%q, nwpsaf%clc, nwpsaf%clw, nwpsaf%cli, nwpsaf%qnc, nwpsaf%qr, nwpsaf%qs, nwpsaf%dz, &
+         nwpsaf%pap, nwpsaf%altitude, nwpsaf%altitudeh, nwpsaf%paph, nwpsaf%temph, nwpsaf%humh, &
+         nwpsaf%temp, nwpsaf%hum, nwpsaf%cc, nwpsaf%clw, nwpsaf%cli, nwpsaf%qnc, nwpsaf%qr, nwpsaf%qs, nwpsaf%dz, &
          nwpsaf%rho, nwpsaf%tv, nwpsaf%lwc, nwpsaf%iwc, nwpsaf%cdnc, nwpsaf%reff, &
          nwpsaf%day, nwpsaf%month, nwpsaf%year, nwpsaf%point)
 

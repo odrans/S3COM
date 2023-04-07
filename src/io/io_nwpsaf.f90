@@ -242,20 +242,20 @@ contains
           nwpsaf%altitude(1:npoints,:) = x2(1:npoints,1:nlayers)
        case ('altitudeh') !Geometric height at half level center
           nwpsaf%altitudeh(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
-       case ('temph') !Temperature at half level center
-          nwpsaf%t_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
-       case ('paph') !Pressures at half level center
-          nwpsaf%p_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
-       case ('humh') !Specific humidity at half level center
-          nwpsaf%q_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
-       case ('pap') !Air pressure
-          nwpsaf%p(1:npoints,:) = x2(1:npoints,1:nlayers)
        case ('temp') !Air temperature
-          nwpsaf%t(1:npoints,:) = x2(1:npoints,1:nlayers)
+          nwpsaf%temp(1:npoints,:) = x2(1:npoints,1:nlayers)
+       case ('temph') !Temperature at half level center
+          nwpsaf%temph(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
        case ('hum') !Specific humidity
-          nwpsaf%q(1:npoints,:) = x2(1:npoints,1:nlayers)
+          nwpsaf%hum(1:npoints,:) = x2(1:npoints,1:nlayers)
+       case ('humh') !Specific humidity at half level center
+          nwpsaf%humh(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
+       case ('pap') !Air pressure
+          nwpsaf%pap(1:npoints,:) = x2(1:npoints,1:nlayers)
+       case ('paph') !Pressures at half level center
+          nwpsaf%paph(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
        case ('cc') !Cloud cover
-          nwpsaf%clc(1:npoints,1:nlayers) = x2(1:npoints,1:nlayers)
+          nwpsaf%cc(1:npoints,1:nlayers) = x2(1:npoints,1:nlayers)
        case ('lwc') !Specific cloud water content
           nwpsaf%lwc(1:npoints,:) = x2(1:npoints,1:nlayers)
        case ('iwc') !Specific cloud ice content

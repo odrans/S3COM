@@ -117,28 +117,28 @@ module s3com_types
           q2m,                 &     !<  2-m specific humidity @units{kg/kg}
           u10,                 &     !< U-component of 10-m wind @units{m/s}
           v10                        !< V-component of 10-m wind @units{m/s}
-     real(wp), dimension(:,:), allocatable :: &
-          p,                  &      !< Layer pressure @units{Pa}
-          p_ifc,              &      !< Pressure at half-level center @units{Pa}
-          altitude,           &      !< Layer height @units{m}
-          altitudeh,          &      !< Height at half-levels center @units{m}
-          t,                  &      !< Temperature @units{K}
-          t_ifc,              &      !< Temperature at half-levels center @units{K}
-          q,                  &      !< Specific humidity @units{kg/kg}
-          q_ifc,              &      !< Specific humidity at half level center @units{kg/kg}
-          clc,                &      !< Total cloud fraction (0-1)
-          clw,                &      !< Specific cloud water content @units{kg/kg}
-          cli,                &      !< Specific cloud ice content @units{kg/kg}
-          qnc,                &      !< Cloud droplet number concentration @units{\# m^-3}
-          qr,                 &      !< Rain mixing ratio @units{kg/kg}
-          qs,                 &      !< Snow mixing ratio @units{kg/kg}
-          dz,                 &      !< Layer thickness @units{m}
-          rho,                &      !< Air density used for liquid clouds @units{kg m^-3}
-          tv,                 &      !< Virtual temperature @units{K}
-          lwc,                &      !< Liquid water content @units{kg m^-3}
-          iwc,                &      !< Ice water content @units{kg m^-3}
-          cdnc,               &      !< Cloud droplet number concentration @units{\# m^-3}
-          Reff                       !< Cloud liquid water effective radius @units{m}
+     real(wp), dimension(:,:), allocatable :: &x
+          pap,                 &      !< Layer pressure @units{Pa}
+          paph,                &      !< Pressure at half-level center @units{Pa}
+          altitude,            &      !< Layer height @units{m}
+          altitudeh,           &      !< Height at half-levels center @units{m}
+          temp,                &      !< Air temperature @units{K}
+          temph,               &      !< Air temperature at half-levels center @units{K}
+          hum,                 &      !< Specific humidity @units{kg/kg}
+          humh,                &      !< Specific humidity at half level center @units{kg/kg}
+          cc,                  &      !< Total cloud fraction (0-1)
+          clw,                 &      !< Specific cloud water content @units{kg/kg}
+          cli,                 &      !< Specific cloud ice content @units{kg/kg}
+          qnc,                 &      !< Cloud droplet number concentration @units{\# m^-3}
+          qr,                  &      !< Rain mixing ratio @units{kg/kg}
+          qs,                  &      !< Snow mixing ratio @units{kg/kg}
+          dz,                  &      !< Layer thickness @units{m}
+          rho,                 &      !< Air density used for liquid clouds @units{kg m^-3}
+          tv,                  &      !< Virtual temperature @units{K}
+          lwc,                 &      !< Liquid water content @units{kg m^-3}
+          iwc,                 &      !< Ice water content @units{kg m^-3}
+          cdnc,                &      !< Cloud droplet number concentration @units{\# m^-3}
+          Reff                        !< Cloud liquid water effective radius @units{m}
   end type type_nwpsaf
 
   !> @brief Model outputs from ICON simulations

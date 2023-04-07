@@ -271,12 +271,12 @@ contains
     model%t_2m       = nwpsaf%t2m
     model%landmask   = nwpsaf%lsm
 
-    model%p          = nwpsaf%p_ifc
+    model%p          = nwpsaf%paph
     model%z          = nwpsaf%altitudeh
     model%dz         = nwpsaf%dz
-    model%t          = nwpsaf%t_ifc
-    model%q          = nwpsaf%q_ifc
-    model%clc        = nwpsaf%clc
+    model%t          = nwpsaf%temph
+    model%q          = nwpsaf%humh
+    model%clc        = nwpsaf%cc
     model%iwc        = nwpsaf%iwc
     model%lwc        = nwpsaf%lwc
     model%reff       = nwpsaf%reff
