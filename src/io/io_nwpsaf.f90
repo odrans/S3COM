@@ -239,9 +239,9 @@ contains
 
           ! 3D variables
        case ('altitude') !Geometric height at full level center
-          nwpsaf%z(1:npoints,:) = x2(1:npoints,1:nlayers)
+          nwpsaf%altitude(1:npoints,:) = x2(1:npoints,1:nlayers)
        case ('altitudeh') !Geometric height at half level center
-          nwpsaf%z_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
+          nwpsaf%altitudeh(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
        case ('temph') !Temperature at half level center
           nwpsaf%t_ifc(1:npoints,1:nlevels) = x2(1:npoints,1:nlevels)
        case ('paph') !Pressures at half level center
