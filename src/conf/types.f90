@@ -289,7 +289,7 @@ module s3com_types
 
   !< @brief Structure containing cloud optical properties from Mie calculations
   type type_cld_mie
-     integer(kind=4) ::        &
+     integer(wpi) ::           &
           nang,                &     !< Number of scattering angles for which Mie calculations were performed
           nchan,               &     !< Number of instrumental channels
           nrad,                &     !< Number of available effective radii on which Mie calculations were performed
@@ -297,9 +297,9 @@ module s3com_types
      character(len=128) ::     &
           fn_mie,              &     !< Name of the file containing the Mie optical properties for a given instrument
           fn_legcoef                 !< Name of the file containing the corresponding Legendre polynomial coefficients
-     integer(kind=4), dimension(:), allocatable :: &
+     integer(wpi), dimension(:), allocatable :: &
           chan_id,             &     !< ID of the instrument channel in RTTOV
-          mom                  &     !< Moments number of the Legendre polynomial decomposition
+          mom                        !< Moments number of the Legendre polynomial decomposition
      real(kind=wp), dimension(:), allocatable :: &
           chan_wl,             &     !< Wavelength of the instrument channel @units{um}
           radius,              &     !< Effective radius of the spherical cloud particles @units{um}
@@ -311,9 +311,10 @@ module s3com_types
           w0                         !< Single-scattering albedo
      real(kind=wp), dimension(:,:,:), allocatable :: &
           pha,                 &     !< Azimuthally-averaged phase function
-          legcoef                    !< Legendre polynomial coefficients
+          legcoef                    !< Coefficients of the Legendre polynomial decomposition of the phase function
   end type type_cld_mie
 
+  !< @brief Structure containing all cloud optical properties
   type type_cld
      type(type_cld_mie) :: mie
   end type type_cld
