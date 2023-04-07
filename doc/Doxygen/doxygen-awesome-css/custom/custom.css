@@ -105,7 +105,6 @@ html.dark-mode .bordered_image object[type="image/svg+xml"] /* doxygen 1.9.3 */ 
     padding-bottom: 60px; /* adjust as needed */
 }
 
-#projectbrief {
-    line-height: 1.4;
-}
-
+/* #projectbrief { */
+/*     line-height: 1.4; */
+/* } */

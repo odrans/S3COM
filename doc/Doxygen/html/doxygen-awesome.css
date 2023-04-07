@@ -549,8 +549,6 @@ a.anchor {
     position: relative;
     box-shadow: none;
     display: block;
-    margin-top: -10px; /* custom */
-    margin-bottom: 5px;
 }
 
 /* until Doxygen 1.9.4 */
