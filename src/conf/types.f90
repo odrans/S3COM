@@ -408,6 +408,7 @@ module s3com_types
   end type type_s3com
 
 
+
   ! Type containing variables used by S3COM for retrievals
   ! type type_s3com_obsolete
   !    integer(kind=4) :: &

@@ -39,27 +39,6 @@ module mod_io_nwpsaf
   private
   public :: nwpsaf_read
 
-  !!Types to be used as arrays of pointers
-  type var1d
-     character(len=16) :: name
-     character(len=16) :: units
-     integer :: dimsid(3)
-     integer :: dimssz(2)
-     integer :: vid
-     logical :: lout
-     real(wp), pointer, dimension(:) :: pntr
-  end type var1d
-
-  type var2d
-     character(len=16) :: name
-     character(len=16) :: units
-     integer :: dimsid(4)
-     integer :: dimssz(3)
-     integer :: vid
-     logical :: lout
-     real(wp), pointer, dimension(:,:) :: pntr
-  end type var2d
-
   type var3d
      character(len=16) :: name
      character(len=16) :: units

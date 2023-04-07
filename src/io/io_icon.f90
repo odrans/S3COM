@@ -39,37 +39,6 @@ module mod_io_icon
   private
   public :: icon_read
 
-  !!Types to be used as arrays of pointers
-  type var1d
-     character(LEN=16) :: name
-     character(LEN=16) :: units
-     integer :: dimsid(3)
-     integer :: dimssz(2)
-     integer :: vid
-     logical :: lout
-     real(wp), pointer, dimension(:) :: pntr
-  end type var1d
-
-  type var2d
-     character(LEN=16) :: name
-     character(LEN=16) :: units
-     integer :: dimsid(4)
-     integer :: dimssz(3)
-     integer :: vid
-     logical :: lout
-     real(wp), pointer, dimension(:,:) :: pntr
-  end type var2d
-
-  type var3d
-     character(LEN=16) :: name
-     character(LEN=16) :: units
-     integer :: dimsid(5)
-     integer :: dimssz(4)
-     integer :: vid
-     logical :: lout
-     real(wp), pointer, dimension(:,:,:) :: pntr
-  end type var3d
-
 contains
 
   subroutine icon_read(fname, icon)
