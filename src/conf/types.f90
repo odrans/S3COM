@@ -117,7 +117,7 @@ module s3com_types
           q2m,                 &     !<  2-m specific humidity @units{kg/kg}
           u10,                 &     !< U-component of 10-m wind @units{m/s}
           v10                        !< V-component of 10-m wind @units{m/s}
-     real(wp), dimension(:,:), allocatable :: &x
+     real(wp), dimension(:,:), allocatable :: &
           pap,                 &      !< Layer pressure @units{Pa}
           paph,                &      !< Pressure at half-level center @units{Pa}
           altitude,            &      !< Layer height @units{m}
