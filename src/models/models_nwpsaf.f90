@@ -103,6 +103,8 @@ contains
   !> @brief Initialize NWPSAF data structure
   !! @details This subroutine initializes the NWPSAF data structure by allocating the required arrays.
   !! All arrays are initialized to zero.
+  !! @param[in] npoints Number of grid points
+  !! @param[in] nlayers Number of vertical layers
   !! @param[inout] nwpsaf NWPSAF data structure
   subroutine nwpsaf_init(npoints, nlayers, nwpsaf)
 

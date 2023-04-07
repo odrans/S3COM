@@ -153,6 +153,8 @@ contains
   !> @brief Initialize ICON data structure
   !! @details This subroutine initializes the ICON data structure by allocating the required arrays.
   !! All arrays are initialized to zero.
+  !! @param[in] npoints Number of grid points
+  !! @param[in] nlayers Number of vertical layers
   !! @param[inout] icon ICON data structure
   subroutine icon_init(npoints, nlayers, icon)
 
