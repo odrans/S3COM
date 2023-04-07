@@ -316,79 +316,95 @@ module s3com_types
 
   !> @brief Structure containing all cloud optical properties
   type type_cld
-     type(type_cld_mie) :: mie
+     type(type_cld_mie) :: mie       !< Cloud optical properties from Mie calculations
   end type type_cld
 
-
-
-  !!Type containing variables used by S3COM for retrievals
+  !> @brief S3COM structure for direct radiative transfer simulations and measurements
   type type_s3com_rad
      real(kind=wp), dimension(:), allocatable ::   &
-          wavelength
+          wavelength                !< Wavelength @units{um}
      real(kind=wp), dimension(:,:), allocatable :: &
-          y,                                       &
-          f,                                       &
-          f_ref_total,                             &
-          f_ref_clear,                             &
-          f_bt_total,                              &
-          f_bt_clear,                              &
-          f_rad_total,                             &
-          f_rad_clear
+          y,                   &    !< Satellite measurements. Units will depend on type
+          f,                   &    !< Forward model simulations with same type and units as y
+          f_ref_total,         &    !< Total top-of-atmosphere outgoing reflectance @units{-}
+          f_ref_clear,         &    !< Clear-sky top-of-atmosphere outgoing reflectance @units{-}
+          f_bt_total,          &    !< Total top-of-atmosphere brightness temperature @units{K}
+          f_bt_clear,          &    !< Clear-sky top-of-atmosphere brightness temperature @units{K}
+          f_rad_total,         &    !< Total top-of-atmosphere radiance @units{W m-2 sr-1 um-1}
+          f_rad_clear               !< Total top-of-atmosphere radiance @units{W m-2 sr-1 um-1}
   end type type_s3com_rad
 
+  !> @brief S3COM structure for Jacobian calculations
+  !! @note RTTOV outputs the gradient of each forward model radiance with respect to each input profile variable
+  !! evaluated for a given input profile. The input perturbation is here set to a unit radiance (BT are also possible).
   type type_s3com_jac
      real(kind=wp), dimension(:), allocatable ::   &
-          wavelength
+          wavelength               !< Wavelength @units{um}
      real(kind=wp), dimension(:,:,:), allocatable :: &
-          p,                                         &
-          t,                                         &
-          cfrac,                                     &
-          clwde
+          p,                   &   !< Jacobian of the forward model with respect to the pressure @units{W m-2 sr-1 um-1 Pa-1}
+          t,                   &   !< Jacobian of the forward model with respect to the temperature @units{W m-2 sr-1 um-1 K-1}
+          cfrac,               &   !< Jacobian of the forward model with respect to the cloud fraction @units{W m-2 sr-1 um-1}
+          clwde                    !< Jacobian of the forward model with respect to the cloud droplet effective diameter @units{W m-2 sr-1 um-1 um-1}
      logical :: do_jacobian_calc
   end type type_s3com_jac
 
+  !> @brief S3COM structure for Tangent Linear calculations
+  !! This structure contains Jacobians that are computed using the TL model of RTTOV.
+  !! @warning This structure is not yet fully tested for all configurations. Use with caution.
   type type_s3com_k_tl
      real(kind=wp), dimension(:), allocatable ::   &
-          wavelength
+          wavelength               !< Wavelength @units{um}
      real(kind=wp), dimension(:,:,:), allocatable :: &
-          t
+          t                        !< Jacobian of the forward model with respect to the pressure @units{W m-2 sr-1 um-1 Pa-1}
      logical :: do_k_tl_calc
   end type type_s3com_k_tl
-    
+
+  !> @brief S3COM structure for atmospheric profiles
+  !! The atmospheric profiles are stored exactly as they have been used for forward model calculations
+  !! When retrievals are activated, these can deviate from model outputs as the atmospheric model can be modified.
+  !! When retrievals are not activated, these are identical to model outputs.
   type type_s3com_atm
      real(kind=wp), dimension(:,:), allocatable :: &
-          t,                                       &
-          z,                                       &
-          clc,                                     &
-          cdnc,                                    &
-          reff,                                    &
-          lwc
+          t,                   &   !< Temperature on levels @units{K}
+          z,                   &   !< Altitude on levels @units{m}
+          clc,                 &   !< Cloud fraction in layers  @units{-}
+          cdnc,                &   !< Cloud droplet number concentration in layers @units{\# m-3}
+          reff,                &   !< Cloud droplet effective radius in layers @units{um}
+          lwc                      !< Cloud liquid water content in layers @units{kg m-2}
   end type type_s3com_atm
 
+  !> @brief Structure containing all S3COM options
+  !! This stores the radiative transfer options relevant to the S3COM code
   type type_s3com_opt
-     type(type_rttov_opt) :: rttov
+     type(type_rttov_opt) :: rttov   !< RTTOV options
   end type type_s3com_opt
 
+  !> @brief Overall S3COM structure
+  !! This structure contains all the variables used by S3COM for forward model simulations and retrievals
+  !! It also stores all relevant output variables
   type type_s3com
      integer(kind=4), dimension(3) :: &
-          time, &   ! day, month, year
-          date      ! hour, minute, second
-     integer(kind=4) :: &
-          npoints,      &
-          nlevels,      &
-          nlayers,      &
-          nmeas,        &
-          nstates,      &
-          idx_start,    &
-          idx_end
+          time,                &     !< Time of the day, UTC @units{/hour, minute, second/}
+          date                       !< Day of the year @units{/day, month, year/}
+     integer(kind=4) ::        &
+          npoints,             &     !< Total number of grid points
+          nlevels,             &     !< Number of vertical levels
+          nlayers,             &     !< Number of vertical layers (typically, nlevels - 1)
+          nlat,                &     !< Number of latitude points in the grid
+          nlon,                &     !< Number of longitude points in the grid
+          mode,                &     !< Model grid type (1: track, 2: lon-lat, 3: lat-lon)
+          nmeas,               &     !< Size of the measurement vector
+          nstates,             &     !< Size of the state vector
+          idx_start,           &     !< Starting point index for the subset grid
+          idx_end                    !< Ending point index for the subset grid
      logical, dimension(:), allocatable :: &
-          flag_rttov
-     type(type_nml) :: nml
-     type(type_s3com_rad) :: rad
-     type(type_s3com_atm) :: atm
-     type(type_s3com_jac) :: jac
-     type(type_s3com_k_tl) :: k_tl
-     type(type_s3com_opt) :: opt
+          flag_rttov                 !< Flag indicating if RTTOV should be called for a given point
+     type(type_nml) :: nml           !< Contains all the S3COM namelist options
+     type(type_s3com_rad) :: rad     !< Contains all the S3COM radiative transfer output variables
+     type(type_s3com_atm) :: atm     !< Contains all the S3COM atmospheric profiles
+     type(type_s3com_jac) :: jac     !< Contains all the S3COM Jacobian output variables
+     type(type_s3com_k_tl) :: k_tl   !< Contains all the S3COM tangent linear output variables
+     type(type_s3com_opt) :: opt     !< Contains all the S3COM radiative transfer options
   end type type_s3com
 
 
