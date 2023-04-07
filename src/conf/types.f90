@@ -41,48 +41,48 @@ module s3com_types
   integer, parameter :: dp = selected_real_kind(12, 307)
   integer, parameter :: wp = sp
 
-  ! Namelist
+  !> @brief Contains all variables directly read from the namelist file.
   type type_nml
-     character(len=256) :: &
-          path_s3com, &
-          path_rttov, &
-          fname_in, &
-          path_out, &
-          suffix_out, &
-          model_name
-     integer(kind=4) :: &
-          npoints_it, &
-          month, &
-          platform, &
-          satellite, &
-          instrument, &
-          nchannels, &
-          ir_scatt_model, &
-          vis_scatt_model, &
-          dom_nstreams, &
-          dom_nmoments, &
-          rttov_nthreads, &
-          gas_unit, &
-          ice_scheme, &
-          clw_scheme
+     character(len=256) ::      &
+          path_s3com,           &      !< Path to S3COM directory
+          path_rttov,           &      !< Path to RTTOV directory
+          fname_in,             &      !< Name of the input model file (e.g. ICON or NWPSAF)
+          path_out,             &      !< Path to the repository containing where the output files will be written
+          suffix_out,           &      !< Suffix added to the output filenames
+          model_name                   !< Name of the physical model. Currently supported: ICON, NWPSAF
+     integer(kind=4) ::         &
+          npoints_it,           &      !< Number of subset data points (chunks) to process in each iteration (only relevant to optimize memory usage)
+          platform,             &      !< Platform ID for RTTOV
+          satellite,            &      !< Satellite ID for RTTOV
+          instrument,           &      !< Instrument ID for RTTOV
+          nchannels,            &      !< Number of instrument channels to simulate
+          ir_scatt_model,       &      !< Scattering model for IR source term: 1=DOM; 2=Chou-scaling
+          vis_scatt_model,      &      !< Scattering model for solar source term: 1=DOM; 2=single-scattering; 3=MFASIS
+          dom_nstreams,         &      !< Number of streams for DOM scattering model
+          dom_nmoments,         &      !< Number of moments for discrete ordinate method
+          rttov_nthreads,       &      !< Number of threads for RTTOV calculations
+          gas_unit,             &      !< Gas units for atmospheric profiles
+          ice_scheme,           &      !< Scheme used for ice cloud optical properties: 1=Baum; 2=Baran 2014; 3=Baran 2018. Not relevant if `user_cld_opt_param` is true.
+          clw_scheme                   !< Scheme used for liquid cloud optical properties: 1=OPAC; 2=Deff. Not relevant if `user_cld_opt_param` is true.
      integer(kind=4), dimension(:), allocatable :: &
-          channel_list
+          channel_list                 !< List of satellite channels to simulate (should be of dimension nchannels)
      logical :: &
-          user_cld_opt_param, &
-          flag_retrievals,  &
-          flag_output_atm,  &
-          flag_output_jac,  &
-          flag_output_k_tl, &
-          do_jacobian_calc, &
-          do_k_tl_calc,     &
-          do_opdep_calc,    &
-          dom_rayleigh,     &
-          mmr_cldaer,       &
-          ozone_data,       &
-          add_refrac,       &
-          add_clouds,       &
-          add_aerosols
+          user_cld_opt_param,   &      !< If true, users can supply their own cloud optical properties (`ice_scheme` and `clw_scheme` are then not used)
+          flag_retrievals,      &      !< Flag to specify if retrievals should be performed
+          flag_output_atm,      &      !< Flag to specify if atmospheric profiles should be output
+          flag_output_jac,      &      !< Flag to specify if Jacobian matrices should be output
+          flag_output_k_tl,     &      !< Flag to specify if K matrices should be output
+          do_jacobian_calc,     &      !< Flag to specify if Jacobian matrices should be calculated
+          do_k_tl_calc,         &      !< Flag to specify if K matrices should be calculated
+          do_opdep_calc,        &      !< If false, disables the RTTOV gas optical depth calculation (default = true)
+          dom_rayleigh,         &      !< If true, Rayleigh scattering is included in the DOM model
+          mmr_cldaer,           &      !< Cloud and gas units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
+          ozone_data,           &      !< Set to true when supplying a profile of ozone, false to use climatology from RTTOV
+          add_refrac,           &      !< If true accounts for atmospheric refraction
+          add_clouds,           &      !< If true, clouds are included in the RTTOV model
+          add_aerosols                 !< If true, aerosols are included in the RTTOV model
   end type type_nml
+
 
   !!Type containing variables from NWP-SAF simulations
   type type_nwpsaf
@@ -466,6 +466,7 @@ module s3com_types
           cdnc_model
   end type type_s3com_obsolete
 
+contains
 
 
 end module s3com_types

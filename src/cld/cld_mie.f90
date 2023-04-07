@@ -26,10 +26,8 @@
 ! History
 ! Jan 2022 - O. Sourdeval - Original version
 
-! Description:
-!> @file
-!!   Allocate and load the user-defined Mie cloud properties
-!!
+!> @brief
+!! Allocate and load the user-defined Mie cloud properties
 module mod_cld_mie
 
   use netcdf
@@ -48,9 +46,7 @@ contains
 
   !> @brief
   !!   General call to subroutines needed to load optical properties for liquid clouds from user-defined files
-  !!
   !! @details
-  !!
   !!   This initializes and sets the `cld%mie` structure, which contains user-defined liquid cloud optical properties needed by RTTOV.
   !!
   !!   These properties are read from netCDF files, currently expected to be located in $PATH/data/opt_prop. Current properties are
@@ -62,11 +58,12 @@ contains
   !!   - the phase function for defined angles
   !!   - the legendre coefficients of the phase function
   !!
-  !!   Important: Note that all cloud properties are defined for a normalized droplet size distribution n(r)!
+  !!   @note
+  !!   Note that all cloud properties are defined for a normalized droplet size distribution n(r)!
   !!   This means that the integral of n(r) is here 1, and converting the absorption and scattering cross-sections to the
   !!   total absorption and scattering coefficients (typically in km^-1) requires multiplying by the droplet number concentration.
   !!
-  !! @param[out]    cld                   cld structure (currently only contains cld%mie)
+  !! @param[out]    cld                   cld structure (currently only contains mie)
   !! @param[in]     s3com                 s3com structure
   subroutine cld_mie_load(s3com, cld)
 
@@ -96,6 +93,21 @@ contains
     cld%mie = cld_mie
 
   end subroutine cld_mie_load
+
+  !> @brief Create HDF5 file
+!> @details To use this subroutine HDF5_ENABLE should be set to ON
+!> in CMake configuration
+subroutine sll_hdf5_file_create(filename,file_id,error)
+  character(len=*) , intent(in)  :: filename  !< file name
+  integer(hid_t)   , intent(out) :: &
+       file_id, &   !< unit number
+       error     !< error code
+
+  call H5open_f(error)
+  SLL_ASSERT(error==0)
+  call H5Fcreate_f(filename,H5F_ACC_TRUNC_F,file_id,error)
+  SLL_ASSERT(error==0)
+end subroutine sll_hdf5_file_create
 
 
   !> @brief
