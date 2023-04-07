@@ -287,7 +287,7 @@ module s3com_types
           azangle                    !< Satellite azimuth angle @units{degrees}
   end type type_rttov_opt
 
-  !< @brief Structure containing cloud optical properties from Mie calculations
+  !> @brief Structure containing cloud optical properties from Mie calculations
   type type_cld_mie
      integer(wpi) ::           &
           nang,                &     !< Number of scattering angles for which Mie calculations were performed
@@ -314,7 +314,7 @@ module s3com_types
           legcoef                    !< Coefficients of the Legendre polynomial decomposition of the phase function
   end type type_cld_mie
 
-  !< @brief Structure containing all cloud optical properties
+  !> @brief Structure containing all cloud optical properties
   type type_cld
      type(type_cld_mie) :: mie
   end type type_cld
