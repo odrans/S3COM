@@ -315,6 +315,15 @@ body, table, div, p, dl, #nav-tree .label, .title,
     font-family: var(--font-family);
 }
 
+span.units {
+    display: inline-block;
+    padding: 2px 5px;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    background-color: var(--searchbar-background);
+}
+
+
 h1, h2, h3, h4, h5 {
     margin-top: .9em;
     font-weight: 600;

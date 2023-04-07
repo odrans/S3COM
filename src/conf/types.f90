@@ -37,156 +37,160 @@ module s3com_types
   public :: type_cld, type_cld_mie
 
   !!Few kind definitions for variables
-  integer, parameter :: sp = selected_real_kind(6, 37)
-  integer, parameter :: dp = selected_real_kind(12, 307)
-  integer, parameter :: wp = sp
+  integer, parameter :: sp = selected_real_kind(6, 37)     !< Kind for single precision reals
+  integer, parameter :: dp = selected_real_kind(12, 307)   !< Kind for double precision reals
+  integer, parameter :: wp = sp                            !< Kind for working precision reals
+  integer, parameter :: wpi = selected_int_kind(4)         !< Kind for working precision integers
 
-  !> @brief Contains all variables directly read from the namelist file.
+  !> @brief Namelist variables
+  !> @details These variables are directly read from the namelist file that is provided as argument to the S3COM executable
   type type_nml
      character(len=256) ::      &
-          path_s3com,           &      !< Path to S3COM directory
-          path_rttov,           &      !< Path to RTTOV directory
-          fname_in,             &      !< Name of the input model file (e.g. ICON or NWPSAF)
-          path_out,             &      !< Path to the repository containing where the output files will be written
-          suffix_out,           &      !< Suffix added to the output filenames
-          model_name                   !< Name of the physical model. Currently supported: ICON, NWPSAF
+          path_s3com,           &    !< Path to S3COM directory
+          path_rttov,           &    !< Path to RTTOV directory
+          fname_in,             &    !< Name of the input model file (e.g. ICON or NWPSAF)
+          path_out,             &    !< Path to the repository containing where the output files will be written
+          suffix_out,           &    !< Suffix added to the output filenames
+          model_name                 !< Name of the physical model. Currently supported: ICON, NWPSAF
      integer(kind=4) ::         &
-          npoints_it,           &      !< Number of subset data points (chunks) to process in each iteration (only relevant to optimize memory usage)
-          platform,             &      !< Platform ID for RTTOV
-          satellite,            &      !< Satellite ID for RTTOV
-          instrument,           &      !< Instrument ID for RTTOV
-          nchannels,            &      !< Number of instrument channels to simulate
-          ir_scatt_model,       &      !< Scattering model for IR source term: 1=DOM; 2=Chou-scaling
-          vis_scatt_model,      &      !< Scattering model for solar source term: 1=DOM; 2=single-scattering; 3=MFASIS
-          dom_nstreams,         &      !< Number of streams for DOM scattering model
-          dom_nmoments,         &      !< Number of moments for discrete ordinate method
-          rttov_nthreads,       &      !< Number of threads for RTTOV calculations
-          gas_unit,             &      !< Gas units for atmospheric profiles
-          ice_scheme,           &      !< Scheme used for ice cloud optical properties: 1=Baum; 2=Baran 2014; 3=Baran 2018. Not relevant if `user_cld_opt_param` is true.
-          clw_scheme                   !< Scheme used for liquid cloud optical properties: 1=OPAC; 2=Deff. Not relevant if `user_cld_opt_param` is true.
+          npoints_it,           &    !< Number of subset data points (chunks) to process in each iteration (only relevant to optimize memory usage)
+          platform,             &    !< Platform ID for RTTOV
+          satellite,            &    !< Satellite ID for RTTOV
+          instrument,           &    !< Instrument ID for RTTOV
+          nchannels,            &    !< Number of instrument channels to simulate
+          ir_scatt_model,       &    !< Scattering model for IR source term: 1=DOM; 2=Chou-scaling
+          vis_scatt_model,      &    !< Scattering model for solar source term: 1=DOM; 2=single-scattering; 3=MFASIS
+          dom_nstreams,         &    !< Number of streams for DOM scattering model
+          dom_nmoments,         &    !< Number of moments for discrete ordinate method
+          rttov_nthreads,       &    !< Number of threads for RTTOV calculations
+          gas_unit,             &    !< Gas units for atmospheric profiles
+          ice_scheme,           &    !< Scheme used for ice cloud optical properties: 1=Baum; 2=Baran 2014; 3=Baran 2018. Not relevant if `user_cld_opt_param` is true.
+          clw_scheme                 !< Scheme used for liquid cloud optical properties: 1=OPAC; 2=Deff. Not relevant if `user_cld_opt_param` is true.
      integer(kind=4), dimension(:), allocatable :: &
-          channel_list                 !< List of satellite channels to simulate (should be of dimension nchannels)
+          channel_list               !< List of satellite channels to simulate (should be of dimension nchannels)
      logical :: &
-          user_cld_opt_param,   &      !< If true, users can supply their own cloud optical properties (`ice_scheme` and `clw_scheme` are then not used)
-          flag_retrievals,      &      !< Flag to specify if retrievals should be performed
-          flag_output_atm,      &      !< Flag to specify if atmospheric profiles should be output
-          flag_output_jac,      &      !< Flag to specify if Jacobian matrices should be output
-          flag_output_k_tl,     &      !< Flag to specify if K matrices should be output
-          do_jacobian_calc,     &      !< Flag to specify if Jacobian matrices should be calculated
-          do_k_tl_calc,         &      !< Flag to specify if K matrices should be calculated
-          do_opdep_calc,        &      !< If false, disables the RTTOV gas optical depth calculation (default = true)
-          dom_rayleigh,         &      !< If true, Rayleigh scattering is included in the DOM model
-          mmr_cldaer,           &      !< Cloud and gas units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
-          ozone_data,           &      !< Set to true when supplying a profile of ozone, false to use climatology from RTTOV
-          add_refrac,           &      !< If true accounts for atmospheric refraction
-          add_clouds,           &      !< If true, clouds are included in the RTTOV model
-          add_aerosols                 !< If true, aerosols are included in the RTTOV model
+          user_cld_opt_param,   &    !< If true, users can supply their own cloud optical properties (`ice_scheme` and `clw_scheme` are then not used)
+          flag_retrievals,      &    !< Flag to specify if retrievals should be performed
+          flag_output_atm,      &    !< Flag to specify if atmospheric profiles should be output
+          flag_output_jac,      &    !< Flag to specify if Jacobian matrices should be output
+          flag_output_k_tl,     &    !< Flag to specify if K matrices should be output
+          do_jacobian_calc,     &    !< Flag to specify if Jacobian matrices should be calculated
+          do_k_tl_calc,         &    !< Flag to specify if K matrices should be calculated
+          do_opdep_calc,        &    !< If false, disables the RTTOV gas optical depth calculation (default = true)
+          dom_rayleigh,         &    !< If true, Rayleigh scattering is included in the DOM model
+          mmr_cldaer,           &    !< Cloud and gas units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
+          ozone_data,           &    !< Set to true when supplying a profile of ozone, false to use climatology from RTTOV
+          add_refrac,           &    !< If true accounts for atmospheric refraction
+          add_clouds,           &    !< If true, clouds are included in the RTTOV model
+          add_aerosols               !< If true, aerosols are included in the RTTOV model
   end type type_nml
 
 
-  !!Type containing variables from NWP-SAF simulations
+  !> @brief Model outputs from NWPSAF simulations
+  !! @details They are either read form the NetCDF file or calculated from these model output
   type type_nwpsaf
-     integer(kind=4) :: &
-          npoints, &
-          nlevels, &
-          nlayers, &
-          nlat, &
-          nlon, &
-          mode
-     real(dp) :: &
-          time
+     integer(kind=4) ::        &
+          npoints,             &     !< Total number of grid points
+          nlevels,             &     !< Number of vertical levels
+          nlayers,             &     !< Number of vertical layers (typically, nlevels - 1)
+          nlat,                &     !< Number of latitude points in the grid
+          nlon,                &     !< Number of longitude points in the grid
+          mode                       !< Model grid type (1: track, 2: lon-lat, 3: lat-lon)
      integer(kind=4), dimension(:), allocatable :: &
-          height, height_2 ! height index
+          height,              &     !< Index of vertical layers
+          height_2                   !< Index of vertical levels
      integer(kind=4), dimension(:), allocatable :: &
-          point,                            &
-          day,                              &
-          month,                            &
-          year
+          point,               &     !< Index of grid points
+          day,                 &     !< Day of the simulation
+          month,               &     !< Month of the simulation
+          year                       !< Year of the simulation
      real(wp), dimension(:), allocatable :: &
-          lon,                              & !Longitude (degrees east)
-          lat,                              & !Latitude (degress north)
-          lon_orig,                         & !Longitude that won't be regridded (degrees east)
-          lat_orig,                         & !Latitude  that won't be regridded (degress north)
-          elevation,                        & !Surface height
-          lsm,                              & !Land/sea mask (0/1)
-          psurf,                            & !Surface pressure (Pa)
-          tsurf,                            & !Skin temperature (K)
-          t2m,                              & ! 2-m temperature (K)
-          q2m,                              & ! 2-m specific humidity
-          u10,                              & !U-component of wind (m/s)
-          v10                                 !V-component of wind (m/s)
+          lon,                 &     !< Longitude @units{degrees East}
+          lat,                 &     !< Latitude @units{degrees North}
+          lon_orig,            &     !< Longitude that won't be regridded @units{degrees East}
+          lat_orig,            &     !< Latitude that won't be regridded @units{degrees North}
+          elevation,           &     !< Surface height @units{m}
+          lsm,                 &     !< Land/sea mask (0/1)
+          psurf,               &     !< Surface pressure @units{Pa}
+          tsurf,               &     !< Skin temperature @units{K}
+          t2m,                 &     !<  2-m temperature @units{K}
+          q2m,                 &     !<  2-m specific humidity @units{kg/kg}
+          u10,                 &     !< U-component of 10-m wind @units{m/s}
+          v10                        !< V-component of 10-m wind @units{m/s}
      real(wp), dimension(:,:), allocatable :: &
-          p,                                    & !Layer pressure (Pa)
-          p_ifc,                                & !Pressure at half-level center (Pa)
-          z,                                    & !Layer height (m)
-          z_ifc,                                & !Height at half-levels center (m)
-          t,                                    & !Temperature (K)
-          t_ifc,                                & !Temperature at half-levels center
-          q,                                    & !Specific humidity (kg/kg)
-          q_ifc,                                & !Specific humidity at half level center (kg/kg)
-          clc,                                  & !Total cloud fraction (0-1)
-          clw,                                  & !Specific cloud water content (kg/kg)
-          cli,                                  & !Specific cloud ice content (kg/kg)
-          qnc,                                  & !Cloud droplet number concentration (particules/kg)
-          qr,                                   & !Rain mixing ratio (kg/kg)
-          qs,                                   & !Snow mixing ratio (kg/kg)
-          dz,                                   & !Layer thickness (m)
-          rho,                                  & !Air density used for liquid clouds (kg/m3)
-          tv,                                   & !Virtual temperature (K)
-          lwc,                                  & !Liquid water content (kg/m3)
-          iwc,                                  & !Ice water content (kg/m3)
-          cdnc,                                 & !Cloud droplet number concentration (1/m3)
-          Reff                                    !Cloud liquid water effective radius (m)
+          p,                  &      !< Layer pressure @units{Pa}
+          p_ifc,              &      !< Pressure at half-level center @units{Pa}
+          z,                  &      !< Layer height @units{m}
+          z_ifc,              &      !< Height at half-levels center @units{m}
+          t,                  &      !< Temperature @units{K}
+          t_ifc,              &      !< Temperature at half-levels center @units{K}
+          q,                  &      !< Specific humidity @units{kg/kg}
+          q_ifc,              &      !< Specific humidity at half level center @units{kg/kg}
+          clc,                &      !< Total cloud fraction (0-1)
+          clw,                &      !< Specific cloud water content @units{kg/kg}
+          cli,                &      !< Specific cloud ice content @units{kg/kg}
+          qnc,                &      !< Cloud droplet number concentration @units{\# m^-3}
+          qr,                 &      !< Rain mixing ratio @units{kg/kg}
+          qs,                 &      !< Snow mixing ratio @units{kg/kg}
+          dz,                 &      !< Layer thickness @units{m}
+          rho,                &      !< Air density used for liquid clouds @units{kg m^-3}
+          tv,                 &      !< Virtual temperature @units{K}
+          lwc,                &      !< Liquid water content @units{kg m^-3}
+          iwc,                &      !< Ice water content @units{kg m^-3}
+          cdnc,               &      !< Cloud droplet number concentration @units{\# m^-3}
+          Reff                       !< Cloud liquid water effective radius @units{m}
   end type type_nwpsaf
 
-  !!Type containing variables from ICON simulations
+  !> @brief Model outputs from ICON simulations
+  !! @details They are either read form the NetCDF file or calculated from these model output
   type type_icon
      integer(kind=4) :: &
-          nlevels, &
-          npoints, &
-          nlayers, &
-          nlat, &
-          nlon, &
-          mode
-     real(dp) :: &
-          time
+          npoints,             &     !< Total number of grid points
+          nlevels,             &     !< Number of vertical levels
+          nlayers,             &     !< Number of vertical layers (typically, nlevels - 1)
+          nlat,                &     !< Number of latitude points in the grid
+          nlon,                &     !< Number of longitude points in the grid
+          mode                       !< Model grid type (1: track, 2: lon-lat, 3: lat-lon)
+     real(dp) ::               &
+          time                       !< Time of the simulation (format is \%Y\%m\%d.\%f)
      integer(kind=4), dimension(:), allocatable :: &
-          height, height_2 ! height index
+          height,              &     !< Index of vertical layers
+          height_2                   !< Index of vertical levels
      real(wp), dimension(:), allocatable :: &
-          lon_orig,                           & !Longitude that won't be regridded (degrees east)
-          lat_orig,                           & !Latitude  that won't be regridded (degress north)
-          lon,                                & !Longitude (degrees east)
-          lat,                                & !Latitude (degress north)
-          topography,                         & !Surface height
-          landmask,                           & !Land/sea mask (0/1)
-          ps,                                 & !Surface pressure (Pa)
-          ts,                                 & !Skin temperature (K)
-          t_2m,                                & !2m temperature (K)
-          q_2m,                                & !2m specific water vapor content (kg/kg)
-          u_10m,                              & !U-component of wind (m/s)
-          v_10m                                !V-component of wind (m/s)
+          lon,                 &     !< Longitude @units{degrees East}
+          lat,                 &     !< Latitude @units{degrees North}
+          lon_orig,            &     !< Longitude that won't be regridded @units{degrees East}
+          lat_orig,            &     !< Latitude that won't be regridded @units{degrees North}
+          topography,          &     !< Surface height @units{m}
+          landmask,            &     !< Land/sea mask (0/1)
+          ps,                  &     !< Surface pressure @units{Pa}
+          ts,                  &     !< Skin temperature @units{K}
+          t_2m,                &     !< 2-m temperature @units{K}
+          q_2m,                &     !< 2-m specific humidity @units{kg/kg}
+          u_10m,               &     !< U-component of 10-m wind @units{m/s}
+          v_10m                      !< V-component of 10-m wind @units{m/s}
      real(wp), dimension(:,:), allocatable :: &
-          p,                                    & !Layer pressure (Pa)
-          p_ifc,                                & !Pressure at half-level center (Pa)
-          z,                                    & !Layer height (m)
-          z_ifc,                                & !Height at half-levels center (m)
-          t,                                    & !Temperature (K)
-          t_ifc,                                & !Temperature at half-levels center
-          q,                                    & !Specific humidity (kg/kg)
-          q_ifc,                                & !Specific humidity at half level center (kg/kg)
-          clc,                                  & !Total cloud fraction (0-1)
-          clw,                                  & !Specific cloud water content (kg/kg)
-          cli,                                  & !Specific cloud ice content (kg/kg)
-          qnc,                                  & !Cloud droplet number concentration (particules/kg)
-          qr,                                   & !Rain mixing ratio (kg/kg)
-          qs,                                   & !Snow mixing ratio (kg/kg)
-          dz,                                   & !Layer thickness (m)
-          rho,                                  & !Air density used for liquid clouds (kg/m3)
-          tv,                                   & !Virtual temperature (K)
-          lwc,                                  & !Liquid water content (kg/m3)
-          iwc,                                  & !Ice water content (kg/m3)
-          cdnc,                                 & !Cloud droplet number concentration (1/m3)
-          Reff                                    !Cloud liquid water effective radius (m)
+          p,                  &      !< Layer pressure @units{Pa}
+          p_ifc,              &      !< Pressure at half-level center @units{Pa}
+          z,                  &      !< Layer height @units{m}
+          z_ifc,              &      !< Height at half-levels center @units{m}
+          t,                  &      !< Temperature @units{K}
+          t_ifc,              &      !< Temperature at half-levels center @units{K}
+          q,                  &      !< Specific humidity @units{kg/kg}
+          q_ifc,              &      !< Specific humidity at half level center @units{kg/kg}
+          clc,                &      !< Total cloud fraction (0-1)
+          clw,                &      !< Specific cloud water content @units{kg/kg}
+          cli,                &      !< Specific cloud ice content @units{kg/kg}
+          qnc,                &      !< Cloud droplet number concentration @units{\# m^-3}
+          qr,                 &      !< Rain mixing ratio @units{kg/kg}
+          qs,                 &      !< Snow mixing ratio @units{kg/kg}
+          dz,                 &      !< Layer thickness @units{m}
+          rho,                &      !< Air density used for liquid clouds @units{kg m^-3}
+          tv,                 &      !< Virtual temperature @units{K}
+          lwc,                &      !< Liquid water content @units{kg m^-3}
+          iwc,                &      !< Ice water content @units{kg m^-3}
+          cdnc,               &      !< Cloud droplet number concentration @units{\# m^-3}
+          Reff                       !< Cloud liquid water effective radius @units{m}
   end type type_icon
 
   !! Type containing variables stored for model outputs

@@ -38,3 +38,7 @@ s3com
 
 # Legendre coefficient files
 *_legcoef_*
+
+# Doxygen html and latex
+doc/Doxygen/html
+doc/Doxygen/latex
