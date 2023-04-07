@@ -182,6 +182,7 @@ contains
 
   !> @brief Finds the name of the netCDF file containing the Legendre coefficients
   !! @param[in] fn            Name of the netCDF file containing the Mie coefficients
+  !! @param[in] nmom          Number of Legendre moments
   !! @return                  Name of the netCDF file containing the Legendre coefficients
   function fn_legcoef(fn, nmom) result(fn_new)
 
