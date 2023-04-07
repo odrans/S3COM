@@ -100,33 +100,33 @@ module s3com_types
           height,              &     !< Index of vertical layers
           height_2                   !< Index of vertical levels
      integer(kind=4), dimension(:), allocatable :: &
-          point,               &     !< Index of grid points
-          day,                 &     !< Day of the simulation
-          month,               &     !< Month of the simulation
-          year                       !< Year of the simulation
+          point,               &     !< Index of grid points @input
+          day,                 &     !< Day of the simulation @input
+          month,               &     !< Month of the simulation @input
+          year                       !< Year of the simulation @input
      real(wp), dimension(:), allocatable :: &
           lon,                 &     !< Longitude @units{degrees East}
           lat,                 &     !< Latitude @units{degrees North}
           lon_orig,            &     !< Longitude that won't be regridded @units{degrees East}
           lat_orig,            &     !< Latitude that won't be regridded @units{degrees North}
-          elevation,           &     !< Surface height @units{m}
-          lsm,                 &     !< Land/sea mask (0/1)
-          psurf,               &     !< Surface pressure @units{Pa}
-          tsurf,               &     !< Skin temperature @units{K}
-          t2m,                 &     !<  2-m temperature @units{K}
+          elevation,           &     !< Surface height @units{m} @input
+          lsm,                 &     !< Land/sea mask (0/1) @input
+          psurf,               &     !< Surface pressure @units{Pa} @input
+          tsurf,               &     !< Skin temperature @units{K} @input
+          t2m,                 &     !<  2-m temperature @units{K} @input
           q2m,                 &     !<  2-m specific humidity @units{kg/kg}
-          u10,                 &     !< U-component of 10-m wind @units{m/s}
-          v10                        !< V-component of 10-m wind @units{m/s}
+          u10,                 &     !< U-component of 10-m wind @units{m/s} @input
+          v10                        !< V-component of 10-m wind @units{m/s} @input
      real(wp), dimension(:,:), allocatable :: &
-          pap,                 &      !< Layer pressure @units{Pa}
-          paph,                &      !< Pressure at half-level center @units{Pa}
-          altitude,            &      !< Layer height @units{m}
-          altitudeh,           &      !< Height at half-levels center @units{m}
-          temp,                &      !< Air temperature @units{K}
-          temph,               &      !< Air temperature at half-levels center @units{K}
-          hum,                 &      !< Specific humidity @units{kg/kg}
-          humh,                &      !< Specific humidity at half level center @units{kg/kg}
-          cc,                  &      !< Total cloud fraction (0-1)
+          pap,                 &      !< Layer pressure @units{Pa} @input
+          paph,                &      !< Pressure at half-level center @units{Pa} @input
+          altitude,            &      !< Layer height @units{m} @input
+          altitudeh,           &      !< Height at half-levels center @units{m} @input
+          temp,                &      !< Air temperature @units{K} @input
+          temph,               &      !< Air temperature at half-levels center @units{K} @input
+          hum,                 &      !< Specific humidity @units{kg/kg} @input
+          humh,                &      !< Specific humidity at half level center @units{kg/kg} @input
+          cc,                  &      !< Total cloud fraction (0-1) @input
           clw,                 &      !< Specific cloud water content @units{kg/kg}
           cli,                 &      !< Specific cloud ice content @units{kg/kg}
           qnc,                 &      !< Cloud droplet number concentration @units{\# m^-3}
@@ -135,8 +135,8 @@ module s3com_types
           dz,                  &      !< Layer thickness @units{m}
           rho,                 &      !< Air density used for liquid clouds @units{kg m^-3}
           tv,                  &      !< Virtual temperature @units{K}
-          lwc,                 &      !< Liquid water content @units{kg m^-3}
-          iwc,                 &      !< Ice water content @units{kg m^-3}
+          lwc,                 &      !< Liquid water content @units{kg m^-3} @input
+          iwc,                 &      !< Ice water content @units{kg m^-3} @input
           cdnc,                &      !< Cloud droplet number concentration @units{\# m^-3}
           Reff                        !< Cloud liquid water effective radius @units{m}
   end type type_nwpsaf
