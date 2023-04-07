@@ -95,10 +95,8 @@ contains
 
     ! Atmospheric structure
     ! ----------------------------------------------------------------------------------------------------
-
     ! Layer depth (approximate!! why not ifc(i+1) - ifc(i)?)
     icon%dz(:,1:nlayers) = abs(icon%z_ifc(:,1:nlayers) - icon%z(:,1:nlayers)) * 2._wp
-
     ! ----------------------------------------------------------------------------------------------------
 
     ! Atmospheric moisture
@@ -115,7 +113,6 @@ contains
 
     ! ! Saturation vapour pressure of ice water (Pa); Murphy and Koop (2005)
     ! icon%es_i = EXP(9.550426 - 5723.265 / icon%t + 3.53068 * LOG(icon%t) - 0.00728332 * icon%t)
-
     ! ----------------------------------------------------------------------------------------------------
 
 

@@ -28,6 +28,7 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
+!> @brief Ensemble of subroutines loading model data
 module mod_models
 
   use s3com_types,         only: wp, type_icon, type_model, type_nml, type_nwpsaf
@@ -39,10 +40,15 @@ module mod_models
   implicit none
 
   private
-  public :: models_load, models_init, models_deinit, models_setup_icon, models_setup_solar
+  public :: models_load, models_init, models_free, models_setup_icon, models_setup_solar
 
 contains
 
+  !> @brief Load model simulations to be used in S3COM
+  !! @details This subroutine loads model data from their respective netCDF files and stores them consistently in the `model` structure.
+  !! This subroutine is currently set up for the ICON and NWPSAF models.
+  !! @param[in] nml Namelist data, containing the name of the model and path to its simulation outputs
+  !! @param[out] model Model data structure containing all necessary variables for S3COM
   subroutine models_load(nml, model)
 
     ! Inputs
@@ -96,6 +102,10 @@ contains
 
   end subroutine models_load
 
+  !> @brief Initialize the `model` data structure
+  !! @details This subroutine initializes the `model` structure by allocating the required arrays.
+  !! All arrays are initialized to zero.
+  !! @param[out] model Model data structure containing all necessary variables for S3COM
   subroutine models_init(model, npoints, nlayers)
 
     ! Input variables
@@ -143,7 +153,11 @@ contains
 
   end subroutine models_init
 
-  subroutine models_deinit(model)
+
+  !> @brief Free the `model` data structure
+  !! @details This subroutine frees the `model` structure by deallocating the arrays.
+  !! @param[inout] model Model data structure containing all necessary variables for S3COM
+  subroutine models_free(model)
 
     ! Output variables
     type(type_model), intent(inout)   :: model
@@ -158,8 +172,11 @@ contains
          model%z, model%dz, model%clc, model%reff, model%cdnc, &
          model%iwc, model%lwc)
 
-  end subroutine models_deinit
+  end subroutine models_free
 
+  !> @brief Set up the `model` data structure by importing the ICON data
+  !! @param[inout] model Model data structure containing all necessary variables for S3COM
+  !! @param[in] icon structure containing the ICON data
   subroutine models_setup_icon(model, icon)
 
     ! Input variables
@@ -221,6 +238,10 @@ contains
 
   end subroutine models_setup_icon
 
+  !> @brief Set up the `model` data structure by importing the NWPSAF data
+  !> @warning The time for the NWPSAF data is set to 12:00:00
+  !! @param[inout] model Model data structure containing all necessary variables for S3COM
+  !! @param[in] nwpsaf structure containing the NWPSAF data
   subroutine models_setup_nwpsaf(model, nwpsaf)
 
     ! Input variables
@@ -284,6 +305,10 @@ contains
 
   end subroutine models_setup_nwpsaf
 
+  !> @brief Compute the solar angles corresponding to model simualtions
+  !> @details The solar zenith and azimuth angles are computed using the `solar_angles` function using
+  !> the latitude, longitude, date and time of the model simulation.
+  !> @todo RTTOV v13.2 has a function to compute the solar angles. This function should be used instead.
   subroutine models_setup_solar(model)
 
     type(type_model), intent(inout)   :: model

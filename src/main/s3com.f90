@@ -37,7 +37,7 @@ program s3com_main
   use mod_rttov_setup,     only: rttov_setup_opt, rttov_setup_atm
   use mod_rttov,           only: run_rttov
   use mod_s3com_setup,     only: s3com_init, s3com_subset, s3com_update
-  use mod_models,          only: models_load, models_deinit
+  use mod_models,          only: models_load, models_free
   use mod_utils_math,      only: n_chunks
   use mod_io_s3com,        only: write_output
   use mod_rttov_utils,     only: find_idx_rttov
@@ -138,7 +138,7 @@ program s3com_main
         s3com_chunk%flag_rttov(:) = .TRUE.
         call run_rttov(rttov_atm, rttov_opt, s3com_chunk, cld)
 
-        ! write(*,*) s3com_chunk%rad%f_ref_total
+         write(*,*) s3com_chunk%rad%f_ref_total
 
      end if
 
@@ -150,7 +150,7 @@ program s3com_main
   call write_output(s3com, model, nml)
 
   ! Deallocate arrays
-  call models_deinit(model)
+  call models_free(model)
 
   call rttov_coefs_deinit()
   call rttov_atlas_deinit()
