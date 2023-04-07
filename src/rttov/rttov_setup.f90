@@ -75,8 +75,8 @@ contains
     rttov_opt%ice_scheme = nml%ice_scheme
     rttov_opt%clw_scheme = nml%clw_scheme
 
-    rttov_opt%ozone_data = nml%ozone_data !Set the relevant flag to .true. when supplying a profile of the given
-    rttov_opt%co2_data   = .false. !trace gas (ensure the coefficient file supports the gas)
+    rttov_opt%ozone_data = nml%ozone_data
+    rttov_opt%co2_data   = .false.
     rttov_opt%n2o_data   = .false.
     rttov_opt%ch4_data   = .false.
     rttov_opt%co_data    = .false.

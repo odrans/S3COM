@@ -193,7 +193,7 @@ module s3com_types
   !! @details It is used to store model outputs consistently and completed with other variables.
   !! This is the structure that is used in the main program and passed for radiation calculations.
   type type_model
-     integer(wpi) :: &
+     integer(wpi) ::           &
           npoints,             &     !< Total number of grid points
           nlevels,             &     !< Number of vertical levels
           nlayers,             &     !< Number of vertical layers (typically, nlevels - 1)
@@ -245,7 +245,7 @@ module s3com_types
   end type type_model
 
   !> @brief Structure containing main RTTOV options
-  !! @details Data from namelist are indicated with @input
+  !! @details Data from namelist are indicated with @input. Others are set in `rttov_setup_opt`
   type type_rttov_opt
      integer(wpi) ::           &
           dosolar,             &     !< Activation of solar radiation calculations (0: false, 1: true)
@@ -287,21 +287,38 @@ module s3com_types
           azangle                    !< Satellite azimuth angle @units{degrees}
   end type type_rttov_opt
 
-  type type_rttov_cld_opt_param
-     integer :: &
-          nmom
-     integer, dimension(:), allocatable :: &
-          mom
-     real(wp), dimension(:), allocatable :: &
-          phangle
-     real(wp), dimension(:,:), allocatable :: &
-          abs, &
-          sca, &
-          bpr
-     real(wp), dimension(:,:,:), allocatable :: &
-          legcoef, &
-          pha
-  end type type_rttov_cld_opt_param
+  !< @brief Structure containing cloud optical properties from Mie calculations
+  type type_cld_mie
+     integer(kind=4) ::        &
+          nang,                &     !< Number of scattering angles for which Mie calculations were performed
+          nchan,               &     !< Number of instrumental channels
+          nrad,                &     !< Number of available effective radii on which Mie calculations were performed
+          nmom                       !< Number of coefficients for Legendre polynomial decomposition
+     character(len=128) ::     &
+          fn_mie,              &     !< Name of the file containing the Mie optical properties for a given instrument
+          fn_legcoef                 !< Name of the file containing the corresponding Legendre polynomial coefficients
+     integer(kind=4), dimension(:), allocatable :: &
+          chan_id,             &     !< ID of the instrument channel in RTTOV
+          mom                  &     !< Moments number of the Legendre polynomial decomposition
+     real(kind=wp), dimension(:), allocatable :: &
+          chan_wl,             &     !< Wavelength of the instrument channel @units{um}
+          radius,              &     !< Effective radius of the spherical cloud particles @units{um}
+          angle                      !< Scattering angle @units{degrees}
+     real(kind=wp), dimension(:,:), allocatable :: &
+          Cext,                &     !< Extinction cross-section coefficient @units{um^2}
+          Csca,                &     !< Scattering cross-section coefficient @units{um^2}
+          Cabs,                &     !< Absorption cross-section coefficient @units{um^2}
+          w0                         !< Single-scattering albedo
+     real(kind=wp), dimension(:,:,:), allocatable :: &
+          pha,                 &     !< Azimuthally-averaged phase function
+          legcoef                    !< Legendre polynomial coefficients
+  end type type_cld_mie
+
+  type type_cld
+     type(type_cld_mie) :: mie
+  end type type_cld
+
+
 
   !!Type containing variables used by S3COM for retrievals
   type type_s3com_rad
@@ -373,34 +390,6 @@ module s3com_types
      type(type_s3com_opt) :: opt
   end type type_s3com
 
-  type type_cld_mie
-     integer(kind=4) :: &
-          nang, &
-          nchan, &
-          nrad, &
-          nmom
-     character(len=128) :: &
-          fn_mie,          &
-          fn_legcoef
-     integer(kind=4), dimension(:), allocatable :: &
-          chan_id, mom
-     real(kind=wp), dimension(:), allocatable :: &
-          chan_wl, &
-          radius, &
-          angle
-     real(kind=wp), dimension(:,:), allocatable :: &
-          Cext, &
-          Csca, &
-          Cabs, &
-          w0
-     real(kind=wp), dimension(:,:,:), allocatable :: &
-          pha, &
-          legcoef
-  end type type_cld_mie
-
-  type type_cld
-     type(type_cld_mie) :: mie
-  end type type_cld
 
   ! Type containing variables used by S3COM for retrievals
   ! type type_s3com_obsolete
