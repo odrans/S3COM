@@ -25,11 +25,20 @@
 var NAVTREE =
 [
   [ "S3COM", "index.html", [
+    [ "Source file repositories", "md_src_README.html", null ],
     [ "Modules", "namespaces.html", [
       [ "Modules List", "namespaces.html", "namespaces_dup" ],
       [ "Module Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions/Subroutines", "namespacemembers_func.html", null ]
+      ] ]
+    ] ],
+    [ "Data Types List", "annotated.html", [
+      [ "Data Types List", "annotated.html", "annotated_dup" ],
+      [ "Data Types", "classes.html", null ],
+      [ "Data Fields", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ]
   ] ]
@@ -37,7 +46,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"index.html"
+"annotated.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
