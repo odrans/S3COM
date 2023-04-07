@@ -40,7 +40,7 @@ module s3com_types
   integer, parameter :: sp = selected_real_kind(6, 37)     !< Kind for single precision reals
   integer, parameter :: dp = selected_real_kind(12, 307)   !< Kind for double precision reals
   integer, parameter :: wp = sp                            !< Kind for working precision reals
-  integer, parameter :: wpi = selected_int_kind(4)         !< Kind for working precision integers
+  integer, parameter :: wpi = selected_int_kind(8)         !< Kind for working precision integers
 
   !> @brief Namelist variables
   !> @details These variables are directly read from the namelist file that is provided as argument to the S3COM executable
@@ -52,7 +52,7 @@ module s3com_types
           path_out,             &    !< Path to the repository containing where the output files will be written
           suffix_out,           &    !< Suffix added to the output filenames
           model_name                 !< Name of the physical model. Currently supported: ICON, NWPSAF
-     integer(kind=4) ::         &
+     integer(wpi) ::            &
           npoints_it,           &    !< Number of subset data points (chunks) to process in each iteration (only relevant to optimize memory usage)
           platform,             &    !< Platform ID for RTTOV
           satellite,            &    !< Satellite ID for RTTOV
@@ -66,7 +66,7 @@ module s3com_types
           gas_unit,             &    !< Gas units for atmospheric profiles
           ice_scheme,           &    !< Scheme used for ice cloud optical properties: 1=Baum; 2=Baran 2014; 3=Baran 2018. Not relevant if `user_cld_opt_param` is true.
           clw_scheme                 !< Scheme used for liquid cloud optical properties: 1=OPAC; 2=Deff. Not relevant if `user_cld_opt_param` is true.
-     integer(kind=4), dimension(:), allocatable :: &
+     integer(wpi), dimension(:), allocatable :: &
           channel_list               !< List of satellite channels to simulate (should be of dimension nchannels)
      logical :: &
           user_cld_opt_param,   &    !< If true, users can supply their own cloud optical properties (`ice_scheme` and `clw_scheme` are then not used)
@@ -87,19 +87,20 @@ module s3com_types
 
 
   !> @brief Model outputs from NWPSAF simulations
-  !! @details They are either read form the NetCDF file or calculated from these model output
+  !! @details They are either read form the NetCDF file (@input flag) or calculated from these model output
+  !! @note This time is missing for NWP-SAF simulations, later set to 12:00:00 UTC for all data points
   type type_nwpsaf
-     integer(kind=4) ::        &
+     integer(wpi) ::        &
           npoints,             &     !< Total number of grid points
           nlevels,             &     !< Number of vertical levels
           nlayers,             &     !< Number of vertical layers (typically, nlevels - 1)
           nlat,                &     !< Number of latitude points in the grid
           nlon,                &     !< Number of longitude points in the grid
           mode                       !< Model grid type (1: track, 2: lon-lat, 3: lat-lon)
-     integer(kind=4), dimension(:), allocatable :: &
+     integer(wpi), dimension(:), allocatable :: &
           height,              &     !< Index of vertical layers
           height_2                   !< Index of vertical levels
-     integer(kind=4), dimension(:), allocatable :: &
+     integer(wpi), dimension(:), allocatable :: &
           point,               &     !< Index of grid points @input
           day,                 &     !< Day of the simulation @input
           month,               &     !< Month of the simulation @input
@@ -115,8 +116,8 @@ module s3com_types
           tsurf,               &     !< Skin temperature @units{K} @input
           t2m,                 &     !<  2-m temperature @units{K} @input
           q2m,                 &     !<  2-m specific humidity @units{kg/kg}
-          u10,                 &     !< U-component of 10-m wind @units{m/s} @input
-          v10                        !< V-component of 10-m wind @units{m/s} @input
+          u10,                 &     !< Zonal 10-m wind @units{m/s} @input
+          v10                        !< Meridional 10-m wind @units{m/s} @input
      real(wp), dimension(:,:), allocatable :: &
           pap,                 &      !< Layer pressure @units{Pa} @input
           paph,                &      !< Pressure at half-level center @units{Pa} @input
@@ -137,9 +138,9 @@ module s3com_types
   end type type_nwpsaf
 
   !> @brief Model outputs from ICON simulations
-  !! @details They are either read form the NetCDF file or calculated from these model output
+  !! @details They are either read form the NetCDF file (@input flag) or calculated from these model output
   type type_icon
-     integer(kind=4) :: &
+     integer(wpi) :: &
           npoints,             &     !< Total number of grid points
           nlevels,             &     !< Number of vertical levels
           nlayers,             &     !< Number of vertical layers (typically, nlevels - 1)
@@ -147,38 +148,38 @@ module s3com_types
           nlon,                &     !< Number of longitude points in the grid
           mode                       !< Model grid type (1: track, 2: lon-lat, 3: lat-lon)
      real(dp) ::               &
-          time                       !< Time of the simulation (format is \%Y\%m\%d.\%f)
-     integer(kind=4), dimension(:), allocatable :: &
-          height,              &     !< Index of vertical layers
-          height_2                   !< Index of vertical levels
+          time                       !< Time of the simulation (format is \%Y\%m\%d.\%f UTC) @input
+     integer(wpi), dimension(:), allocatable :: &
+          height,              &     !< Index of vertical layers @input
+          height_2                   !< Index of vertical levels @input
      real(wp), dimension(:), allocatable :: &
-          lon,                 &     !< Longitude @units{degrees East}
-          lat,                 &     !< Latitude @units{degrees North}
+          lon,                 &     !< Longitude @units{degrees East} @input
+          lat,                 &     !< Latitude @units{degrees North} @input
           lon_orig,            &     !< Longitude that won't be regridded @units{degrees East}
           lat_orig,            &     !< Latitude that won't be regridded @units{degrees North}
-          topography,          &     !< Surface height @units{m}
-          landmask,            &     !< Land/sea mask (0/1)
-          ps,                  &     !< Surface pressure @units{Pa}
-          ts,                  &     !< Skin temperature @units{K}
-          t_2m,                &     !< 2-m temperature @units{K}
-          q_2m,                &     !< 2-m specific humidity @units{kg/kg}
-          u_10m,               &     !< U-component of 10-m wind @units{m/s}
-          v_10m                      !< V-component of 10-m wind @units{m/s}
+          topography,          &     !< Surface height @units{m} @input
+          landmask,            &     !< Land/sea mask (0/1) @input
+          ps,                  &     !< Surface pressure @units{Pa} @input
+          ts,                  &     !< Skin temperature @units{K} @input
+          t_2m,                &     !< 2-m temperature @units{K} @input
+          q_2m,                &     !< 2-m specific humidity @units{kg/kg} @input
+          u_10m,               &     !< Zonal 10-m wind @units{m/s} @input
+          v_10m                      !< Meridional 10-m wind @units{m/s} @input
      real(wp), dimension(:,:), allocatable :: &
-          p,                  &      !< Layer pressure @units{Pa}
-          p_ifc,              &      !< Pressure at half-level center @units{Pa}
-          z,                  &      !< Layer height @units{m}
-          z_ifc,              &      !< Height at half-levels center @units{m}
-          t,                  &      !< Temperature @units{K}
-          t_ifc,              &      !< Temperature at half-levels center @units{K}
-          q,                  &      !< Specific humidity @units{kg/kg}
-          q_ifc,              &      !< Specific humidity at half level center @units{kg/kg}
-          clc,                &      !< Total cloud fraction (0-1)
-          clw,                &      !< Specific cloud water content @units{kg/kg}
-          cli,                &      !< Specific cloud ice content @units{kg/kg}
-          qnc,                &      !< Cloud droplet number concentration @units{\# m^-3}
-          qr,                 &      !< Rain mixing ratio @units{kg/kg}
-          qs,                 &      !< Snow mixing ratio @units{kg/kg}
+          p,                  &      !< Layer pressure @units{Pa} @input
+          p_ifc,              &      !< Pressure at half-level center @units{Pa} @input
+          z,                  &      !< Layer height @units{m} @input
+          z_ifc,              &      !< Height at half-levels center @units{m} @input
+          t,                  &      !< Temperature @units{K} @input
+          t_ifc,              &      !< Temperature at half-levels center @units{K} @input
+          q,                  &      !< Specific humidity @units{kg/kg} @input
+          q_ifc,              &      !< Specific humidity at half level center @units{kg/kg} @input
+          clc,                &      !< Total cloud fraction (0-1)  @input
+          clw,                &      !< Specific cloud water content @units{kg/kg} @input
+          cli,                &      !< Specific cloud ice content @units{kg/kg} @input
+          qnc,                &      !< Cloud droplet number concentration @units{\# m^-3} @input
+          qr,                 &      !< Rain mixing ratio @units{kg/kg} @input
+          qs,                 &      !< Snow mixing ratio @units{kg/kg} @input
           dz,                 &      !< Layer thickness @units{m}
           rho,                &      !< Air density used for liquid clouds @units{kg m^-3}
           tv,                 &      !< Virtual temperature @units{K}
@@ -188,55 +189,60 @@ module s3com_types
           Reff                       !< Cloud liquid water effective radius @units{m}
   end type type_icon
 
-  !! Type containing variables stored for model outputs
+  !> @brief General structure for all atmospheric data from model outputs
+  !! @details It is used to store model outputs consistently and completed with other variables.
+  !! This is the structure that is used in the main program and passed for radiation calculations.
   type type_model
-     integer(kind=4) :: &
-          nlevels, npoints, nlayers, nlat, nlon, mode, &!Dimensions
-          idx_start,     & ! Starting index for subset profile
-          idx_end          ! Ending index for subset profile
-     integer(kind=4), dimension(:), allocatable :: &
-          height, height_2
-     integer(kind=4), dimension(3) :: &
-          time, &   ! day, month, year
-          date      ! hour, minute, second
-     integer(kind=4), dimension(:), allocatable :: &
+     integer(wpi) :: &
+          npoints,             &     !< Total number of grid points
+          nlevels,             &     !< Number of vertical levels
+          nlayers,             &     !< Number of vertical layers (typically, nlevels - 1)
+          nlat,                &     !< Number of latitude points in the grid
+          nlon,                &     !< Number of longitude points in the grid
+          mode,                &     !< Model grid type (1: track, 2: lon-lat, 3: lat-lon)
+          idx_start,           &     !< Starting index for the subset grid
+          idx_end                    !< Ending index for the subset grid
+     integer(wpi), dimension(:), allocatable :: &
+          height,              &     !< Index of vertical layers @input
+          height_2                   !< Index of vertical levels @input
+     integer(wpi), dimension(3) :: &
+          time,                &     !< Time of the day, UTC @units{/hour, minute, second/}
+          date                       !< Day of the year @units{/day, month, year/}
+     integer(wpi), dimension(:), allocatable :: &
           point
      real(wp), dimension(:), allocatable :: &
-          lon_orig,                           & !Longitude that won't be regridded (degrees east)
-          lat_orig,                           & !Latitude  that won't be regridded (degress north)
-          lon,                                & !Longitude (degrees east)
-          lat,                                & !Latitude (degress north)
-          topography,                         & !Surface height
-          landmask,                           & !Land/sea mask (0/1)
-          ps,                                 & !Surface pressure (Pa)
-          ts,                                 & !Skin temperature (K)
-          t_2m,                               & !2m temperature (K)
-          q_2m,                               & !2m specific water vapor content (kg/kg)
-          u_10m,                              & !U-component of wind (m/s)
-          v_10m,                              & !V-component of wind (m/s)
-          sunzenangle,                        & !Solar zenith angle
-          sunazangle                            !Solar azimuth angle
+          lon,                 &     !< Longitude @units{degrees East}
+          lat,                 &     !< Latitude @units{degrees North}
+          lon_orig,            &     !< Longitude that won't be regridded @units{degrees East}
+          lat_orig,            &     !< Latitude that won't be regridded @units{degrees North}
+          topography,          &     !< Surface height @units{m}
+          landmask,            &     !< Land/sea mask (0/1) @input
+          ps,                  &     !< Surface pressure @units{Pa}
+          ts,                  &     !< Skin temperature @units{K}
+          t_2m,                &     !< 2-m temperature @units{K}
+          q_2m,                &     !< 2-m specific humidity @units{kg/kg}
+          u_10m,               &     !< Zonal 10-m wind @units{m/s} @input
+          v_10m,               &     !< Meridional 10-m wind @units{m/s}
+          sunzenangle,         &     !< Solar zenith angle @units{degrees}
+          sunazangle                 !< Solar azimuth angle @units{degrees}
      real(wp), dimension(:,:), allocatable :: &
-          o3,                                 & !ozone
-          co2,                                & !Carbon dioxide
-          ch4,                                & !Methane
-          n2o,                                & !n2o
-          s2o,                                & !s2o
-          co,                                 & !Carbon monoxide
-          p,                                  & !Model pressure levels (pa)
-          z,                                  & !Model level height (m)
-          zh,                                 & !Model level height at half-levels (m)
-          dz,                                 & !Layer thickness (m)
-          t,                                  & !Temperature (K)
-          q,                                  & !Specific humidity (kg/kg)
-          clc,                                & !Total cloud fraction (0-1)
-          qnc,                                & !Cloud droplet number concentration (particules/kg)
-          qr,                                 & !Rain mixing ratio (kg/kg)
-          qs,                                 & !Snow mixing ratio (kg/kg)
-          lwc,                                & !Liquid water content (kg/m3)
-          iwc,                                & !Ice water content (kg/m3)
-          cdnc,                               & !Cloud droplet number concentration (1/m3)
-          Reff
+          o3,                  &     !< Ozone concentrations on model levels for user-defined gas profiles, see namelist configuration @units{gas_unit}
+          !! @note These are set to zero if not provided by the model and are only considered if RTTOV is set to not used climatological profiles.
+          co2,                 &     !< CO2 concentrations, similarly to o3
+          ch4,                 &     !< CH4 concentrations, similarly to o3
+          n2o,                 &     !< N2O concentrations, similarly to o3
+          s2o,                 &     !< S2O concentrations, similarly to o3
+          co,                  &     !< CO concentrations, similarly to o3
+          p,                   &     !< Pressure on model levels @units{Pa}
+          z,                   &     !< Altitude on model levels @units{m}
+          dz,                  &     !< Model layer thickness @units{m}
+          t,                   &     !< Temperature on model levels @units{K}
+          q,                   &     !< Specific humidity on model levels @units{kg/kg}
+          clc,                 &     !< Total cloud fraction in model layer (0-1) @input
+          lwc,                 &     !< Liquid water content in model layer @units{kg/m3}
+          iwc,                 &     !< Ice water content in model layer @units{kg/m3}
+          cdnc,                &     !< Cloud droplet number concentration in model layer @units{\# m^-3}
+          Reff                       !< Liquid water cloud effective radius in model layer @units{m}
   end type type_model
   
   type type_rttov_opt
@@ -394,76 +400,76 @@ module s3com_types
      type(type_cld_mie) :: mie
   end type type_cld
 
-  !!Type containing variables used by S3COM for retrievals
-  type type_s3com_obsolete
-     integer(kind=4) :: &
-          nstates,        &
-          nmeas,          &
-          npoints
-     integer(kind=4), dimension(:), allocatable :: &
-          ztop_ice_idx,                              &
-          zbase_ice_idx,                             &
-          ztop_liquid_idx,                           &
-          zbase_liquid_idx,                          &
-          n_iter, i_stepsize
-     real(kind=wp), dimension(:), allocatable :: &
-          g, gi, gip1, g_meas, stepsize
-     logical, dimension(:), allocatable :: &
-          flag_rttov, flag_testconv
-     real(kind=wp), dimension(:,:), allocatable :: &
-          Y,                                         &
-          y_refl_total,                              &
-          y_refl_clear,                              &
-          y_bt_total,                                &
-          y_bt_clear,                                &
-          y_rad_total,                               &
-          y_rad_clear,                               &
-          y_rad_cloudy,                              &
-          F,                                         &
-          f_refl_total,                              &
-          f_refl_clear,                              &
-          f_bt_total,                                &
-          f_bt_clear,                                &
-          f_rad_total,                               &
-          f_rad_clear,                               &
-          f_rad_cloudy,                              &
-          Xi,                                        &
-          Xip1,                                      &
-          Xa,                                        &
-          brdf,                                      &
-          emissivity, &
-          t, &
-          z, &
-          clc, &
-          reff, &
-          cdnc
-     real(kind=wp), dimension(:,:,:), allocatable :: &
-          K,                                           &
-          Kt,                                          &
-          Sy,                                          &
-          Sf,                                          &
-          Se,                                          &
-          Se_i,                                        &
-          Sx,                                          &
-          Sx_i,                                        &
-          Sa,                                          &
-          Sa_i
-     real(kind=wp), dimension(:,:), allocatable :: &
-          iwc,                                       & !Output measurement vector
-          lwc,                                       &
-          cla
-     real(kind=wp), dimension(:), allocatable :: &
-          ztop_ice,                                &
-          zbase_ice,                               &
-          iwp,                                     &
-          iwp_model,                               &
-          ztop_liquid,                             &
-          zbase_liquid,                            &
-          lwp,                                     &
-          lwp_model,                               &
-          cdnc_ret,                                &
-          cdnc_model
-  end type type_s3com_obsolete
+  ! Type containing variables used by S3COM for retrievals
+  ! type type_s3com_obsolete
+  !    integer(kind=4) :: &
+  !         nstates,        &
+  !         nmeas,          &
+  !         npoints
+  !    integer(kind=4), dimension(:), allocatable :: &
+  !         ztop_ice_idx,                              &
+  !         zbase_ice_idx,                             &
+  !         ztop_liquid_idx,                           &
+  !         zbase_liquid_idx,                          &
+  !         n_iter, i_stepsize
+  !    real(kind=wp), dimension(:), allocatable :: &
+  !         g, gi, gip1, g_meas, stepsize
+  !    logical, dimension(:), allocatable :: &
+  !         flag_rttov, flag_testconv
+  !    real(kind=wp), dimension(:,:), allocatable :: &
+  !         Y,                                         &
+  !         y_refl_total,                              &
+  !         y_refl_clear,                              &
+  !         y_bt_total,                                &
+  !         y_bt_clear,                                &
+  !         y_rad_total,                               &
+  !         y_rad_clear,                               &
+  !         y_rad_cloudy,                              &
+  !         F,                                         &
+  !         f_refl_total,                              &
+  !         f_refl_clear,                              &
+  !         f_bt_total,                                &
+  !         f_bt_clear,                                &
+  !         f_rad_total,                               &
+  !         f_rad_clear,                               &
+  !         f_rad_cloudy,                              &
+  !         Xi,                                        &
+  !         Xip1,                                      &
+  !         Xa,                                        &
+  !         brdf,                                      &
+  !         emissivity, &
+  !         t, &
+  !         z, &
+  !         clc, &
+  !         reff, &
+  !         cdnc
+  !    real(kind=wp), dimension(:,:,:), allocatable :: &
+  !         K,                                           &
+  !         Kt,                                          &
+  !         Sy,                                          &
+  !         Sf,                                          &
+  !         Se,                                          &
+  !         Se_i,                                        &
+  !         Sx,                                          &
+  !         Sx_i,                                        &
+  !         Sa,                                          &
+  !         Sa_i
+  !    real(kind=wp), dimension(:,:), allocatable :: &
+  !         iwc,                                       & !Output measurement vector
+  !         lwc,                                       &
+  !         cla
+  !    real(kind=wp), dimension(:), allocatable :: &
+  !         ztop_ice,                                &
+  !         zbase_ice,                               &
+  !         iwp,                                     &
+  !         iwp_model,                               &
+  !         ztop_liquid,                             &
+  !         zbase_liquid,                            &
+  !         lwp,                                     &
+  !         lwp_model,                               &
+  !         cdnc_ret,                                &
+  !         cdnc_model
+  ! end type type_s3com_obsolete
 
 contains
 

@@ -131,13 +131,13 @@ contains
 
     !! 3D fields at atmospheric levels
     allocate(model%p(npoints, nlevels), source = 0._wp)
-    allocate(model%t, model%q, model%co2, model%ch4, &
+    allocate(model%z, model%t, model%q, model%co2, model%ch4, &
          model%n2o, model%s2o, model%co, model%o3, &
          mold = model%p)
 
     !! 3D fields in atmospheric layers
-    allocate(model%z(npoints, nlayers), source = 0._wp)
-    allocate(model%dz, model%clc, model%reff, model%cdnc, &
+    allocate(model%dz(npoints, nlayers), source = 0._wp)
+    allocate(model%clc, model%reff, model%cdnc, &
          model%iwc, model%lwc, &
          mold = model%z)
 
