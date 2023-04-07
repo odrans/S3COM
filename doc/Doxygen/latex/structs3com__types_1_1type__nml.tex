@@ -1,0 +1,120 @@
+\hypertarget{structs3com__types_1_1type__nml}{}\doxysection{s3com\+\_\+types\+::type\+\_\+nml Type Reference}
+\label{structs3com__types_1_1type__nml}\index{s3com\_types::type\_nml@{s3com\_types::type\_nml}}
+
+
+Contains all variables directly read from the namelist file.  
+
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a196fd7a71255c0f336851540b223fd91}\label{structs3com__types_1_1type__nml_a196fd7a71255c0f336851540b223fd91}} 
+character(len=256) {\bfseries path\+\_\+s3com}
+\begin{DoxyCompactList}\small\item\em Path to S3\+COM directory. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_abb3ed6e7c5ccb15f630a39fa74868001}\label{structs3com__types_1_1type__nml_abb3ed6e7c5ccb15f630a39fa74868001}} 
+character(len=256) {\bfseries path\+\_\+rttov}
+\begin{DoxyCompactList}\small\item\em Path to RTTOV directory. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_ababbac283f3d4f30398b1918aabcd5a5}\label{structs3com__types_1_1type__nml_ababbac283f3d4f30398b1918aabcd5a5}} 
+character(len=256) {\bfseries fname\+\_\+in}
+\begin{DoxyCompactList}\small\item\em Name of the input model file (e.\+g. ICON or NWPSAF) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a71739dd3bd2853e95c6ad767f5e70842}\label{structs3com__types_1_1type__nml_a71739dd3bd2853e95c6ad767f5e70842}} 
+character(len=256) {\bfseries path\+\_\+out}
+\begin{DoxyCompactList}\small\item\em Path to the repository containing where the output files will be written. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a3137294830bc4a84e52de80e64ae4b13}\label{structs3com__types_1_1type__nml_a3137294830bc4a84e52de80e64ae4b13}} 
+character(len=256) {\bfseries suffix\+\_\+out}
+\begin{DoxyCompactList}\small\item\em Suffix added to the output filenames. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a421733860c51a2740d3ffc2a62bfc792}\label{structs3com__types_1_1type__nml_a421733860c51a2740d3ffc2a62bfc792}} 
+character(len=256) {\bfseries model\+\_\+name}
+\begin{DoxyCompactList}\small\item\em Name of the physical model. Currently supported\+: ICON, NWPSAF. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a27f57c81117fe5ae5e59bbcf1b95945e}\label{structs3com__types_1_1type__nml_a27f57c81117fe5ae5e59bbcf1b95945e}} 
+integer(kind=4) {\bfseries npoints\+\_\+it}
+\begin{DoxyCompactList}\small\item\em Number of subset data points (chunks) to process in each iteration (only relevant to optimize memory usage) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a387256cffb91e44343e3985b2116021a}\label{structs3com__types_1_1type__nml_a387256cffb91e44343e3985b2116021a}} 
+integer(kind=4) {\bfseries platform}
+\begin{DoxyCompactList}\small\item\em Platform ID for RTTOV. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a00ee0ef1cf1085c589427df55b6fcfb6}\label{structs3com__types_1_1type__nml_a00ee0ef1cf1085c589427df55b6fcfb6}} 
+integer(kind=4) {\bfseries satellite}
+\begin{DoxyCompactList}\small\item\em Satellite ID for RTTOV. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a951a24a2a169b1f2c4ccc508afe25475}\label{structs3com__types_1_1type__nml_a951a24a2a169b1f2c4ccc508afe25475}} 
+integer(kind=4) {\bfseries instrument}
+\begin{DoxyCompactList}\small\item\em Instrument ID for RTTOV. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a985b360a56560d1b85007ce0f1220962}\label{structs3com__types_1_1type__nml_a985b360a56560d1b85007ce0f1220962}} 
+integer(kind=4) {\bfseries nchannels}
+\begin{DoxyCompactList}\small\item\em Number of instrument channels to simulate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_aabec580f180324f1cc6735f15a47d2f0}\label{structs3com__types_1_1type__nml_aabec580f180324f1cc6735f15a47d2f0}} 
+integer(kind=4) {\bfseries ir\+\_\+scatt\+\_\+model}
+\begin{DoxyCompactList}\small\item\em Scattering model for IR source term\+: 1=DOM; 2=Chou-\/scaling. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a21675cd1bd7a145aea249dbfad93d2c8}\label{structs3com__types_1_1type__nml_a21675cd1bd7a145aea249dbfad93d2c8}} 
+integer(kind=4) {\bfseries vis\+\_\+scatt\+\_\+model}
+\begin{DoxyCompactList}\small\item\em Scattering model for solar source term\+: 1=DOM; 2=single-\/scattering; 3=MFASIS. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a6770d851301c74b42a27ed966a1145de}\label{structs3com__types_1_1type__nml_a6770d851301c74b42a27ed966a1145de}} 
+integer(kind=4) {\bfseries dom\+\_\+nstreams}
+\begin{DoxyCompactList}\small\item\em Number of streams for DOM scattering model. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_adccc2edc4ae4f9c8b52441508832eca7}\label{structs3com__types_1_1type__nml_adccc2edc4ae4f9c8b52441508832eca7}} 
+integer(kind=4) {\bfseries dom\+\_\+nmoments}
+\begin{DoxyCompactList}\small\item\em Number of moments for discrete ordinate method. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a01987f55ddd399b39d3c298e1608b0fa}\label{structs3com__types_1_1type__nml_a01987f55ddd399b39d3c298e1608b0fa}} 
+integer(kind=4) {\bfseries rttov\+\_\+nthreads}
+\begin{DoxyCompactList}\small\item\em Number of threads for RTTOV calculations. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a33b11b34e436bca4e0b7c41a6b17a099}\label{structs3com__types_1_1type__nml_a33b11b34e436bca4e0b7c41a6b17a099}} 
+integer(kind=4) {\bfseries gas\+\_\+unit}
+\begin{DoxyCompactList}\small\item\em Gas units for atmospheric profiles. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a3a1437cbd6bc407f6b906aadecfe1e13}\label{structs3com__types_1_1type__nml_a3a1437cbd6bc407f6b906aadecfe1e13}} 
+integer(kind=4) {\bfseries ice\+\_\+scheme}
+\begin{DoxyCompactList}\small\item\em Scheme used for ice cloud optical properties\+: 1=Baum; 2=Baran 2014; 3=Baran 2018. Not relevant if \`{}user\+\_\+cld\+\_\+opt\+\_\+param\`{} is true. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a6b755823789dfdc685d2be252465edd9}\label{structs3com__types_1_1type__nml_a6b755823789dfdc685d2be252465edd9}} 
+integer(kind=4) {\bfseries clw\+\_\+scheme}
+\begin{DoxyCompactList}\small\item\em Scheme used for liquid cloud optical properties\+: 1=OPAC; 2=Deff. Not relevant if {\ttfamily user\+\_\+cld\+\_\+opt\+\_\+param} is true. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a64a76c6e542e55e07e10ef2f1ee7a4ab}\label{structs3com__types_1_1type__nml_a64a76c6e542e55e07e10ef2f1ee7a4ab}} 
+integer(kind=4), dimension(\+:), allocatable {\bfseries channel\+\_\+list}
+\begin{DoxyCompactList}\small\item\em List of satellite channels to simulate (should be of dimension nchannels) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a3b3968fcbf48e4dd545b02aa143b9591}\label{structs3com__types_1_1type__nml_a3b3968fcbf48e4dd545b02aa143b9591}} 
+logical {\bfseries user\+\_\+cld\+\_\+opt\+\_\+param}
+\begin{DoxyCompactList}\small\item\em If true, users can supply their own cloud optical properties (\`{}ice\+\_\+scheme\`{} and \`{}clw\+\_\+scheme\`{} are then not used) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a9f3cfeac444071f679587ad987800374}\label{structs3com__types_1_1type__nml_a9f3cfeac444071f679587ad987800374}} 
+logical {\bfseries flag\+\_\+retrievals}
+\begin{DoxyCompactList}\small\item\em Flag to specify if retrievals should be performed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_aff2f6182c365c600b0c3e20d11ae599c}\label{structs3com__types_1_1type__nml_aff2f6182c365c600b0c3e20d11ae599c}} 
+logical {\bfseries flag\+\_\+output\+\_\+atm}
+\begin{DoxyCompactList}\small\item\em Flag to specify if atmospheric profiles should be output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a9f2641a8c85440cab33f69a79616f4fa}\label{structs3com__types_1_1type__nml_a9f2641a8c85440cab33f69a79616f4fa}} 
+logical {\bfseries flag\+\_\+output\+\_\+jac}
+\begin{DoxyCompactList}\small\item\em Flag to specify if Jacobian matrices should be output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a282f9defa022d2b5b13cb98c430b2ee1}\label{structs3com__types_1_1type__nml_a282f9defa022d2b5b13cb98c430b2ee1}} 
+logical {\bfseries flag\+\_\+output\+\_\+k\+\_\+tl}
+\begin{DoxyCompactList}\small\item\em Flag to specify if K matrices should be output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a927bef71b769069cdda0c1bb1c32ab54}\label{structs3com__types_1_1type__nml_a927bef71b769069cdda0c1bb1c32ab54}} 
+logical {\bfseries do\+\_\+jacobian\+\_\+calc}
+\begin{DoxyCompactList}\small\item\em Flag to specify if Jacobian matrices should be calculated. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a89486fe3a23904c365a26d30e3e27a1a}\label{structs3com__types_1_1type__nml_a89486fe3a23904c365a26d30e3e27a1a}} 
+logical {\bfseries do\+\_\+k\+\_\+tl\+\_\+calc}
+\begin{DoxyCompactList}\small\item\em Flag to specify if K matrices should be calculated. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a3edefec7bfc8d409239bc3c273977332}\label{structs3com__types_1_1type__nml_a3edefec7bfc8d409239bc3c273977332}} 
+logical {\bfseries do\+\_\+opdep\+\_\+calc}
+\begin{DoxyCompactList}\small\item\em If false, disables the RTTOV gas optical depth calculation (default = true) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a97112c701fa37fce51b120b1c746f508}\label{structs3com__types_1_1type__nml_a97112c701fa37fce51b120b1c746f508}} 
+logical {\bfseries dom\+\_\+rayleigh}
+\begin{DoxyCompactList}\small\item\em If true, Rayleigh scattering is included in the DOM model. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a34ebfa98f43917d077518e774f3c5ef3}\label{structs3com__types_1_1type__nml_a34ebfa98f43917d077518e774f3c5ef3}} 
+logical {\bfseries mmr\+\_\+cldaer}
+\begin{DoxyCompactList}\small\item\em Cloud and gas units\+: true =\texorpdfstring{$>$}{>} kg/kg (cld+aer); false =\texorpdfstring{$>$}{>} g/m3 (cld), cm-\/3 (aer) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a6d125c8ecf077996cc1e3710d998d726}\label{structs3com__types_1_1type__nml_a6d125c8ecf077996cc1e3710d998d726}} 
+logical {\bfseries ozone\+\_\+data}
+\begin{DoxyCompactList}\small\item\em Set to true when supplying a profile of ozone, false to use climatology from RTTOV. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_acdf1c6762e48595fb232e7baf7b055c7}\label{structs3com__types_1_1type__nml_acdf1c6762e48595fb232e7baf7b055c7}} 
+logical {\bfseries add\+\_\+refrac}
+\begin{DoxyCompactList}\small\item\em If true accounts for atmospheric refraction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_acefcf5adb9c3aaa3eca9f7870e7b52fa}\label{structs3com__types_1_1type__nml_acefcf5adb9c3aaa3eca9f7870e7b52fa}} 
+logical {\bfseries add\+\_\+clouds}
+\begin{DoxyCompactList}\small\item\em If true, clouds are included in the RTTOV model. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__nml_a4b2fa8f0bf0d9768c7a4f9509ef40fae}\label{structs3com__types_1_1type__nml_a4b2fa8f0bf0d9768c7a4f9509ef40fae}} 
+logical {\bfseries add\+\_\+aerosols}
+\begin{DoxyCompactList}\small\item\em If true, aerosols are included in the RTTOV model. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains all variables directly read from the namelist file. 
+
+The documentation for this type was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/conf/types.\+f90\end{DoxyCompactItemize}
