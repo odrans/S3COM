@@ -1,0 +1,103 @@
+\hypertarget{namespacemod__icon}{}\doxysection{mod\+\_\+icon Module Reference}
+\label{namespacemod__icon}\index{mod\_icon@{mod\_icon}}
+
+
+Ensemble of subroutines useful to load and process ICON model simulations.  
+
+
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \mbox{\hyperlink{namespacemod__icon_a6cbf518ab4864c72f98804270bfde89b}{icon\+\_\+load}} (fname, icon)
+\begin{DoxyCompactList}\small\item\em Load ICON model simulations. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacemod__icon_a643091b127fab3797b3b87910dfaf3a4}{icon\+\_\+process}} (icon)
+\begin{DoxyCompactList}\small\item\em Process ICON data structure. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacemod__icon_a3f39934ffaccaed8733b57d81cc1bf85}{icon\+\_\+init}} (npoints, nlayers, icon)
+\begin{DoxyCompactList}\small\item\em Initialize ICON data structure. \end{DoxyCompactList}\item 
+subroutine, public \mbox{\hyperlink{namespacemod__icon_a951f32419a1be2c08b07377b01576fd1}{icon\+\_\+free}} (icon)
+\begin{DoxyCompactList}\small\item\em Free ICON data structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Ensemble of subroutines useful to load and process ICON model simulations. 
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacemod__icon_a951f32419a1be2c08b07377b01576fd1}\label{namespacemod__icon_a951f32419a1be2c08b07377b01576fd1}} 
+\index{mod\_icon@{mod\_icon}!icon\_free@{icon\_free}}
+\index{icon\_free@{icon\_free}!mod\_icon@{mod\_icon}}
+\doxysubsubsection{\texorpdfstring{icon\_free()}{icon\_free()}}
+{\footnotesize\ttfamily subroutine, public mod\+\_\+icon\+::icon\+\_\+free (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__icon}{type\+\_\+icon}}), intent(inout)}]{icon }\end{DoxyParamCaption})}
+
+
+
+Free ICON data structure. 
+
+This subroutine frees the ICON data structure by deallocating the required arrays. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em icon} & ICON data structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__icon_a3f39934ffaccaed8733b57d81cc1bf85}\label{namespacemod__icon_a3f39934ffaccaed8733b57d81cc1bf85}} 
+\index{mod\_icon@{mod\_icon}!icon\_init@{icon\_init}}
+\index{icon\_init@{icon\_init}!mod\_icon@{mod\_icon}}
+\doxysubsubsection{\texorpdfstring{icon\_init()}{icon\_init()}}
+{\footnotesize\ttfamily subroutine mod\+\_\+icon\+::icon\+\_\+init (\begin{DoxyParamCaption}\item[{integer(kind=4), intent(in)}]{npoints,  }\item[{integer(kind=4), intent(in)}]{nlayers,  }\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__icon}{type\+\_\+icon}})}]{icon }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Initialize ICON data structure. 
+
+This subroutine initializes the ICON data structure by allocating the required arrays. All arrays are initialized to zero. \begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000004}{Todo}}]Not all arrays are initialized to zero. Redo following the NWPSAF procedure. \end{DoxyRefDesc}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em npoints} & Number of grid points \\
+\hline
+\mbox{\texttt{ in}}  & {\em nlayers} & Number of vertical layers \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em icon} & ICON data structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__icon_a6cbf518ab4864c72f98804270bfde89b}\label{namespacemod__icon_a6cbf518ab4864c72f98804270bfde89b}} 
+\index{mod\_icon@{mod\_icon}!icon\_load@{icon\_load}}
+\index{icon\_load@{icon\_load}!mod\_icon@{mod\_icon}}
+\doxysubsubsection{\texorpdfstring{icon\_load()}{icon\_load()}}
+{\footnotesize\ttfamily subroutine, public mod\+\_\+icon\+::icon\+\_\+load (\begin{DoxyParamCaption}\item[{character(len=256), intent(in)}]{fname,  }\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__icon}{type\+\_\+icon}}), intent(out)}]{icon }\end{DoxyParamCaption})}
+
+
+
+Load ICON model simulations. 
+
+This subroutine loads ICON model simulations from a Net\+CDF file and processes them to obtain the required variables for S3\+COM. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em fname} & Input Net\+CDF file name containing ICON simulations \\
+\hline
+\mbox{\texttt{ out}}  & {\em icon} & ICON data structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__icon_a643091b127fab3797b3b87910dfaf3a4}\label{namespacemod__icon_a643091b127fab3797b3b87910dfaf3a4}} 
+\index{mod\_icon@{mod\_icon}!icon\_process@{icon\_process}}
+\index{icon\_process@{icon\_process}!mod\_icon@{mod\_icon}}
+\doxysubsubsection{\texorpdfstring{icon\_process()}{icon\_process()}}
+{\footnotesize\ttfamily subroutine mod\+\_\+icon\+::icon\+\_\+process (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__icon}{type\+\_\+icon}}), intent(inout)}]{icon }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Process ICON data structure. 
+
+This subroutine processes the ICON data structure to obtain the required variables for S3\+COM. \begin{DoxyNote}{Note}
+Current processing steps\+:
+\begin{DoxyItemize}
+\item The layer depth is approximated to twice the difference between the interface and the layer center.
+\item The moist air density is computed from the pressure and virtual temperature. Used to convert cloud properties from kg/kg to kg/m3.
+\item The effective radius is computed from the water content and number concentration consistently with the Seifert and Beheng (2005) scheme used in ICON
+\item All quantities in SI units except for the effective radius which is in um. 
+\end{DoxyItemize}
+\end{DoxyNote}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000003}{Todo}}]Why not compute dz from ifc(i+1) -\/ ifc(i)? \end{DoxyRefDesc}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em icon} & ICON data structure \\
+\hline
+\end{DoxyParams}

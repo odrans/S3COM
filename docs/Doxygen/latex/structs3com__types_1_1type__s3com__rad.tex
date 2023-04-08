@@ -1,0 +1,45 @@
+\hypertarget{structs3com__types_1_1type__s3com__rad}{}\doxysection{s3com\+\_\+types\+::type\+\_\+s3com\+\_\+rad Type Reference}
+\label{structs3com__types_1_1type__s3com__rad}\index{s3com\_types::type\_s3com\_rad@{s3com\_types::type\_s3com\_rad}}
+
+
+S3\+COM structure for direct radiative transfer simulations and measurements.  
+
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__rad_ab001917739c3a11f74e87e1ebad7deb3}\label{structs3com__types_1_1type__s3com__rad_ab001917739c3a11f74e87e1ebad7deb3}} 
+real(kind=wp), dimension(\+:), allocatable {\bfseries wavelength}
+\begin{DoxyCompactList}\small\item\em Wavelength um \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__rad_a2af30df58320b2e9e6d4d49d240a3c24}\label{structs3com__types_1_1type__s3com__rad_a2af30df58320b2e9e6d4d49d240a3c24}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries y}
+\begin{DoxyCompactList}\small\item\em Satellite measurements. Units will depend on type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__rad_aacee1ce75dc3449b673f31d3b74009cc}\label{structs3com__types_1_1type__s3com__rad_aacee1ce75dc3449b673f31d3b74009cc}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries f}
+\begin{DoxyCompactList}\small\item\em Forward model simulations with same type and units as y. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__rad_a32bdbf8e5c48bdca20f31129eed8f992}\label{structs3com__types_1_1type__s3com__rad_a32bdbf8e5c48bdca20f31129eed8f992}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries f\+\_\+ref\+\_\+total}
+\begin{DoxyCompactList}\small\item\em Total top-\/of-\/atmosphere outgoing reflectance -\/ \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__rad_ae22f87e7183afa9f304ba7a2f77bc3c0}\label{structs3com__types_1_1type__s3com__rad_ae22f87e7183afa9f304ba7a2f77bc3c0}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries f\+\_\+ref\+\_\+clear}
+\begin{DoxyCompactList}\small\item\em Clear-\/sky top-\/of-\/atmosphere outgoing reflectance -\/ \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__rad_a2029d5fe9353aeefef24ff52652bb9ab}\label{structs3com__types_1_1type__s3com__rad_a2029d5fe9353aeefef24ff52652bb9ab}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries f\+\_\+bt\+\_\+total}
+\begin{DoxyCompactList}\small\item\em Total top-\/of-\/atmosphere brightness temperature K \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__rad_a00298fbd22a3c7e25b5d9c18a5369936}\label{structs3com__types_1_1type__s3com__rad_a00298fbd22a3c7e25b5d9c18a5369936}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries f\+\_\+bt\+\_\+clear}
+\begin{DoxyCompactList}\small\item\em Clear-\/sky top-\/of-\/atmosphere brightness temperature K \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__rad_ad3a52495ff0b32c50626079724ed05b0}\label{structs3com__types_1_1type__s3com__rad_ad3a52495ff0b32c50626079724ed05b0}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries f\+\_\+rad\+\_\+total}
+\begin{DoxyCompactList}\small\item\em Total top-\/of-\/atmosphere radiance W m-\/2 sr-\/1 um-\/1 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__rad_acdd178ef4b7f84e9c595fd6c12a12d21}\label{structs3com__types_1_1type__s3com__rad_acdd178ef4b7f84e9c595fd6c12a12d21}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries f\+\_\+rad\+\_\+clear}
+\begin{DoxyCompactList}\small\item\em Total top-\/of-\/atmosphere radiance W m-\/2 sr-\/1 um-\/1 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+S3\+COM structure for direct radiative transfer simulations and measurements. 
+
+The documentation for this type was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/conf/types.\+f90\end{DoxyCompactItemize}

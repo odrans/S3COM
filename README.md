@@ -1,5 +1,5 @@
 
-# Satellite Simulator and Sandbox for Cloud Observation and Modelling | S3COM
+# Satellite Simulator and Sandbox for Cloud Observation and Modelling
 
 **A satellite simulator and retrieval sandbox tool for cloud studies.**
 
@@ -77,3 +77,4 @@ S3COM does not account for sub-grid variability of cloud properties. It should b
 
 S3COM is available under a BSD 3-clause license.
 Please see [LICENSE](LICENSE) for details.
+

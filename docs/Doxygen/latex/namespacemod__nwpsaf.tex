@@ -1,0 +1,104 @@
+\hypertarget{namespacemod__nwpsaf}{}\doxysection{mod\+\_\+nwpsaf Module Reference}
+\label{namespacemod__nwpsaf}\index{mod\_nwpsaf@{mod\_nwpsaf}}
+
+
+Ensemble of subroutines useful to load and process NWPSAF model simulations.  
+
+
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \mbox{\hyperlink{namespacemod__nwpsaf_aa5652141f725943e9a67ceddb24530bb}{nwpsaf\+\_\+load}} (fname, nwpsaf)
+\begin{DoxyCompactList}\small\item\em Load NWPSAF model simulations. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacemod__nwpsaf_abe8b207bb0254132f0c4f41578cc6a0e}{nwpsaf\+\_\+process}} (nwpsaf)
+\begin{DoxyCompactList}\small\item\em Process NWPSAF data structure. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacemod__nwpsaf_a480f75302887b6e10a66f9723c11bde5}{nwpsaf\+\_\+init}} (npoints, nlayers, nwpsaf)
+\begin{DoxyCompactList}\small\item\em Initialize NWPSAF data structure. \end{DoxyCompactList}\item 
+subroutine, public \mbox{\hyperlink{namespacemod__nwpsaf_a8558cf9e47c24201864e285d606f0f11}{nwpsaf\+\_\+free}} (nwpsaf)
+\begin{DoxyCompactList}\small\item\em Free NWPSAF data structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Ensemble of subroutines useful to load and process NWPSAF model simulations. 
+
+\begin{DoxyWarning}{Warning}
+Due to NWPSAF being based on one-\/moment microphysics, only the cloud water content is provided. Therefore, only ice clouds are currently simulated in S3\+COM for NWPSAF (using the Baran 2018 scheme). 
+\end{DoxyWarning}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000005}{Todo}}]Add support for liquid clouds by finding how to reconstruct the droplet size distribution from LWC. \end{DoxyRefDesc}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacemod__nwpsaf_a8558cf9e47c24201864e285d606f0f11}\label{namespacemod__nwpsaf_a8558cf9e47c24201864e285d606f0f11}} 
+\index{mod\_nwpsaf@{mod\_nwpsaf}!nwpsaf\_free@{nwpsaf\_free}}
+\index{nwpsaf\_free@{nwpsaf\_free}!mod\_nwpsaf@{mod\_nwpsaf}}
+\doxysubsubsection{\texorpdfstring{nwpsaf\_free()}{nwpsaf\_free()}}
+{\footnotesize\ttfamily subroutine, public mod\+\_\+nwpsaf\+::nwpsaf\+\_\+free (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__nwpsaf}{type\+\_\+nwpsaf}}), intent(inout)}]{nwpsaf }\end{DoxyParamCaption})}
+
+
+
+Free NWPSAF data structure. 
+
+This subroutine frees the NWPSAF data structure by deallocating the required arrays. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em nwpsaf} & NWPSAF data structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__nwpsaf_a480f75302887b6e10a66f9723c11bde5}\label{namespacemod__nwpsaf_a480f75302887b6e10a66f9723c11bde5}} 
+\index{mod\_nwpsaf@{mod\_nwpsaf}!nwpsaf\_init@{nwpsaf\_init}}
+\index{nwpsaf\_init@{nwpsaf\_init}!mod\_nwpsaf@{mod\_nwpsaf}}
+\doxysubsubsection{\texorpdfstring{nwpsaf\_init()}{nwpsaf\_init()}}
+{\footnotesize\ttfamily subroutine mod\+\_\+nwpsaf\+::nwpsaf\+\_\+init (\begin{DoxyParamCaption}\item[{integer(kind=4), intent(in)}]{npoints,  }\item[{integer(kind=4), intent(in)}]{nlayers,  }\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__nwpsaf}{type\+\_\+nwpsaf}}), intent(inout)}]{nwpsaf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Initialize NWPSAF data structure. 
+
+This subroutine initializes the NWPSAF data structure by allocating the required arrays. All arrays are initialized to zero. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em npoints} & Number of grid points \\
+\hline
+\mbox{\texttt{ in}}  & {\em nlayers} & Number of vertical layers \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em nwpsaf} & NWPSAF data structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__nwpsaf_aa5652141f725943e9a67ceddb24530bb}\label{namespacemod__nwpsaf_aa5652141f725943e9a67ceddb24530bb}} 
+\index{mod\_nwpsaf@{mod\_nwpsaf}!nwpsaf\_load@{nwpsaf\_load}}
+\index{nwpsaf\_load@{nwpsaf\_load}!mod\_nwpsaf@{mod\_nwpsaf}}
+\doxysubsubsection{\texorpdfstring{nwpsaf\_load()}{nwpsaf\_load()}}
+{\footnotesize\ttfamily subroutine, public mod\+\_\+nwpsaf\+::nwpsaf\+\_\+load (\begin{DoxyParamCaption}\item[{character(len=256), intent(in)}]{fname,  }\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__nwpsaf}{type\+\_\+nwpsaf}}), intent(inout)}]{nwpsaf }\end{DoxyParamCaption})}
+
+
+
+Load NWPSAF model simulations. 
+
+This subroutine loads NWPSAF model simulations from a Net\+CDF file and processes them to obtain the required variables for S3\+COM. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em fname} & Input Net\+CDF file name containing NWPSAF simulations \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em nwpsaf} & NWPSAF data structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__nwpsaf_abe8b207bb0254132f0c4f41578cc6a0e}\label{namespacemod__nwpsaf_abe8b207bb0254132f0c4f41578cc6a0e}} 
+\index{mod\_nwpsaf@{mod\_nwpsaf}!nwpsaf\_process@{nwpsaf\_process}}
+\index{nwpsaf\_process@{nwpsaf\_process}!mod\_nwpsaf@{mod\_nwpsaf}}
+\doxysubsubsection{\texorpdfstring{nwpsaf\_process()}{nwpsaf\_process()}}
+{\footnotesize\ttfamily subroutine mod\+\_\+nwpsaf\+::nwpsaf\+\_\+process (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__nwpsaf}{type\+\_\+nwpsaf}}), intent(inout)}]{nwpsaf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Process NWPSAF data structure. 
+
+This subroutine processes the NWPSAF data structure to obtain the required variables for S3\+COM. \begin{DoxyNote}{Note}
+Current approximations\+:
+\begin{DoxyItemize}
+\item NWPSAF doesn\textquotesingle{}t include 2-\/m specific humidity, so it is set to the specific humidity at surface level
+\item NWPSAF doesn\textquotesingle{}t include cloud effective radius, set to 0 for now. Not used for ice clouds anyway. 
+\end{DoxyItemize}
+\end{DoxyNote}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em nwpsaf} & NWPSAF data structure \\
+\hline
+\end{DoxyParams}

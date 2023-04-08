@@ -1,0 +1,130 @@
+\hypertarget{namespacemod__models}{}\doxysection{mod\+\_\+models Module Reference}
+\label{namespacemod__models}\index{mod\_models@{mod\_models}}
+
+
+Ensemble of subroutines loading model data.  
+
+
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \mbox{\hyperlink{namespacemod__models_a770cd8e72ffb3015916d16e6f4307e60}{models\+\_\+load}} (nml, model)
+\begin{DoxyCompactList}\small\item\em Load model simulations to be used in S3\+COM. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacemod__models_ad5af6704929fde58c81a3f945c038e5c}{models\+\_\+init}} (model, npoints, nlayers)
+\begin{DoxyCompactList}\small\item\em Initialize the {\ttfamily model} data structure. \end{DoxyCompactList}\item 
+subroutine, public \mbox{\hyperlink{namespacemod__models_af4dd664e3d5d6319cc63ef0478283973}{models\+\_\+free}} (model)
+\begin{DoxyCompactList}\small\item\em Free the {\ttfamily model} data structure. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacemod__models_af71f662271030870564c4656779f4a0a}{models\+\_\+setup\+\_\+icon}} (model, icon)
+\begin{DoxyCompactList}\small\item\em Set up the {\ttfamily model} data structure by importing the ICON data. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacemod__models_a5b5731aa8e392c73044fe197efe41944}{models\+\_\+setup\+\_\+nwpsaf}} (model, nwpsaf)
+\begin{DoxyCompactList}\small\item\em Set up the {\ttfamily model} data structure by importing the NWPSAF data. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacemod__models_a80d4eac735218c71f718fecf34642235}{models\+\_\+setup\+\_\+solar}} (model)
+\begin{DoxyCompactList}\small\item\em Compute the solar angles corresponding to model simualtions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Ensemble of subroutines loading model data. 
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacemod__models_af4dd664e3d5d6319cc63ef0478283973}\label{namespacemod__models_af4dd664e3d5d6319cc63ef0478283973}} 
+\index{mod\_models@{mod\_models}!models\_free@{models\_free}}
+\index{models\_free@{models\_free}!mod\_models@{mod\_models}}
+\doxysubsubsection{\texorpdfstring{models\_free()}{models\_free()}}
+{\footnotesize\ttfamily subroutine, public mod\+\_\+models\+::models\+\_\+free (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__model}{type\+\_\+model}}), intent(inout)}]{model }\end{DoxyParamCaption})}
+
+
+
+Free the {\ttfamily model} data structure. 
+
+This subroutine frees the {\ttfamily model} structure by deallocating the arrays. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em model} & Model data structure containing all necessary variables for S3\+COM \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__models_ad5af6704929fde58c81a3f945c038e5c}\label{namespacemod__models_ad5af6704929fde58c81a3f945c038e5c}} 
+\index{mod\_models@{mod\_models}!models\_init@{models\_init}}
+\index{models\_init@{models\_init}!mod\_models@{mod\_models}}
+\doxysubsubsection{\texorpdfstring{models\_init()}{models\_init()}}
+{\footnotesize\ttfamily subroutine mod\+\_\+models\+::models\+\_\+init (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__model}{type\+\_\+model}}), intent(out)}]{model,  }\item[{integer(kind = 4), intent(in)}]{npoints,  }\item[{integer(kind = 4), intent(in)}]{nlayers }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Initialize the {\ttfamily model} data structure. 
+
+This subroutine initializes the {\ttfamily model} structure by allocating the required arrays. All arrays are initialized to zero. \begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]Not all arrays are initialized to zero. Redo following the NWPSAF procedure. \end{DoxyRefDesc}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em npoints} & Number of points in the model simulation \\
+\hline
+\mbox{\texttt{ in}}  & {\em nlayers} & Number of layers in the model simulation \\
+\hline
+\mbox{\texttt{ out}}  & {\em model} & Model data structure containing all necessary variables for S3\+COM \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__models_a770cd8e72ffb3015916d16e6f4307e60}\label{namespacemod__models_a770cd8e72ffb3015916d16e6f4307e60}} 
+\index{mod\_models@{mod\_models}!models\_load@{models\_load}}
+\index{models\_load@{models\_load}!mod\_models@{mod\_models}}
+\doxysubsubsection{\texorpdfstring{models\_load()}{models\_load()}}
+{\footnotesize\ttfamily subroutine, public mod\+\_\+models\+::models\+\_\+load (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__nml}{type\+\_\+nml}}), intent(in)}]{nml,  }\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__model}{type\+\_\+model}}), intent(out)}]{model }\end{DoxyParamCaption})}
+
+
+
+Load model simulations to be used in S3\+COM. 
+
+This subroutine loads model data from their respective net\+CDF files and stores them consistently in the {\ttfamily model} structure. This subroutine is currently set up for the ICON and NWPSAF models. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em nml} & Namelist data, containing the name of the model and path to its simulation outputs \\
+\hline
+\mbox{\texttt{ out}}  & {\em model} & Model data structure containing all necessary variables for S3\+COM \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__models_af71f662271030870564c4656779f4a0a}\label{namespacemod__models_af71f662271030870564c4656779f4a0a}} 
+\index{mod\_models@{mod\_models}!models\_setup\_icon@{models\_setup\_icon}}
+\index{models\_setup\_icon@{models\_setup\_icon}!mod\_models@{mod\_models}}
+\doxysubsubsection{\texorpdfstring{models\_setup\_icon()}{models\_setup\_icon()}}
+{\footnotesize\ttfamily subroutine mod\+\_\+models\+::models\+\_\+setup\+\_\+icon (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__model}{type\+\_\+model}}), intent(inout)}]{model,  }\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__icon}{type\+\_\+icon}}), intent(in)}]{icon }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Set up the {\ttfamily model} data structure by importing the ICON data. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em model} & Model data structure containing all necessary variables for S3\+COM \\
+\hline
+\mbox{\texttt{ in}}  & {\em icon} & structure containing the ICON data \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__models_a5b5731aa8e392c73044fe197efe41944}\label{namespacemod__models_a5b5731aa8e392c73044fe197efe41944}} 
+\index{mod\_models@{mod\_models}!models\_setup\_nwpsaf@{models\_setup\_nwpsaf}}
+\index{models\_setup\_nwpsaf@{models\_setup\_nwpsaf}!mod\_models@{mod\_models}}
+\doxysubsubsection{\texorpdfstring{models\_setup\_nwpsaf()}{models\_setup\_nwpsaf()}}
+{\footnotesize\ttfamily subroutine mod\+\_\+models\+::models\+\_\+setup\+\_\+nwpsaf (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__model}{type\+\_\+model}}), intent(inout)}]{model,  }\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__nwpsaf}{type\+\_\+nwpsaf}}), intent(in)}]{nwpsaf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Set up the {\ttfamily model} data structure by importing the NWPSAF data. 
+
+\begin{DoxyWarning}{Warning}
+The time for the NWPSAF data is set to 12\+:00\+:00 
+\end{DoxyWarning}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em model} & Model data structure containing all necessary variables for S3\+COM \\
+\hline
+\mbox{\texttt{ in}}  & {\em nwpsaf} & structure containing the NWPSAF data \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__models_a80d4eac735218c71f718fecf34642235}\label{namespacemod__models_a80d4eac735218c71f718fecf34642235}} 
+\index{mod\_models@{mod\_models}!models\_setup\_solar@{models\_setup\_solar}}
+\index{models\_setup\_solar@{models\_setup\_solar}!mod\_models@{mod\_models}}
+\doxysubsubsection{\texorpdfstring{models\_setup\_solar()}{models\_setup\_solar()}}
+{\footnotesize\ttfamily subroutine mod\+\_\+models\+::models\+\_\+setup\+\_\+solar (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__model}{type\+\_\+model}}), intent(inout)}]{model }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Compute the solar angles corresponding to model simualtions. 
+
+The solar zenith and azimuth angles are computed using the {\ttfamily solar\+\_\+angles} function using the latitude, longitude, date and time of the model simulation. \begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000002}{Todo}}]RTTOV v13.\+2 has a function to compute the solar angles. This function should be used instead. \end{DoxyRefDesc}

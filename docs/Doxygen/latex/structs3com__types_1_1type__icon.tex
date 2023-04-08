@@ -1,0 +1,146 @@
+\hypertarget{structs3com__types_1_1type__icon}{}\doxysection{s3com\+\_\+types\+::type\+\_\+icon Type Reference}
+\label{structs3com__types_1_1type__icon}\index{s3com\_types::type\_icon@{s3com\_types::type\_icon}}
+
+
+Structure for model outputs from ICON simulations.  
+
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_ac9e998acd968b375f1d13f962a855fe8}\label{structs3com__types_1_1type__icon_ac9e998acd968b375f1d13f962a855fe8}} 
+integer(wpi) {\bfseries npoints}
+\begin{DoxyCompactList}\small\item\em Total number of grid points. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_ad7a239f05ff2db1137c8b1e86efef44c}\label{structs3com__types_1_1type__icon_ad7a239f05ff2db1137c8b1e86efef44c}} 
+integer(wpi) {\bfseries nlevels}
+\begin{DoxyCompactList}\small\item\em Number of vertical levels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_afe627d879963a794ea0dc594acc6ca66}\label{structs3com__types_1_1type__icon_afe627d879963a794ea0dc594acc6ca66}} 
+integer(wpi) {\bfseries nlayers}
+\begin{DoxyCompactList}\small\item\em Number of vertical layers (typically, nlevels -\/ 1) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_adb6e05465da5567180b92d1595fe803f}\label{structs3com__types_1_1type__icon_adb6e05465da5567180b92d1595fe803f}} 
+integer(wpi) {\bfseries nlat}
+\begin{DoxyCompactList}\small\item\em Number of latitude points in the grid. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a574ffde5542bf8d17503da19846c06bd}\label{structs3com__types_1_1type__icon_a574ffde5542bf8d17503da19846c06bd}} 
+integer(wpi) {\bfseries nlon}
+\begin{DoxyCompactList}\small\item\em Number of longitude points in the grid. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_afec6c8ee87f7f2c833edcb49fa001067}\label{structs3com__types_1_1type__icon_afec6c8ee87f7f2c833edcb49fa001067}} 
+integer(wpi) {\bfseries mode}
+\begin{DoxyCompactList}\small\item\em Model grid type (1\+: track, 2\+: lon-\/lat, 3\+: lat-\/lon) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a88e14c50e1a3081cb80bbc3c076da865}\label{structs3com__types_1_1type__icon_a88e14c50e1a3081cb80bbc3c076da865}} 
+real(dp) {\bfseries time}
+\begin{DoxyCompactList}\small\item\em Time of the simulation (format is \%Y\%m\%d.\%f UTC) input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a2897e764abc52bbb1d378db9ab0234ed}\label{structs3com__types_1_1type__icon_a2897e764abc52bbb1d378db9ab0234ed}} 
+integer(wpi), dimension(\+:), allocatable {\bfseries height}
+\begin{DoxyCompactList}\small\item\em Index of vertical layers input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_aa084e9e95e5460d966e4d7fe0601f478}\label{structs3com__types_1_1type__icon_aa084e9e95e5460d966e4d7fe0601f478}} 
+integer(wpi), dimension(\+:), allocatable {\bfseries height\+\_\+2}
+\begin{DoxyCompactList}\small\item\em Index of vertical levels input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a5eabca6304524d16e4d669b912d0e5e0}\label{structs3com__types_1_1type__icon_a5eabca6304524d16e4d669b912d0e5e0}} 
+real(wp), dimension(\+:), allocatable {\bfseries lon}
+\begin{DoxyCompactList}\small\item\em Longitude degrees East input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a89ad07371194048d063b4cd5dbef667e}\label{structs3com__types_1_1type__icon_a89ad07371194048d063b4cd5dbef667e}} 
+real(wp), dimension(\+:), allocatable {\bfseries lat}
+\begin{DoxyCompactList}\small\item\em Latitude degrees North input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a6ab716113d04ad0955162a8f84aaf7ea}\label{structs3com__types_1_1type__icon_a6ab716113d04ad0955162a8f84aaf7ea}} 
+real(wp), dimension(\+:), allocatable {\bfseries lon\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em Longitude that won\textquotesingle{}t be regridded degrees East \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_adcd1c94186e74c92c27a940904fcd0af}\label{structs3com__types_1_1type__icon_adcd1c94186e74c92c27a940904fcd0af}} 
+real(wp), dimension(\+:), allocatable {\bfseries lat\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em Latitude that won\textquotesingle{}t be regridded degrees North \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a55a4eeac78a7909c62d4df7e113f0259}\label{structs3com__types_1_1type__icon_a55a4eeac78a7909c62d4df7e113f0259}} 
+real(wp), dimension(\+:), allocatable {\bfseries topography}
+\begin{DoxyCompactList}\small\item\em Surface height m input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a2203d51fce8fbf4671c68d3b34c7414b}\label{structs3com__types_1_1type__icon_a2203d51fce8fbf4671c68d3b34c7414b}} 
+real(wp), dimension(\+:), allocatable {\bfseries landmask}
+\begin{DoxyCompactList}\small\item\em Land/sea mask (0/1) input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a0540cddd6ba363397abd0795c388eb5c}\label{structs3com__types_1_1type__icon_a0540cddd6ba363397abd0795c388eb5c}} 
+real(wp), dimension(\+:), allocatable {\bfseries ps}
+\begin{DoxyCompactList}\small\item\em Surface pressure Pa input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a1735804794d07c0087b1ef4286195388}\label{structs3com__types_1_1type__icon_a1735804794d07c0087b1ef4286195388}} 
+real(wp), dimension(\+:), allocatable {\bfseries ts}
+\begin{DoxyCompactList}\small\item\em Skin temperature K input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_ae965fa64884331546264721dadcdd365}\label{structs3com__types_1_1type__icon_ae965fa64884331546264721dadcdd365}} 
+real(wp), dimension(\+:), allocatable {\bfseries t\+\_\+2m}
+\begin{DoxyCompactList}\small\item\em 2-\/m temperature K input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_aa3f76d2dc60bf9b2c13b394c5f0ac5a0}\label{structs3com__types_1_1type__icon_aa3f76d2dc60bf9b2c13b394c5f0ac5a0}} 
+real(wp), dimension(\+:), allocatable {\bfseries q\+\_\+2m}
+\begin{DoxyCompactList}\small\item\em 2-\/m specific humidity kg/kg input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_af3543b76f2d9724ab98f7e858490fbe1}\label{structs3com__types_1_1type__icon_af3543b76f2d9724ab98f7e858490fbe1}} 
+real(wp), dimension(\+:), allocatable {\bfseries u\+\_\+10m}
+\begin{DoxyCompactList}\small\item\em Zonal 10-\/m wind m/s input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_aa7759f7a4e6f817a4659de9e183c6989}\label{structs3com__types_1_1type__icon_aa7759f7a4e6f817a4659de9e183c6989}} 
+real(wp), dimension(\+:), allocatable {\bfseries v\+\_\+10m}
+\begin{DoxyCompactList}\small\item\em Meridional 10-\/m wind m/s input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a9e7554c8b52da96120688af91e9fe195}\label{structs3com__types_1_1type__icon_a9e7554c8b52da96120688af91e9fe195}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries p}
+\begin{DoxyCompactList}\small\item\em Layer pressure Pa input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_ae08dc108c76d27689aa0f151bc936156}\label{structs3com__types_1_1type__icon_ae08dc108c76d27689aa0f151bc936156}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries p\+\_\+ifc}
+\begin{DoxyCompactList}\small\item\em Pressure at half-\/level center Pa input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a1e1e7f52dd1f562c53d0e7b6af80aca6}\label{structs3com__types_1_1type__icon_a1e1e7f52dd1f562c53d0e7b6af80aca6}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries z}
+\begin{DoxyCompactList}\small\item\em Layer height m input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a838e23761424bfadc7c50684fad4d777}\label{structs3com__types_1_1type__icon_a838e23761424bfadc7c50684fad4d777}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries z\+\_\+ifc}
+\begin{DoxyCompactList}\small\item\em Height at half-\/levels center m input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_aa0f948d7292076c6cb18ea5c01b38940}\label{structs3com__types_1_1type__icon_aa0f948d7292076c6cb18ea5c01b38940}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries t}
+\begin{DoxyCompactList}\small\item\em Temperature K input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_ae855c3ee336b38bccc7a7b8de1ee86b8}\label{structs3com__types_1_1type__icon_ae855c3ee336b38bccc7a7b8de1ee86b8}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries t\+\_\+ifc}
+\begin{DoxyCompactList}\small\item\em Temperature at half-\/levels center K input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_aec908643dc19b8e76497713632c1c0f5}\label{structs3com__types_1_1type__icon_aec908643dc19b8e76497713632c1c0f5}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries q}
+\begin{DoxyCompactList}\small\item\em Specific humidity kg/kg input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a0592a48651d2e0f1b30161f4688c95d8}\label{structs3com__types_1_1type__icon_a0592a48651d2e0f1b30161f4688c95d8}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries q\+\_\+ifc}
+\begin{DoxyCompactList}\small\item\em Specific humidity at half level center kg/kg input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a74b8629c361fc13114be15dc90d0e2c9}\label{structs3com__types_1_1type__icon_a74b8629c361fc13114be15dc90d0e2c9}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries clc}
+\begin{DoxyCompactList}\small\item\em Total cloud fraction (0-\/1) input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a197575bfdbe452488d56f8f591df75a4}\label{structs3com__types_1_1type__icon_a197575bfdbe452488d56f8f591df75a4}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries clw}
+\begin{DoxyCompactList}\small\item\em Specific cloud water content kg/kg input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_adabb1fe5c0e0e7a50067efbeb6587958}\label{structs3com__types_1_1type__icon_adabb1fe5c0e0e7a50067efbeb6587958}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries cli}
+\begin{DoxyCompactList}\small\item\em Specific cloud ice content kg/kg input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a5f056f28a45227b66ebb3ed7390b530a}\label{structs3com__types_1_1type__icon_a5f056f28a45227b66ebb3ed7390b530a}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries qnc}
+\begin{DoxyCompactList}\small\item\em Cloud droplet number concentration \# m$^\wedge$-\/3 input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a428aef040fce669bccf561152d304e87}\label{structs3com__types_1_1type__icon_a428aef040fce669bccf561152d304e87}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries qr}
+\begin{DoxyCompactList}\small\item\em Rain mixing ratio kg/kg input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a69e44f9897f31364589a64819b7ec310}\label{structs3com__types_1_1type__icon_a69e44f9897f31364589a64819b7ec310}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries qs}
+\begin{DoxyCompactList}\small\item\em Snow mixing ratio kg/kg input \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a2e1b6e60d5a7f571ea887bdef7b2ea78}\label{structs3com__types_1_1type__icon_a2e1b6e60d5a7f571ea887bdef7b2ea78}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries dz}
+\begin{DoxyCompactList}\small\item\em Layer thickness m \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a4e6e5bd35a76fc4f5bdb70a045205a56}\label{structs3com__types_1_1type__icon_a4e6e5bd35a76fc4f5bdb70a045205a56}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries rho}
+\begin{DoxyCompactList}\small\item\em Air density used for liquid clouds kg m$^\wedge$-\/3 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_ab513b7a99d6e9ffebcae3d249280ab3d}\label{structs3com__types_1_1type__icon_ab513b7a99d6e9ffebcae3d249280ab3d}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries tv}
+\begin{DoxyCompactList}\small\item\em Virtual temperature K \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a087e71941cc7c9a68b690d3f8456e509}\label{structs3com__types_1_1type__icon_a087e71941cc7c9a68b690d3f8456e509}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries lwc}
+\begin{DoxyCompactList}\small\item\em Liquid water content kg m$^\wedge$-\/3 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_ab37bdb4890ec653a6de0dbeeba3387eb}\label{structs3com__types_1_1type__icon_ab37bdb4890ec653a6de0dbeeba3387eb}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries iwc}
+\begin{DoxyCompactList}\small\item\em Ice water content kg m$^\wedge$-\/3 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a5f27f1f79c7ddbfbdebd4b4ab34dec25}\label{structs3com__types_1_1type__icon_a5f27f1f79c7ddbfbdebd4b4ab34dec25}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries cdnc}
+\begin{DoxyCompactList}\small\item\em Cloud droplet number concentration \# m$^\wedge$-\/3 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__icon_a3e08cccd65d110687f424f2f73b2fb00}\label{structs3com__types_1_1type__icon_a3e08cccd65d110687f424f2f73b2fb00}} 
+real(wp), dimension(\+:,\+:), allocatable {\bfseries reff}
+\begin{DoxyCompactList}\small\item\em Cloud liquid water effective radius m \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure for model outputs from ICON simulations. 
+
+They are either read form the Net\+CDF file (input flag) or calculated from these model output 
+
+The documentation for this type was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/conf/types.\+f90\end{DoxyCompactItemize}

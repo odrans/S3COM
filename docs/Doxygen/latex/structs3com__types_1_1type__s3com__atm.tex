@@ -1,0 +1,38 @@
+\hypertarget{structs3com__types_1_1type__s3com__atm}{}\doxysection{s3com\+\_\+types\+::type\+\_\+s3com\+\_\+atm Type Reference}
+\label{structs3com__types_1_1type__s3com__atm}\index{s3com\_types::type\_s3com\_atm@{s3com\_types::type\_s3com\_atm}}
+
+
+S3\+COM structure for atmospheric profiles.  
+
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__atm_a4de8b3bb4190952fdd8390418dfa5afc}\label{structs3com__types_1_1type__s3com__atm_a4de8b3bb4190952fdd8390418dfa5afc}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries t}
+\begin{DoxyCompactList}\small\item\em Temperature on levels K \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__atm_a67228fb3c3942aa2f77d804d1afcf6b2}\label{structs3com__types_1_1type__s3com__atm_a67228fb3c3942aa2f77d804d1afcf6b2}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries z}
+\begin{DoxyCompactList}\small\item\em Altitude on levels m \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__atm_a09b4b09bba022bbf9208bc28fd9dee66}\label{structs3com__types_1_1type__s3com__atm_a09b4b09bba022bbf9208bc28fd9dee66}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries clc}
+\begin{DoxyCompactList}\small\item\em Cloud fraction in layers -\/ \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__atm_a20619c26e5a0a77abf7d1843d96bee5d}\label{structs3com__types_1_1type__s3com__atm_a20619c26e5a0a77abf7d1843d96bee5d}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries cdnc}
+\begin{DoxyCompactList}\small\item\em Cloud droplet number concentration in layers \# m-\/3 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__atm_a8deafa002ca54ea3001105f589fc6488}\label{structs3com__types_1_1type__s3com__atm_a8deafa002ca54ea3001105f589fc6488}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries reff}
+\begin{DoxyCompactList}\small\item\em Cloud droplet effective radius in layers um \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structs3com__types_1_1type__s3com__atm_a8fb50fac1223e67c4a1caa4633a665fc}\label{structs3com__types_1_1type__s3com__atm_a8fb50fac1223e67c4a1caa4633a665fc}} 
+real(kind=wp), dimension(\+:,\+:), allocatable {\bfseries lwc}
+\begin{DoxyCompactList}\small\item\em Cloud liquid water content in layers kg m-\/2 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+S3\+COM structure for atmospheric profiles. 
+
+The atmospheric profiles are stored exactly as they have been used for forward model calculations When retrievals are activated, these can deviate from model outputs as the atmospheric model can be modified. When retrievals are not activated, these are identical to model outputs. 
+
+The documentation for this type was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/conf/types.\+f90\end{DoxyCompactItemize}

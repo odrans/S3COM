@@ -3,7 +3,7 @@ name: Doxygen
 on:
   push:
     branches:
-      - main2
+      - main
   pull_request:
 
 jobs:
@@ -20,11 +20,11 @@ jobs:
         uses: mattnotmitt/doxygen-action@1.9.5
         with:
           working-directory: .
-          doxyfile-path: ./doc/Doxygen/Doxyfile
+          doxyfile-path: docs/Doxygen/Doxyfile
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: doc/Doxygen/html
+          publish_dir: docs/Doxygen/html

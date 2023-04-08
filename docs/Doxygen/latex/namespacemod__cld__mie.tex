@@ -1,0 +1,88 @@
+\hypertarget{namespacemod__cld__mie}{}\doxysection{mod\+\_\+cld\+\_\+mie Module Reference}
+\label{namespacemod__cld__mie}\index{mod\_cld\_mie@{mod\_cld\_mie}}
+
+
+Allocate and load the user-\/defined Mie cloud properties.  
+
+
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, public \mbox{\hyperlink{namespacemod__cld__mie_ab52fe6d2fa8b4c0b89e1faad61fb1eb5}{cld\+\_\+mie\+\_\+load}} (s3com, cld)
+\begin{DoxyCompactList}\small\item\em General call to subroutines needed to load optical properties for liquid clouds from user-\/defined files. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacemod__cld__mie_a527f0f6d5d6f03458e2905a1c6061701}{cld\+\_\+mie\+\_\+read}} (fn\+\_\+mie, cld\+\_\+mie)
+\begin{DoxyCompactList}\small\item\em Initializes the cld\+\_\+mie structure and loads the Mie scattering data from a net\+CDF file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Allocate and load the user-\/defined Mie cloud properties. 
+
+This module contains the subroutines needed to load the user-\/defined Mie cloud properties\+:
+\begin{DoxyItemize}
+\item {\ttfamily cld\+\_\+mie\+\_\+load}\+: general call to subroutines needed to load optical properties for liquid clouds from user-\/defined files
+\item {\ttfamily cld\+\_\+mie\+\_\+read}\+: initializes the cld\+\_\+mie structure and loads the Mie scattering data from a net\+CDF file 
+\end{DoxyItemize}
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacemod__cld__mie_ab52fe6d2fa8b4c0b89e1faad61fb1eb5}\label{namespacemod__cld__mie_ab52fe6d2fa8b4c0b89e1faad61fb1eb5}} 
+\index{mod\_cld\_mie@{mod\_cld\_mie}!cld\_mie\_load@{cld\_mie\_load}}
+\index{cld\_mie\_load@{cld\_mie\_load}!mod\_cld\_mie@{mod\_cld\_mie}}
+\doxysubsubsection{\texorpdfstring{cld\_mie\_load()}{cld\_mie\_load()}}
+{\footnotesize\ttfamily subroutine, public mod\+\_\+cld\+\_\+mie\+::cld\+\_\+mie\+\_\+load (\begin{DoxyParamCaption}\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__s3com}{type\+\_\+s3com}}), intent(in)}]{s3com,  }\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__cld}{type\+\_\+cld}}), intent(out)}]{cld }\end{DoxyParamCaption})}
+
+
+
+General call to subroutines needed to load optical properties for liquid clouds from user-\/defined files. 
+
+This initializes and sets the {\ttfamily cldmie} structure, which contains user-\/defined liquid cloud optical properties needed by RTTOV.
+
+These properties are read from net\+CDF files, currently expected to be located in \$\+PATH/data/opt\+\_\+prop. Current properties are generated from a Mie code. They are loaded for a given instrument. S3\+COM stops if the property files are not found.
+
+These stored Mie optical properties later required by RTTOV are\+:
+\begin{DoxyItemize}
+\item the absorption cross-\/section (in um$^\wedge$2)
+\item the scattering cross-\/section (in um$^\wedge$2)
+\item the phase function for defined angles
+\item the legendre coefficients of the phase function
+\end{DoxyItemize}
+
+\begin{DoxyNote}{Note}
+Note that all cloud properties are defined for a normalized droplet size distribution n(r)! This means that the integral of n(r) is here 1, and converting the absorption and scattering cross-\/sections to the total absorption and scattering coefficients (typically in km$^\wedge$-\/1) requires multiplying by the droplet number concentration.
+\end{DoxyNote}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em cld} & cld structure (currently only contains mie) \\
+\hline
+\mbox{\texttt{ in}}  & {\em s3com} & s3com structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemod__cld__mie_a527f0f6d5d6f03458e2905a1c6061701}\label{namespacemod__cld__mie_a527f0f6d5d6f03458e2905a1c6061701}} 
+\index{mod\_cld\_mie@{mod\_cld\_mie}!cld\_mie\_read@{cld\_mie\_read}}
+\index{cld\_mie\_read@{cld\_mie\_read}!mod\_cld\_mie@{mod\_cld\_mie}}
+\doxysubsubsection{\texorpdfstring{cld\_mie\_read()}{cld\_mie\_read()}}
+{\footnotesize\ttfamily subroutine mod\+\_\+cld\+\_\+mie\+::cld\+\_\+mie\+\_\+read (\begin{DoxyParamCaption}\item[{character(len = 128), intent(in)}]{fn\+\_\+mie,  }\item[{type(\mbox{\hyperlink{structs3com__types_1_1type__cld__mie}{type\+\_\+cld\+\_\+mie}}), intent(out)}]{cld\+\_\+mie }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Initializes the cld\+\_\+mie structure and loads the Mie scattering data from a net\+CDF file. 
+
+This reads Mie optical properties from a user-\/defined Net\+CDF file and stores them in the {\ttfamily cld\+\_\+mie} structure. The following variables are set in {\ttfamily cld\+\_\+mie}\+:
+\begin{DoxyItemize}
+\item nchan\+: number of wavelengths for the given instrument
+\item nrad\+: number of radius on which Mie properties are defined
+\item nang\+: number of angles on which the phase function is computed
+\item chan\+\_\+id\+: ID of the instrument channel in RTTOV
+\item radius\+: effective radii (in um)
+\item angle\+: phase function angles (in degrees)
+\item Csca\+: the scattering cross-\/section coefficient (in um$^\wedge$2). Computed as Cext $\ast$ w0, with Cext the extinction cross-\/section and w0 the single-\/scattering albedo
+\item Cabs\+: the absorption cross-\/section coefficient (in um$^\wedge$2). Computed as Cext $\ast$ (1-\/w0).
+\item pha\+: the phase function
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em fn\+\_\+mie} & name of the net\+CDF file containing the Mie scattering data \\
+\hline
+\mbox{\texttt{ out}}  & {\em cld\+\_\+mie} & cld\+\_\+mie structure \\
+\hline
+\end{DoxyParams}
