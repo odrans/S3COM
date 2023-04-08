@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['year_0',['year',['../structs3com__types_1_1type__nwpsaf.html#ae83c281b66f7b3277fa4af2e0628a41c',1,'s3com_types::type_nwpsaf']]]
+  ['u10_0',['u10',['../structs3com__types_1_1type__nwpsaf.html#a5d95a0cbbaa29876e7ee34a1fe802247',1,'s3com_types::type_nwpsaf']]],
+  ['u_5f10m_1',['u_10m',['../structs3com__types_1_1type__icon.html#af3543b76f2d9724ab98f7e858490fbe1',1,'s3com_types::type_icon::u_10m()'],['../structs3com__types_1_1type__model.html#a71280e4c29a6760ea2d2a026801344c2',1,'s3com_types::type_model::u_10m()']]],
+  ['user_5fcld_5fopt_5fparam_2',['user_cld_opt_param',['../structs3com__types_1_1type__nml.html#a3b3968fcbf48e4dd545b02aa143b9591',1,'s3com_types::type_nml::user_cld_opt_param()'],['../structs3com__types_1_1type__rttov__opt.html#a5b959233a1ff4ec8b85232e2d0d88e7b',1,'s3com_types::type_rttov_opt::user_cld_opt_param()']]]
 ];

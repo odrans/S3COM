@@ -34,15 +34,13 @@
     DoxygenAwesomeInteractiveToc.init()
     DoxygenAwesomeTabs.init()
 </script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="mycustom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <!-- https://tholman.com/github-corners/ -->
@@ -58,7 +56,6 @@
    <div id="projectname">S3COM
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">Satellite Simulator and Sandbox for Cloud Observation and Modelling</div>
   </td>
  </tr>
  </tbody>
@@ -82,23 +79,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structs3com__types_1_1type__nwpsaf.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -120,6 +100,11 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__nwpsaf.htm
 </div>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>s3com_types</b></li><li class="navelem"><a class="el" href="structs3com__types_1_1type__nwpsaf.html">type_nwpsaf</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
@@ -128,59 +113,59 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__nwpsaf.htm
 </div><!--header-->
 <div class="contents">
 
-<p>Model outputs from NWPSAF simulations.  
+<p>Structure for model outputs from NWPSAF simulations.  
  <a href="structs3com__types_1_1type__nwpsaf.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a1cac2a6e208299ba390fc361aa5dfb02"><td class="memItemLeft" align="right" valign="top"><a id="a1cac2a6e208299ba390fc361aa5dfb02" name="a1cac2a6e208299ba390fc361aa5dfb02"></a>
-integer(kind=4)&#160;</td><td class="memItemRight" valign="bottom"><b>npoints</b></td></tr>
-<tr class="memdesc:a1cac2a6e208299ba390fc361aa5dfb02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of grid points. <br /></td></tr>
-<tr class="separator:a1cac2a6e208299ba390fc361aa5dfb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae64c8d79b53b2af697284f0240fc159c"><td class="memItemLeft" align="right" valign="top"><a id="ae64c8d79b53b2af697284f0240fc159c" name="ae64c8d79b53b2af697284f0240fc159c"></a>
-integer(kind=4)&#160;</td><td class="memItemRight" valign="bottom"><b>nlevels</b></td></tr>
-<tr class="memdesc:ae64c8d79b53b2af697284f0240fc159c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of vertical levels. <br /></td></tr>
-<tr class="separator:ae64c8d79b53b2af697284f0240fc159c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1f361221cb082362c0b30324992b07c"><td class="memItemLeft" align="right" valign="top"><a id="ab1f361221cb082362c0b30324992b07c" name="ab1f361221cb082362c0b30324992b07c"></a>
-integer(kind=4)&#160;</td><td class="memItemRight" valign="bottom"><b>nlayers</b></td></tr>
-<tr class="memdesc:ab1f361221cb082362c0b30324992b07c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of vertical layers (typically, nlevels - 1) <br /></td></tr>
-<tr class="separator:ab1f361221cb082362c0b30324992b07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a29bc94c59dae07bbd40aa38cedf9b7"><td class="memItemLeft" align="right" valign="top"><a id="a8a29bc94c59dae07bbd40aa38cedf9b7" name="a8a29bc94c59dae07bbd40aa38cedf9b7"></a>
-integer(kind=4)&#160;</td><td class="memItemRight" valign="bottom"><b>nlat</b></td></tr>
-<tr class="memdesc:a8a29bc94c59dae07bbd40aa38cedf9b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of latitude points in the grid. <br /></td></tr>
-<tr class="separator:a8a29bc94c59dae07bbd40aa38cedf9b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa6012d0ef7d953834ddee29387252e9"><td class="memItemLeft" align="right" valign="top"><a id="afa6012d0ef7d953834ddee29387252e9" name="afa6012d0ef7d953834ddee29387252e9"></a>
-integer(kind=4)&#160;</td><td class="memItemRight" valign="bottom"><b>nlon</b></td></tr>
-<tr class="memdesc:afa6012d0ef7d953834ddee29387252e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of longitude points in the grid. <br /></td></tr>
-<tr class="separator:afa6012d0ef7d953834ddee29387252e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff4191fcfe9945f3e5f9f59be4b077ba"><td class="memItemLeft" align="right" valign="top"><a id="aff4191fcfe9945f3e5f9f59be4b077ba" name="aff4191fcfe9945f3e5f9f59be4b077ba"></a>
-integer(kind=4)&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
-<tr class="memdesc:aff4191fcfe9945f3e5f9f59be4b077ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model grid type (1: track, 2: lon-lat, 3: lat-lon) <br /></td></tr>
-<tr class="separator:aff4191fcfe9945f3e5f9f59be4b077ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26f3674239dccf13dd54dfae546b2c72"><td class="memItemLeft" align="right" valign="top"><a id="a26f3674239dccf13dd54dfae546b2c72" name="a26f3674239dccf13dd54dfae546b2c72"></a>
-integer(kind=4), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
-<tr class="memdesc:a26f3674239dccf13dd54dfae546b2c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of vertical layers. <br /></td></tr>
-<tr class="separator:a26f3674239dccf13dd54dfae546b2c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32889878821f7231483a833a2787b530"><td class="memItemLeft" align="right" valign="top"><a id="a32889878821f7231483a833a2787b530" name="a32889878821f7231483a833a2787b530"></a>
-integer(kind=4), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>height_2</b></td></tr>
-<tr class="memdesc:a32889878821f7231483a833a2787b530"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of vertical levels. <br /></td></tr>
-<tr class="separator:a32889878821f7231483a833a2787b530"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dfd368ad02e8a7945b212ae40879dfd"><td class="memItemLeft" align="right" valign="top"><a id="a0dfd368ad02e8a7945b212ae40879dfd" name="a0dfd368ad02e8a7945b212ae40879dfd"></a>
-integer(kind=4), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>point</b></td></tr>
-<tr class="memdesc:a0dfd368ad02e8a7945b212ae40879dfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of grid points. <br /></td></tr>
-<tr class="separator:a0dfd368ad02e8a7945b212ae40879dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada3331a4d4087d96e0b11149db389bc2"><td class="memItemLeft" align="right" valign="top"><a id="ada3331a4d4087d96e0b11149db389bc2" name="ada3331a4d4087d96e0b11149db389bc2"></a>
-integer(kind=4), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>day</b></td></tr>
-<tr class="memdesc:ada3331a4d4087d96e0b11149db389bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Day of the simulation. <br /></td></tr>
-<tr class="separator:ada3331a4d4087d96e0b11149db389bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a985d9111cd2053671fc2731d8ffde55b"><td class="memItemLeft" align="right" valign="top"><a id="a985d9111cd2053671fc2731d8ffde55b" name="a985d9111cd2053671fc2731d8ffde55b"></a>
-integer(kind=4), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>month</b></td></tr>
-<tr class="memdesc:a985d9111cd2053671fc2731d8ffde55b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Month of the simulation. <br /></td></tr>
-<tr class="separator:a985d9111cd2053671fc2731d8ffde55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae83c281b66f7b3277fa4af2e0628a41c"><td class="memItemLeft" align="right" valign="top"><a id="ae83c281b66f7b3277fa4af2e0628a41c" name="ae83c281b66f7b3277fa4af2e0628a41c"></a>
-integer(kind=4), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>year</b></td></tr>
-<tr class="memdesc:ae83c281b66f7b3277fa4af2e0628a41c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Year of the simulation. <br /></td></tr>
-<tr class="separator:ae83c281b66f7b3277fa4af2e0628a41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4d9a0679c425855022adb15252ead34"><td class="memItemLeft" align="right" valign="top"><a id="af4d9a0679c425855022adb15252ead34" name="af4d9a0679c425855022adb15252ead34"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>npoints</b></td></tr>
+<tr class="memdesc:af4d9a0679c425855022adb15252ead34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of grid points. <br /></td></tr>
+<tr class="separator:af4d9a0679c425855022adb15252ead34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b26f8f544d95f5aaa0ac21ce3b20525"><td class="memItemLeft" align="right" valign="top"><a id="a0b26f8f544d95f5aaa0ac21ce3b20525" name="a0b26f8f544d95f5aaa0ac21ce3b20525"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>nlevels</b></td></tr>
+<tr class="memdesc:a0b26f8f544d95f5aaa0ac21ce3b20525"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of vertical levels. <br /></td></tr>
+<tr class="separator:a0b26f8f544d95f5aaa0ac21ce3b20525"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75208d0a833df7f717a405bfebc0edd7"><td class="memItemLeft" align="right" valign="top"><a id="a75208d0a833df7f717a405bfebc0edd7" name="a75208d0a833df7f717a405bfebc0edd7"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>nlayers</b></td></tr>
+<tr class="memdesc:a75208d0a833df7f717a405bfebc0edd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of vertical layers (typically, nlevels - 1) <br /></td></tr>
+<tr class="separator:a75208d0a833df7f717a405bfebc0edd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cc83be167139b32d3d84191ca6d4d1f"><td class="memItemLeft" align="right" valign="top"><a id="a9cc83be167139b32d3d84191ca6d4d1f" name="a9cc83be167139b32d3d84191ca6d4d1f"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>nlat</b></td></tr>
+<tr class="memdesc:a9cc83be167139b32d3d84191ca6d4d1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of latitude points in the grid. <br /></td></tr>
+<tr class="separator:a9cc83be167139b32d3d84191ca6d4d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a82bb2e1ec759f3798ce2f0886252c3"><td class="memItemLeft" align="right" valign="top"><a id="a0a82bb2e1ec759f3798ce2f0886252c3" name="a0a82bb2e1ec759f3798ce2f0886252c3"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>nlon</b></td></tr>
+<tr class="memdesc:a0a82bb2e1ec759f3798ce2f0886252c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of longitude points in the grid. <br /></td></tr>
+<tr class="separator:a0a82bb2e1ec759f3798ce2f0886252c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a6ab02f7425e9fccfc6b0c47bcef715"><td class="memItemLeft" align="right" valign="top"><a id="a0a6ab02f7425e9fccfc6b0c47bcef715" name="a0a6ab02f7425e9fccfc6b0c47bcef715"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
+<tr class="memdesc:a0a6ab02f7425e9fccfc6b0c47bcef715"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model grid type (1: track, 2: lon-lat, 3: lat-lon) <br /></td></tr>
+<tr class="separator:a0a6ab02f7425e9fccfc6b0c47bcef715"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb8e4b3d5bca0c9931ceec246241e92d"><td class="memItemLeft" align="right" valign="top"><a id="afb8e4b3d5bca0c9931ceec246241e92d" name="afb8e4b3d5bca0c9931ceec246241e92d"></a>
+integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
+<tr class="memdesc:afb8e4b3d5bca0c9931ceec246241e92d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of vertical layers. <br /></td></tr>
+<tr class="separator:afb8e4b3d5bca0c9931ceec246241e92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bd4d7c232add0897f324a80ee6b6f09"><td class="memItemLeft" align="right" valign="top"><a id="a5bd4d7c232add0897f324a80ee6b6f09" name="a5bd4d7c232add0897f324a80ee6b6f09"></a>
+integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>height_2</b></td></tr>
+<tr class="memdesc:a5bd4d7c232add0897f324a80ee6b6f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of vertical levels. <br /></td></tr>
+<tr class="separator:a5bd4d7c232add0897f324a80ee6b6f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d79c59446b4f5b0f76ed18000c0d5cd"><td class="memItemLeft" align="right" valign="top"><a id="a5d79c59446b4f5b0f76ed18000c0d5cd" name="a5d79c59446b4f5b0f76ed18000c0d5cd"></a>
+integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>point</b></td></tr>
+<tr class="memdesc:a5d79c59446b4f5b0f76ed18000c0d5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of grid points <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a5d79c59446b4f5b0f76ed18000c0d5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74a7a72116af412a7942373e4aa6761b"><td class="memItemLeft" align="right" valign="top"><a id="a74a7a72116af412a7942373e4aa6761b" name="a74a7a72116af412a7942373e4aa6761b"></a>
+integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>day</b></td></tr>
+<tr class="memdesc:a74a7a72116af412a7942373e4aa6761b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Day of the simulation <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a74a7a72116af412a7942373e4aa6761b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0c5043a19612d292487ed37c869a4c3"><td class="memItemLeft" align="right" valign="top"><a id="ae0c5043a19612d292487ed37c869a4c3" name="ae0c5043a19612d292487ed37c869a4c3"></a>
+integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>month</b></td></tr>
+<tr class="memdesc:ae0c5043a19612d292487ed37c869a4c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Month of the simulation <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:ae0c5043a19612d292487ed37c869a4c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af93f5fa023b89c2c463217d83fcaa7c9"><td class="memItemLeft" align="right" valign="top"><a id="af93f5fa023b89c2c463217d83fcaa7c9" name="af93f5fa023b89c2c463217d83fcaa7c9"></a>
+integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>year</b></td></tr>
+<tr class="memdesc:af93f5fa023b89c2c463217d83fcaa7c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Year of the simulation <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:af93f5fa023b89c2c463217d83fcaa7c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b2a0613e9dd957b60bb64799c7a4c51"><td class="memItemLeft" align="right" valign="top"><a id="a8b2a0613e9dd957b60bb64799c7a4c51" name="a8b2a0613e9dd957b60bb64799c7a4c51"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lon</b></td></tr>
 <tr class="memdesc:a8b2a0613e9dd957b60bb64799c7a4c51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitude <span class="units">degrees East</span> <br /></td></tr>
@@ -199,23 +184,23 @@ real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="b
 <tr class="separator:a57cf3dfbced73225099fe2cde6e30c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2092ed214534c76f0d022f81284f637"><td class="memItemLeft" align="right" valign="top"><a id="aa2092ed214534c76f0d022f81284f637" name="aa2092ed214534c76f0d022f81284f637"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>elevation</b></td></tr>
-<tr class="memdesc:aa2092ed214534c76f0d022f81284f637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Surface height <span class="units">m</span> <br /></td></tr>
+<tr class="memdesc:aa2092ed214534c76f0d022f81284f637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Surface height <span class="units">m</span> <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:aa2092ed214534c76f0d022f81284f637"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afae7d7f64b8d78eebf627decc8eea9b7"><td class="memItemLeft" align="right" valign="top"><a id="afae7d7f64b8d78eebf627decc8eea9b7" name="afae7d7f64b8d78eebf627decc8eea9b7"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lsm</b></td></tr>
-<tr class="memdesc:afae7d7f64b8d78eebf627decc8eea9b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Land/sea mask (0/1) <br /></td></tr>
+<tr class="memdesc:afae7d7f64b8d78eebf627decc8eea9b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Land/sea mask (0/1) <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:afae7d7f64b8d78eebf627decc8eea9b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa7bb28378d4eb51bb2ffd3794236efc"><td class="memItemLeft" align="right" valign="top"><a id="aaa7bb28378d4eb51bb2ffd3794236efc" name="aaa7bb28378d4eb51bb2ffd3794236efc"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>psurf</b></td></tr>
-<tr class="memdesc:aaa7bb28378d4eb51bb2ffd3794236efc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Surface pressure <span class="units">Pa</span> <br /></td></tr>
+<tr class="memdesc:aaa7bb28378d4eb51bb2ffd3794236efc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Surface pressure <span class="units">Pa</span> <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:aaa7bb28378d4eb51bb2ffd3794236efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c8e26f32d1510ce1d5a4a491776b0df"><td class="memItemLeft" align="right" valign="top"><a id="a0c8e26f32d1510ce1d5a4a491776b0df" name="a0c8e26f32d1510ce1d5a4a491776b0df"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>tsurf</b></td></tr>
-<tr class="memdesc:a0c8e26f32d1510ce1d5a4a491776b0df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skin temperature <span class="units">K</span> <br /></td></tr>
+<tr class="memdesc:a0c8e26f32d1510ce1d5a4a491776b0df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skin temperature <span class="units">K</span> <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:a0c8e26f32d1510ce1d5a4a491776b0df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2835a69706fa1b990a26c5c4e7b92288"><td class="memItemLeft" align="right" valign="top"><a id="a2835a69706fa1b990a26c5c4e7b92288" name="a2835a69706fa1b990a26c5c4e7b92288"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>t2m</b></td></tr>
-<tr class="memdesc:a2835a69706fa1b990a26c5c4e7b92288"><td class="mdescLeft">&#160;</td><td class="mdescRight">2-m temperature <span class="units">K</span> <br /></td></tr>
+<tr class="memdesc:a2835a69706fa1b990a26c5c4e7b92288"><td class="mdescLeft">&#160;</td><td class="mdescRight">2-m temperature <span class="units">K</span> <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:a2835a69706fa1b990a26c5c4e7b92288"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a235c5ef8b7729f18947956c13f58d873"><td class="memItemLeft" align="right" valign="top"><a id="a235c5ef8b7729f18947956c13f58d873" name="a235c5ef8b7729f18947956c13f58d873"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>q2m</b></td></tr>
@@ -223,71 +208,51 @@ real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="b
 <tr class="separator:a235c5ef8b7729f18947956c13f58d873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d95a0cbbaa29876e7ee34a1fe802247"><td class="memItemLeft" align="right" valign="top"><a id="a5d95a0cbbaa29876e7ee34a1fe802247" name="a5d95a0cbbaa29876e7ee34a1fe802247"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>u10</b></td></tr>
-<tr class="memdesc:a5d95a0cbbaa29876e7ee34a1fe802247"><td class="mdescLeft">&#160;</td><td class="mdescRight">U-component of 10-m wind <span class="units">m/s</span> <br /></td></tr>
+<tr class="memdesc:a5d95a0cbbaa29876e7ee34a1fe802247"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zonal 10-m wind <span class="units">m/s</span> <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:a5d95a0cbbaa29876e7ee34a1fe802247"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae5d8082941433e5b14748063734d135"><td class="memItemLeft" align="right" valign="top"><a id="aae5d8082941433e5b14748063734d135" name="aae5d8082941433e5b14748063734d135"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>v10</b></td></tr>
-<tr class="memdesc:aae5d8082941433e5b14748063734d135"><td class="mdescLeft">&#160;</td><td class="mdescRight">V-component of 10-m wind <span class="units">m/s</span> <br /></td></tr>
+<tr class="memdesc:aae5d8082941433e5b14748063734d135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Meridional 10-m wind <span class="units">m/s</span> <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:aae5d8082941433e5b14748063734d135"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a647793b00313ed5ae06ccfaa176ff254"><td class="memItemLeft" align="right" valign="top"><a id="a647793b00313ed5ae06ccfaa176ff254" name="a647793b00313ed5ae06ccfaa176ff254"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>p</b></td></tr>
-<tr class="memdesc:a647793b00313ed5ae06ccfaa176ff254"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer pressure <span class="units">Pa</span> <br /></td></tr>
-<tr class="separator:a647793b00313ed5ae06ccfaa176ff254"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac57e48f0da964480b7c8b64a6ec38ee8"><td class="memItemLeft" align="right" valign="top"><a id="ac57e48f0da964480b7c8b64a6ec38ee8" name="ac57e48f0da964480b7c8b64a6ec38ee8"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>p_ifc</b></td></tr>
-<tr class="memdesc:ac57e48f0da964480b7c8b64a6ec38ee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pressure at half-level center <span class="units">Pa</span> <br /></td></tr>
-<tr class="separator:ac57e48f0da964480b7c8b64a6ec38ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a411998bd41cff5bd7bc199460582682f"><td class="memItemLeft" align="right" valign="top"><a id="a411998bd41cff5bd7bc199460582682f" name="a411998bd41cff5bd7bc199460582682f"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>z</b></td></tr>
-<tr class="memdesc:a411998bd41cff5bd7bc199460582682f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer height <span class="units">m</span> <br /></td></tr>
-<tr class="separator:a411998bd41cff5bd7bc199460582682f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6868050cfd9f854ce3b1d4da8b2e23c0"><td class="memItemLeft" align="right" valign="top"><a id="a6868050cfd9f854ce3b1d4da8b2e23c0" name="a6868050cfd9f854ce3b1d4da8b2e23c0"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>z_ifc</b></td></tr>
-<tr class="memdesc:a6868050cfd9f854ce3b1d4da8b2e23c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Height at half-levels center <span class="units">m</span> <br /></td></tr>
-<tr class="separator:a6868050cfd9f854ce3b1d4da8b2e23c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f7eaa7770c69edfd3376897b0c28d98"><td class="memItemLeft" align="right" valign="top"><a id="a7f7eaa7770c69edfd3376897b0c28d98" name="a7f7eaa7770c69edfd3376897b0c28d98"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>t</b></td></tr>
-<tr class="memdesc:a7f7eaa7770c69edfd3376897b0c28d98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature <span class="units">K</span> <br /></td></tr>
-<tr class="separator:a7f7eaa7770c69edfd3376897b0c28d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5acdc79c32c3a6b172ce34f74103135"><td class="memItemLeft" align="right" valign="top"><a id="ad5acdc79c32c3a6b172ce34f74103135" name="ad5acdc79c32c3a6b172ce34f74103135"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>t_ifc</b></td></tr>
-<tr class="memdesc:ad5acdc79c32c3a6b172ce34f74103135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature at half-levels center <span class="units">K</span> <br /></td></tr>
-<tr class="separator:ad5acdc79c32c3a6b172ce34f74103135"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab965ff6496ac91ee705d69b39513efa3"><td class="memItemLeft" align="right" valign="top"><a id="ab965ff6496ac91ee705d69b39513efa3" name="ab965ff6496ac91ee705d69b39513efa3"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>q</b></td></tr>
-<tr class="memdesc:ab965ff6496ac91ee705d69b39513efa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specific humidity <span class="units">kg/kg</span> <br /></td></tr>
-<tr class="separator:ab965ff6496ac91ee705d69b39513efa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af31e7df7ba8bbe99fb52e631c43316d2"><td class="memItemLeft" align="right" valign="top"><a id="af31e7df7ba8bbe99fb52e631c43316d2" name="af31e7df7ba8bbe99fb52e631c43316d2"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>q_ifc</b></td></tr>
-<tr class="memdesc:af31e7df7ba8bbe99fb52e631c43316d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specific humidity at half level center <span class="units">kg/kg</span> <br /></td></tr>
-<tr class="separator:af31e7df7ba8bbe99fb52e631c43316d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1522482ed64844ffaed3abc058285792"><td class="memItemLeft" align="right" valign="top"><a id="a1522482ed64844ffaed3abc058285792" name="a1522482ed64844ffaed3abc058285792"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>clc</b></td></tr>
-<tr class="memdesc:a1522482ed64844ffaed3abc058285792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total cloud fraction (0-1) <br /></td></tr>
-<tr class="separator:a1522482ed64844ffaed3abc058285792"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44637a59df5535f37c42600437b322ae"><td class="memItemLeft" align="right" valign="top"><a id="a44637a59df5535f37c42600437b322ae" name="a44637a59df5535f37c42600437b322ae"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>clw</b></td></tr>
-<tr class="memdesc:a44637a59df5535f37c42600437b322ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specific cloud water content <span class="units">kg/kg</span> <br /></td></tr>
-<tr class="separator:a44637a59df5535f37c42600437b322ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab73ef9a72209a6da7d72707d9dea7347"><td class="memItemLeft" align="right" valign="top"><a id="ab73ef9a72209a6da7d72707d9dea7347" name="ab73ef9a72209a6da7d72707d9dea7347"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cli</b></td></tr>
-<tr class="memdesc:ab73ef9a72209a6da7d72707d9dea7347"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specific cloud ice content <span class="units">kg/kg</span> <br /></td></tr>
-<tr class="separator:ab73ef9a72209a6da7d72707d9dea7347"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c51a87a863a9fbdfc4bedcdc3e461de"><td class="memItemLeft" align="right" valign="top"><a id="a5c51a87a863a9fbdfc4bedcdc3e461de" name="a5c51a87a863a9fbdfc4bedcdc3e461de"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>qnc</b></td></tr>
-<tr class="memdesc:a5c51a87a863a9fbdfc4bedcdc3e461de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud droplet number concentration <span class="units"># m^-3</span> <br /></td></tr>
-<tr class="separator:a5c51a87a863a9fbdfc4bedcdc3e461de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62810542c91517e279be9bd3d1d532ae"><td class="memItemLeft" align="right" valign="top"><a id="a62810542c91517e279be9bd3d1d532ae" name="a62810542c91517e279be9bd3d1d532ae"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>qr</b></td></tr>
-<tr class="memdesc:a62810542c91517e279be9bd3d1d532ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rain mixing ratio <span class="units">kg/kg</span> <br /></td></tr>
-<tr class="separator:a62810542c91517e279be9bd3d1d532ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefcdbd2bdf1b899b043a9bb602facde2"><td class="memItemLeft" align="right" valign="top"><a id="aefcdbd2bdf1b899b043a9bb602facde2" name="aefcdbd2bdf1b899b043a9bb602facde2"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>qs</b></td></tr>
-<tr class="memdesc:aefcdbd2bdf1b899b043a9bb602facde2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Snow mixing ratio <span class="units">kg/kg</span> <br /></td></tr>
-<tr class="separator:aefcdbd2bdf1b899b043a9bb602facde2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae150fe967a53f7de930edda12f128ac5"><td class="memItemLeft" align="right" valign="top"><a id="ae150fe967a53f7de930edda12f128ac5" name="ae150fe967a53f7de930edda12f128ac5"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>pap</b></td></tr>
+<tr class="memdesc:ae150fe967a53f7de930edda12f128ac5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer pressure <span class="units">Pa</span> <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:ae150fe967a53f7de930edda12f128ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aded6d0e718d87b336c61d8304e0b783a"><td class="memItemLeft" align="right" valign="top"><a id="aded6d0e718d87b336c61d8304e0b783a" name="aded6d0e718d87b336c61d8304e0b783a"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>paph</b></td></tr>
+<tr class="memdesc:aded6d0e718d87b336c61d8304e0b783a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pressure at half-level center <span class="units">Pa</span> <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:aded6d0e718d87b336c61d8304e0b783a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d872f4c55517984ed1bf778adf112f"><td class="memItemLeft" align="right" valign="top"><a id="a52d872f4c55517984ed1bf778adf112f" name="a52d872f4c55517984ed1bf778adf112f"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>altitude</b></td></tr>
+<tr class="memdesc:a52d872f4c55517984ed1bf778adf112f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer height <span class="units">m</span> <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a52d872f4c55517984ed1bf778adf112f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48b709440900779ad9b05ac34da7caef"><td class="memItemLeft" align="right" valign="top"><a id="a48b709440900779ad9b05ac34da7caef" name="a48b709440900779ad9b05ac34da7caef"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>altitudeh</b></td></tr>
+<tr class="memdesc:a48b709440900779ad9b05ac34da7caef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Height at half-levels center <span class="units">m</span> <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a48b709440900779ad9b05ac34da7caef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af354986de8b67560a523ee18e4105fc8"><td class="memItemLeft" align="right" valign="top"><a id="af354986de8b67560a523ee18e4105fc8" name="af354986de8b67560a523ee18e4105fc8"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>temp</b></td></tr>
+<tr class="memdesc:af354986de8b67560a523ee18e4105fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Air temperature <span class="units">K</span> <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:af354986de8b67560a523ee18e4105fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53cb87ac09fc6fcec111f85a216faec5"><td class="memItemLeft" align="right" valign="top"><a id="a53cb87ac09fc6fcec111f85a216faec5" name="a53cb87ac09fc6fcec111f85a216faec5"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>temph</b></td></tr>
+<tr class="memdesc:a53cb87ac09fc6fcec111f85a216faec5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Air temperature at half-levels center <span class="units">K</span> <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a53cb87ac09fc6fcec111f85a216faec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7016fb12037f29cc555d544ef761cbee"><td class="memItemLeft" align="right" valign="top"><a id="a7016fb12037f29cc555d544ef761cbee" name="a7016fb12037f29cc555d544ef761cbee"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>hum</b></td></tr>
+<tr class="memdesc:a7016fb12037f29cc555d544ef761cbee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specific humidity <span class="units">kg/kg</span> <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a7016fb12037f29cc555d544ef761cbee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04c7145c92c24a1834e1fa041aefc4d2"><td class="memItemLeft" align="right" valign="top"><a id="a04c7145c92c24a1834e1fa041aefc4d2" name="a04c7145c92c24a1834e1fa041aefc4d2"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>humh</b></td></tr>
+<tr class="memdesc:a04c7145c92c24a1834e1fa041aefc4d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specific humidity at half level center <span class="units">kg/kg</span> <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a04c7145c92c24a1834e1fa041aefc4d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78a2007de9d2ee3d7e56d8a303a81e8a"><td class="memItemLeft" align="right" valign="top"><a id="a78a2007de9d2ee3d7e56d8a303a81e8a" name="a78a2007de9d2ee3d7e56d8a303a81e8a"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cc</b></td></tr>
+<tr class="memdesc:a78a2007de9d2ee3d7e56d8a303a81e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total cloud fraction (0-1) <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a78a2007de9d2ee3d7e56d8a303a81e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad48bb6aabdb9d57357bd10a3397d4a53"><td class="memItemLeft" align="right" valign="top"><a id="ad48bb6aabdb9d57357bd10a3397d4a53" name="ad48bb6aabdb9d57357bd10a3397d4a53"></a>
 real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>dz</b></td></tr>
-<tr class="memdesc:ad48bb6aabdb9d57357bd10a3397d4a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer thickness <span class="units">m</span> <br /></td></tr>
+<tr class="memdesc:ad48bb6aabdb9d57357bd10a3397d4a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometrical thickness of layer <span class="units">m</span> <br /></td></tr>
 <tr class="separator:ad48bb6aabdb9d57357bd10a3397d4a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c11877e3089b53e16a3a9f3821db9b3"><td class="memItemLeft" align="right" valign="top"><a id="a6c11877e3089b53e16a3a9f3821db9b3" name="a6c11877e3089b53e16a3a9f3821db9b3"></a>
 real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>rho</b></td></tr>
@@ -299,11 +264,11 @@ real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign=
 <tr class="separator:a75002cfffba78c469851fe23639f4848"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab46f47977b30e23bfc3651d6423b5448"><td class="memItemLeft" align="right" valign="top"><a id="ab46f47977b30e23bfc3651d6423b5448" name="ab46f47977b30e23bfc3651d6423b5448"></a>
 real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwc</b></td></tr>
-<tr class="memdesc:ab46f47977b30e23bfc3651d6423b5448"><td class="mdescLeft">&#160;</td><td class="mdescRight">Liquid water content <span class="units">kg m^-3</span> <br /></td></tr>
+<tr class="memdesc:ab46f47977b30e23bfc3651d6423b5448"><td class="mdescLeft">&#160;</td><td class="mdescRight">Liquid water content <span class="units">kg m^-3</span> <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:ab46f47977b30e23bfc3651d6423b5448"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace1aae816ad293bf7a8683efa337be67"><td class="memItemLeft" align="right" valign="top"><a id="ace1aae816ad293bf7a8683efa337be67" name="ace1aae816ad293bf7a8683efa337be67"></a>
 real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>iwc</b></td></tr>
-<tr class="memdesc:ace1aae816ad293bf7a8683efa337be67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ice water content <span class="units">kg m^-3</span> <br /></td></tr>
+<tr class="memdesc:ace1aae816ad293bf7a8683efa337be67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ice water content <span class="units">kg m^-3</span> <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:ace1aae816ad293bf7a8683efa337be67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9963049cf698340141f403256b76f953"><td class="memItemLeft" align="right" valign="top"><a id="a9963049cf698340141f403256b76f953" name="a9963049cf698340141f403256b76f953"></a>
 real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cdnc</b></td></tr>
@@ -315,19 +280,15 @@ real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign=
 <tr class="separator:afec77e15896b127febf3e1f3cb6590f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Model outputs from NWPSAF simulations. </p>
-<p >They are either read form the NetCDF file or calculated from these model output </p>
+<div class="textblock"><p >Structure for model outputs from NWPSAF simulations. </p>
+<p >They are either read form the NetCDF file (<span class="inputbox">input</span> flag) or calculated from these model output </p><dl class="section note"><dt>Note</dt><dd>This time is missing for NWP-SAF simulations, later set to 12:00:00 UTC for all data points </dd></dl>
 </div><hr/>The documentation for this type was generated from the following file:<ul>
 <li>src/conf/types.f90</li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><b>s3com_types</b></li><li class="navelem"><a class="el" href="structs3com__types_1_1type__nwpsaf.html">type_nwpsaf</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
 </body>
 </html>

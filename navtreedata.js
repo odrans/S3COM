@@ -25,7 +25,8 @@
 var NAVTREE =
 [
   [ "S3COM", "index.html", [
-    [ "Source file repositories", "md_src_README.html", null ],
+    [ "Satellite Simulator and Sandbox for Cloud Observation and Modelling | S3COM", "index.html", "index" ],
+    [ "Todo List", "todo.html", null ],
     [ "Modules", "namespaces.html", [
       [ "Modules List", "namespaces.html", "namespaces_dup" ],
       [ "Module Members", "namespacemembers.html", [
@@ -33,12 +34,12 @@ var NAVTREE =
         [ "Functions/Subroutines", "namespacemembers_func.html", null ]
       ] ]
     ] ],
-    [ "Data Types List", "annotated.html", [
+    [ "Data Types", "annotated.html", [
       [ "Data Types List", "annotated.html", "annotated_dup" ],
-      [ "Data Types", "classes.html", null ],
+      [ "Data Type Index", "classes.html", null ],
       [ "Data Fields", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Variables", "functions_vars.html", null ]
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Variables", "functions_vars.html", "functions_vars" ]
       ] ]
     ] ]
   ] ]
@@ -46,7 +47,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html"
+"annotated.html",
+"structs3com__types_1_1type__nwpsaf.html#a7016fb12037f29cc555d544ef761cbee"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

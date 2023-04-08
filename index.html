@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>S3COM: Main Page</title>
+<title>S3COM: Satellite Simulator and Sandbox for Cloud Observation and Modelling</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -34,15 +34,13 @@
     DoxygenAwesomeInteractiveToc.init()
     DoxygenAwesomeTabs.init()
 </script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="mycustom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <!-- https://tholman.com/github-corners/ -->
@@ -58,7 +56,6 @@
    <div id="projectname">S3COM
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">Satellite Simulator and Sandbox for Cloud Observation and Modelling</div>
   </td>
  </tr>
  </tbody>
@@ -83,22 +80,6 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('index.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -120,17 +101,80 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">S3COM Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Satellite Simulator and Sandbox for Cloud Observation and Modelling </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p ><a class="anchor" id="md_README"></a> <b>A satellite simulator and retrieval sandbox tool for cloud studies.</b></p>
+<p >S3COM is a tool at the interface of high-resolution modeling and satellite observations. It aims to make cloud studies a little easier by</p><ul>
+<li>Simulating realistic satellite observations and cloud products from model outputs</li>
+<li>Quantifying the sensitivity of radiative quantities to cloud parameters (in progress)</li>
+<li>Assisting the development of retrieval algorithms using output fields from high-resolution models (in progress)</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md12"></a>
+Install</h1>
+<p >S3COM can be installed via its makefile: </p><div class="fragment"><div class="line">git clone https://github.com/odrans/S3COM.git</div>
+<div class="line">cd S3COM</div>
+<div class="line">make</div>
+</div><!-- fragment --><details >
+<p ><summary> <b>Click here</b> for more details on S3COM dependencies and environment.</summary></p>
+<p ></p>
+</details>
+<h2><a class="anchor" id="autotoc_md13"></a>
+Dependencies</h2>
+<p >The following dependencies are required and should be adjusted in the Makefile:</p><ul>
+<li><a href="https://nwp-saf.eumetsat.int/site/software/rttov">RTTOV</a><ul>
+<li>RTTOV v13.1 is the main radiative transfer code in S3COM. Please carefuly refer its documentation for the installation.</li>
+<li><b>Makefile path:</b> <code>PATH_RTTOV</code></li>
+<li><b>Notes:</b><ul>
+<li>Following RTTOV recommendations, it is advised to raise the system stack size: <code>ulimit -s unlimited</code>.</li>
+<li>Depending on the spectrum of simulated instruments, adequate <a href="https://nwp-saf.eumetsat.int/site/software/rttov/download/coefficients/coefficient-download/">coefficient files</a> and <a href="https://nwp-saf.eumetsat.int/site/software/rttov/download/#Emissivity_BRDF_atlas_data">BRDF / emissivity atlases</a> should be downloaded and added to the RTTOV repository.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://www.unidata.ucar.edu/software/netcdf/">NetCDF4</a> (C and Fortran)<ul>
+<li><b>Makefile path:</b> <code>PATH_NETCDF_C</code>, <code>PATH_NETCDF_F</code></li>
+</ul>
+</li>
+<li><a href="https://www.hdfgroup.org/solutions/hdf5/">HDF5</a><ul>
+<li><b>Makefile path:</b> <code>PATH_HDF5</code></li>
+</ul>
+</li>
+</ul>
+<p >All Makefile paths refer to base repositories, giving access to libraries, objects and binaries.</p>
+<h2><a class="anchor" id="autotoc_md14"></a>
+Environment</h2>
+<p ><code>PATH_S3COM</code> should be set in Makefile to indicate where S3COM is installed.</p>
+<p >The environment section provides advised settings on specific supercomputers.</p>
+<p >Note: Run <code>make clean</code> to remove all built binaries, libraries and objects.</p>
+<h1><a class="anchor" id="autotoc_md15"></a>
+Usage</h1>
+<p >S3COM requires the path to a namelist file as main argument:</p>
+<div class="fragment"><div class="line">./s3com config_default.nml</div>
+</div><!-- fragment --><p> The namelist contains information on input and output files as well as important options to run S3COM. Refer to the namelist section for a detailed description.</p>
+<p ><b>S3COM outputs</b> are 3 files containing satellite simulations, retrievals and atmospheric data. See the output section.</p>
+<h1><a class="anchor" id="autotoc_md16"></a>
+Current limitations</h1>
+<ul>
+<li>The current version is only configured to handle simulations from the <b>ICON</b> model. Some adjustments will be necessary to use outputs from another model.</li>
+<li>S3COM only simulates measurements from passive remote-sensing sensors.</li>
+<li>Polarization and 3D effects are not included.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md17"></a>
+R package</h1>
+<p >The <a href="https://github.com/odrans/Rs3com">Rs3com</a> package was developed to conveniently create namelist files, run the algorithm, read its input and output and create basic figures.</p>
+<h1><a class="anchor" id="autotoc_md18"></a>
+Caution</h1>
+<p >S3COM does not account for sub-grid variability of cloud properties. It should be used on atmospheric model simulations with a spatial resolutions similar or higher than that of the selected satellite instruments, ideally from CRMs or LES models. It is advised against using S3COM on GCM outputs; for such use we advise more dedicated satellite simulators, such as <a href="https://github.com/CFMIP/COSPv2.0">COSPv2</a>.</p>
+<h1><a class="anchor" id="autotoc_md19"></a>
+License</h1>
+<p >S3COM is available under a BSD 3-clause license. Please see [LICENSE](LICENSE) for details. </p>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
 </body>
 </html>

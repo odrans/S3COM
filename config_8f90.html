@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.6"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>S3COM: src/conf/config.f90 File Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/odrans/S3COM" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">S3COM
+   &#160;<span id="projectnumber">0.9.0</span>
+   </div>
+   <div id="projectbrief">Satellite Simulator and Sandbox for Cloud Observation and Modelling</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.6 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('config_8f90.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">Modules</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">config.f90 File Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Modules</h2></td></tr>
+<tr class="memitem:namespaces3com__config"><td class="memItemLeft" align="right" valign="top">module &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html">s3com_config</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a2b268982ff46295f12c7eb62718ea57d"><td class="memItemLeft" align="right" valign="top">real(kind=wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a2b268982ff46295f12c7eb62718ea57d">s3com_config::apriori_iwp</a> = 1E-1</td></tr>
+<tr class="separator:a2b268982ff46295f12c7eb62718ea57d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68862b6e7d2509af0363ed7e094921cc"><td class="memItemLeft" align="right" valign="top">real(kind=wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a68862b6e7d2509af0363ed7e094921cc">s3com_config::apriori_iwp_error</a> = 10.0</td></tr>
+<tr class="separator:a68862b6e7d2509af0363ed7e094921cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5036e1e668a014a47d6213a200688608"><td class="memItemLeft" align="right" valign="top">real(kind=wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a5036e1e668a014a47d6213a200688608">s3com_config::iwp_lay_threshold</a> = 1E-4</td></tr>
+<tr class="separator:a5036e1e668a014a47d6213a200688608"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa1849e1b169814ba29a0a7d48ee8cbc"><td class="memItemLeft" align="right" valign="top">real(kind=wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#afa1849e1b169814ba29a0a7d48ee8cbc">s3com_config::lwp_lay_threshold</a> = 1E-4</td></tr>
+<tr class="separator:afa1849e1b169814ba29a0a7d48ee8cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3515dbf17d46baf88580b7b7934592a"><td class="memItemLeft" align="right" valign="top">integer(kind=4), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#af3515dbf17d46baf88580b7b7934592a">s3com_config::nstates</a> = 1</td></tr>
+<tr class="separator:af3515dbf17d46baf88580b7b7934592a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44ccc2aecad182224f2a6fe01d7ee727"><td class="memItemLeft" align="right" valign="top">integer(kind=4), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a44ccc2aecad182224f2a6fe01d7ee727">s3com_config::rttov_dosolar</a> = 1</td></tr>
+<tr class="separator:a44ccc2aecad182224f2a6fe01d7ee727"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fd5ff71fd2356fec486b217b4344b45"><td class="memItemLeft" align="right" valign="top">real(wp)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a9fd5ff71fd2356fec486b217b4344b45">s3com_config::mr_co2</a> = 5.241e-04_wp</td></tr>
+<tr class="separator:a9fd5ff71fd2356fec486b217b4344b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00570d3ae716e9c9043f6ed44f668500"><td class="memItemLeft" align="right" valign="top">real(wp)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a00570d3ae716e9c9043f6ed44f668500">s3com_config::mr_ch4</a> = 9.139e-07_wp</td></tr>
+<tr class="separator:a00570d3ae716e9c9043f6ed44f668500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8dd3cbf4fa306ca255ae52731e018a2"><td class="memItemLeft" align="right" valign="top">real(wp)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#af8dd3cbf4fa306ca255ae52731e018a2">s3com_config::mr_n2o</a> = 4.665e-07_wp</td></tr>
+<tr class="separator:af8dd3cbf4fa306ca255ae52731e018a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce9e0b326136f6b645b92c7103ab760"><td class="memItemLeft" align="right" valign="top">real(wp)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a8ce9e0b326136f6b645b92c7103ab760">s3com_config::mr_co</a> = 2.098e-07_wp</td></tr>
+<tr class="separator:a8ce9e0b326136f6b645b92c7103ab760"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a9a84f9069eadffb8a394599ac20fbd"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a1a9a84f9069eadffb8a394599ac20fbd">s3com_config::tmelt</a> = 273.15_wp</td></tr>
+<tr class="separator:a1a9a84f9069eadffb8a394599ac20fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6889f796347cbdb10a5baf8ca7fd9fef"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a6889f796347cbdb10a5baf8ca7fd9fef">s3com_config::rhoice</a> = 917._wp</td></tr>
+<tr class="separator:a6889f796347cbdb10a5baf8ca7fd9fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72b71ba62f5c029eb1ccb01da837510e"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a72b71ba62f5c029eb1ccb01da837510e">s3com_config::rholiq</a> = 1000._wp</td></tr>
+<tr class="separator:a72b71ba62f5c029eb1ccb01da837510e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8d4f7aa4d6759bdcad85cbf44ff4f20"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#ab8d4f7aa4d6759bdcad85cbf44ff4f20">s3com_config::amw</a> = 18.01534_wp</td></tr>
+<tr class="separator:ab8d4f7aa4d6759bdcad85cbf44ff4f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0135502a118aa9f3d34464ae5b493b66"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a0135502a118aa9f3d34464ae5b493b66">s3com_config::amd</a> = 28.9644_wp</td></tr>
+<tr class="separator:a0135502a118aa9f3d34464ae5b493b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad9822802c2c85726ec0a3cc78a3d12e"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#aad9822802c2c85726ec0a3cc78a3d12e">s3com_config::amo3</a> = 47.9983_wp</td></tr>
+<tr class="separator:aad9822802c2c85726ec0a3cc78a3d12e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31578e3d7a38b6dba39bec314378c412"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a31578e3d7a38b6dba39bec314378c412">s3com_config::amco2</a> = 44.0096_wp</td></tr>
+<tr class="separator:a31578e3d7a38b6dba39bec314378c412"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad93198668e5dacb9dc68a9fe12f8a20"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#aad93198668e5dacb9dc68a9fe12f8a20">s3com_config::amch4</a> = 16.0426_wp</td></tr>
+<tr class="separator:aad93198668e5dacb9dc68a9fe12f8a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38ce3c2d997b5551f0f87444c752593e"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a38ce3c2d997b5551f0f87444c752593e">s3com_config::amn2o</a> = 44.0129_wp</td></tr>
+<tr class="separator:a38ce3c2d997b5551f0f87444c752593e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade22c6eba14f69fe45888da71dc9f418"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#ade22c6eba14f69fe45888da71dc9f418">s3com_config::amco</a> = 28.0102_wp</td></tr>
+<tr class="separator:ade22c6eba14f69fe45888da71dc9f418"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa6c3f1c924ca4d1c0a67f53980b2cba"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#afa6c3f1c924ca4d1c0a67f53980b2cba">s3com_config::avo</a> = 6.023E23_wp</td></tr>
+<tr class="separator:afa6c3f1c924ca4d1c0a67f53980b2cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb5e5edab08918206d495df5cc9042aa"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#aeb5e5edab08918206d495df5cc9042aa">s3com_config::grav</a> = 9.806650_wp</td></tr>
+<tr class="separator:aeb5e5edab08918206d495df5cc9042aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add99757a3c425efc1d0a2137068f8947"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#add99757a3c425efc1d0a2137068f8947">s3com_config::rd</a> = 287.058_wp</td></tr>
+<tr class="separator:add99757a3c425efc1d0a2137068f8947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa69e1bb8f95d9204f1b30d2e6b8fbfd6"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#aa69e1bb8f95d9204f1b30d2e6b8fbfd6">s3com_config::cpd</a> = 1004.64_wp</td></tr>
+<tr class="separator:aa69e1bb8f95d9204f1b30d2e6b8fbfd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13f746ec19a681ab371d97bd9c399270"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a13f746ec19a681ab371d97bd9c399270">s3com_config::rv</a> = 461.51_wp</td></tr>
+<tr class="separator:a13f746ec19a681ab371d97bd9c399270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f21f853fd1aa1f19bd39d208c2d3369"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a5f21f853fd1aa1f19bd39d208c2d3369">s3com_config::cpv</a> = 1869.46_wp</td></tr>
+<tr class="separator:a5f21f853fd1aa1f19bd39d208c2d3369"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89c932d1b3b3cebc79541a09ef193b9a"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a89c932d1b3b3cebc79541a09ef193b9a">s3com_config::km</a> = 1.38e-23_wp</td></tr>
+<tr class="separator:a89c932d1b3b3cebc79541a09ef193b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a4754fac8890eddf75d055384fbaffb"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a3a4754fac8890eddf75d055384fbaffb">s3com_config::epsilon</a> = 0.622_wp</td></tr>
+<tr class="separator:a3a4754fac8890eddf75d055384fbaffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada236f234ecdea45612aade79cd4b452"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#ada236f234ecdea45612aade79cd4b452">s3com_config::a</a> = 0.124_wp</td></tr>
+<tr class="separator:ada236f234ecdea45612aade79cd4b452"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d2697a375b3992a1ef06cfe66001aae"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a3d2697a375b3992a1ef06cfe66001aae">s3com_config::b</a> = 1._wp/3._wp</td></tr>
+<tr class="separator:a3d2697a375b3992a1ef06cfe66001aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69eb7041f78347089afc527e957afaeb"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a69eb7041f78347089afc527e957afaeb">s3com_config::mu</a> = 1._wp</td></tr>
+<tr class="separator:a69eb7041f78347089afc527e957afaeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11d6de61534d7a1c4a64adebecef1b63"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#a11d6de61534d7a1c4a64adebecef1b63">s3com_config::nu</a> = 1._wp</td></tr>
+<tr class="separator:a11d6de61534d7a1c4a64adebecef1b63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff7ca4f8b8c1068de839284d30b0ce3c"><td class="memItemLeft" align="right" valign="top">real(wp), parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaces3com__config.html#aff7ca4f8b8c1068de839284d30b0ce3c">s3com_config::q_ext</a> = 2._wp</td></tr>
+<tr class="separator:aff7ca4f8b8c1068de839284d30b0ce3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2b24b6acc0bcd3a2b07b77bdad4017dd.html">conf</a></li><li class="navelem"><a class="el" href="config_8f90.html">config.f90</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
+  </ul>
+</div>
+</body>
+</html>

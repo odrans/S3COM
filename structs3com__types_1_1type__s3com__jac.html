@@ -34,15 +34,13 @@
     DoxygenAwesomeInteractiveToc.init()
     DoxygenAwesomeTabs.init()
 </script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="mycustom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <!-- https://tholman.com/github-corners/ -->
@@ -58,7 +56,6 @@
    <div id="projectname">S3COM
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">Satellite Simulator and Sandbox for Cloud Observation and Modelling</div>
   </td>
  </tr>
  </tbody>
@@ -82,23 +79,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structs3com__types_1_1type__s3com__jac.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -120,6 +100,11 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__s3com__jac
 </div>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>s3com_types</b></li><li class="navelem"><a class="el" href="structs3com__types_1_1type__s3com__jac.html">type_s3com_jac</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
@@ -127,39 +112,47 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__s3com__jac
   <div class="headertitle"><div class="title">s3com_types::type_s3com_jac Type Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>S3COM structure for Jacobian calculations.  
+ <a href="structs3com__types_1_1type__s3com__jac.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aafd2fd26448825e271c7424e555123c3"><td class="memItemLeft" align="right" valign="top"><a id="aafd2fd26448825e271c7424e555123c3" name="aafd2fd26448825e271c7424e555123c3"></a>
 real(kind=wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength</b></td></tr>
+<tr class="memdesc:aafd2fd26448825e271c7424e555123c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wavelength <span class="units">um</span> <br /></td></tr>
 <tr class="separator:aafd2fd26448825e271c7424e555123c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae636aa09b34beb8cc4672dc5a65b29ae"><td class="memItemLeft" align="right" valign="top"><a id="ae636aa09b34beb8cc4672dc5a65b29ae" name="ae636aa09b34beb8cc4672dc5a65b29ae"></a>
 real(kind=wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>p</b></td></tr>
+<tr class="memdesc:ae636aa09b34beb8cc4672dc5a65b29ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the pressure <span class="units">W m-2 sr-1 um-1 Pa-1</span> <br /></td></tr>
 <tr class="separator:ae636aa09b34beb8cc4672dc5a65b29ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac690b1f4b641976d275b358127dfdff0"><td class="memItemLeft" align="right" valign="top"><a id="ac690b1f4b641976d275b358127dfdff0" name="ac690b1f4b641976d275b358127dfdff0"></a>
 real(kind=wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>t</b></td></tr>
+<tr class="memdesc:ac690b1f4b641976d275b358127dfdff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the temperature <span class="units">W m-2 sr-1 um-1 K-1</span> <br /></td></tr>
 <tr class="separator:ac690b1f4b641976d275b358127dfdff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93a9ea28c2fa451822a3df3341d806e5"><td class="memItemLeft" align="right" valign="top"><a id="a93a9ea28c2fa451822a3df3341d806e5" name="a93a9ea28c2fa451822a3df3341d806e5"></a>
 real(kind=wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cfrac</b></td></tr>
+<tr class="memdesc:a93a9ea28c2fa451822a3df3341d806e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the cloud fraction <span class="units">W m-2 sr-1 um-1</span> <br /></td></tr>
 <tr class="separator:a93a9ea28c2fa451822a3df3341d806e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5f365e4b77a511a09f69d2a475d62b9"><td class="memItemLeft" align="right" valign="top"><a id="ae5f365e4b77a511a09f69d2a475d62b9" name="ae5f365e4b77a511a09f69d2a475d62b9"></a>
 real(kind=wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>clwde</b></td></tr>
+<tr class="memdesc:ae5f365e4b77a511a09f69d2a475d62b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the cloud droplet effective diameter <span class="units">W m-2 sr-1 um-1 um-1</span> <br /></td></tr>
 <tr class="separator:ae5f365e4b77a511a09f69d2a475d62b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a189f5faa57fc41c4c5b7ab22f85674bd"><td class="memItemLeft" align="right" valign="top"><a id="a189f5faa57fc41c4c5b7ab22f85674bd" name="a189f5faa57fc41c4c5b7ab22f85674bd"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>do_jacobian_calc</b></td></tr>
+<tr class="memdesc:a189f5faa57fc41c4c5b7ab22f85674bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to specify if Jacobian matrices should be calculated. <br /></td></tr>
 <tr class="separator:a189f5faa57fc41c4c5b7ab22f85674bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this type was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >S3COM structure for Jacobian calculations. </p>
+<dl class="section note"><dt>Note</dt><dd>RTTOV outputs the gradient of each forward model radiance with respect to each input profile variable evaluated for a given input profile. The input perturbation is here set to a unit radiance (BT are also possible). </dd></dl>
+</div><hr/>The documentation for this type was generated from the following file:<ul>
 <li>src/conf/types.f90</li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><b>s3com_types</b></li><li class="navelem"><a class="el" href="structs3com__types_1_1type__s3com__jac.html">type_s3com_jac</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
 </body>
 </html>

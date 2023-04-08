@@ -34,15 +34,13 @@
     DoxygenAwesomeInteractiveToc.init()
     DoxygenAwesomeTabs.init()
 </script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="mycustom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <!-- https://tholman.com/github-corners/ -->
@@ -58,7 +56,6 @@
    <div id="projectname">S3COM
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">Satellite Simulator and Sandbox for Cloud Observation and Modelling</div>
   </td>
  </tr>
  </tbody>
@@ -82,23 +79,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structs3com__types_1_1type__nml.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -120,6 +100,11 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__nml.html',
 </div>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>s3com_types</b></li><li class="navelem"><a class="el" href="structs3com__types_1_1type__nml.html">type_nml</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">s3com_types::type_nml Member List</div></div>
 </div><!--header-->
@@ -130,44 +115,41 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__nml.html',
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a4b2fa8f0bf0d9768c7a4f9509ef40fae">add_aerosols</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#acefcf5adb9c3aaa3eca9f7870e7b52fa">add_clouds</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#acdf1c6762e48595fb232e7baf7b055c7">add_refrac</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a64a76c6e542e55e07e10ef2f1ee7a4ab">channel_list</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a6b755823789dfdc685d2be252465edd9">clw_scheme</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#ae1ed53efa2f7a80278ae18f7bc9e3cba">channel_list</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#ad99a83694a8b1e154f9bff8fbe060aa4">clw_scheme</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a927bef71b769069cdda0c1bb1c32ab54">do_jacobian_calc</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a89486fe3a23904c365a26d30e3e27a1a">do_k_tl_calc</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a3edefec7bfc8d409239bc3c273977332">do_opdep_calc</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#adccc2edc4ae4f9c8b52441508832eca7">dom_nmoments</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a6770d851301c74b42a27ed966a1145de">dom_nstreams</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a4ca410db64486094c03f1d91dcfcf2c9">dom_nmoments</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#aab922ec066b3e8c0202623d6f8f9b3ee">dom_nstreams</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a97112c701fa37fce51b120b1c746f508">dom_rayleigh</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#aff2f6182c365c600b0c3e20d11ae599c">flag_output_atm</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a9f2641a8c85440cab33f69a79616f4fa">flag_output_jac</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a282f9defa022d2b5b13cb98c430b2ee1">flag_output_k_tl</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a9f3cfeac444071f679587ad987800374">flag_retrievals</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#ababbac283f3d4f30398b1918aabcd5a5">fname_in</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a33b11b34e436bca4e0b7c41a6b17a099">gas_unit</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a3a1437cbd6bc407f6b906aadecfe1e13">ice_scheme</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a951a24a2a169b1f2c4ccc508afe25475">instrument</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#aabec580f180324f1cc6735f15a47d2f0">ir_scatt_model</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a93f2de59cbee5f04cc316d6e01ed5885">gas_unit</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#ace9c0c6da63c5fdb1c19db3d11e5ab6d">ice_scheme</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a39f73bdb3ba771848dd251c4f624c862">instrument</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a5f7fac128cc8a04fa2db0872c02dcf2c">ir_scatt_model</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a34ebfa98f43917d077518e774f3c5ef3">mmr_cldaer</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a421733860c51a2740d3ffc2a62bfc792">model_name</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a985b360a56560d1b85007ce0f1220962">nchannels</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a27f57c81117fe5ae5e59bbcf1b95945e">npoints_it</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a106292c92e6a6c6a07f2f32bd62d3236">nchannels</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a7e259d35aebb26ea31bcb15e856ed739">npoints_it</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a6d125c8ecf077996cc1e3710d998d726">ozone_data</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a71739dd3bd2853e95c6ad767f5e70842">path_out</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#abb3ed6e7c5ccb15f630a39fa74868001">path_rttov</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a196fd7a71255c0f336851540b223fd91">path_s3com</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a387256cffb91e44343e3985b2116021a">platform</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a01987f55ddd399b39d3c298e1608b0fa">rttov_nthreads</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a00ee0ef1cf1085c589427df55b6fcfb6">satellite</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#ae582104ea7397eeab121d011d8f3f220">platform</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a5e0851b813f9435328d864fdae5be6df">rttov_nthreads</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a668625e9abf22e79e26fe6a6139d49c7">satellite</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a3137294830bc4a84e52de80e64ae4b13">suffix_out</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a3b3968fcbf48e4dd545b02aa143b9591">user_cld_opt_param</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a21675cd1bd7a145aea249dbfad93d2c8">vis_scatt_model</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html#a389c403b57b0461a2ea2b1a1abb6f8cb">vis_scatt_model</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__nml.html">s3com_types::type_nml</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
 </body>
 </html>

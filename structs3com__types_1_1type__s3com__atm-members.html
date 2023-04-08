@@ -34,15 +34,13 @@
     DoxygenAwesomeInteractiveToc.init()
     DoxygenAwesomeTabs.init()
 </script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="mycustom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <!-- https://tholman.com/github-corners/ -->
@@ -58,7 +56,6 @@
    <div id="projectname">S3COM
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">Satellite Simulator and Sandbox for Cloud Observation and Modelling</div>
   </td>
  </tr>
  </tbody>
@@ -82,23 +79,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structs3com__types_1_1type__s3com__atm.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -120,6 +100,11 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__s3com__atm
 </div>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>s3com_types</b></li><li class="navelem"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">type_s3com_atm</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">s3com_types::type_s3com_atm Member List</div></div>
 </div><!--header-->
@@ -127,19 +112,16 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__s3com__atm
 
 <p>This is the complete list of members for <a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>cdnc</b> (defined in <a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>clc</b> (defined in <a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>lwc</b> (defined in <a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>reff</b> (defined in <a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>t</b> (defined in <a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>z</b> (defined in <a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html#a20619c26e5a0a77abf7d1843d96bee5d">cdnc</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html#a09b4b09bba022bbf9208bc28fd9dee66">clc</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html#a8fb50fac1223e67c4a1caa4633a665fc">lwc</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html#a8deafa002ca54ea3001105f589fc6488">reff</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html#a4de8b3bb4190952fdd8390418dfa5afc">t</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html#a67228fb3c3942aa2f77d804d1afcf6b2">z</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__s3com__atm.html">s3com_types::type_s3com_atm</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
 </body>
 </html>

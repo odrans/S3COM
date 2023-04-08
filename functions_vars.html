@@ -34,15 +34,13 @@
     DoxygenAwesomeInteractiveToc.init()
     DoxygenAwesomeTabs.init()
 </script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="mycustom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <!-- https://tholman.com/github-corners/ -->
@@ -58,7 +56,6 @@
    <div id="projectname">S3COM
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">Satellite Simulator and Sandbox for Cloud Observation and Modelling</div>
   </td>
  </tr>
  </tbody>
@@ -83,22 +80,6 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('functions_vars.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -124,182 +105,19 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 &#160;
 
 <h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
-<li>add_aerosols&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a4b2fa8f0bf0d9768c7a4f9509ef40fae">s3com_types::type_nml</a></li>
-<li>add_clouds&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#acefcf5adb9c3aaa3eca9f7870e7b52fa">s3com_types::type_nml</a></li>
-<li>add_refrac&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#acdf1c6762e48595fb232e7baf7b055c7">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
-<li>cdnc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a5f27f1f79c7ddbfbdebd4b4ab34dec25">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a9963049cf698340141f403256b76f953">s3com_types::type_nwpsaf</a></li>
-<li>channel_list&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a64a76c6e542e55e07e10ef2f1ee7a4ab">s3com_types::type_nml</a></li>
-<li>clc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a74b8629c361fc13114be15dc90d0e2c9">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a1522482ed64844ffaed3abc058285792">s3com_types::type_nwpsaf</a></li>
-<li>cli&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#adabb1fe5c0e0e7a50067efbeb6587958">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#ab73ef9a72209a6da7d72707d9dea7347">s3com_types::type_nwpsaf</a></li>
-<li>clw&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a197575bfdbe452488d56f8f591df75a4">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a44637a59df5535f37c42600437b322ae">s3com_types::type_nwpsaf</a></li>
-<li>clw_scheme&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a6b755823789dfdc685d2be252465edd9">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
-<li>day&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#ada3331a4d4087d96e0b11149db389bc2">s3com_types::type_nwpsaf</a></li>
-<li>do_jacobian_calc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a927bef71b769069cdda0c1bb1c32ab54">s3com_types::type_nml</a></li>
-<li>do_k_tl_calc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a89486fe3a23904c365a26d30e3e27a1a">s3com_types::type_nml</a></li>
-<li>do_opdep_calc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a3edefec7bfc8d409239bc3c273977332">s3com_types::type_nml</a></li>
-<li>dom_nmoments&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#adccc2edc4ae4f9c8b52441508832eca7">s3com_types::type_nml</a></li>
-<li>dom_nstreams&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a6770d851301c74b42a27ed966a1145de">s3com_types::type_nml</a></li>
-<li>dom_rayleigh&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a97112c701fa37fce51b120b1c746f508">s3com_types::type_nml</a></li>
-<li>dz&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a2e1b6e60d5a7f571ea887bdef7b2ea78">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#ad48bb6aabdb9d57357bd10a3397d4a53">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
-<li>elevation&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#aa2092ed214534c76f0d022f81284f637">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_f" name="index_f"></a>- f -</h3><ul>
-<li>flag_output_atm&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#aff2f6182c365c600b0c3e20d11ae599c">s3com_types::type_nml</a></li>
-<li>flag_output_jac&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a9f2641a8c85440cab33f69a79616f4fa">s3com_types::type_nml</a></li>
-<li>flag_output_k_tl&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a282f9defa022d2b5b13cb98c430b2ee1">s3com_types::type_nml</a></li>
-<li>flag_retrievals&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a9f3cfeac444071f679587ad987800374">s3com_types::type_nml</a></li>
-<li>fname_in&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#ababbac283f3d4f30398b1918aabcd5a5">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
-<li>gas_unit&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a33b11b34e436bca4e0b7c41a6b17a099">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_h" name="index_h"></a>- h -</h3><ul>
-<li>height&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a4debe3c1cfea2bab35e571591a8b0c15">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a26f3674239dccf13dd54dfae546b2c72">s3com_types::type_nwpsaf</a></li>
-<li>height_2&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a877a7700bf8c36a3c6fc9fdfa89de61e">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a32889878821f7231483a833a2787b530">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_i" name="index_i"></a>- i -</h3><ul>
-<li>ice_scheme&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a3a1437cbd6bc407f6b906aadecfe1e13">s3com_types::type_nml</a></li>
-<li>instrument&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a951a24a2a169b1f2c4ccc508afe25475">s3com_types::type_nml</a></li>
-<li>ir_scatt_model&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#aabec580f180324f1cc6735f15a47d2f0">s3com_types::type_nml</a></li>
-<li>iwc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#ab37bdb4890ec653a6de0dbeeba3387eb">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#ace1aae816ad293bf7a8683efa337be67">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_l" name="index_l"></a>- l -</h3><ul>
-<li>landmask&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a2203d51fce8fbf4671c68d3b34c7414b">s3com_types::type_icon</a></li>
-<li>lat&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a89ad07371194048d063b4cd5dbef667e">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a8569d8264b2b4956696365346cd937e9">s3com_types::type_nwpsaf</a></li>
-<li>lat_orig&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#adcd1c94186e74c92c27a940904fcd0af">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a57cf3dfbced73225099fe2cde6e30c34">s3com_types::type_nwpsaf</a></li>
-<li>lon&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a5eabca6304524d16e4d669b912d0e5e0">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a8b2a0613e9dd957b60bb64799c7a4c51">s3com_types::type_nwpsaf</a></li>
-<li>lon_orig&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a6ab716113d04ad0955162a8f84aaf7ea">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#abe5a93da9f5f78e96635bef2c95d72ec">s3com_types::type_nwpsaf</a></li>
-<li>lsm&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#afae7d7f64b8d78eebf627decc8eea9b7">s3com_types::type_nwpsaf</a></li>
-<li>lwc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a087e71941cc7c9a68b690d3f8456e509">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#ab46f47977b30e23bfc3651d6423b5448">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
-<li>mmr_cldaer&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a34ebfa98f43917d077518e774f3c5ef3">s3com_types::type_nml</a></li>
-<li>mode&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a657624c62ba73f1fa1eadc85844bbbbc">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#aff4191fcfe9945f3e5f9f59be4b077ba">s3com_types::type_nwpsaf</a></li>
-<li>model_name&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a421733860c51a2740d3ffc2a62bfc792">s3com_types::type_nml</a></li>
-<li>month&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#a985d9111cd2053671fc2731d8ffde55b">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_n" name="index_n"></a>- n -</h3><ul>
-<li>nchannels&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a985b360a56560d1b85007ce0f1220962">s3com_types::type_nml</a></li>
-<li>nlat&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a464db7d0927cf426d5074a47a980f2ac">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a8a29bc94c59dae07bbd40aa38cedf9b7">s3com_types::type_nwpsaf</a></li>
-<li>nlayers&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a0934ce9ead6dbd1d999bdf59904354ea">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#ab1f361221cb082362c0b30324992b07c">s3com_types::type_nwpsaf</a></li>
-<li>nlevels&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a5f7b69289c553d017c77af79758c41b5">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#ae64c8d79b53b2af697284f0240fc159c">s3com_types::type_nwpsaf</a></li>
-<li>nlon&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#ad1c525a4ceba401c7833e09a13313c5b">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#afa6012d0ef7d953834ddee29387252e9">s3com_types::type_nwpsaf</a></li>
-<li>npoints&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a2f68cda49d29b60c8a9988518ccc1368">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a1cac2a6e208299ba390fc361aa5dfb02">s3com_types::type_nwpsaf</a></li>
-<li>npoints_it&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a27f57c81117fe5ae5e59bbcf1b95945e">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_o" name="index_o"></a>- o -</h3><ul>
-<li>ozone_data&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a6d125c8ecf077996cc1e3710d998d726">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_p" name="index_p"></a>- p -</h3><ul>
-<li>p&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a9e7554c8b52da96120688af91e9fe195">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a647793b00313ed5ae06ccfaa176ff254">s3com_types::type_nwpsaf</a></li>
-<li>p_ifc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#ae08dc108c76d27689aa0f151bc936156">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#ac57e48f0da964480b7c8b64a6ec38ee8">s3com_types::type_nwpsaf</a></li>
-<li>path_out&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a71739dd3bd2853e95c6ad767f5e70842">s3com_types::type_nml</a></li>
-<li>path_rttov&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#abb3ed6e7c5ccb15f630a39fa74868001">s3com_types::type_nml</a></li>
-<li>path_s3com&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a196fd7a71255c0f336851540b223fd91">s3com_types::type_nml</a></li>
-<li>platform&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a387256cffb91e44343e3985b2116021a">s3com_types::type_nml</a></li>
-<li>point&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#a0dfd368ad02e8a7945b212ae40879dfd">s3com_types::type_nwpsaf</a></li>
-<li>ps&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a0540cddd6ba363397abd0795c388eb5c">s3com_types::type_icon</a></li>
-<li>psurf&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#aaa7bb28378d4eb51bb2ffd3794236efc">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_q" name="index_q"></a>- q -</h3><ul>
-<li>q&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#aec908643dc19b8e76497713632c1c0f5">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#ab965ff6496ac91ee705d69b39513efa3">s3com_types::type_nwpsaf</a></li>
-<li>q2m&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#a235c5ef8b7729f18947956c13f58d873">s3com_types::type_nwpsaf</a></li>
-<li>q_2m&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#aa3f76d2dc60bf9b2c13b394c5f0ac5a0">s3com_types::type_icon</a></li>
-<li>q_ifc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a0592a48651d2e0f1b30161f4688c95d8">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#af31e7df7ba8bbe99fb52e631c43316d2">s3com_types::type_nwpsaf</a></li>
-<li>qnc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a5f056f28a45227b66ebb3ed7390b530a">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a5c51a87a863a9fbdfc4bedcdc3e461de">s3com_types::type_nwpsaf</a></li>
-<li>qr&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a428aef040fce669bccf561152d304e87">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a62810542c91517e279be9bd3d1d532ae">s3com_types::type_nwpsaf</a></li>
-<li>qs&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a69e44f9897f31364589a64819b7ec310">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#aefcdbd2bdf1b899b043a9bb602facde2">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
-<li>reff&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a3e08cccd65d110687f424f2f73b2fb00">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#afec77e15896b127febf3e1f3cb6590f9">s3com_types::type_nwpsaf</a></li>
-<li>rho&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a4e6e5bd35a76fc4f5bdb70a045205a56">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a6c11877e3089b53e16a3a9f3821db9b3">s3com_types::type_nwpsaf</a></li>
-<li>rttov_nthreads&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a01987f55ddd399b39d3c298e1608b0fa">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
-<li>satellite&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a00ee0ef1cf1085c589427df55b6fcfb6">s3com_types::type_nml</a></li>
-<li>suffix_out&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a3137294830bc4a84e52de80e64ae4b13">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
-<li>t&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#aa0f948d7292076c6cb18ea5c01b38940">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a7f7eaa7770c69edfd3376897b0c28d98">s3com_types::type_nwpsaf</a></li>
-<li>t2m&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#a2835a69706fa1b990a26c5c4e7b92288">s3com_types::type_nwpsaf</a></li>
-<li>t_2m&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#ae965fa64884331546264721dadcdd365">s3com_types::type_icon</a></li>
-<li>t_ifc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#ae855c3ee336b38bccc7a7b8de1ee86b8">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#ad5acdc79c32c3a6b172ce34f74103135">s3com_types::type_nwpsaf</a></li>
-<li>time&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a88e14c50e1a3081cb80bbc3c076da865">s3com_types::type_icon</a></li>
-<li>topography&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a55a4eeac78a7909c62d4df7e113f0259">s3com_types::type_icon</a></li>
-<li>ts&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a1735804794d07c0087b1ef4286195388">s3com_types::type_icon</a></li>
-<li>tsurf&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#a0c8e26f32d1510ce1d5a4a491776b0df">s3com_types::type_nwpsaf</a></li>
-<li>tv&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#ab513b7a99d6e9ffebcae3d249280ab3d">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a75002cfffba78c469851fe23639f4848">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_u" name="index_u"></a>- u -</h3><ul>
-<li>u10&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#a5d95a0cbbaa29876e7ee34a1fe802247">s3com_types::type_nwpsaf</a></li>
-<li>u_10m&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#af3543b76f2d9724ab98f7e858490fbe1">s3com_types::type_icon</a></li>
-<li>user_cld_opt_param&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a3b3968fcbf48e4dd545b02aa143b9591">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_v" name="index_v"></a>- v -</h3><ul>
-<li>v10&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#aae5d8082941433e5b14748063734d135">s3com_types::type_nwpsaf</a></li>
-<li>v_10m&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#aa7759f7a4e6f817a4659de9e183c6989">s3com_types::type_icon</a></li>
-<li>vis_scatt_model&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a21675cd1bd7a145aea249dbfad93d2c8">s3com_types::type_nml</a></li>
-</ul>
-
-
-<h3><a id="index_y" name="index_y"></a>- y -</h3><ul>
-<li>year&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#ae83c281b66f7b3277fa4af2e0628a41c">s3com_types::type_nwpsaf</a></li>
-</ul>
-
-
-<h3><a id="index_z" name="index_z"></a>- z -</h3><ul>
-<li>z&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a1e1e7f52dd1f562c53d0e7b6af80aca6">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a411998bd41cff5bd7bc199460582682f">s3com_types::type_nwpsaf</a></li>
-<li>z_ifc&#160;:&#160;<a class="el" href="structs3com__types_1_1type__icon.html#a838e23761424bfadc7c50684fad4d777">s3com_types::type_icon</a>, <a class="el" href="structs3com__types_1_1type__nwpsaf.html#a6868050cfd9f854ce3b1d4da8b2e23c0">s3com_types::type_nwpsaf</a></li>
+<li>add_aerosols&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#a4b2fa8f0bf0d9768c7a4f9509ef40fae">s3com_types::type_nml</a>, <a class="el" href="structs3com__types_1_1type__rttov__opt.html#ab2092abc748906b8145c4bfa4ef19ebe">s3com_types::type_rttov_opt</a></li>
+<li>add_clouds&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#acefcf5adb9c3aaa3eca9f7870e7b52fa">s3com_types::type_nml</a>, <a class="el" href="structs3com__types_1_1type__rttov__opt.html#acba2904c4436063debd4bb6c1e1566af">s3com_types::type_rttov_opt</a></li>
+<li>add_refrac&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nml.html#acdf1c6762e48595fb232e7baf7b055c7">s3com_types::type_nml</a>, <a class="el" href="structs3com__types_1_1type__rttov__opt.html#a51676d65fd229a31731af7015e9d5bcc">s3com_types::type_rttov_opt</a></li>
+<li>altitude&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#a52d872f4c55517984ed1bf778adf112f">s3com_types::type_nwpsaf</a></li>
+<li>altitudeh&#160;:&#160;<a class="el" href="structs3com__types_1_1type__nwpsaf.html#a48b709440900779ad9b05ac34da7caef">s3com_types::type_nwpsaf</a></li>
+<li>angle&#160;:&#160;<a class="el" href="structs3com__types_1_1type__cld__mie.html#a9904b956da9769051c78bfa27bdb1b96">s3com_types::type_cld_mie</a></li>
+<li>atm&#160;:&#160;<a class="el" href="structs3com__types_1_1type__s3com.html#ad98758167d54cbe057b5df8d6e97236d">s3com_types::type_s3com</a></li>
+<li>azangle&#160;:&#160;<a class="el" href="structs3com__types_1_1type__rttov__opt.html#a39bb0f30e6b5359073af9661ebf4d700">s3com_types::type_rttov_opt</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
 </body>
 </html>

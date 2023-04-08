@@ -34,15 +34,13 @@
     DoxygenAwesomeInteractiveToc.init()
     DoxygenAwesomeTabs.init()
 </script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="mycustom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <!-- https://tholman.com/github-corners/ -->
@@ -58,7 +56,6 @@
    <div id="projectname">S3COM
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">Satellite Simulator and Sandbox for Cloud Observation and Modelling</div>
   </td>
  </tr>
  </tbody>
@@ -82,23 +79,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structs3com__types_1_1type__cld__mie.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -120,6 +100,11 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__cld__mie.h
 </div>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>s3com_types</b></li><li class="navelem"><a class="el" href="structs3com__types_1_1type__cld__mie.html">type_cld_mie</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">s3com_types::type_cld_mie Member List</div></div>
 </div><!--header-->
@@ -127,30 +112,27 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__cld__mie.h
 
 <p>This is the complete list of members for <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>angle</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>cabs</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>cext</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>chan_id</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>chan_wl</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>csca</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>fn_legcoef</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>fn_mie</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>legcoef</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>mom</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>nang</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>nchan</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>nmom</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>nrad</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>pha</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>radius</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>w0</b> (defined in <a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a>)</td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#a9904b956da9769051c78bfa27bdb1b96">angle</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#abac98f1bab8c1da8b0ab5a84805c31e8">cabs</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#a38f78a7e7a8d2206288e6118c6b79601">cext</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#ae1de82de751ddb3d1e2a029b4e20bcf1">chan_id</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#ab1d9d9da277e8a2360f965ca9b18b26e">chan_wl</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#ab98bfdfa3cbccca72403f6d38bbb4913">csca</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#aec3b99dc0d960f62dcf13f657840b27b">fn_legcoef</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#a217a5c86910b1addc577e3836fe82f90">fn_mie</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#a6589ca13fc112bbdb2ed8c51446427e7">legcoef</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#a9b317e89bca7e2ef8a4aae1d9d523570">mom</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#a3d55d0cb577a8ff4b0df3c19019e0539">nang</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#a5179d2a7c7cb3ff5027b4581190d8faf">nchan</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#a93bc1613d176ae87d310ccc229242fc0">nmom</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#ad981614d0ed33622a8d966ae31119a78">nrad</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#acb7664a6507a16dfc8bc4158cd747974">pha</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#ace8080816dd3feb65baf5041deb200bf">radius</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html#a4d09f3b8d567d8535fb158d3536353f7">w0</a></td><td class="entry"><a class="el" href="structs3com__types_1_1type__cld__mie.html">s3com_types::type_cld_mie</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
 </body>
 </html>

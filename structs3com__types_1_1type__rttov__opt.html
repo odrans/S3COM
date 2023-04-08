@@ -34,15 +34,13 @@
     DoxygenAwesomeInteractiveToc.init()
     DoxygenAwesomeTabs.init()
 </script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="mycustom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <!-- https://tholman.com/github-corners/ -->
@@ -58,7 +56,6 @@
    <div id="projectname">S3COM
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">Satellite Simulator and Sandbox for Cloud Observation and Modelling</div>
   </td>
  </tr>
  </tbody>
@@ -82,23 +79,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structs3com__types_1_1type__rttov__opt.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -120,6 +100,11 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__rttov__opt
 </div>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>s3com_types</b></li><li class="navelem"><a class="el" href="structs3com__types_1_1type__rttov__opt.html">type_rttov_opt</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
@@ -127,120 +112,155 @@ $(document).ready(function(){initNavTree('structs3com__types_1_1type__rttov__opt
   <div class="headertitle"><div class="title">s3com_types::type_rttov_opt Type Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Structure containing main RTTOV options.  
+ <a href="structs3com__types_1_1type__rttov__opt.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a20aa686352e4528974fc5e4e28693932"><td class="memItemLeft" align="right" valign="top"><a id="a20aa686352e4528974fc5e4e28693932" name="a20aa686352e4528974fc5e4e28693932"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>dosolar</b></td></tr>
-<tr class="separator:a20aa686352e4528974fc5e4e28693932"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac945bb0be7bb6c7960ff07991692814a"><td class="memItemLeft" align="right" valign="top"><a id="ac945bb0be7bb6c7960ff07991692814a" name="ac945bb0be7bb6c7960ff07991692814a"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>nchannels</b></td></tr>
-<tr class="separator:ac945bb0be7bb6c7960ff07991692814a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1d0554dc3aa8c51265057b587611b7a"><td class="memItemLeft" align="right" valign="top"><a id="aa1d0554dc3aa8c51265057b587611b7a" name="aa1d0554dc3aa8c51265057b587611b7a"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>nthreads</b></td></tr>
-<tr class="separator:aa1d0554dc3aa8c51265057b587611b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7ab54782f8a3dfec08e8e91980fe467"><td class="memItemLeft" align="right" valign="top"><a id="ad7ab54782f8a3dfec08e8e91980fe467" name="ad7ab54782f8a3dfec08e8e91980fe467"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>platform</b></td></tr>
-<tr class="separator:ad7ab54782f8a3dfec08e8e91980fe467"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf182b45028fcc81a2113089a807ef4e"><td class="memItemLeft" align="right" valign="top"><a id="aaf182b45028fcc81a2113089a807ef4e" name="aaf182b45028fcc81a2113089a807ef4e"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>satellite</b></td></tr>
-<tr class="separator:aaf182b45028fcc81a2113089a807ef4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca3ca578676df7fd9379f253edb943f1"><td class="memItemLeft" align="right" valign="top"><a id="aca3ca578676df7fd9379f253edb943f1" name="aca3ca578676df7fd9379f253edb943f1"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>instrument</b></td></tr>
-<tr class="separator:aca3ca578676df7fd9379f253edb943f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54d9283372b9e37be4f1f6999a4e18c8"><td class="memItemLeft" align="right" valign="top"><a id="a54d9283372b9e37be4f1f6999a4e18c8" name="a54d9283372b9e37be4f1f6999a4e18c8"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>month</b></td></tr>
-<tr class="separator:a54d9283372b9e37be4f1f6999a4e18c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45607d534edeecca8ebdc767b8e62d7d"><td class="memItemLeft" align="right" valign="top"><a id="a45607d534edeecca8ebdc767b8e62d7d" name="a45607d534edeecca8ebdc767b8e62d7d"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>gas_units</b></td></tr>
-<tr class="separator:a45607d534edeecca8ebdc767b8e62d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7698cc9dc0509fcc2698d9715ef9987f"><td class="memItemLeft" align="right" valign="top"><a id="a7698cc9dc0509fcc2698d9715ef9987f" name="a7698cc9dc0509fcc2698d9715ef9987f"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>ice_scheme</b></td></tr>
-<tr class="separator:a7698cc9dc0509fcc2698d9715ef9987f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55c7806ce0d26652cfe8478ae07a4882"><td class="memItemLeft" align="right" valign="top"><a id="a55c7806ce0d26652cfe8478ae07a4882" name="a55c7806ce0d26652cfe8478ae07a4882"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>clw_scheme</b></td></tr>
-<tr class="separator:a55c7806ce0d26652cfe8478ae07a4882"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56c5b6dc9f2dd1cb6759f2b2da50c67e"><td class="memItemLeft" align="right" valign="top"><a id="a56c5b6dc9f2dd1cb6759f2b2da50c67e" name="a56c5b6dc9f2dd1cb6759f2b2da50c67e"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>ir_scatt_model</b></td></tr>
-<tr class="separator:a56c5b6dc9f2dd1cb6759f2b2da50c67e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae08e92391c46cf3811a223089e3de6e1"><td class="memItemLeft" align="right" valign="top"><a id="ae08e92391c46cf3811a223089e3de6e1" name="ae08e92391c46cf3811a223089e3de6e1"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>vis_scatt_model</b></td></tr>
-<tr class="separator:ae08e92391c46cf3811a223089e3de6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f541c00d0745f3b471d78ec83b32620"><td class="memItemLeft" align="right" valign="top"><a id="a9f541c00d0745f3b471d78ec83b32620" name="a9f541c00d0745f3b471d78ec83b32620"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>dom_nstreams</b></td></tr>
-<tr class="separator:a9f541c00d0745f3b471d78ec83b32620"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addcf12a681b3d8201b8e6db292636a2b"><td class="memItemLeft" align="right" valign="top"><a id="addcf12a681b3d8201b8e6db292636a2b" name="addcf12a681b3d8201b8e6db292636a2b"></a>
-integer&#160;</td><td class="memItemRight" valign="bottom"><b>dom_nmoments</b></td></tr>
-<tr class="separator:addcf12a681b3d8201b8e6db292636a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3942502dee7d63dffb4b6f4a26b9c72d"><td class="memItemLeft" align="right" valign="top"><a id="a3942502dee7d63dffb4b6f4a26b9c72d" name="a3942502dee7d63dffb4b6f4a26b9c72d"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>dosolar</b></td></tr>
+<tr class="memdesc:a3942502dee7d63dffb4b6f4a26b9c72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Activation of solar radiation calculations (0: false, 1: true) <br /></td></tr>
+<tr class="separator:a3942502dee7d63dffb4b6f4a26b9c72d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08ea781629fa5c5c8fefa552cf9e4b47"><td class="memItemLeft" align="right" valign="top"><a id="a08ea781629fa5c5c8fefa552cf9e4b47" name="a08ea781629fa5c5c8fefa552cf9e4b47"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>nchannels</b></td></tr>
+<tr class="memdesc:a08ea781629fa5c5c8fefa552cf9e4b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of instrument channels to simulate <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a08ea781629fa5c5c8fefa552cf9e4b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c6e3fc9cb0fdce12c8d565bc4ec3525"><td class="memItemLeft" align="right" valign="top"><a id="a3c6e3fc9cb0fdce12c8d565bc4ec3525" name="a3c6e3fc9cb0fdce12c8d565bc4ec3525"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>nthreads</b></td></tr>
+<tr class="memdesc:a3c6e3fc9cb0fdce12c8d565bc4ec3525"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of threads for RTTOV calculations (if openMP is available) <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a3c6e3fc9cb0fdce12c8d565bc4ec3525"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab75345458a5383ec0de15da4f1066f7"><td class="memItemLeft" align="right" valign="top"><a id="aab75345458a5383ec0de15da4f1066f7" name="aab75345458a5383ec0de15da4f1066f7"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>platform</b></td></tr>
+<tr class="memdesc:aab75345458a5383ec0de15da4f1066f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Platform ID for RTTOV <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:aab75345458a5383ec0de15da4f1066f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74f213ef0fde5ddedab870b0c6344a48"><td class="memItemLeft" align="right" valign="top"><a id="a74f213ef0fde5ddedab870b0c6344a48" name="a74f213ef0fde5ddedab870b0c6344a48"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>satellite</b></td></tr>
+<tr class="memdesc:a74f213ef0fde5ddedab870b0c6344a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Satellite ID for RTTOV <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a74f213ef0fde5ddedab870b0c6344a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7aae0d5bba5d06748dfe55b41266cb1"><td class="memItemLeft" align="right" valign="top"><a id="ae7aae0d5bba5d06748dfe55b41266cb1" name="ae7aae0d5bba5d06748dfe55b41266cb1"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>instrument</b></td></tr>
+<tr class="memdesc:ae7aae0d5bba5d06748dfe55b41266cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instrument ID for RTTOV <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:ae7aae0d5bba5d06748dfe55b41266cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71639e068beef4fc491323de46719e40"><td class="memItemLeft" align="right" valign="top"><a id="a71639e068beef4fc491323de46719e40" name="a71639e068beef4fc491323de46719e40"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>month</b></td></tr>
+<tr class="memdesc:a71639e068beef4fc491323de46719e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Month of the year, used to load surface brdf and emissivity data. <br /></td></tr>
+<tr class="separator:a71639e068beef4fc491323de46719e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab230fe240495d30c9d19981ff50a8178"><td class="memItemLeft" align="right" valign="top"><a id="ab230fe240495d30c9d19981ff50a8178" name="ab230fe240495d30c9d19981ff50a8178"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>gas_units</b></td></tr>
+<tr class="memdesc:ab230fe240495d30c9d19981ff50a8178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gas units for atmospheric profiles (1: kg/kg; 2: ppmv over moist air; 0: ppmv over dry air) <br /></td></tr>
+<tr class="separator:ab230fe240495d30c9d19981ff50a8178"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c4c1ed69d09999aee6783401250c767"><td class="memItemLeft" align="right" valign="top"><a id="a2c4c1ed69d09999aee6783401250c767" name="a2c4c1ed69d09999aee6783401250c767"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>ice_scheme</b></td></tr>
+<tr class="memdesc:a2c4c1ed69d09999aee6783401250c767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheme used for ice cloud optical properties: 1=Baum; 2=Baran 2014; 3=Baran 2018. Not relevant if `user_cld_opt_param` is true. <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a2c4c1ed69d09999aee6783401250c767"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a993e048ab088243032935d1b7b83c94d"><td class="memItemLeft" align="right" valign="top"><a id="a993e048ab088243032935d1b7b83c94d" name="a993e048ab088243032935d1b7b83c94d"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>clw_scheme</b></td></tr>
+<tr class="memdesc:a993e048ab088243032935d1b7b83c94d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheme used for liquid cloud optical properties: 1=OPAC; 2=Deff <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a993e048ab088243032935d1b7b83c94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdfa16ffd6fb5b24d92f20e27a853c2"><td class="memItemLeft" align="right" valign="top"><a id="accdfa16ffd6fb5b24d92f20e27a853c2" name="accdfa16ffd6fb5b24d92f20e27a853c2"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>ir_scatt_model</b></td></tr>
+<tr class="memdesc:accdfa16ffd6fb5b24d92f20e27a853c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scattering model for IR source term: 1=DOM; 2=Chou-scaling <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:accdfa16ffd6fb5b24d92f20e27a853c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acadac0b8135ad76ec949e28c7792870e"><td class="memItemLeft" align="right" valign="top"><a id="acadac0b8135ad76ec949e28c7792870e" name="acadac0b8135ad76ec949e28c7792870e"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>vis_scatt_model</b></td></tr>
+<tr class="memdesc:acadac0b8135ad76ec949e28c7792870e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scattering model for solar source term: 1=DOM; 2=single-scattering; 3=MFASIS <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:acadac0b8135ad76ec949e28c7792870e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadc7d790c69dd9a231fab6e54afba79b"><td class="memItemLeft" align="right" valign="top"><a id="aadc7d790c69dd9a231fab6e54afba79b" name="aadc7d790c69dd9a231fab6e54afba79b"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>dom_nstreams</b></td></tr>
+<tr class="memdesc:aadc7d790c69dd9a231fab6e54afba79b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of streams for discrete ordinate method <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:aadc7d790c69dd9a231fab6e54afba79b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85550d8fbd1d5a52fbbc6bfca50fe830"><td class="memItemLeft" align="right" valign="top"><a id="a85550d8fbd1d5a52fbbc6bfca50fe830" name="a85550d8fbd1d5a52fbbc6bfca50fe830"></a>
+integer(wpi)&#160;</td><td class="memItemRight" valign="bottom"><b>dom_nmoments</b></td></tr>
+<tr class="memdesc:a85550d8fbd1d5a52fbbc6bfca50fe830"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of moments for discrete ordinate method <span class="inputbox">input</span> <br /></td></tr>
+<tr class="separator:a85550d8fbd1d5a52fbbc6bfca50fe830"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e6e925fe6046e23350db3a95b1337a1"><td class="memItemLeft" align="right" valign="top"><a id="a9e6e925fe6046e23350db3a95b1337a1" name="a9e6e925fe6046e23350db3a95b1337a1"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>mmr_cldaer</b></td></tr>
+<tr class="memdesc:a9e6e925fe6046e23350db3a95b1337a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud and aerosol units: true =&gt; kg/kg (cld+aer); false =&gt; g/m3 (cld), cm-3 (aer) <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:a9e6e925fe6046e23350db3a95b1337a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5af247a665e0ba187631d3f539eb2330"><td class="memItemLeft" align="right" valign="top"><a id="a5af247a665e0ba187631d3f539eb2330" name="a5af247a665e0ba187631d3f539eb2330"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>ozone_data</b></td></tr>
+<tr class="memdesc:a5af247a665e0ba187631d3f539eb2330"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when supplying a profile of ozone, false to use RTTOV climatologies <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:a5af247a665e0ba187631d3f539eb2330"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5de354d24d864ce8f068824f91d1a71"><td class="memItemLeft" align="right" valign="top"><a id="ac5de354d24d864ce8f068824f91d1a71" name="ac5de354d24d864ce8f068824f91d1a71"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>co2_data</b></td></tr>
+<tr class="memdesc:ac5de354d24d864ce8f068824f91d1a71"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when supplying a profile of CO2, false to use RTTOV climatologies. <br /></td></tr>
 <tr class="separator:ac5de354d24d864ce8f068824f91d1a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f80d04a1e04d075e7850337a90b8acf"><td class="memItemLeft" align="right" valign="top"><a id="a0f80d04a1e04d075e7850337a90b8acf" name="a0f80d04a1e04d075e7850337a90b8acf"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>n2o_data</b></td></tr>
+<tr class="memdesc:a0f80d04a1e04d075e7850337a90b8acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when supplying a profile of N2O, false to use RTTOV climatologies. <br /></td></tr>
 <tr class="separator:a0f80d04a1e04d075e7850337a90b8acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae46588dd9c1a888e45fdf236e1036c00"><td class="memItemLeft" align="right" valign="top"><a id="ae46588dd9c1a888e45fdf236e1036c00" name="ae46588dd9c1a888e45fdf236e1036c00"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>ch4_data</b></td></tr>
+<tr class="memdesc:ae46588dd9c1a888e45fdf236e1036c00"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when supplying a profile of CH4, false to use RTTOV climatologies. <br /></td></tr>
 <tr class="separator:ae46588dd9c1a888e45fdf236e1036c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ea881ba63594b84854410b08eb265cd"><td class="memItemLeft" align="right" valign="top"><a id="a3ea881ba63594b84854410b08eb265cd" name="a3ea881ba63594b84854410b08eb265cd"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>co_data</b></td></tr>
+<tr class="memdesc:a3ea881ba63594b84854410b08eb265cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when supplying a profile of CO, false to use RTTOV climatologies. <br /></td></tr>
 <tr class="separator:a3ea881ba63594b84854410b08eb265cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2975a5bc0eb02abeca9bb63978c3fc39"><td class="memItemLeft" align="right" valign="top"><a id="a2975a5bc0eb02abeca9bb63978c3fc39" name="a2975a5bc0eb02abeca9bb63978c3fc39"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>so2_data</b></td></tr>
+<tr class="memdesc:a2975a5bc0eb02abeca9bb63978c3fc39"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when supplying a profile of SO2, false to use RTTOV climatologies. <br /></td></tr>
 <tr class="separator:a2975a5bc0eb02abeca9bb63978c3fc39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acba2904c4436063debd4bb6c1e1566af"><td class="memItemLeft" align="right" valign="top"><a id="acba2904c4436063debd4bb6c1e1566af" name="acba2904c4436063debd4bb6c1e1566af"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>add_clouds</b></td></tr>
+<tr class="memdesc:acba2904c4436063debd4bb6c1e1566af"><td class="mdescLeft">&#160;</td><td class="mdescRight">True to add clouds to the RTTOV calculations <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:acba2904c4436063debd4bb6c1e1566af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2092abc748906b8145c4bfa4ef19ebe"><td class="memItemLeft" align="right" valign="top"><a id="ab2092abc748906b8145c4bfa4ef19ebe" name="ab2092abc748906b8145c4bfa4ef19ebe"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>add_aerosols</b></td></tr>
+<tr class="memdesc:ab2092abc748906b8145c4bfa4ef19ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">True to add aerosols to the RTTOV calculations <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:ab2092abc748906b8145c4bfa4ef19ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51676d65fd229a31731af7015e9d5bcc"><td class="memItemLeft" align="right" valign="top"><a id="a51676d65fd229a31731af7015e9d5bcc" name="a51676d65fd229a31731af7015e9d5bcc"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>add_refrac</b></td></tr>
+<tr class="memdesc:a51676d65fd229a31731af7015e9d5bcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">True to add atmospheric refraction <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:a51676d65fd229a31731af7015e9d5bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47afae693ad03938ab18b336e61d3a88"><td class="memItemLeft" align="right" valign="top"><a id="a47afae693ad03938ab18b336e61d3a88" name="a47afae693ad03938ab18b336e61d3a88"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>do_opdep_calc</b></td></tr>
+<tr class="memdesc:a47afae693ad03938ab18b336e61d3a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">If false, disables the RTTOV gas optical depth calculation <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:a47afae693ad03938ab18b336e61d3a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad59effa79fe07c10a76bfa7456fd1101"><td class="memItemLeft" align="right" valign="top"><a id="ad59effa79fe07c10a76bfa7456fd1101" name="ad59effa79fe07c10a76bfa7456fd1101"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>dom_rayleigh</b></td></tr>
+<tr class="memdesc:ad59effa79fe07c10a76bfa7456fd1101"><td class="mdescLeft">&#160;</td><td class="mdescRight">If false, disables the RTTOV Rayleigh scattering calculation <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:ad59effa79fe07c10a76bfa7456fd1101"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b959233a1ff4ec8b85232e2d0d88e7b"><td class="memItemLeft" align="right" valign="top"><a id="a5b959233a1ff4ec8b85232e2d0d88e7b" name="a5b959233a1ff4ec8b85232e2d0d88e7b"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>user_cld_opt_param</b></td></tr>
+<tr class="memdesc:a5b959233a1ff4ec8b85232e2d0d88e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, users can supply their own cloud optical properties (<code>ice_scheme</code> and <code>clw_scheme</code> are then not used) <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:a5b959233a1ff4ec8b85232e2d0d88e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45ec27e63acdb23cf78f2d443573f99f"><td class="memItemLeft" align="right" valign="top"><a id="a45ec27e63acdb23cf78f2d443573f99f" name="a45ec27e63acdb23cf78f2d443573f99f"></a>
 integer, dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>channel_list</b></td></tr>
+<tr class="memdesc:a45ec27e63acdb23cf78f2d443573f99f"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of channels to simulate <span class="inputbox">input</span> <br /></td></tr>
 <tr class="separator:a45ec27e63acdb23cf78f2d443573f99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa466cda9e6e39fde43ba96416631ddf1"><td class="memItemLeft" align="right" valign="top"><a id="aa466cda9e6e39fde43ba96416631ddf1" name="aa466cda9e6e39fde43ba96416631ddf1"></a>
 character(len=32)&#160;</td><td class="memItemRight" valign="bottom"><b>platform_name</b></td></tr>
+<tr class="memdesc:aa466cda9e6e39fde43ba96416631ddf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Platform name. <br /></td></tr>
 <tr class="separator:aa466cda9e6e39fde43ba96416631ddf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a6fd481ada46bcda780e2a3ca68ee7f"><td class="memItemLeft" align="right" valign="top"><a id="a5a6fd481ada46bcda780e2a3ca68ee7f" name="a5a6fd481ada46bcda780e2a3ca68ee7f"></a>
 character(len=32)&#160;</td><td class="memItemRight" valign="bottom"><b>inst_name</b></td></tr>
+<tr class="memdesc:a5a6fd481ada46bcda780e2a3ca68ee7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instrument name. <br /></td></tr>
 <tr class="separator:a5a6fd481ada46bcda780e2a3ca68ee7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59385b7a7a671793016898dcebc1c5d2"><td class="memItemLeft" align="right" valign="top"><a id="a59385b7a7a671793016898dcebc1c5d2" name="a59385b7a7a671793016898dcebc1c5d2"></a>
 character(len=32)&#160;</td><td class="memItemRight" valign="bottom"><b>sat_name</b></td></tr>
+<tr class="memdesc:a59385b7a7a671793016898dcebc1c5d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Satellite name. <br /></td></tr>
 <tr class="separator:a59385b7a7a671793016898dcebc1c5d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cad8bac7b7d75285f1af9f8f6977bb4"><td class="memItemLeft" align="right" valign="top"><a id="a9cad8bac7b7d75285f1af9f8f6977bb4" name="a9cad8bac7b7d75285f1af9f8f6977bb4"></a>
 real(wp)&#160;</td><td class="memItemRight" valign="bottom"><b>zenangle</b></td></tr>
+<tr class="memdesc:a9cad8bac7b7d75285f1af9f8f6977bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Satellite zenith angle <span class="units">degrees</span> <br /></td></tr>
 <tr class="separator:a9cad8bac7b7d75285f1af9f8f6977bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39bb0f30e6b5359073af9661ebf4d700"><td class="memItemLeft" align="right" valign="top"><a id="a39bb0f30e6b5359073af9661ebf4d700" name="a39bb0f30e6b5359073af9661ebf4d700"></a>
 real(wp)&#160;</td><td class="memItemRight" valign="bottom"><b>azangle</b></td></tr>
+<tr class="memdesc:a39bb0f30e6b5359073af9661ebf4d700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Satellite azimuth angle <span class="units">degrees</span> <br /></td></tr>
 <tr class="separator:a39bb0f30e6b5359073af9661ebf4d700"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this type was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Structure containing main RTTOV options. </p>
+<p >Data from namelist are indicated with <span class="inputbox">input</span>. Others are set in <code>rttov_setup_opt</code> </p>
+</div><hr/>The documentation for this type was generated from the following file:<ul>
 <li>src/conf/types.f90</li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><b>s3com_types</b></li><li class="navelem"><a class="el" href="structs3com__types_1_1type__rttov__opt.html">type_rttov_opt</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
 </body>
 </html>

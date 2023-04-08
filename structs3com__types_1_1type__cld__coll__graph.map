@@ -1,0 +1,4 @@
+<map id="s3com_types::type_cld" name="s3com_types::type_cld">
+<area shape="rect" id="node1" title="Structure containing all cloud optical properties." alt="" coords="19,93,177,119"/>
+<area shape="rect" id="node2" href="$structs3com__types_1_1type__cld__mie.html" title="Structure containing cloud optical properties from Mie calculations." alt="" coords="5,5,191,31"/>
+</map>
