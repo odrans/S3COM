@@ -113,23 +113,27 @@ General</h3>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Parameter Name   </th><th class="markdownTableHeadNone">Description   </th><th class="markdownTableHeadNone">Default    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><b>fname_in</b>   </td><td class="markdownTableBodyNone"><b>Input file name</b>   </td><td class="markdownTableBodyNone"><b>NA</b>    </td></tr>
+<td class="markdownTableBodyNone"><b>path_s3com</b>   </td><td class="markdownTableBodyNone"><b>Path to the main S3COM repository</b>   </td><td class="markdownTableBodyNone"><b>NA</b>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">path_out   </td><td class="markdownTableBodyNone">Path for output files   </td><td class="markdownTableBodyNone">"./"    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">suffix_out   </td><td class="markdownTableBodyNone">suffix to be used in output files   </td><td class="markdownTableBodyNone">""    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">flag_retrievals   </td><td class="markdownTableBodyNone">Turn on cloud retrievals   </td><td class="markdownTableBodyNone">FALSE    </td></tr>
+<td class="markdownTableBodyNone"><b>fname_in</b>   </td><td class="markdownTableBodyNone"><b>Input file name</b>   </td><td class="markdownTableBodyNone"><b>NA</b>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">flag_output_atm   </td><td class="markdownTableBodyNone">Output atmospheric variables (S3COM_atm.nc)   </td><td class="markdownTableBodyNone">FALSE    </td></tr>
+<td class="markdownTableBodyNone">flag_retrievals   </td><td class="markdownTableBodyNone">Turn on cloud retrievals   </td><td class="markdownTableBodyNone">FALSE    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">flag_output_atm   </td><td class="markdownTableBodyNone">Output atmospheric variables (S3COM_atm.nc)   </td><td class="markdownTableBodyNone">FALSE    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">flag_output_jac   </td><td class="markdownTableBodyNone">Output Jacobian variables (S3COM_jac.nc)   </td><td class="markdownTableBodyNone">FALSE    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">flag_output_k_tl   </td><td class="markdownTableBodyNone">Output Jacobian Tangeant Linear variables (depricated)   </td><td class="markdownTableBodyNone">FALSE    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">npoints_it   </td><td class="markdownTableBodyNone">Number of simultaneous data points sent to RTTOV   </td><td class="markdownTableBodyNone">100    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">nchannels   </td><td class="markdownTableBodyNone">Number of satellite channels   </td><td class="markdownTableBodyNone">2    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">model_name   </td><td class="markdownTableBodyNone">Name of the physical model to be used as input   </td><td class="markdownTableBodyNone">"ICON"   </td></tr>
+<td class="markdownTableBodyNone">model_name   </td><td class="markdownTableBodyNone">Name of the physical model to be used as input (currently: ICON, NWPSAF)   </td><td class="markdownTableBodyNone">"ICON"   </td></tr>
 </table>
 <h3><a class="anchor" id="autotoc_md4"></a>
 RTTOV instruments</h3>
@@ -157,19 +161,23 @@ RTTOV initialization</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><b>path_rttov</b>   </td><td class="markdownTableBodyNone"><b>Path to RTTOV</b>   </td><td class="markdownTableBodyNone"><b>NA</b>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">rttov_nthreads   </td><td class="markdownTableBodyNone">Number of threads in RTTOV (MPI required)   </td><td class="markdownTableBodyNone">1    </td></tr>
+<td class="markdownTableBodyNone">do_jacobian_calc   </td><td class="markdownTableBodyNone">Do Jacobian calculations when retrievals aren't included   </td><td class="markdownTableBodyNone">FALSE    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">do_jacobian_calc   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">FALSE    </td></tr>
-<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">do_opdep_calc   </td><td class="markdownTableBodyNone">Include gaseous absorption   </td><td class="markdownTableBodyNone">TRUE    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">ir_scatt_model   </td><td class="markdownTableBodyNone">Infrared scattering model (1: DOM, 2: Chou-scaling)   </td><td class="markdownTableBodyNone">1    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">vis_scatt_model   </td><td class="markdownTableBodyNone">Visible scattering model (1: DOM, 2: Single-scattering, 3: MFASIS)   </td><td class="markdownTableBodyNone">1    </td></tr>
+<td class="markdownTableBodyNone">ir_scatt_model   </td><td class="markdownTableBodyNone">Infrared scattering model (1: DOM, 2: Chou-scaling)   </td><td class="markdownTableBodyNone">1    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">vis_scatt_model   </td><td class="markdownTableBodyNone">Visible scattering model (1: DOM, 2: Single-scattering, 3: MFASIS)   </td><td class="markdownTableBodyNone">1    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">dom_nstreams   </td><td class="markdownTableBodyNone">Number of streams used in DOM   </td><td class="markdownTableBodyNone">8    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">dom_nmom   </td><td class="markdownTableBodyNone">Number of Legendre polynomial moments used in DOM   </td><td class="markdownTableBodyNone">128    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">dom_rayleigh   </td><td class="markdownTableBodyNone">Activate Rayleigh multiple scattering   </td><td class="markdownTableBodyNone">TRUE    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">rttov_nthreads   </td><td class="markdownTableBodyNone">Number of threads in RTTOV (MPI required)   </td><td class="markdownTableBodyNone">1    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">user_cld_opt_param   </td><td class="markdownTableBodyNone">User-defined cloud properties (deactivates ice_scheme and clw_scheme)   </td><td class="markdownTableBodyNone">FALSE    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">ice_scheme   </td><td class="markdownTableBodyNone">1: Baum, 2: Baran 2014, 3: Baran 2018   </td><td class="markdownTableBodyNone">3    </td></tr>
 <tr class="markdownTableRowEven">

@@ -105,16 +105,25 @@ $(function() {
   <div class="headertitle"><div class="title">Environments and job scripts for specific servers </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md1"></a>
+<div class="textblock"><p >S3COM can be executed localy as well as on supercomputers. Note that all libraries, including RTTOV, must be compiled with openMP or similar to allow for parallelization (see <code>rttov_nthreads</code> option in namelist).</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
 Levante</h1>
-<p >The following modules can be loaded to run S3COM interactively:</p>
-<div class="fragment"><div class="line">module purge</div>
+<p >Example of modules to load to run RTTOV with multiple threads.</p>
+<p >With intel compilers: </p><div class="fragment"><div class="line">module purge</div>
 <div class="line">module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 \</div>
-<div class="line">    openmpi/4.1.2-intel-2021.5.0 \</div>
-<div class="line">    netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 \</div>
-<div class="line">    netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 \</div>
-<div class="line">    hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0</div>
-</div><!-- fragment --><p >Example of job script (edit project number):</p>
+<div class="line">            openmpi/4.1.2-intel-2021.5.0 \</div>
+<div class="line">            netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 \</div>
+<div class="line">            netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 \</div>
+<div class="line">            hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0 \</div>
+<div class="line">            eccodes/2.21.0-intel-2021.5.0</div>
+</div><!-- fragment --><p >With gcc compilers: </p><div class="fragment"><div class="line">module load gcc/11.2.0-gcc-11.2.0 \</div>
+<div class="line">            openmpi/4.1.2-gcc-11.2.0 \</div>
+<div class="line">            parallel-netcdf/1.12.2-openmpi-4.1.2-gcc-11.2.0 \</div>
+<div class="line">            netcdf-fortran/4.5.3-openmpi-4.1.2-gcc-11.2.0 \</div>
+<div class="line">            netcdf-c/4.8.1-openmpi-4.1.2-gcc-11.2.0 \</div>
+<div class="line">            hdf5/1.12.1-openmpi-4.1.2-gcc-11.2.0 \</div>
+<div class="line">            eccodes/2.21.0-gcc-11.2.0</div>
+</div><!-- fragment --><p >Job script (edit project number):</p>
 <div class="fragment"><div class="line">#!/bin/bash</div>
 <div class="line">#SBATCH -J S3COM                                  # Specify job name</div>
 <div class="line">#SBATCH -p shared                                 # Use partition shared</div>

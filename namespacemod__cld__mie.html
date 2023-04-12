@@ -122,7 +122,7 @@ Functions/Subroutines</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Allocate and load the user-defined Mie cloud properties. </p>
-<p >This module contains the subroutines needed to load the user-defined Mie cloud properties:</p><ul>
+<p >This module contains the following subroutines:</p><ul>
 <li><code>cld_mie_load</code>: general call to subroutines needed to load optical properties for liquid clouds from user-defined files</li>
 <li><code>cld_mie_read</code>: initializes the cld_mie structure and loads the Mie scattering data from a netCDF file </li>
 </ul>
@@ -157,8 +157,8 @@ Functions/Subroutines</h2></td></tr>
 <p >This initializes and sets the <code>cldmie</code> structure, which contains user-defined liquid cloud optical properties needed by RTTOV.</p>
 <p >These properties are read from netCDF files, currently expected to be located in $PATH/data/opt_prop. Current properties are generated from a Mie code. They are loaded for a given instrument. S3COM stops if the property files are not found.</p>
 <p >These stored Mie optical properties later required by RTTOV are:</p><ul>
-<li>the absorption cross-section (in um^2)</li>
-<li>the scattering cross-section (in um^2)</li>
+<li>the absorption cross-section <span class="units">um^2</span></li>
+<li>the scattering cross-section <span class="units">um^2</span></li>
 <li>the phase function for defined angles</li>
 <li>the legendre coefficients of the phase function</li>
 </ul>
@@ -213,7 +213,7 @@ Functions/Subroutines</h2></td></tr>
 <li>nrad: number of radius on which Mie properties are defined</li>
 <li>nang: number of angles on which the phase function is computed</li>
 <li>chan_id: ID of the instrument channel in RTTOV</li>
-<li>radius: effective radii (in um)</li>
+<li>radius: effective radii <span class="units">um</span></li>
 <li>angle: phase function angles (in degrees)</li>
 <li>Csca: the scattering cross-section coefficient (in um^2). Computed as Cext * w0, with Cext the extinction cross-section and w0 the single-scattering albedo</li>
 <li>Cabs: the absorption cross-section coefficient (in um^2). Computed as Cext * (1-w0).</li>
