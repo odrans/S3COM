@@ -107,7 +107,6 @@ contains
          path_rttov,        &
          rttov_nthreads,    &
          do_jacobian_calc,  &
-         do_k_tl_calc,      &
          do_opdep_calc,     &
          ir_scatt_model,    &
          vis_scatt_model,   &
@@ -135,6 +134,8 @@ contains
     call close_namelist(file_path, file_unit, iostat)
 
     if(channel_seq(1) > 0) channel_list = (/(i, i= channel_seq(1), channel_seq(2), 1)/)
+
+    do_k_tl_calc = .false.
 
     nml%path_rttov = path_rttov
     nml%path_s3com = path_s3com

@@ -25,7 +25,6 @@
 !
 ! History
 ! Apr 2023 - O. Sourdeval - Original version
-!
 
 !> @brief Module dealing with computing and loading the coefficients of the Legendre polynomials
 !! @details

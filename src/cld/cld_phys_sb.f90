@@ -25,8 +25,11 @@
 !
 ! History
 ! Jan 2022 - O. Sourdeval - Original version
-!
 
+!> @brief Compute physical parameters consistent with the Seifert-Beheng microphysics scheme
+!! @details This module contains the following functions:
+!! - re_sb: Returns the effective radius for any hydrometeor class given the water content and the number concentration
+!! - re_sb_all: Compute the effective radius of a cloud particle consistent with the Seifert-Beheng microphysics scheme
 module mod_cld_phys_sb
 
   use s3com_types, only: wp
@@ -38,14 +41,13 @@ module mod_cld_phys_sb
 
 contains
 
-  !> Compute the effective radius of a cloud particle consistent with the Seifert-Beheng microphysics scheme for
-  !> a given hydrometeor class
-  !> Inputs:
-  !> - L: liquid water content [kg m-3]
-  !> - N: number concentration [m-3]
-  !> - hydro_class: 1: droplet; 2: ice crystal; 3: rain; 4: snow crystal; 5: graupel; 6: hail
-  !> Returns:
-  !> - re: effective radius [m]
+  !> @brief Returns the effective radius for any hydrometeor class given the water content and the number concentration
+  !! @details Compute the effective radius of a cloud particle consistent with assumptions the Seifert-Beheng microphysics scheme for
+  !! a given hydrometeor class, as introduced in ICON
+  !! @param[in] L Hydrometeor liquid water content @units{kg m-3}
+  !! @param[in] N Hydrometeor number concentration @units{\# m-3}
+  !! @param[in] hydro_class Hydrometeor class (1: droplet; 2: ice crystal; 3: rain; 4: snow crystal; 5: graupel; 6: hail)
+  !! @return re Effective radius @units{m}
   function re_sb(L, N, hydro_class) result(re)
 
     integer(kind = 4) :: hydro_class
@@ -108,8 +110,17 @@ contains
 
   end function re_sb
 
-  !> Compute the effective radius of a cloud particle consistent with the Seifert-Beheng microphysics scheme
-  !> Valid equation for all hydrometeor classes. Based on Seifert and Beheng (2005) doi:10.1007/s00703-005-0112-4
+  !> @brief Compute the effective radius of a cloud particle consistent with the Seifert-Beheng microphysics scheme.
+  !! @details Use the overall equation for all hydrometeor classes based on Seifert and Beheng (2005) doi:10.1007/s00703-005-0112-4
+  !! Hydrometeors have masses that follow a gamma-modified gamma distribution of parameters nu and mu: f(m) = A * m^nu * exp(- lambda * m^mu)
+  !! The mass is related to the diameter by the dimension-mass relation: D = a * m^b. a and b therefore carry information on the particle shape and density.
+  !! @param[in] L Hydrometeor liquid water content @units{kg m-3}
+  !! @param[in] N Hydrometeor number concentration @units{\# m-3}
+  !! @param[in] a Parameter a of the dimension-mass relation
+  !! @param[in] b Parameter b of the dimension-mass relation
+  !! @param[in] nu Parameter nu of the mass gamma-modified distribution
+  !! @param[in] mu Parameter mu of the mass gamma-modified distribution
+  !! @return re Effective radius @units{m}
   function re_sb_all(L, N, a, b, nu, mu) result(re)
 
     real(wp) :: re

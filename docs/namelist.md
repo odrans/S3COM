@@ -8,15 +8,17 @@ Fields in bold (with `NA` as default values) must be edited before running S3COM
 
 | Parameter Name | Description | Default |
 | --- | --- | --- | 
-| **fname_in** | **Input file name** | **NA** |
+| **path_s3com** | **Path to the main S3COM repository** | **NA** |
 | path_out | Path for output files | "./" |
 | suffix_out | suffix to be used in output files | "" |
+| **fname_in** | **Input file name** | **NA** |
 | flag_retrievals | Turn on cloud retrievals | FALSE |
 | flag_output_atm | Output atmospheric variables (S3COM_atm.nc) | FALSE |
 | flag_output_jac | Output Jacobian variables (S3COM_jac.nc) | FALSE |
+| flag_output_k_tl | Output Jacobian Tangeant Linear variables (depricated) | FALSE |
 | npoints_it | Number of simultaneous data points sent to RTTOV | 100 |
 | nchannels | Number of satellite channels | 2 |
-| model_name | Name of the physical model to be used as input | "ICON" |
+| model_name | Name of the physical model to be used as input (currently: ICON, NWPSAF) | "ICON" |
 
 #### RTTOV instruments
 
@@ -37,13 +39,15 @@ See the [RTTOV general documentation](https://nwp-saf.eumetsat.int/site/download
 | Parameter Name | Description | Default |
 | --- | --- | --- | 
 | **path_rttov** | **Path to RTTOV** | **NA** |
-| rttov_nthreads | Number of threads in RTTOV (MPI required) | 1 |
-| do_jacobian_calc | | FALSE |
+| do_jacobian_calc | Do Jacobian calculations when retrievals aren't included | FALSE |
 | do_opdep_calc | Include gaseous absorption | TRUE |
 | ir_scatt_model | Infrared scattering model (1: DOM, 2: Chou-scaling) | 1 |
 | vis_scatt_model | Visible scattering model (1: DOM, 2: Single-scattering, 3: MFASIS) | 1 |
 | dom_nstreams | Number of streams used in DOM | 8 |
+| dom_nmom | Number of Legendre polynomial moments used in DOM | 128 |
 | dom_rayleigh | Activate Rayleigh multiple scattering | TRUE |
+| rttov_nthreads | Number of threads in RTTOV (MPI required) | 1 |
+| user_cld_opt_param | User-defined cloud properties (deactivates ice_scheme and clw_scheme) | FALSE |
 | ice_scheme | 1: Baum, 2: Baran 2014, 3: Baran 2018 | 3 |
 | clw_scheme | 1: OPAC, 2: Deff | 2 |
 | mmr_cldaer | cloud / aerosol units. true: kg/kg (cld+aer); false: g.m-3 (cld), cm-3 (aer) | FALSE |

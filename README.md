@@ -23,19 +23,20 @@ make
 
 **Dependencies**
 
-The following dependencies are required and should be adjusted in the Makefile:
-- [RTTOV](https://nwp-saf.eumetsat.int/site/software/rttov)
-  - RTTOV v13.1 is the main radiative transfer code in S3COM. Please carefuly refer its documentation for the installation.
-  - **Makefile path:** `PATH_RTTOV`
-  - **Notes:** 
-    - Following RTTOV recommendations, it is advised to raise the system stack size: `ulimit -s unlimited`.
-    - Depending on the spectrum of simulated instruments, adequate [coefficient files](https://nwp-saf.eumetsat.int/site/software/rttov/download/coefficients/coefficient-download/) and [BRDF / emissivity atlases](https://nwp-saf.eumetsat.int/site/software/rttov/download/#Emissivity_BRDF_atlas_data) should be downloaded and added to the RTTOV repository.
+The following dependencies are needed and require path adjustments in the Makefile:
 - [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/) (C and Fortran)
   - **Makefile path:** `PATH_NETCDF_C`, `PATH_NETCDF_F`
 - [HDF5](https://www.hdfgroup.org/solutions/hdf5/)
   - **Makefile path:** `PATH_HDF5`
-  
-All Makefile paths refer to base repositories, giving access to libraries, objects and binaries.
+- [RTTOV](https://nwp-saf.eumetsat.int/site/software/rttov)
+  - RTTOV v13 is the main radiative transfer code in S3COM.
+  - **Makefile path:** `PATH_RTTOV`
+  - **Notes:**
+    - RTTOV can be installed following these [instructions](https://nwp-saf.eumetsat.int/site/software/rttov/rttov-v13/#Installing_RTTOV_v132). Note that it requires NetCDF4 and HDF5 to be explicitely linked in its `build/Makefile.local` file before running `rttov_compile.sh`.
+    - Depending on the spectrum of simulated instruments, adequate [coefficient files](https://nwp-saf.eumetsat.int/site/software/rttov/download/coefficients/coefficient-download/) and [BRDF / emissivity atlases](https://nwp-saf.eumetsat.int/site/software/rttov/download/#Emissivity_BRDF_atlas_data) should be downloaded and included in the RTTOV repository.
+    - Following RTTOV recommendations, it is advised to raise the system stack size: `ulimit -s unlimited`.
+
+All Makefile paths refer to base repositories giving access to libraries, objects and binaries.
 
 **Environment**
   
@@ -76,6 +77,5 @@ S3COM does not account for sub-grid variability of cloud properties. It should b
 
 ## License
 
-S3COM is available under a BSD 3-clause license.
-Please see [LICENSE](LICENSE) for details.
+S3COM is available under a BSD 3-clause license. See [LICENSE](https://github.com/odrans/S3COM/blob/main/LICENSE) for details.
 

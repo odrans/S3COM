@@ -1,19 +1,34 @@
 # Environments and job scripts for specific servers
 
+S3COM can be executed localy as well as on supercomputers. Note that all libraries, including RTTOV, must be compiled with openMP or similar to allow for parallelization (see `rttov_nthreads` option in namelist).
+
 ## Levante
 
-The following modules can be loaded to run S3COM interactively:
+Example of modules to load to run RTTOV with multiple threads. 
 
+With intel compilers:
 ```bash
 module purge
 module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 \
-    openmpi/4.1.2-intel-2021.5.0 \
-    netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 \
-    netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 \
-    hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0
+            openmpi/4.1.2-intel-2021.5.0 \
+            netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 \
+            netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 \
+            hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0 \
+            eccodes/2.21.0-intel-2021.5.0
 ```
 
-Example of job script (edit project number):
+With gcc compilers:
+```bash
+module load gcc/11.2.0-gcc-11.2.0 \
+            openmpi/4.1.2-gcc-11.2.0 \
+            parallel-netcdf/1.12.2-openmpi-4.1.2-gcc-11.2.0 \
+            netcdf-fortran/4.5.3-openmpi-4.1.2-gcc-11.2.0 \
+            netcdf-c/4.8.1-openmpi-4.1.2-gcc-11.2.0 \
+            hdf5/1.12.1-openmpi-4.1.2-gcc-11.2.0 \
+            eccodes/2.21.0-gcc-11.2.0
+```
+
+Job script (edit project number):
 
 ```bash
 #!/bin/bash

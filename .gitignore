@@ -40,5 +40,9 @@ s3com
 *_legcoef_*
 
 # Doxygen html and latex
-doc/Doxygen/html
-doc/Doxygen/latex
+docs/Doxygen/html
+docs/Doxygen/latex
+
+# Personal
+Makefile.local
+test.nml

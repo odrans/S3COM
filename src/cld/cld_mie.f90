@@ -27,8 +27,7 @@
 ! Apr 2023 - O. Sourdeval - Original version
 
 !> @brief Allocate and load the user-defined Mie cloud properties
-!! @details
-!!  This module contains the subroutines needed to load the user-defined Mie cloud properties:
+!! @details This module contains the following subroutines:
 !!  - `cld_mie_load`: general call to subroutines needed to load optical properties for liquid clouds from user-defined files
 !!  - `cld_mie_read`: initializes the cld_mie structure and loads the Mie scattering data from a netCDF file
 module mod_cld_mie
@@ -56,8 +55,8 @@ contains
   !!   generated from a Mie code. They are loaded for a given instrument. S3COM stops if the property files are not found.
   !!
   !!   These stored Mie optical properties later required by RTTOV are:
-  !!   - the absorption cross-section (in um^2)
-  !!   - the scattering cross-section (in um^2)
+  !!   - the absorption cross-section @units{um^2}
+  !!   - the scattering cross-section @units{um^2}
   !!   - the phase function for defined angles
   !!   - the legendre coefficients of the phase function
   !!
@@ -108,7 +107,7 @@ contains
   !!   - nrad: number of radius on which Mie properties are defined
   !!   - nang: number of angles on which the phase function is computed
   !!   - chan_id: ID of the instrument channel in RTTOV
-  !!   - radius: effective radii (in um)
+  !!   - radius: effective radii @units{um}
   !!   - angle: phase function angles (in degrees)
   !!   - Csca: the scattering cross-section coefficient (in um^2). Computed as Cext * w0, with
   !!   Cext the extinction cross-section and w0 the single-scattering albedo
