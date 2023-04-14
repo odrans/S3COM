@@ -18,6 +18,8 @@ cd S3COM
 make
 ```
 
+More details in the [intall section](docs/install.md)
+
 <details>
   <summary> <b>Click here</b> for more details on S3COM dependencies and environment.</summary>
 
