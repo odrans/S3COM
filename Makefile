@@ -26,15 +26,36 @@
 #  History
 #  Jan 2022 - O. Sourdeval - Original version
 
+ # module load intel-oneapi-compilers/2022.0.1-gcc-11.2.0 \
+ #    openmpi/4.1.2-intel-2021.5.0 \
+ #    parallel-netcdf/1.12.2-openmpi-4.1.2-intel-2021.5.0 \
+ #    netcdf-fortran/4.5.3-openmpi-4.1.2-intel-2021.5.0 \
+ #    netcdf-c/4.8.1-openmpi-4.1.2-intel-2021.5.0 \
+ #    hdf5/1.12.1-openmpi-4.1.2-intel-2021.5.0 \
+ #    eccodes/2.21.0-intel-2021.5.0
+
+
+ # module load gcc/11.2.0-gcc-11.2.0 \
+ #    openmpi/4.1.2-gcc-11.2.0 \
+ #    parallel-netcdf/1.12.2-openmpi-4.1.2-gcc-11.2.0 \
+ #    netcdf-fortran/4.5.3-openmpi-4.1.2-gcc-11.2.0 \
+ #    netcdf-c/4.8.1-openmpi-4.1.2-gcc-11.2.0 \
+ #    hdf5/1.12.1-openmpi-4.1.2-gcc-11.2.0 \
+ #    eccodes/2.21.0-gcc-11.2.0
+
 prog = s3com
 
+# Compiler (supported: gfortran, ifort)
 F90 = gfortran
+# Debug mode (true or false)
+DEBUG = true
 
 ifeq ($(F90),gfortran)
     F90FLAGS_DEBUG = -g -Wall -Wextra -pedantic -std=f2008 -fbounds-check -fimplicit-none -ffpe-trap=invalid,zero,overflow
-    F90FLAGS = -J$(mod) -cpp -fopenmp -ffree-line-length-none $(F90FLAGS_DEBUG)
+    F90FLAGS = -J$(mod) -cpp -fopenmp -ffree-line-length-none $(if $(DEBUG), $(F90FLAGS_DEBUG))
 else ifeq ($(F90),ifort)
-    F90FLAGS = -module $(mod) -fpp -qopenmp -g -debug extended  -fp-stack-check -warn all
+    F90FLAGS_DEBUG = -g -debug extended  -fp-stack-check -warn all
+    F90FLAGS = -module $(mod) -fpp -qopenmp $(if $(DEBUG), $(F90FLAGS_DEBUG))
 else
     $(error Unsupported compiler: $(F90))
 endif
@@ -48,7 +69,7 @@ ifeq ($(F90),gfortran)
     PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-jlxcfz
     PATH_HDF5 = /sw/spack-levante/hdf5-1.12.1-kxfaux
 else ifeq ($(F90),ifort)
-    PATH_RTTOV = /work/bb1036/rttov_share/rttov132-intel
+    PATH_RTTOV = /work/bb1036/rttov_share/rttov132-ifort
     PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-2k3cmu
     PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g
     PATH_HDF5 = /sw/spack-levante/hdf5-1.12.1-tvymb5
@@ -161,6 +182,7 @@ install: $(LIST_OBJ)
 	ar r $(LIB_UTILS) $(LIST_OBJ_UTILS)
 	ar r $(LIB_MAIN) $(LIST_OBJ_MAIN)
 	ar r $(LIB_CLD) $(LIST_OBJ_CLD)
+	ar r $(LIB_OE) $(LIST_OBJ_OE)
 	ar r $(LIB_MODELS) $(LIST_OBJ_MODELS)
 	ar r $(LIB_IO) $(LIST_OBJ_IO)
 	ar r $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
