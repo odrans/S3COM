@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>S3COM: Satellite Simulator and Sandbox for Cloud Observation and Modelling</title>
+<title>S3COM: How to install S3COM</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -79,7 +79,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -101,78 +100,77 @@ $(function() {
 </div>
 </div>
 
+</div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">Satellite Simulator and Sandbox for Cloud Observation and Modelling </div></div>
+  <div class="headertitle"><div class="title">How to install S3COM </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p ><a class="anchor" id="md_README"></a></p>
-<p ><b>A satellite simulator and retrieval sandbox tool for cloud studies.</b></p>
-<p >S3COM is a tool at the interface of high-resolution modeling and satellite observations. It aims to make cloud studies a little easier by</p><ul>
-<li>Simulating realistic satellite observations and cloud products from model outputs</li>
-<li>Quantifying the sensitivity of radiative quantities to cloud parameters (in progress)</li>
-<li>Assisting the development of retrieval algorithms using output fields from high-resolution models (in progress)</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md14"></a>
-Install</h1>
-<p >S3COM can be installed via its makefile: </p><div class="fragment"><div class="line">git clone https://github.com/odrans/S3COM.git</div>
-<div class="line">cd S3COM</div>
-<div class="line">make</div>
-</div><!-- fragment --><p >More details in the <a class="el" href="md_docs_install.html">intall section</a></p>
-<details >
-<p ><summary> <b>Click here</b> for more details on S3COM dependencies and environment.</summary></p>
-<p ><b>Dependencies</b></p>
-<p >The following dependencies are needed and require path adjustments in the Makefile:</p><ul>
-<li><a href="https://www.unidata.ucar.edu/software/netcdf/">NetCDF4</a> (C and Fortran)<ul>
-<li><b>Makefile path:</b> <code>PATH_NETCDF_C</code>, <code>PATH_NETCDF_F</code></li>
+<div class="textblock"><p >This guide will help you install the required dependencies for S3COM: HDF5, NetCDF4, and RTTOV.</p>
+<h1><a class="anchor" id="autotoc_md3"></a>
+RTTOV</h1>
+<p >Follow the instructions on the <a href="https://nwp-saf.eumetsat.int/site/software/rttov/rttov-v13">EUMETSAT webiste</a> on how to install RTTOV.</p>
+<p >Briefly:</p><ul>
+<li>Create an account if you haven't already</li>
+<li>Register for RTTOV v13 (version currently supported for S3COM)</li>
+<li>download rttov{version}.tar.xz and untar it, e.g. <div class="fragment"><div class="line">mkdir rttov132</div>
+<div class="line">cd rttov132</div>
+<div class="line">tar xf rttov132.tar.xz</div>
+</div><!-- fragment --></li>
+<li>download the gas, aerosol and cloud coefficient files: <div class="fragment"><div class="line">cd rtcoef_rttov13</div>
+<div class="line">./rttov_coef_download.sh</div>
+</div><!-- fragment --><ul>
+<li>download all coefficients if unsure of what you need.</li>
 </ul>
 </li>
-<li><a href="https://www.hdfgroup.org/solutions/hdf5/">HDF5</a><ul>
-<li><b>Makefile path:</b> <code>PATH_HDF5</code></li>
+<li>download the necessary <a href="https://nwp-saf.eumetsat.int/site/software/rttov/download">emissivity atlases</a><ul>
+<li>to be stored in <code>emis_data</code></li>
+<li>Example of script for downloading the entire emissivity atlas dataset: <div class="fragment"><div class="line">#!/bin/bash</div>
+<div class="line"> </div>
+<div class="line">urls=(</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/uw_ir_emis_atlas_hdf5.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/camel_emis_atlas_v01r02.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/uw_ir_emis_atlas_angcorr_hdf5.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/camel_clim_emis_atlas_pchsr.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/camel_clim_emis_atlas_jan-mar.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/camel_clim_emis_atlas_apr-jun.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/camel_clim_emis_atlas_jul-sep.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/camel_clim_emis_atlas_oct-dec.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/uw_ir_emis_atlas_angcorr_hdf5.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/telsem2_mw_atlas.tar.bz2&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/cnrm_mwemis_amsu_mhs_data.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/cnrm_mwemis_atms_data.tar&quot;</div>
+<div class="line">    &quot;https://nwp-saf.eumetsat.int/downloads/emis_data/cnrm_mwemis_ssmis_data.tar&quot;</div>
+<div class="line">)</div>
+<div class="line"> </div>
+<div class="line">for url in &quot;${urls[@]}&quot;; do</div>
+<div class="line">    filename=$(basename &quot;$url&quot;)</div>
+<div class="line">    wget &quot;$url&quot; &amp;&amp; tar xf &quot;$filename&quot; &amp;&amp; rm &quot;$filename&quot;</div>
+<div class="line">done</div>
+</div><!-- fragment --></li>
 </ul>
 </li>
-<li><a href="https://nwp-saf.eumetsat.int/site/software/rttov">RTTOV</a><ul>
-<li>RTTOV v13 is the main radiative transfer code in S3COM.</li>
-<li><b>Makefile path:</b> <code>PATH_RTTOV</code></li>
-<li><b>Notes:</b><ul>
-<li>RTTOV can be installed following these <a href="https://nwp-saf.eumetsat.int/site/software/rttov/rttov-v13/#Installing_RTTOV_v132">instructions</a>. Note that it requires NetCDF4 and HDF5 to be explicitely linked in its <code>build/Makefile.local</code> file before running <code>rttov_compile.sh</code>.</li>
-<li>Depending on the spectrum of simulated instruments, adequate <a href="https://nwp-saf.eumetsat.int/site/software/rttov/download/coefficients/coefficient-download/">coefficient files</a> and <a href="https://nwp-saf.eumetsat.int/site/software/rttov/download/#Emissivity_BRDF_atlas_data">BRDF / emissivity atlases</a> should be downloaded and included in the RTTOV repository.</li>
-<li>Following RTTOV recommendations, it is advised to raise the system stack size: <code>ulimit -s unlimited</code>.</li>
+<li>Simiarly download the BRDF atlas<ul>
+<li>to be stored in <code>brdf_data</code></li>
+<li>As of v13.2, a single file to download: <div class="fragment"><div class="line">wget https://nwp-saf.eumetsat.int/downloads/brdf_data/cms_brdf_atlas_hdf5.tar</div>
+<div class="line">tar xf cms_brdf_atlas_hdf5.tar</div>
+</div><!-- fragment --></li>
+</ul>
+</li>
+<li>edit the following variables in <code>build/Makefile.local</code>:<ul>
+<li><code>HDF5_PREFIX</code>: path to <code>hdf5</code>. Also uncomment <code>FFLAGS_HDF5</code> and <code>LDFLAGS_HDF5</code>. Make sure that the hdf5hl library is <code>-lhdf5hl_fortran</code>, and <b>not</b> <code>-lhdf5_hl_fortran</code> (bug in RTTOV v13).</li>
+<li><code>NETCDF_PREFIX</code>: path to <code>netcdf-fortran</code> (also uncomment <code>FFLAGS_NETCDF</code> and <code>LDFLAGS_NETCDF</code>)</li>
+<li>We advise to use LAPACK libraries contained in RTTOV (i.e. keep <code>LAPACK_PREFIX</code> commented)</li>
+</ul>
+</li>
+<li>Compile RTTOV using the interactive script: <div class="fragment"><div class="line">cd src</div>
+<div class="line">../build/rttov_compile.sh</div>
+</div><!-- fragment --><ul>
+<li>S3COM has been tested with ifort and gfortran. Use <code>gfortran-openmp</code> and <code>ifort-openmp</code> for OpenMP support and multithread use of S3COM. </li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-<p >All Makefile paths refer to base repositories giving access to libraries, objects and binaries.</p>
-<p ><b>Environment</b></p>
-<p ><code>PATH_S3COM</code> should be set in Makefile to indicate where S3COM is installed.</p>
-<p ><a class="el" href="md_docs_environment.html">The environment section</a> provides advised settings on specific supercomputers.</p>
-<p ></p>
-</details>
-<p >Note: Run <code>make clean</code> to remove all built binaries, libraries and objects.</p>
-<h1><a class="anchor" id="autotoc_md15"></a>
-Usage</h1>
-<p >S3COM requires the path to a namelist file as main argument:</p>
-<div class="fragment"><div class="line">./s3com config_default.nml</div>
-</div><!-- fragment --><p> The namelist contains information on input and output files as well as important options to run S3COM. Refer to the <a class="el" href="md_docs_namelist.html">namelist section</a> for a detailed description.</p>
-<p ><b>S3COM outputs</b> are 3 files containing satellite simulations, retrievals and atmospheric data. See the <a class="el" href="md_docs_outputs.html">output section</a>.</p>
-<h1><a class="anchor" id="autotoc_md16"></a>
-Current limitations</h1>
-<ul>
-<li>The current version is only configured to handle simulations from the <b>ICON</b> model. Some adjustments will be necessary to use outputs from another model.</li>
-<li>S3COM only simulates measurements from passive remote-sensing sensors.</li>
-<li>Polarization and 3D effects are not included.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md17"></a>
-R package</h1>
-<p >The <a href="https://github.com/odrans/Rs3com">Rs3com</a> package was developed to conveniently create namelist files, run the algorithm, read its input and output and create basic figures.</p>
-<h1><a class="anchor" id="autotoc_md18"></a>
-Caution</h1>
-<p >S3COM does not account for sub-grid variability of cloud properties. It should be used on atmospheric model simulations with a spatial resolutions similar or higher than that of the selected satellite instruments, ideally from CRMs or LES models. It is advised against using S3COM on GCM outputs; for such use we advise more dedicated satellite simulators, such as <a href="https://github.com/CFMIP/COSPv2.0">COSPv2</a>.</p>
-<h1><a class="anchor" id="autotoc_md19"></a>
-License</h1>
-<p >S3COM is available under a BSD 3-clause license. See <a href="https://github.com/odrans/S3COM/blob/main/LICENSE">LICENSE</a> for details. </p>
-</div></div><!-- PageDoc -->
-</div><!-- contents -->
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
