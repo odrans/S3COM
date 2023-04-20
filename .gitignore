@@ -35,6 +35,7 @@ s3com
 # Temporary & save files
 *~
 *#*
+s3com.dSYM
 
 # Legendre coefficient files
 *_legcoef_*
