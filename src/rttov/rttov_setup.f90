@@ -28,113 +28,124 @@
 !
 
 module mod_rttov_setup
-
-  use s3com_types, only: wp, type_model
-
-  implicit none
-
-  private
-  public :: rttov_setup_opt, rttov_setup_atm
-
+   
+   use s3com_types, only: wp, type_model
+   
+   implicit none
+   
+   private
+   public :: rttov_setup_opt, rttov_setup_atm
+   
 contains
-
-  subroutine rttov_setup_opt(nml, zenangle, azangle, rttov_opt, s3com)
-
-    use s3com_types,  only: type_rttov_opt, type_nml, type_s3com
-
-    type(type_nml), intent(in) :: nml
-    type(type_s3com), intent(inout) :: s3com
-
-    real(wp), intent(in) :: zenangle, azangle
-
-    type(type_rttov_opt), intent(out) :: rttov_opt
-
-    rttov_opt%platform   = nml%platform
-    rttov_opt%satellite  = nml%satellite
-    rttov_opt%instrument = nml%instrument
-    rttov_opt%dosolar    = 1
-    rttov_opt%nchannels  = nml%nchannels
-    rttov_opt%nthreads = nml%rttov_nthreads
-
-    rttov_opt%ir_scatt_model = nml%ir_scatt_model
-    rttov_opt%vis_scatt_model = nml%vis_scatt_model
-
-    rttov_opt%do_opdep_calc = nml%do_opdep_calc
-    rttov_opt%dom_nstreams = nml%dom_nstreams
-    rttov_opt%dom_nmoments = nml%dom_nmoments
-    rttov_opt%dom_rayleigh = nml%dom_rayleigh
-
-    rttov_opt%add_refrac = nml%add_refrac
-    rttov_opt%add_clouds = nml%add_clouds
-    rttov_opt%add_aerosols = nml%add_aerosols
-
-    rttov_opt%gas_units = 1 ! Units: kg/kg
-    rttov_opt%mmr_cldaer = nml%mmr_cldaer
-
-    rttov_opt%user_cld_opt_param = nml%user_cld_opt_param
-    rttov_opt%ice_scheme = nml%ice_scheme
-    rttov_opt%clw_scheme = nml%clw_scheme
-
-    rttov_opt%ozone_data = nml%ozone_data
-    rttov_opt%co2_data   = .false.
-    rttov_opt%n2o_data   = .false.
-    rttov_opt%ch4_data   = .false.
-    rttov_opt%co_data    = .false.
-    rttov_opt%so2_data   = .false.
-
-    allocate(rttov_opt%channel_list(rttov_opt%nchannels))
-
-    rttov_opt%channel_list = nml%channel_list
-    rttov_opt%month        = s3com%date(2)
-    rttov_opt%zenangle     = zenangle
-    rttov_opt%azangle      = azangle
-
-    s3com%opt%rttov = rttov_opt
-
-  end subroutine rttov_setup_opt
-
-  subroutine rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
-
-    integer, intent(in)            :: idx_start, idx_end
-    type(type_model), intent(in)   :: model
-
-    type(type_model), intent(out)  :: rttov_atm
-
-    integer :: nidx
-
-    nidx = idx_end - idx_start + 1
-
-    rttov_atm%npoints     = nidx
-    rttov_atm%idx_start   = idx_start
-    rttov_atm%idx_end     = idx_end
-    rttov_atm%nlevels     = model%nlevels
-    rttov_atm%nlayers     = model%nlayers
-
-    rttov_atm%lat         = model%lat(idx_start:idx_end)
-    rttov_atm%lon         = model%lon(idx_start:idx_end)
-    rttov_atm%landmask    = model%landmask(idx_start:idx_end)
-    rttov_atm%topography  = model%topography(idx_start:idx_end)
-    rttov_atm%ps          = model%ps(idx_start:idx_end)
-    rttov_atm%ts          = model%ts(idx_start:idx_end)
-    rttov_atm%t_2m        = model%t_2m(idx_start:idx_end)
-    rttov_atm%q_2m        = model%q_2m(idx_start:idx_end)
-    rttov_atm%u_10m       = model%u_10m(idx_start:idx_end)
-    rttov_atm%v_10m       = model%v_10m(idx_start:idx_end)
-    rttov_atm%sunzenangle = model%sunzenangle(idx_start:idx_end)
-    rttov_atm%sunazangle  = model%sunazangle(idx_start:idx_end)
-
-    rttov_atm%p           = model%p(idx_start:idx_end,:)
-    rttov_atm%z           = model%z(idx_start:idx_end,:)
-    rttov_atm%t           = model%t(idx_start:idx_end,:)
-    rttov_atm%q           = model%q(idx_start:idx_end,:)
-    rttov_atm%clc         = model%clc(idx_start:idx_end,:)
-    rttov_atm%iwc         = model%iwc(idx_start:idx_end,:)
-    rttov_atm%lwc         = model%lwc(idx_start:idx_end,:)
-    rttov_atm%reff        = model%reff(idx_start:idx_end,:)
-    rttov_atm%cdnc        = model%cdnc(idx_start:idx_end,:)
-
-  end subroutine rttov_setup_atm
-
-
-
+   
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   subroutine rttov_setup_opt(nml, zenangle, azangle, rttov_opt, s3com)
+      
+      use s3com_types, only: type_rttov_opt, type_nml, type_s3com
+      
+      ! Inputs
+      type(type_nml), intent(in) :: nml
+      real(wp), intent(in) :: zenangle, azangle
+      
+      ! Inputs/outputs
+      type(type_s3com), intent(inout) :: s3com
+      
+      ! Outputs
+      type(type_rttov_opt), intent(out) :: rttov_opt
+      
+      rttov_opt%platform   = nml%platform
+      rttov_opt%satellite  = nml%satellite
+      rttov_opt%instrument = nml%instrument
+      rttov_opt%dosolar    = 1
+      rttov_opt%nchannels  = nml%nchannels
+      rttov_opt%nthreads = nml%rttov_nthreads
+      
+      rttov_opt%ir_scatt_model = nml%ir_scatt_model
+      rttov_opt%vis_scatt_model = nml%vis_scatt_model
+      
+      rttov_opt%do_opdep_calc = nml%do_opdep_calc
+      rttov_opt%dom_nstreams = nml%dom_nstreams
+      rttov_opt%dom_nmoments = nml%dom_nmoments
+      rttov_opt%dom_rayleigh = nml%dom_rayleigh
+      
+      rttov_opt%add_refrac = nml%add_refrac
+      rttov_opt%add_clouds = nml%add_clouds
+      rttov_opt%add_aerosols = nml%add_aerosols
+      
+      rttov_opt%gas_units = 1 ! Units: kg/kg
+      rttov_opt%mmr_cldaer = nml%mmr_cldaer
+      
+      rttov_opt%user_cld_opt_param = nml%user_cld_opt_param
+      rttov_opt%ice_scheme = nml%ice_scheme
+      rttov_opt%clw_scheme = nml%clw_scheme
+      
+      rttov_opt%ozone_data = nml%ozone_data
+      rttov_opt%co2_data   = .false.
+      rttov_opt%n2o_data   = .false.
+      rttov_opt%ch4_data   = .false.
+      rttov_opt%co_data    = .false.
+      rttov_opt%so2_data   = .false.
+      
+      allocate(rttov_opt%channel_list(rttov_opt%nchannels))
+      
+      rttov_opt%channel_list = nml%channel_list
+      rttov_opt%month        = s3com%date(2)
+      rttov_opt%zenangle     = zenangle
+      rttov_opt%azangle      = azangle
+      
+      s3com%opt%rttov = rttov_opt
+      
+   end subroutine rttov_setup_opt
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   subroutine rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
+      
+      ! Inputs
+      integer, intent(in)           :: idx_start, idx_end
+      type(type_model), intent(in)  :: model
+      
+      ! Outputs
+      type(type_model), intent(out) :: rttov_atm
+      
+      ! Internal
+      integer :: nidx
+      
+      nidx = idx_end - idx_start + 1
+      
+      rttov_atm%npoints     = nidx
+      rttov_atm%idx_start   = idx_start
+      rttov_atm%idx_end     = idx_end
+      rttov_atm%nlevels     = model%nlevels
+      rttov_atm%nlayers     = model%nlayers
+      
+      rttov_atm%lat         = model%lat(idx_start:idx_end)
+      rttov_atm%lon         = model%lon(idx_start:idx_end)
+      rttov_atm%landmask    = model%landmask(idx_start:idx_end)
+      rttov_atm%topography  = model%topography(idx_start:idx_end)
+      rttov_atm%ps          = model%ps(idx_start:idx_end)
+      rttov_atm%ts          = model%ts(idx_start:idx_end)
+      rttov_atm%t_2m        = model%t_2m(idx_start:idx_end)
+      rttov_atm%q_2m        = model%q_2m(idx_start:idx_end)
+      rttov_atm%u_10m       = model%u_10m(idx_start:idx_end)
+      rttov_atm%v_10m       = model%v_10m(idx_start:idx_end)
+      rttov_atm%lwp         = model%lwp(idx_start:idx_end)
+      rttov_atm%cod         = model%cod(idx_start:idx_end)
+      rttov_atm%sunzenangle = model%sunzenangle(idx_start:idx_end)
+      rttov_atm%sunazangle  = model%sunazangle(idx_start:idx_end)
+      
+      rttov_atm%z           = model%z(idx_start:idx_end,:)
+      rttov_atm%p           = model%p(idx_start:idx_end,:)    
+      rttov_atm%t           = model%t(idx_start:idx_end,:)
+      rttov_atm%q           = model%q(idx_start:idx_end,:)
+      rttov_atm%clc         = model%clc(idx_start:idx_end,:)
+      rttov_atm%iwc         = model%iwc(idx_start:idx_end,:)
+      rttov_atm%lwc         = model%lwc(idx_start:idx_end,:)
+      rttov_atm%reff        = model%reff(idx_start:idx_end,:)
+      rttov_atm%cdnc        = model%cdnc(idx_start:idx_end,:)
+      rttov_atm%dz          = model%dz(idx_start:idx_end,:)
+      
+   end subroutine rttov_setup_atm
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   
 end module mod_rttov_setup
