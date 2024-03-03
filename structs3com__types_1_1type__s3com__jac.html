@@ -118,26 +118,38 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aafd2fd26448825e271c7424e555123c3"><td class="memItemLeft" align="right" valign="top"><a id="aafd2fd26448825e271c7424e555123c3" name="aafd2fd26448825e271c7424e555123c3"></a>
-real(kind=wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength</b></td></tr>
-<tr class="memdesc:aafd2fd26448825e271c7424e555123c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wavelength <span class="units">um</span> <br /></td></tr>
-<tr class="separator:aafd2fd26448825e271c7424e555123c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae636aa09b34beb8cc4672dc5a65b29ae"><td class="memItemLeft" align="right" valign="top"><a id="ae636aa09b34beb8cc4672dc5a65b29ae" name="ae636aa09b34beb8cc4672dc5a65b29ae"></a>
-real(kind=wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>p</b></td></tr>
-<tr class="memdesc:ae636aa09b34beb8cc4672dc5a65b29ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the pressure <span class="units">W m-2 sr-1 um-1 Pa-1</span> <br /></td></tr>
-<tr class="separator:ae636aa09b34beb8cc4672dc5a65b29ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac690b1f4b641976d275b358127dfdff0"><td class="memItemLeft" align="right" valign="top"><a id="ac690b1f4b641976d275b358127dfdff0" name="ac690b1f4b641976d275b358127dfdff0"></a>
-real(kind=wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>t</b></td></tr>
-<tr class="memdesc:ac690b1f4b641976d275b358127dfdff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the temperature <span class="units">W m-2 sr-1 um-1 K-1</span> <br /></td></tr>
-<tr class="separator:ac690b1f4b641976d275b358127dfdff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93a9ea28c2fa451822a3df3341d806e5"><td class="memItemLeft" align="right" valign="top"><a id="a93a9ea28c2fa451822a3df3341d806e5" name="a93a9ea28c2fa451822a3df3341d806e5"></a>
-real(kind=wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cfrac</b></td></tr>
-<tr class="memdesc:a93a9ea28c2fa451822a3df3341d806e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the cloud fraction <span class="units">W m-2 sr-1 um-1</span> <br /></td></tr>
-<tr class="separator:a93a9ea28c2fa451822a3df3341d806e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5f365e4b77a511a09f69d2a475d62b9"><td class="memItemLeft" align="right" valign="top"><a id="ae5f365e4b77a511a09f69d2a475d62b9" name="ae5f365e4b77a511a09f69d2a475d62b9"></a>
-real(kind=wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>clwde</b></td></tr>
-<tr class="memdesc:ae5f365e4b77a511a09f69d2a475d62b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the cloud droplet effective diameter <span class="units">W m-2 sr-1 um-1 um-1</span> <br /></td></tr>
-<tr class="separator:ae5f365e4b77a511a09f69d2a475d62b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96bf9d652f273655a3524e4dacaed1af"><td class="memItemLeft" align="right" valign="top"><a id="a96bf9d652f273655a3524e4dacaed1af" name="a96bf9d652f273655a3524e4dacaed1af"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength</b></td></tr>
+<tr class="memdesc:a96bf9d652f273655a3524e4dacaed1af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wavelength <span class="units">um</span> <br /></td></tr>
+<tr class="separator:a96bf9d652f273655a3524e4dacaed1af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a8ce54d5b48bf5e0f4269ea744a5773"><td class="memItemLeft" align="right" valign="top"><a id="a3a8ce54d5b48bf5e0f4269ea744a5773" name="a3a8ce54d5b48bf5e0f4269ea744a5773"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>brdf</b></td></tr>
+<tr class="memdesc:a3a8ce54d5b48bf5e0f4269ea744a5773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the reflectance <span class="units">W m-2 sr-1 um-1</span> <br /></td></tr>
+<tr class="separator:a3a8ce54d5b48bf5e0f4269ea744a5773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adde04a97ed6be086cf208039e7100356"><td class="memItemLeft" align="right" valign="top"><a id="adde04a97ed6be086cf208039e7100356" name="adde04a97ed6be086cf208039e7100356"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>emiss</b></td></tr>
+<tr class="memdesc:adde04a97ed6be086cf208039e7100356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the emissivity <span class="units">W m-2 sr-1 um-1</span> <br /></td></tr>
+<tr class="separator:adde04a97ed6be086cf208039e7100356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedb450fdb693b79d096a5742930f3d8f"><td class="memItemLeft" align="right" valign="top"><a id="aedb450fdb693b79d096a5742930f3d8f" name="aedb450fdb693b79d096a5742930f3d8f"></a>
+real(wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>p</b></td></tr>
+<tr class="memdesc:aedb450fdb693b79d096a5742930f3d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the pressure <span class="units">W m-2 sr-1 um-1 Pa-1</span> <br /></td></tr>
+<tr class="separator:aedb450fdb693b79d096a5742930f3d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac1cc7cd8a005237085cc754364c649d"><td class="memItemLeft" align="right" valign="top"><a id="aac1cc7cd8a005237085cc754364c649d" name="aac1cc7cd8a005237085cc754364c649d"></a>
+real(wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>t</b></td></tr>
+<tr class="memdesc:aac1cc7cd8a005237085cc754364c649d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the temperature <span class="units">W m-2 sr-1 um-1 K-1</span> <br /></td></tr>
+<tr class="separator:aac1cc7cd8a005237085cc754364c649d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9956a13c3e120fbbb24d26ffe446a0d6"><td class="memItemLeft" align="right" valign="top"><a id="a9956a13c3e120fbbb24d26ffe446a0d6" name="a9956a13c3e120fbbb24d26ffe446a0d6"></a>
+real(wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>q</b></td></tr>
+<tr class="memdesc:a9956a13c3e120fbbb24d26ffe446a0d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the humidity <span class="units">W m-2 sr-1 um-1 kg-1 kg</span> <br /></td></tr>
+<tr class="separator:a9956a13c3e120fbbb24d26ffe446a0d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b2809b379dfc4774e255fafc5c72f29"><td class="memItemLeft" align="right" valign="top"><a id="a2b2809b379dfc4774e255fafc5c72f29" name="a2b2809b379dfc4774e255fafc5c72f29"></a>
+real(wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cfrac</b></td></tr>
+<tr class="memdesc:a2b2809b379dfc4774e255fafc5c72f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the cloud fraction <span class="units">W m-2 sr-1 um-1</span> <br /></td></tr>
+<tr class="separator:a2b2809b379dfc4774e255fafc5c72f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94806b3edde76f4ac36ef9f0156218dd"><td class="memItemLeft" align="right" valign="top"><a id="a94806b3edde76f4ac36ef9f0156218dd" name="a94806b3edde76f4ac36ef9f0156218dd"></a>
+real(wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>clwde</b></td></tr>
+<tr class="memdesc:a94806b3edde76f4ac36ef9f0156218dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jacobian of the forward model with respect to the cloud droplet effective diameter <span class="units">W m-2 sr-1 um-1 um-1</span> <br /></td></tr>
+<tr class="separator:a94806b3edde76f4ac36ef9f0156218dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a189f5faa57fc41c4c5b7ab22f85674bd"><td class="memItemLeft" align="right" valign="top"><a id="a189f5faa57fc41c4c5b7ab22f85674bd" name="a189f5faa57fc41c4c5b7ab22f85674bd"></a>
 logical&#160;</td><td class="memItemRight" valign="bottom"><b>do_jacobian_calc</b></td></tr>
 <tr class="memdesc:a189f5faa57fc41c4c5b7ab22f85674bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to specify if Jacobian matrices should be calculated. <br /></td></tr>
@@ -145,7 +157,7 @@ logical&#160;</td><td class="memItemRight" valign="bottom"><b>do_jacobian_calc</
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >S3COM structure for Jacobian calculations. </p>
-<dl class="section note"><dt>Note</dt><dd>RTTOV outputs the gradient of each forward model radiance with respect to each input profile variable evaluated for a given input profile. The input perturbation is here set to a unit radiance (BT are also possible). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>RTTOV outputs the gradient of each forward model radiance with respect to each input profile variable evaluated for </dd></dl>
 </div><hr/>The documentation for this type was generated from the following file:<ul>
 <li>src/conf/types.f90</li>
 </ul>

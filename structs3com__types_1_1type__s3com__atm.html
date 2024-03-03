@@ -118,34 +118,41 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4de8b3bb4190952fdd8390418dfa5afc"><td class="memItemLeft" align="right" valign="top"><a id="a4de8b3bb4190952fdd8390418dfa5afc" name="a4de8b3bb4190952fdd8390418dfa5afc"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>t</b></td></tr>
-<tr class="memdesc:a4de8b3bb4190952fdd8390418dfa5afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature on levels <span class="units">K</span> <br /></td></tr>
-<tr class="separator:a4de8b3bb4190952fdd8390418dfa5afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67228fb3c3942aa2f77d804d1afcf6b2"><td class="memItemLeft" align="right" valign="top"><a id="a67228fb3c3942aa2f77d804d1afcf6b2" name="a67228fb3c3942aa2f77d804d1afcf6b2"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>z</b></td></tr>
-<tr class="memdesc:a67228fb3c3942aa2f77d804d1afcf6b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Altitude on levels <span class="units">m</span> <br /></td></tr>
-<tr class="separator:a67228fb3c3942aa2f77d804d1afcf6b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09b4b09bba022bbf9208bc28fd9dee66"><td class="memItemLeft" align="right" valign="top"><a id="a09b4b09bba022bbf9208bc28fd9dee66" name="a09b4b09bba022bbf9208bc28fd9dee66"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>clc</b></td></tr>
-<tr class="memdesc:a09b4b09bba022bbf9208bc28fd9dee66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud fraction in layers <span class="units">-</span> <br /></td></tr>
-<tr class="separator:a09b4b09bba022bbf9208bc28fd9dee66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20619c26e5a0a77abf7d1843d96bee5d"><td class="memItemLeft" align="right" valign="top"><a id="a20619c26e5a0a77abf7d1843d96bee5d" name="a20619c26e5a0a77abf7d1843d96bee5d"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cdnc</b></td></tr>
-<tr class="memdesc:a20619c26e5a0a77abf7d1843d96bee5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud droplet number concentration in layers <span class="units"># m-3</span> <br /></td></tr>
-<tr class="separator:a20619c26e5a0a77abf7d1843d96bee5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8deafa002ca54ea3001105f589fc6488"><td class="memItemLeft" align="right" valign="top"><a id="a8deafa002ca54ea3001105f589fc6488" name="a8deafa002ca54ea3001105f589fc6488"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>reff</b></td></tr>
-<tr class="memdesc:a8deafa002ca54ea3001105f589fc6488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud droplet effective radius in layers <span class="units">um</span> <br /></td></tr>
-<tr class="separator:a8deafa002ca54ea3001105f589fc6488"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fb50fac1223e67c4a1caa4633a665fc"><td class="memItemLeft" align="right" valign="top"><a id="a8fb50fac1223e67c4a1caa4633a665fc" name="a8fb50fac1223e67c4a1caa4633a665fc"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwc</b></td></tr>
-<tr class="memdesc:a8fb50fac1223e67c4a1caa4633a665fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud liquid water content in layers <span class="units">kg m-2</span> <br /></td></tr>
-<tr class="separator:a8fb50fac1223e67c4a1caa4633a665fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a906900df4963d071a5998ff7fdde21aa"><td class="memItemLeft" align="right" valign="top"><a id="a906900df4963d071a5998ff7fdde21aa" name="a906900df4963d071a5998ff7fdde21aa"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cod</b></td></tr>
+<tr class="separator:a906900df4963d071a5998ff7fdde21aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd4d53946c5d4efd2b1ec641309f2a30"><td class="memItemLeft" align="right" valign="top"><a id="acd4d53946c5d4efd2b1ec641309f2a30" name="acd4d53946c5d4efd2b1ec641309f2a30"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>z</b></td></tr>
+<tr class="memdesc:acd4d53946c5d4efd2b1ec641309f2a30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Altitude in layers <span class="units">m</span> <br /></td></tr>
+<tr class="separator:acd4d53946c5d4efd2b1ec641309f2a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa274ba1f827b241104c0b7c8ba57f59d"><td class="memItemLeft" align="right" valign="top"><a id="aa274ba1f827b241104c0b7c8ba57f59d" name="aa274ba1f827b241104c0b7c8ba57f59d"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>dz</b></td></tr>
+<tr class="memdesc:aa274ba1f827b241104c0b7c8ba57f59d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer thickness <span class="units">m</span> <br /></td></tr>
+<tr class="separator:aa274ba1f827b241104c0b7c8ba57f59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13b9af9d99bfc2ab72212379e236530c"><td class="memItemLeft" align="right" valign="top"><a id="a13b9af9d99bfc2ab72212379e236530c" name="a13b9af9d99bfc2ab72212379e236530c"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>clc</b></td></tr>
+<tr class="memdesc:a13b9af9d99bfc2ab72212379e236530c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud fraction in layers <span class="units">-</span> <br /></td></tr>
+<tr class="separator:a13b9af9d99bfc2ab72212379e236530c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c3eaf5d7ebf07fc2bb2d37776384d77"><td class="memItemLeft" align="right" valign="top"><a id="a8c3eaf5d7ebf07fc2bb2d37776384d77" name="a8c3eaf5d7ebf07fc2bb2d37776384d77"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwc</b></td></tr>
+<tr class="memdesc:a8c3eaf5d7ebf07fc2bb2d37776384d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud liquid water content in layers <span class="units">kg m-2</span> <br /></td></tr>
+<tr class="separator:a8c3eaf5d7ebf07fc2bb2d37776384d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7843282c19552bcc2e7e8c35c07bb3dd"><td class="memItemLeft" align="right" valign="top"><a id="a7843282c19552bcc2e7e8c35c07bb3dd" name="a7843282c19552bcc2e7e8c35c07bb3dd"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cdnc</b></td></tr>
+<tr class="memdesc:a7843282c19552bcc2e7e8c35c07bb3dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud droplet number concentration in layers <span class="units"># m-3</span> <br /></td></tr>
+<tr class="separator:a7843282c19552bcc2e7e8c35c07bb3dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2653797433ff8945527f17166747489"><td class="memItemLeft" align="right" valign="top"><a id="af2653797433ff8945527f17166747489" name="af2653797433ff8945527f17166747489"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>reff</b></td></tr>
+<tr class="memdesc:af2653797433ff8945527f17166747489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud droplet effective radius in layers <span class="units">um</span> <br /></td></tr>
+<tr class="separator:af2653797433ff8945527f17166747489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a830acf5425860b817cbefd8ac57edea6"><td class="memItemLeft" align="right" valign="top"><a id="a830acf5425860b817cbefd8ac57edea6" name="a830acf5425860b817cbefd8ac57edea6"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>beta_ext</b></td></tr>
+<tr class="memdesc:a830acf5425860b817cbefd8ac57edea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud droplet extinction coefficient <span class="units">m-1</span> <br /></td></tr>
+<tr class="separator:a830acf5425860b817cbefd8ac57edea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >S3COM structure for atmospheric profiles. </p>
-<p >The atmospheric profiles are stored exactly as they have been used for forward model calculations When retrievals are activated, these can deviate from model outputs as the atmospheric model can be modified. When retrievals are not activated, these are identical to model outputs. </p>
+<p >The atmospheric profiles are stored exactly as they have been used for forward model calculations </p>
 </div><hr/>The documentation for this type was generated from the following file:<ul>
 <li>src/conf/types.f90</li>
 </ul>

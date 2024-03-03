@@ -118,42 +118,50 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab001917739c3a11f74e87e1ebad7deb3"><td class="memItemLeft" align="right" valign="top"><a id="ab001917739c3a11f74e87e1ebad7deb3" name="ab001917739c3a11f74e87e1ebad7deb3"></a>
-real(kind=wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength</b></td></tr>
-<tr class="memdesc:ab001917739c3a11f74e87e1ebad7deb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wavelength <span class="units">um</span> <br /></td></tr>
-<tr class="separator:ab001917739c3a11f74e87e1ebad7deb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2af30df58320b2e9e6d4d49d240a3c24"><td class="memItemLeft" align="right" valign="top"><a id="a2af30df58320b2e9e6d4d49d240a3c24" name="a2af30df58320b2e9e6d4d49d240a3c24"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>y</b></td></tr>
-<tr class="memdesc:a2af30df58320b2e9e6d4d49d240a3c24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Satellite measurements. Units will depend on type. <br /></td></tr>
-<tr class="separator:a2af30df58320b2e9e6d4d49d240a3c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacee1ce75dc3449b673f31d3b74009cc"><td class="memItemLeft" align="right" valign="top"><a id="aacee1ce75dc3449b673f31d3b74009cc" name="aacee1ce75dc3449b673f31d3b74009cc"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f</b></td></tr>
-<tr class="memdesc:aacee1ce75dc3449b673f31d3b74009cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward model simulations with same type and units as y. <br /></td></tr>
-<tr class="separator:aacee1ce75dc3449b673f31d3b74009cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32bdbf8e5c48bdca20f31129eed8f992"><td class="memItemLeft" align="right" valign="top"><a id="a32bdbf8e5c48bdca20f31129eed8f992" name="a32bdbf8e5c48bdca20f31129eed8f992"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_ref_total</b></td></tr>
-<tr class="memdesc:a32bdbf8e5c48bdca20f31129eed8f992"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total top-of-atmosphere outgoing reflectance <span class="units">-</span> <br /></td></tr>
-<tr class="separator:a32bdbf8e5c48bdca20f31129eed8f992"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae22f87e7183afa9f304ba7a2f77bc3c0"><td class="memItemLeft" align="right" valign="top"><a id="ae22f87e7183afa9f304ba7a2f77bc3c0" name="ae22f87e7183afa9f304ba7a2f77bc3c0"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_ref_clear</b></td></tr>
-<tr class="memdesc:ae22f87e7183afa9f304ba7a2f77bc3c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear-sky top-of-atmosphere outgoing reflectance <span class="units">-</span> <br /></td></tr>
-<tr class="separator:ae22f87e7183afa9f304ba7a2f77bc3c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2029d5fe9353aeefef24ff52652bb9ab"><td class="memItemLeft" align="right" valign="top"><a id="a2029d5fe9353aeefef24ff52652bb9ab" name="a2029d5fe9353aeefef24ff52652bb9ab"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_bt_total</b></td></tr>
-<tr class="memdesc:a2029d5fe9353aeefef24ff52652bb9ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total top-of-atmosphere brightness temperature <span class="units">K</span> <br /></td></tr>
-<tr class="separator:a2029d5fe9353aeefef24ff52652bb9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00298fbd22a3c7e25b5d9c18a5369936"><td class="memItemLeft" align="right" valign="top"><a id="a00298fbd22a3c7e25b5d9c18a5369936" name="a00298fbd22a3c7e25b5d9c18a5369936"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_bt_clear</b></td></tr>
-<tr class="memdesc:a00298fbd22a3c7e25b5d9c18a5369936"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear-sky top-of-atmosphere brightness temperature <span class="units">K</span> <br /></td></tr>
-<tr class="separator:a00298fbd22a3c7e25b5d9c18a5369936"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3a52495ff0b32c50626079724ed05b0"><td class="memItemLeft" align="right" valign="top"><a id="ad3a52495ff0b32c50626079724ed05b0" name="ad3a52495ff0b32c50626079724ed05b0"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_rad_total</b></td></tr>
-<tr class="memdesc:ad3a52495ff0b32c50626079724ed05b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total top-of-atmosphere radiance <span class="units">W m-2 sr-1 um-1</span> <br /></td></tr>
-<tr class="separator:ad3a52495ff0b32c50626079724ed05b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdd178ef4b7f84e9c595fd6c12a12d21"><td class="memItemLeft" align="right" valign="top"><a id="acdd178ef4b7f84e9c595fd6c12a12d21" name="acdd178ef4b7f84e9c595fd6c12a12d21"></a>
-real(kind=wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_rad_clear</b></td></tr>
-<tr class="memdesc:acdd178ef4b7f84e9c595fd6c12a12d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total top-of-atmosphere radiance <span class="units">W m-2 sr-1 um-1</span> <br /></td></tr>
-<tr class="separator:acdd178ef4b7f84e9c595fd6c12a12d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d70205f023047e06fb2c8a3284dd479"><td class="memItemLeft" align="right" valign="top"><a id="a6d70205f023047e06fb2c8a3284dd479" name="a6d70205f023047e06fb2c8a3284dd479"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength</b></td></tr>
+<tr class="memdesc:a6d70205f023047e06fb2c8a3284dd479"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wavelength <span class="units">um</span> <br /></td></tr>
+<tr class="separator:a6d70205f023047e06fb2c8a3284dd479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad4b5cee4151903e3537986773aef5fc"><td class="memItemLeft" align="right" valign="top"><a id="aad4b5cee4151903e3537986773aef5fc" name="aad4b5cee4151903e3537986773aef5fc"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>y</b></td></tr>
+<tr class="memdesc:aad4b5cee4151903e3537986773aef5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Satellite measurements. Units will depend on type. <br /></td></tr>
+<tr class="separator:aad4b5cee4151903e3537986773aef5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a7b1a5a071e4e113b67154a8a4664c1"><td class="memItemLeft" align="right" valign="top"><a id="a2a7b1a5a071e4e113b67154a8a4664c1" name="a2a7b1a5a071e4e113b67154a8a4664c1"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f</b></td></tr>
+<tr class="memdesc:a2a7b1a5a071e4e113b67154a8a4664c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward model simulations with same type and units as y. <br /></td></tr>
+<tr class="separator:a2a7b1a5a071e4e113b67154a8a4664c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85408c7b8d9e352ecba29bb093683b84"><td class="memItemLeft" align="right" valign="top"><a id="a85408c7b8d9e352ecba29bb093683b84" name="a85408c7b8d9e352ecba29bb093683b84"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_ref_total</b></td></tr>
+<tr class="memdesc:a85408c7b8d9e352ecba29bb093683b84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total top-of-atmosphere outgoing reflectance <span class="units">-</span> <br /></td></tr>
+<tr class="separator:a85408c7b8d9e352ecba29bb093683b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf9cec7a3d82880d2bcd78e22b1e67c"><td class="memItemLeft" align="right" valign="top"><a id="afaf9cec7a3d82880d2bcd78e22b1e67c" name="afaf9cec7a3d82880d2bcd78e22b1e67c"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_ref_clear</b></td></tr>
+<tr class="memdesc:afaf9cec7a3d82880d2bcd78e22b1e67c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear-sky top-of-atmosphere outgoing reflectance <span class="units">-</span> <br /></td></tr>
+<tr class="separator:afaf9cec7a3d82880d2bcd78e22b1e67c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ff9570dcd99ceb0fa6b3b4aaef8bac9"><td class="memItemLeft" align="right" valign="top"><a id="a2ff9570dcd99ceb0fa6b3b4aaef8bac9" name="a2ff9570dcd99ceb0fa6b3b4aaef8bac9"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_bt_total</b></td></tr>
+<tr class="memdesc:a2ff9570dcd99ceb0fa6b3b4aaef8bac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total top-of-atmosphere brightness temperature <span class="units">K</span> <br /></td></tr>
+<tr class="separator:a2ff9570dcd99ceb0fa6b3b4aaef8bac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83ac5e58ff6399578a667e3e076bb258"><td class="memItemLeft" align="right" valign="top"><a id="a83ac5e58ff6399578a667e3e076bb258" name="a83ac5e58ff6399578a667e3e076bb258"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_bt_clear</b></td></tr>
+<tr class="memdesc:a83ac5e58ff6399578a667e3e076bb258"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear-sky top-of-atmosphere brightness temperature <span class="units">K</span> <br /></td></tr>
+<tr class="separator:a83ac5e58ff6399578a667e3e076bb258"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94812b3266eee77848389d5d35713e5c"><td class="memItemLeft" align="right" valign="top"><a id="a94812b3266eee77848389d5d35713e5c" name="a94812b3266eee77848389d5d35713e5c"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_rad_total</b></td></tr>
+<tr class="memdesc:a94812b3266eee77848389d5d35713e5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total top-of-atmosphere radiance <span class="units">W m-2 sr-1 um-1</span> <br /></td></tr>
+<tr class="separator:a94812b3266eee77848389d5d35713e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd246d3de63032a651f16b67a564ab24"><td class="memItemLeft" align="right" valign="top"><a id="afd246d3de63032a651f16b67a564ab24" name="afd246d3de63032a651f16b67a564ab24"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f_rad_clear</b></td></tr>
+<tr class="memdesc:afd246d3de63032a651f16b67a564ab24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total top-of-atmosphere radiance <span class="units">W m-2 sr-1 um-1</span> <br /></td></tr>
+<tr class="separator:afd246d3de63032a651f16b67a564ab24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addca17d51f96b3ac6644e5d6001b9b74"><td class="memItemLeft" align="right" valign="top"><a id="addca17d51f96b3ac6644e5d6001b9b74" name="addca17d51f96b3ac6644e5d6001b9b74"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>emiss</b></td></tr>
+<tr class="memdesc:addca17d51f96b3ac6644e5d6001b9b74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Surface emissivity <span class="units">-</span> <br /></td></tr>
+<tr class="separator:addca17d51f96b3ac6644e5d6001b9b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89573af086b5703081e6ccfc56b000bd"><td class="memItemLeft" align="right" valign="top"><a id="a89573af086b5703081e6ccfc56b000bd" name="a89573af086b5703081e6ccfc56b000bd"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>brdf</b></td></tr>
+<tr class="memdesc:a89573af086b5703081e6ccfc56b000bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Surface albedo <span class="units">-</span> <br /></td></tr>
+<tr class="separator:a89573af086b5703081e6ccfc56b000bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >S3COM structure for direct radiative transfer simulations and measurements. </p>

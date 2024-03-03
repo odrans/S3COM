@@ -1,11 +1,8 @@
 var searchData=
 [
-  ['landmask_0',['landmask',['../structs3com__types_1_1type__model.html#a7af4b8da535e9dab3cba28afd8437c5b',1,'s3com_types::type_model::landmask()'],['../structs3com__types_1_1type__icon.html#a2203d51fce8fbf4671c68d3b34c7414b',1,'s3com_types::type_icon::landmask()']]],
-  ['lat_1',['lat',['../structs3com__types_1_1type__nwpsaf.html#a8569d8264b2b4956696365346cd937e9',1,'s3com_types::type_nwpsaf::lat()'],['../structs3com__types_1_1type__icon.html#a89ad07371194048d063b4cd5dbef667e',1,'s3com_types::type_icon::lat()'],['../structs3com__types_1_1type__model.html#a6b6e73fa9de3fdace83f59b9edb470c0',1,'s3com_types::type_model::lat()']]],
-  ['lat_5forig_2',['lat_orig',['../structs3com__types_1_1type__nwpsaf.html#a57cf3dfbced73225099fe2cde6e30c34',1,'s3com_types::type_nwpsaf::lat_orig()'],['../structs3com__types_1_1type__icon.html#adcd1c94186e74c92c27a940904fcd0af',1,'s3com_types::type_icon::lat_orig()'],['../structs3com__types_1_1type__model.html#ab6a9656e766bbc2b3f61ad569de28f70',1,'s3com_types::type_model::lat_orig()']]],
-  ['legcoef_3',['legcoef',['../structs3com__types_1_1type__cld__mie.html#a6589ca13fc112bbdb2ed8c51446427e7',1,'s3com_types::type_cld_mie']]],
-  ['lon_4',['lon',['../structs3com__types_1_1type__icon.html#a5eabca6304524d16e4d669b912d0e5e0',1,'s3com_types::type_icon::lon()'],['../structs3com__types_1_1type__model.html#aff247194df75297eb8c24277ceeae5eb',1,'s3com_types::type_model::lon()'],['../structs3com__types_1_1type__nwpsaf.html#a8b2a0613e9dd957b60bb64799c7a4c51',1,'s3com_types::type_nwpsaf::lon()']]],
-  ['lon_5forig_5',['lon_orig',['../structs3com__types_1_1type__nwpsaf.html#abe5a93da9f5f78e96635bef2c95d72ec',1,'s3com_types::type_nwpsaf::lon_orig()'],['../structs3com__types_1_1type__icon.html#a6ab716113d04ad0955162a8f84aaf7ea',1,'s3com_types::type_icon::lon_orig()'],['../structs3com__types_1_1type__model.html#a2fbcd2f56f5c9dd05a1c4120948c9919',1,'s3com_types::type_model::lon_orig()']]],
-  ['lsm_6',['lsm',['../structs3com__types_1_1type__nwpsaf.html#afae7d7f64b8d78eebf627decc8eea9b7',1,'s3com_types::type_nwpsaf']]],
-  ['lwc_7',['lwc',['../structs3com__types_1_1type__nwpsaf.html#ab46f47977b30e23bfc3651d6423b5448',1,'s3com_types::type_nwpsaf::lwc()'],['../structs3com__types_1_1type__icon.html#a087e71941cc7c9a68b690d3f8456e509',1,'s3com_types::type_icon::lwc()'],['../structs3com__types_1_1type__model.html#aacc45d9c32dd6caa7dc42368d8b67e12',1,'s3com_types::type_model::lwc()'],['../structs3com__types_1_1type__s3com__atm.html#a8fb50fac1223e67c4a1caa4633a665fc',1,'s3com_types::type_s3com_atm::lwc()']]]
+  ['k_0',['k',['../structs3com__types_1_1type__s3com__ret.html#a733f1c1f91863fe9dd023e02bc8ac98a',1,'s3com_types::type_s3com_ret']]],
+  ['k_5ftl_1',['k_tl',['../structs3com__types_1_1type__s3com.html#a48da5fca0b95e7b00049d9b5d7707d4c',1,'s3com_types::type_s3com']]],
+  ['kb_2',['kb',['../structs3com__types_1_1type__s3com__ret.html#afb2b1e59308207797b872aa74ce9e802',1,'s3com_types::type_s3com_ret']]],
+  ['kbt_3',['kbt',['../structs3com__types_1_1type__s3com__ret.html#a8360ff57ab1ac1867bd3df7b27f0f34c',1,'s3com_types::type_s3com_ret']]],
+  ['kt_4',['kt',['../structs3com__types_1_1type__s3com__ret.html#a9c8085a8c424b96cc2064fc9a03b5af2',1,'s3com_types::type_s3com_ret']]]
 ];

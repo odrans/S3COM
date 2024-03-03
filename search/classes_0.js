@@ -12,5 +12,6 @@ var searchData=
   ['type_5fs3com_5fjac_9',['type_s3com_jac',['../structs3com__types_1_1type__s3com__jac.html',1,'s3com_types']]],
   ['type_5fs3com_5fk_5ftl_10',['type_s3com_k_tl',['../structs3com__types_1_1type__s3com__k__tl.html',1,'s3com_types']]],
   ['type_5fs3com_5fopt_11',['type_s3com_opt',['../structs3com__types_1_1type__s3com__opt.html',1,'s3com_types']]],
-  ['type_5fs3com_5frad_12',['type_s3com_rad',['../structs3com__types_1_1type__s3com__rad.html',1,'s3com_types']]]
+  ['type_5fs3com_5frad_12',['type_s3com_rad',['../structs3com__types_1_1type__s3com__rad.html',1,'s3com_types']]],
+  ['type_5fs3com_5fret_13',['type_s3com_ret',['../structs3com__types_1_1type__s3com__ret.html',1,'s3com_types']]]
 ];

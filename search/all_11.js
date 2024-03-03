@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['s2o_0',['s2o',['../structs3com__types_1_1type__model.html#af0f1e8dc60b4b35077c6d9741804cebb',1,'s3com_types::type_model']]],
-  ['s3com_20namelist_20configuration_1',['S3COM namelist configuration',['../md_docs_namelist.html',1,'']]],
-  ['sat_5fname_2',['sat_name',['../structs3com__types_1_1type__rttov__opt.html#a59385b7a7a671793016898dcebc1c5d2',1,'s3com_types::type_rttov_opt']]],
-  ['satellite_3',['satellite',['../structs3com__types_1_1type__nml.html#a668625e9abf22e79e26fe6a6139d49c7',1,'s3com_types::type_nml::satellite()'],['../structs3com__types_1_1type__rttov__opt.html#a74f213ef0fde5ddedab870b0c6344a48',1,'s3com_types::type_rttov_opt::satellite()']]],
-  ['satellite_20simulator_20and_20sandbox_20for_20cloud_20observation_20and_20modelling_4',['Satellite Simulator and Sandbox for Cloud Observation and Modelling',['../index.html',1,'']]],
-  ['so2_5fdata_5',['so2_data',['../structs3com__types_1_1type__rttov__opt.html#a2975a5bc0eb02abeca9bb63978c3fc39',1,'s3com_types::type_rttov_opt']]],
-  ['suffix_5fout_6',['suffix_out',['../structs3com__types_1_1type__nml.html#a3137294830bc4a84e52de80e64ae4b13',1,'s3com_types::type_nml']]],
-  ['sunazangle_7',['sunazangle',['../structs3com__types_1_1type__model.html#a04023c25a8210fa4928fc798873f7da1',1,'s3com_types::type_model']]],
-  ['sunzenangle_8',['sunzenangle',['../structs3com__types_1_1type__model.html#a1c8d9e3e59d4496963f688ccdfd5269b',1,'s3com_types::type_model']]]
+  ['rad_0',['rad',['../structs3com__types_1_1type__s3com.html#a5c799233d3e10b8b5eea4e25a6d48a11',1,'s3com_types::type_s3com']]],
+  ['radius_1',['radius',['../structs3com__types_1_1type__cld__mie.html#ace8080816dd3feb65baf5041deb200bf',1,'s3com_types::type_cld_mie']]],
+  ['re_5fsb_2',['re_sb',['../namespacemod__cld__phys__sb.html#a19f47110e46215077d252cce9bbdcc2c',1,'mod_cld_phys_sb']]],
+  ['re_5fsb_5fall_3',['re_sb_all',['../namespacemod__cld__phys__sb.html#a73d4c263848e2764d10297b1b9438fa0',1,'mod_cld_phys_sb']]],
+  ['reff_4',['reff',['../structs3com__types_1_1type__nwpsaf.html#afec77e15896b127febf3e1f3cb6590f9',1,'s3com_types::type_nwpsaf::reff()'],['../structs3com__types_1_1type__icon.html#a3e08cccd65d110687f424f2f73b2fb00',1,'s3com_types::type_icon::reff()'],['../structs3com__types_1_1type__model.html#a443a63b6ef78bb032ef4706a5b5499a4',1,'s3com_types::type_model::reff()'],['../structs3com__types_1_1type__s3com__atm.html#af2653797433ff8945527f17166747489',1,'s3com_types::type_s3com_atm::reff()'],['../structs3com__types_1_1type__s3com__ret.html#a8ac63a921fbbd4f05d23924449f79dd3',1,'s3com_types::type_s3com_ret::reff()']]],
+  ['reff_5ftop_5',['reff_top',['../structs3com__types_1_1type__icon.html#a4adf36c0fa8207206120177af7184c2c',1,'s3com_types::type_icon::reff_top()'],['../structs3com__types_1_1type__model.html#ab9aa660fb07096b8b5741e028606b27d',1,'s3com_types::type_model::reff_top()']]],
+  ['ret_6',['ret',['../structs3com__types_1_1type__s3com.html#af048ab8a8fe89cee78a1e953101bd419',1,'s3com_types::type_s3com']]],
+  ['rho_7',['rho',['../structs3com__types_1_1type__nwpsaf.html#a6c11877e3089b53e16a3a9f3821db9b3',1,'s3com_types::type_nwpsaf::rho()'],['../structs3com__types_1_1type__icon.html#a4e6e5bd35a76fc4f5bdb70a045205a56',1,'s3com_types::type_icon::rho()']]],
+  ['rttov_8',['rttov',['../structs3com__types_1_1type__s3com__opt.html#aeedc59049e51b8ce128257b484bfa254',1,'s3com_types::type_s3com_opt']]],
+  ['rttov_5fnthreads_9',['rttov_nthreads',['../structs3com__types_1_1type__nml.html#a5e0851b813f9435328d864fdae5be6df',1,'s3com_types::type_nml']]]
 ];

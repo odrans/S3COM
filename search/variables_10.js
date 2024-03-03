@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['rad_0',['rad',['../structs3com__types_1_1type__s3com.html#a5c799233d3e10b8b5eea4e25a6d48a11',1,'s3com_types::type_s3com']]],
-  ['radius_1',['radius',['../structs3com__types_1_1type__cld__mie.html#ace8080816dd3feb65baf5041deb200bf',1,'s3com_types::type_cld_mie']]],
-  ['reff_2',['reff',['../structs3com__types_1_1type__nwpsaf.html#afec77e15896b127febf3e1f3cb6590f9',1,'s3com_types::type_nwpsaf::reff()'],['../structs3com__types_1_1type__icon.html#a3e08cccd65d110687f424f2f73b2fb00',1,'s3com_types::type_icon::reff()'],['../structs3com__types_1_1type__model.html#a443a63b6ef78bb032ef4706a5b5499a4',1,'s3com_types::type_model::reff()'],['../structs3com__types_1_1type__s3com__atm.html#a8deafa002ca54ea3001105f589fc6488',1,'s3com_types::type_s3com_atm::reff()']]],
-  ['rho_3',['rho',['../structs3com__types_1_1type__nwpsaf.html#a6c11877e3089b53e16a3a9f3821db9b3',1,'s3com_types::type_nwpsaf::rho()'],['../structs3com__types_1_1type__icon.html#a4e6e5bd35a76fc4f5bdb70a045205a56',1,'s3com_types::type_icon::rho()']]],
-  ['rttov_4',['rttov',['../structs3com__types_1_1type__s3com__opt.html#aeedc59049e51b8ce128257b484bfa254',1,'s3com_types::type_s3com_opt']]],
-  ['rttov_5fnthreads_5',['rttov_nthreads',['../structs3com__types_1_1type__nml.html#a5e0851b813f9435328d864fdae5be6df',1,'s3com_types::type_nml']]]
+  ['q_0',['q',['../structs3com__types_1_1type__icon.html#aec908643dc19b8e76497713632c1c0f5',1,'s3com_types::type_icon::q()'],['../structs3com__types_1_1type__model.html#adf1ca679b3ef17eb2145b8d82dc4bae1',1,'s3com_types::type_model::q()'],['../structs3com__types_1_1type__s3com__jac.html#a9956a13c3e120fbbb24d26ffe446a0d6',1,'s3com_types::type_s3com_jac::q()']]],
+  ['q2m_1',['q2m',['../structs3com__types_1_1type__nwpsaf.html#a235c5ef8b7729f18947956c13f58d873',1,'s3com_types::type_nwpsaf']]],
+  ['q_5f2m_2',['q_2m',['../structs3com__types_1_1type__icon.html#aa3f76d2dc60bf9b2c13b394c5f0ac5a0',1,'s3com_types::type_icon::q_2m()'],['../structs3com__types_1_1type__model.html#af80532d95a6583adbfedddf79c329663',1,'s3com_types::type_model::q_2m()']]],
+  ['q_5fifc_3',['q_ifc',['../structs3com__types_1_1type__icon.html#a0592a48651d2e0f1b30161f4688c95d8',1,'s3com_types::type_icon']]],
+  ['qnc_4',['qnc',['../structs3com__types_1_1type__icon.html#a5f056f28a45227b66ebb3ed7390b530a',1,'s3com_types::type_icon']]],
+  ['qr_5',['qr',['../structs3com__types_1_1type__icon.html#a428aef040fce669bccf561152d304e87',1,'s3com_types::type_icon']]],
+  ['qs_6',['qs',['../structs3com__types_1_1type__icon.html#a69e44f9897f31364589a64819b7ec310',1,'s3com_types::type_icon']]]
 ];

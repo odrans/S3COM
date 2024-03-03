@@ -196,7 +196,7 @@ Functions/Subroutines</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize ICON data structure. </p>
-<p >This subroutine initializes the ICON data structure by allocating the required arrays. All arrays are initialized to zero. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Not all arrays are initialized to zero. Redo following the NWPSAF procedure. </dd></dl>
+<p >This subroutine initializes the ICON data structure by allocating the required arrays. All arrays are initialized to zero. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Not all arrays are initialized to zero. Redo following the NWPSAF procedure. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">npoints</td><td>Number of grid points </td></tr>
@@ -270,14 +270,8 @@ Functions/Subroutines</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Process ICON data structure. </p>
-<p >This subroutine processes the ICON data structure to obtain the required variables for S3COM. </p><dl class="section note"><dt>Note</dt><dd>Current processing steps:<ul>
-<li>The layer depth is approximated to twice the difference between the interface and the layer center.</li>
-<li>The moist air density is computed from the pressure and virtual temperature. Used to convert cloud properties from <span class="units">kg/kg</span> to <span class="units">kg/m3</span>.</li>
-<li>The effective radius is computed from the water content and number concentration consistently with the Seifert and Beheng (2005) scheme used in ICON</li>
-<li>All quantities in SI units except for the effective radius which is in <span class="units">um</span>. </li>
-</ul>
-</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Why not compute dz from ifc(i+1) - ifc(i)? </dd></dl>
+<p >This subroutine processes the ICON data structure to obtain the required variables for S3COM. </p><dl class="section note"><dt>Note</dt><dd>Current processing steps: </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Why not compute dz from ifc(i+1) - ifc(i)? </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">icon</td><td>ICON data structure </td></tr>

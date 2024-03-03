@@ -1,5 +1,20 @@
 var searchData=
 [
-  ['gas_5funit_0',['gas_unit',['../structs3com__types_1_1type__nml.html#a93f2de59cbee5f04cc316d6e01ed5885',1,'s3com_types::type_nml']]],
-  ['gas_5funits_1',['gas_units',['../structs3com__types_1_1type__rttov__opt.html#ab230fe240495d30c9d19981ff50a8178',1,'s3com_types::type_rttov_opt']]]
+  ['f_0',['f',['../structs3com__types_1_1type__s3com__ret.html#a9e48128da241c2aa9cfb0b1e94a76f9d',1,'s3com_types::type_s3com_ret::f()'],['../structs3com__types_1_1type__s3com__rad.html#a2a7b1a5a071e4e113b67154a8a4664c1',1,'s3com_types::type_s3com_rad::f()']]],
+  ['f_5fbt_5fclear_1',['f_bt_clear',['../structs3com__types_1_1type__s3com__rad.html#a83ac5e58ff6399578a667e3e076bb258',1,'s3com_types::type_s3com_rad']]],
+  ['f_5fbt_5ftotal_2',['f_bt_total',['../structs3com__types_1_1type__s3com__rad.html#a2ff9570dcd99ceb0fa6b3b4aaef8bac9',1,'s3com_types::type_s3com_rad']]],
+  ['f_5frad_5fclear_3',['f_rad_clear',['../structs3com__types_1_1type__s3com__rad.html#afd246d3de63032a651f16b67a564ab24',1,'s3com_types::type_s3com_rad']]],
+  ['f_5frad_5ftotal_4',['f_rad_total',['../structs3com__types_1_1type__s3com__rad.html#a94812b3266eee77848389d5d35713e5c',1,'s3com_types::type_s3com_rad']]],
+  ['f_5fref_5fclear_5',['f_ref_clear',['../structs3com__types_1_1type__s3com__rad.html#afaf9cec7a3d82880d2bcd78e22b1e67c',1,'s3com_types::type_s3com_rad']]],
+  ['f_5fref_5ftotal_6',['f_ref_total',['../structs3com__types_1_1type__s3com__rad.html#a85408c7b8d9e352ecba29bb093683b84',1,'s3com_types::type_s3com_rad']]],
+  ['flag_5fconv_5ftest_7',['flag_conv_test',['../structs3com__types_1_1type__s3com__ret.html#ae6647d655e22a8a6441b582dbcb3f444',1,'s3com_types::type_s3com_ret']]],
+  ['flag_5foutput_5fatm_8',['flag_output_atm',['../structs3com__types_1_1type__nml.html#aff2f6182c365c600b0c3e20d11ae599c',1,'s3com_types::type_nml']]],
+  ['flag_5foutput_5fjac_9',['flag_output_jac',['../structs3com__types_1_1type__nml.html#a9f2641a8c85440cab33f69a79616f4fa',1,'s3com_types::type_nml']]],
+  ['flag_5foutput_5fk_5ftl_10',['flag_output_k_tl',['../structs3com__types_1_1type__nml.html#a282f9defa022d2b5b13cb98c430b2ee1',1,'s3com_types::type_nml']]],
+  ['flag_5fret_11',['flag_ret',['../structs3com__types_1_1type__s3com__ret.html#aeac40394b7a473708fe4260d09569913',1,'s3com_types::type_s3com_ret']]],
+  ['flag_5fretrievals_12',['flag_retrievals',['../structs3com__types_1_1type__nml.html#a9f3cfeac444071f679587ad987800374',1,'s3com_types::type_nml']]],
+  ['flag_5frttov_13',['flag_rttov',['../structs3com__types_1_1type__s3com__ret.html#a97ecdd8df3daf092d941770f141182a5',1,'s3com_types::type_s3com_ret::flag_rttov()'],['../structs3com__types_1_1type__s3com.html#a1fe60550b662dcde90cbaf050c4a2d2d',1,'s3com_types::type_s3com::flag_rttov()']]],
+  ['fn_5flegcoef_14',['fn_legcoef',['../structs3com__types_1_1type__cld__mie.html#aec3b99dc0d960f62dcf13f657840b27b',1,'s3com_types::type_cld_mie']]],
+  ['fn_5fmie_15',['fn_mie',['../structs3com__types_1_1type__cld__mie.html#a217a5c86910b1addc577e3836fe82f90',1,'s3com_types::type_cld_mie']]],
+  ['fname_5fin_16',['fname_in',['../structs3com__types_1_1type__nml.html#ababbac283f3d4f30398b1918aabcd5a5',1,'s3com_types::type_nml']]]
 ];
