@@ -28,55 +28,55 @@
 !
 
 module s3com_config
-
+   
    use s3com_types, only: wp
-
+   
    implicit none
-
+   
    public
-
-   real(KIND=wp), parameter ::  &
-      apriori_iwp       = 1E-1, & ! in kg.m-2
-      apriori_iwp_error = 10.0    ! in %
-
-   !!S3COM options
-   real(KIND=wp), parameter ::  &
-        iwp_lay_threshold = 1E-4, &
-        lwp_lay_threshold = 1E-4
-
-   integer(KIND=4), parameter :: &
-        nstates = 1
-
-   !!RTTOV optics
+   
+   real(kind=wp), parameter ::       &
+      apriori_cod        = 30.0_wp,  & !< A priori value of cloud optical depth @units{-}
+      apriori_reff       = 25.0_wp,  & !< A priori value of cloud droplet effective radius @units{um} 15.00008_wp ! um
+      apriori_cod_error  = 100.0_wp, & !< A priori error on cloud optical depth @units{%}
+      apriori_reff_error = 100.0_wp    !< A priori error on cloud droplet effective radius @units{%}
    integer(kind=4), parameter :: &
-        RTTOV_DOSOLAR    = 1
-
-   !!Mixing ratios of trace gases
+      nstates  = 2
+   
+   ! S3COM options
+   real(kind=wp), parameter ::  &
+      lwp_lay_threshold = 1e-4    ! kg/m2
+   
+   ! RTTOV optics
+   integer(kind=4), parameter :: &
+      rttov_dosolar = 1
+   
+   ! Mixing ratios of trace gases
    real(wp) ::               &
-        mr_co2 = 5.241e-04_wp, &
-        mr_ch4 = 9.139e-07_wp, &
-        mr_n2o = 4.665e-07_wp, &
-        mr_co  = 2.098e-07_wp
-
+      mr_co2 = 5.241e-04_wp, &
+      mr_ch4 = 9.139e-07_wp, &
+      mr_n2o = 4.665e-07_wp, &
+      mr_co  = 2.098e-07_wp
+   
    real(wp), parameter :: &
-        tmelt  = 273.15_wp, & !Melting temperature of ice/snow (K)
-        rhoice = 917._wp,   & !Density of ice (kg/m3)
-        rholiq = 1000._wp     !Density of liquid water (kg/m3)
-
-   !!Molecular weights (g/mol)
+      tmelt  = 273.15_wp, & !< Melting temperature of ice/snow (K)
+      rhoice = 917._wp,   & !< Density of ice (kg/m3)
+      rholiq = 1000._wp     !< Density of liquid water (kg/m3)
+   
+   ! Molecular weights (g/mol)
    real(wp), parameter ::  &
-        amw   = 18.01534_wp, & !Water
-        amd   = 28.9644_wp,  & !Dry air
-        amO3  = 47.9983_wp,  & !Ozone
-        amCO2 = 44.0096_wp,  & !Cabone dioxide
-        amCH4 = 16.0426_wp,  & !Methane
-        amN2O = 44.0129_wp,  & !Nitrogen dioxide
-        amCO  = 28.0102_wp     !Carbone monoxide
-
-   !!WMO/SI value
+      amw   = 18.01534_wp, & !< Water
+      amd   = 28.9644_wp,  & !< Dry air
+      amO3  = 47.9983_wp,  & !< Ozone
+      amCO2 = 44.0096_wp,  & !< Cabone dioxide
+      amCH4 = 16.0426_wp,  & !< Methane
+      amN2O = 44.0129_wp,  & !< Nitrogen dioxide
+      amCO  = 28.0102_wp     !< Carbone monoxide
+   
+   ! WMO/SI value
    real(wp), parameter :: &
-        avo  = 6.023E23_wp, & !Avogadro constant used by ISCCP simulator (1/mol)
-        grav = 9.806650_wp    !Av. gravitational acceleration used by ISCCP simulator (m/s2)
+      avo  = 6.023E23_wp, & !< Avogadro constant used by ISCCP simulator (1/mol)
+      grav = 9.806650_wp    !< Av. gravitational acceleration used by ISCCP simulator (m/s2)
 
    !!Thermodynamic constants for the dry and moist atmosphere
    real(wp), parameter ::    &

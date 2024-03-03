@@ -35,7 +35,7 @@ module mod_io_verbose
 
   character(len=*), parameter :: hyphens = "-------------------------------------------------------------------"
   character(len=*), parameter :: s3com_version = "v0.9.0-beta"
-  character(len=*), parameter :: rttov_version = "v13.1"
+  character(len=*), parameter :: rttov_version = "v13.2"
 
   private
   public :: verbose_namelist, verbose_model, verbose_rttov

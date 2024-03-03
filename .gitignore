@@ -40,6 +40,9 @@ s3com.dSYM
 # Legendre coefficient files
 *_legcoef_*
 
+# Cloud optical properties
+data/cld_optprop/mie_scat_liqcld_eos_2_modis.nc
+
 # Doxygen html and latex
 docs/Doxygen/html
 docs/Doxygen/latex

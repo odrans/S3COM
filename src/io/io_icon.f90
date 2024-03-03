@@ -288,55 +288,55 @@ contains
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%q_ifc)
           endif
-       case ('pres') !Air pressure
+       case ('pres') !Air pressure at full level center
           if (Lpoint) then
              icon%p(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%p)
           endif
-       case ('ta') !Air temperature
+       case ('ta') !Air temperature at full level center
           if (Lpoint) then
              icon%T(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%T)
           endif
-       case ('hus') !Specific humidity
+       case ('hus') !Specific humidity at full level center
           if (Lpoint) then
              icon%q(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%q)
           endif
-       case ('clc') !Cloud cover
+       case ('clc') !Cloud cover at full level center
           if (Lpoint) then
              icon%clc(1:npoints,1:nlayers) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%clc)
           endif
-       case ('clw') !Specific cloud water content
+       case ('clw') !Specific cloud water content at full level center
           if (Lpoint) then
              icon%clw(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%clw)
           endif
-       case ('cli') !Specific cloud ice content
+       case ('cli') !Specific cloud ice content at full level center
           if (Lpoint) then
              icon%cli(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%cli)
           endif
-       case ('qnc') !Cloud droplet number concentration
+       case ('qnc') !Cloud droplet number concentration at full level center
           if (Lpoint) then
              icon%qnc(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%qnc)
           endif
-       case ('qr') !Rain mixing ratio
+       case ('qr') !Rain mixing ratio at full level center
           if (Lpoint) then
              icon%qr(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%qr)
           endif
-       case ('qs') !Snow mixing ratio
+       case ('qs') !Snow mixing ratio at full level center
           if (Lpoint) then
              icon%qs(1:npoints,:) = x2(1:npoints,1:nlayers)
           else

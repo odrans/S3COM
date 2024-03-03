@@ -46,7 +46,7 @@
 prog = s3com
 
 # Compiler (supported: gfortran, ifort)
-F90 = gfortran
+F90 = ifort
 # Debug mode (true or false)
 DEBUG = true
 
@@ -62,7 +62,7 @@ endif
 
 # Let's start with setting up some paths
 # ---------------------------------------------------------------------------------------------------------------------------------------
-PATH_S3COM = $(HOME)/github/S3COM
+PATH_S3COM = $(HOME)/github_reff_cod/S3COM
 ifeq ($(F90),gfortran)
     PATH_RTTOV = /work/bb1036/rttov_share/rttov132-gcc
     PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-6qheqr
@@ -87,12 +87,12 @@ mod = $(PATH_S3COM)/mod
 
 DIR_MAIN = $(src)/main
 DIR_IO = $(src)/io
-DIR_OE = $(src)/oe
 DIR_UTILS = $(src)/utils
 DIR_RTTOV = $(src)/rttov
 DIR_MODELS = $(src)/models
 DIR_CONF = $(src)/conf
 DIR_CLD = $(src)/cld
+DIR_RET = $(src)/retrievals
 
 PATH_NCDF_C_LIB = $(PATH_NETCDF_C)/lib
 PATH_NCDF_INC = $(PATH_NETCDF_F)/include
@@ -114,12 +114,12 @@ RTTOV_LIBS       = -lrttov13_wrapper -lrttov13_mw_scatt -lrttov13_brdf_atlas -lr
 # -------------------------------------------------------------------------------------------------------------------------------
 LIB_MAIN = $(lib)/libmain.a
 LIB_IO = $(lib)/lib_io.a
-LIB_OE = $(lib)/lib_oe.a
 LIB_UTILS = $(lib)/libutils.a
 LIB_CONF = $(lib)/libconf.a
 LIB_CLD = $(lib)/libcld.a
 LIB_RTTOVML = $(lib)/librttovml.a
 LIB_MODELS = $(lib)/libmodels.a
+LIB_RET = $(lib)/libret.a
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of object files in each library
@@ -144,10 +144,10 @@ LIST_OBJ_IO = $(obj)/io_utils.o \
 		$(obj)/io_icon.o \
 		$(obj)/io_s3com.o
 
-# LIST_OBJ_OE = $(obj)/model_cloud.o \
-#         $(obj)/oe_utils.o \
-# 		$(obj)/oe_run.o
-
+LIST_OBJ_RET = $(obj)/ret_cloud_model.o \
+	$(obj)/ret_utils.o \
+	$(obj)/ret_run.o
+	
 LIST_OBJ_UTILS = $(obj)/utils_fort.o \
 		 $(obj)/utils_math.o \
 		 $(obj)/utils_phys.o
@@ -162,7 +162,7 @@ LIST_OBJ_RTTOVML = $(obj)/rttov_utils.o \
 		   $(obj)/rttov.o \
 		   $(obj)/rttov_setup.o
 
-LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_IO) $(LIST_OBJ_CLD) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_MODELS) $(LIST_OBJ_OE) $(LIST_OBJ_MAIN)
+LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_IO) $(LIST_OBJ_CLD) $(LIST_OBJ_RTTOVML) $(LIST_OBJ_MODELS) $(LIST_OBJ_RET) $(LIST_OBJ_MAIN)
 # -------------------------------------------------------------------------------------------------------------------------------
 
 # List of flags related to each libraries + final flag
@@ -170,7 +170,7 @@ LIST_OBJ = $(LIST_OBJ_CONF) $(LIST_OBJ_UTILS) $(LIST_OBJ_IO) $(LIST_OBJ_CLD) $(L
 FLAGS_NCDF = -I$(PATH_NCDF_INC) -L${PATH_NCDF_LIB} -lnetcdff -L${PATH_NCDF_C_LIB} -lnetcdf -Wl,-rpath,${PATH_NCDF_LIB} -Wl,-rpath,${PATH_NCDF_C_LIB}
 FLAGS_RTTOV = -I${RTTOV_INC_PATH} -L${RTTOV_LIB_PATH} $(RTTOV_LIBS)
 FLAG_HDF5= -L${PATH_HDF5_LIB} -lhdf5_hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -lm -Wl,-rpath,${PATH_HDF5_LIB} -I${PATH_HDF5_INC}
-FLAGS_LOCAL = -L$(lib) -lmodels -l_io -lrttovml -lmain -lcld -lutils -lconf
+FLAGS_LOCAL = -L$(lib) -lmodels -l_io -lrttovml -lmain -lcld -lutils -lconf -lret
 
 FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -182,7 +182,7 @@ install: $(LIST_OBJ)
 	ar r $(LIB_UTILS) $(LIST_OBJ_UTILS)
 	ar r $(LIB_MAIN) $(LIST_OBJ_MAIN)
 	ar r $(LIB_CLD) $(LIST_OBJ_CLD)
-	ar r $(LIB_OE) $(LIST_OBJ_OE)
+	ar r $(LIB_RET) $(LIST_OBJ_RET)
 	ar r $(LIB_MODELS) $(LIST_OBJ_MODELS)
 	ar r $(LIB_IO) $(LIST_OBJ_IO)
 	ar r $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
@@ -250,15 +250,15 @@ $(obj)/models.o : $(DIR_MODELS)/models.f90
 # -------------------------------------------------------------------------------------------------------------------------------
 
 
-## Objects for subroutines in ./src/oe
+## Objects for subroutines in ./src/retrievals
 # -------------------------------------------------------------------------------------------------------------------------------
-$(obj)/oe_run.o : $(DIR_OE)/oe_run.f90
+$(obj)/ret_run.o : $(DIR_RET)/ret_run.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/model_cloud.o : $(DIR_OE)/model_cloud.f90
+$(obj)/ret_cloud_model.o : $(DIR_RET)/ret_cloud_model.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 
-$(obj)/oe_utils.o : $(DIR_OE)/oe_utils.f90
+$(obj)/ret_utils.o : $(DIR_RET)/ret_utils.f90
 	$(F90) $(F90FLAGS) -c $< -o $@
 # -------------------------------------------------------------------------------------------------------------------------------
 

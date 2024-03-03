@@ -28,26 +28,21 @@
 !
 
 module mod_rttov
-
-  use s3com_types,        only: wp, type_model, type_rttov_opt, type_s3com, type_cld
-  use mod_rttov_utils,    only: find_idx_rttov, check_rttov_status, get_rttov_model
-  use mod_rttov_opts,     only: opts
-  use mod_rttov_coefs,    only: coefs
-  use mod_rttov_atlas,    only: emis_atlas, brdf_atlas
-  use mod_rttov_direct,   only: profiles, chanprof, transmission, &
-       radiance, calcemis, &
-       calcrefl, reflectance, cld_opt_param, emissivity, &
-       rttov_direct_init, rttov_direct_run, rttov_direct_free
-  use mod_rttov_k,   only: rttov_k_init, rttov_k_run, rttov_k_free, &
-       emissivity_k, reflectance_k, profiles_k, transmission_k, &
-       radiance_k, cld_opt_param_k
-  use mod_rttov_tl,   only: rttov_tl_init, rttov_tl_run, rttov_tl_free, &
-       emissivity_tl, reflectance_tl, profiles_tl, transmission_tl, &
-       radiance_tl
-
-
-  !!rttov_const contains useful RTTOV constants
-  use rttov_const, only:    &
+   
+   use s3com_types,      only: wp, type_model, type_rttov_opt, type_s3com, type_cld
+   use mod_rttov_utils,  only: find_idx_rttov, find_ret_idx_rttov, check_rttov_status, get_rttov_model
+   use mod_rttov_opts,   only: opts
+   use mod_rttov_coefs,  only: coefs
+   use mod_rttov_atlas,  only: emis_atlas, brdf_atlas
+   use mod_rttov_direct, only: profiles, chanprof, transmission, radiance, calcemis, calcrefl, reflectance, cld_opt_param, &
+                               emissivity, rttov_direct_init, rttov_direct_run, rttov_direct_free
+   use mod_rttov_k,      only: rttov_k_init, rttov_k_run, rttov_k_free, emissivity_k, reflectance_k, profiles_k, &
+                               transmission_k, radiance_k, cld_opt_param_k
+   use mod_rttov_tl,     only: rttov_tl_init, rttov_tl_run, rttov_tl_free, emissivity_tl, reflectance_tl, profiles_tl, &
+                               transmission_tl, radiance_tl
+   
+   ! rttov_const contains useful RTTOV constants
+   use rttov_const, only:     &
        errorstatus_success,   &
        errorstatus_fatal,     &
        platform_name,         &
@@ -60,8 +55,8 @@ module mod_rttov
        sensor_id_po,          &
        wcl_id_stco,           &
        wcl_id_stma
-
-  use rttov_types, only: &
+   
+   use rttov_types, only:  &
        rttov_options,      &
        rttov_coefs,        &
        rttov_profile,      &
@@ -71,23 +66,21 @@ module mod_rttov
        rttov_emissivity,   &
        rttov_reflectance,  &
        rttov_opt_param
+   
+   ! The rttov_emis_atlas_data type must be imported separately
+   use mod_rttov_emis_atlas, only: rttov_emis_atlas_data, atlas_type_ir, atlas_type_mw
 
-  !!The rttov_emis_atlas_data type must be imported separately
-  use mod_rttov_emis_atlas, only: &
-       rttov_emis_atlas_data,       &
-       atlas_type_ir, atlas_type_mw
-
-  !!The rttov_brdf_atlas_data type must be imported separately
-  use mod_rttov_brdf_atlas, only: rttov_brdf_atlas_data
-
-  use parkind1, only: jpim, jprb, jplm
-
-  use rttov_unix_env, only: rttov_exit
-
-  implicit none
-
-  private
-  public :: run_rttov
+   ! The rttov_brdf_atlas_data type must be imported separately
+   use mod_rttov_brdf_atlas, only: rttov_brdf_atlas_data
+   
+   use parkind1, only: jpim, jprb, jplm
+   
+   use rttov_unix_env, only: rttov_exit
+   
+   implicit none
+   
+   private
+   public :: run_rttov
 
 #include "rttov_init_opt_param.interface"
 #include "rttov_read_coefs.interface"
@@ -100,334 +93,388 @@ module mod_rttov
 #include "rttov_print_profile.interface"
 #include "rttov_skipcommentline.interface"
 
-  ! Use emissivity atlas
+! Use emissivity atlas
 #include "rttov_get_emis.interface"
 
-  ! Use BRDF atlas
+! Use BRDF atlas
 #include "rttov_get_brdf.interface"
-
-  integer(kind=jpim) :: nthreads
-  integer(kind=jpim) :: nlevels, nlayers
-  integer(kind=jpim) :: nprof
-  integer(kind=jpim) :: nchannels
-  integer(kind=jpim) :: nchanprof
-  integer(kind=jpim) :: max_mom, nleg
-
-  real(kind=jprb), parameter :: tl_perturbation = -0.01_jprb
-
-  ! Loop variables
-  integer(kind=jpim) :: j, jch
-  integer(kind=jpim) :: nch
-  integer(kind=jpim) :: ilev, ilay
-  integer(kind=jpim) :: iprof, joff, ichan, ichanprof, n_true
-  integer(kind=jpim) :: idx_reff
-
+   
+   integer(kind=jpim) :: nthreads
+   integer(kind=jpim) :: nlevels, nlayers
+   integer(kind=jpim) :: nprof
+   integer(kind=jpim) :: nchannels
+   integer(kind=jpim) :: nchanprof
+   integer(kind=jpim) :: max_mom, nleg
+   
+   real(kind=jprb), parameter :: tl_perturbation = -0.01_jprb
+   
+   ! Loop variables
+   integer(kind=jpim) :: j, jch
+   integer(kind=jpim) :: nch
+   integer(kind=jpim) :: ilev, ilay
+   integer(kind=jpim) :: iprof, joff, ichan, ichanprof, n_true
+   integer(kind=jpim) :: idx_reff
+   
 contains
+   
+   subroutine run_rttov(rttov_atm, rttov_opt, s3com, cld)
+      
+      ! Inputs
+      type(type_model), intent(in) :: rttov_atm
+      type(type_rttov_opt), intent(in) :: rttov_opt
+      type(type_cld), intent(in) :: cld
+      
+      ! Inputs/outputs
+      type(type_s3com), intent(inout) :: s3com
+      
+      ! Internal
+      integer, dimension(:), allocatable :: list_points
+      integer                            :: errorstatus, idx_prof
+      character(len=8) :: model_rttov
+      
+      errorstatus = 0_jpim
+      
+      ! Find how many profiles are to be processed (using flag_rttov)
+      if (s3com%ret%flag_ret) then
+         list_points = find_ret_idx_rttov(s3com)
+      else
+         n_true = count(s3com%flag_rttov); allocate(list_points(n_true))
+         list_points = find_idx_rttov(s3com)
+      endif
+      
+      !if (s3com%ret%flag_ret) then
+      !   list_points = find_ret_idx_rttov(s3com)
+      !else
+      !   list_points = find_idx_rttov(s3com)
+      !endif
+      
+      ! Set up a few useful dimensions
+      nthreads = rttov_opt%nthreads
+      max_mom = cld%mie%nmom
+      nleg = max_mom + 1
+      nchannels = rttov_opt%nchannels
+      nlevels = rttov_atm%nlevels
+      nlayers = rttov_atm%nlayers
+      nprof = size(list_points)
+      nchanprof = nchannels * nprof
+      
+      if (nprof == 0) return
+      
+      ! Allocate RTTOV input and output structures depending on the model that will be called
+      ! Current options are direct, jacobian (K) and tangent linear (TL). K and TL also include the direct call
+      ! Note that there are no outputs to these functions, all arrays are allocated internally
+      ! -------------------------------------------------------------------------------------------------------------------------
+      model_rttov = get_rttov_model(s3com)
+      
+      select case (model_rttov)
+         case ("direct")
+            call rttov_direct_init(nprof, nchanprof, nlevels, cld)
+         case ("jacobian")
+            call rttov_k_init(nprof, nchanprof, nlevels, cld)
+         case ("TL")
+            call rttov_tl_init(nprof, nchanprof, nlevels, cld)
+      end select
+      ! -------------------------------------------------------------------------------------------------------------------------
+      
+      ! Build the list of profile/channel indices in chanprof
+      ! -------------------------------------------------------------------------------------------------------------------------
+      nch = 0_jpim
+      do j = 1, nprof
+         do jch = 1, nchannels
+            nch = nch + 1_jpim
+            chanprof(nch)%prof = j
+            chanprof(nch)%chan = rttov_opt%channel_list(jch)
+         enddo
+      enddo
+      ! -------------------------------------------------------------------------------------------------------------------------
+      
+      ! Read profile data
+      ! -------------------------------------------------------------------------------------------------------------------------
+      ! Gas units for profiles
+      profiles(1:nprof)%gas_units = rttov_opt%gas_units
+      
+      ! Loop over all profiles and read data for each one
+      do iprof = 1, nprof
+         
+         idx_prof = list_points(iprof)
+         
+         ! Pressure (hPa), temperature (K) and water vapour (kg/kg)
+         profiles(iprof)%p(:) = rttov_atm%p(idx_prof,:)*1E-2
+         profiles(iprof)%t(:) = rttov_atm%t(idx_prof,:)
+         profiles(iprof)%q(:) = rttov_atm%q(idx_prof,:)
+         
+         ! Air variables in 2 meters
+         profiles(iprof)%s2m%t = rttov_atm%t_2m(idx_prof)    ! 2m temperature (K)
+         profiles(iprof)%s2m%q = rttov_atm%q_2m(idx_prof)    ! 2m water vapour (kg/kg)
+         profiles(iprof)%s2m%p = rttov_atm%ps(idx_prof)*1E-2 ! surface pressure (hPa)
+         profiles(iprof)%s2m%u = rttov_atm%u_10m(idx_prof)   ! 10m zonal wind (m/s)
+         profiles(iprof)%s2m%v = rttov_atm%v_10m(idx_prof)   ! 10m meridional wind (m/s)
+         profiles(iprof)%s2m%wfetc = 100000                  ! used typical value given in documentation
+         
+         ! Skin variables
+         profiles(iprof)%skin%t = rttov_atm%ts(idx_prof)
+         profiles(iprof)%skin%salinity = 0.0                        ! tmp, use other typical value
+         profiles(iprof)%skin%fastem = (/3.0, 5.0, 15.0, 0.1, 0.3/) ! typical RTTOV default for land
 
-  subroutine run_rttov(rttov_atm, rttov_opt, s3com, cld)
+         ! Surface type and water type
+         if (rttov_atm%landmask(iprof) < 0.5) then
+            profiles(iprof)%skin%surftype = surftype_sea
+         else
+            profiles(iprof)%skin%surftype = surftype_land
+         endif
+         
+         profiles(iprof)%skin%watertype = watertype_fresh_water ! tmp, adapt this
+         
+         ! Elevation (km), latitude (deg) and longitude (deg)
+         profiles(iprof)%elevation = rttov_atm%topography(idx_prof)*1E-3
+         profiles(iprof)%latitude  = rttov_atm%lat(idx_prof)
+         profiles(iprof)%longitude = rttov_atm%lon(idx_prof)
+         
+         ! Satellite and solar angles (deg)
+         profiles(iprof)%zenangle    = rttov_opt%zenangle
+         profiles(iprof)%azangle     = rttov_opt%azangle
+         profiles(iprof)%sunzenangle = rttov_atm%sunzenangle(idx_prof)
+         profiles(iprof)%sunazangle  = rttov_atm%sunazangle(idx_prof)
+         
+         profiles(iprof)%mmr_cldaer = rttov_opt%mmr_cldaer ! logical flag to set cloud and aerosol
+                                                           ! units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
 
-    !!Inputs variables
-    type(type_model), intent(in) :: rttov_atm
-    type(type_rttov_opt), intent(in) :: rttov_opt
-    type(type_cld), intent(in) :: cld
+         ! Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
+         profiles(iprof)%cfrac(:) = rttov_atm%clc(idx_prof,:)
 
-    !!Inout/Outputs variables
-    type(type_s3com), intent(inout) :: s3com
-
-    !!Local variables
-    integer, dimension(:), allocatable :: list_points
-    integer                            :: errorstatus, idx_prof
-
-    character(len=8) :: model_rttov
-
-    errorstatus = 0_jpim
-
-    ! Find how any profiles are to be processed (using flag_rttov)
-    n_true = count(s3com%flag_rttov); allocate(list_points(n_true))
-    list_points = find_idx_rttov(s3com)
-
-    ! Set up a few useful dimensions
-    nthreads = rttov_opt%nthreads
-    max_mom = cld%mie%nmom
-    nleg = max_mom + 1
-    nchannels = rttov_opt%nchannels
-    nlevels = rttov_atm%nlevels
-    nlayers = rttov_atm%nlayers
-    nprof = size(list_points)
-    nchanprof = nchannels * nprof
-
-    if (nprof == 0) return
-
-    ! Allocate RTTOV input and output structures depending on the model that will be called
-    ! Current options are direct, jacobian (K) and tangent linear (TL). K and TL also include the direct call
-    ! Note that there are no outputs to these functions, all arrays are allocated internally
-    ! ----------------------------------------------------------------------------------------------------
-    model_rttov = get_rttov_model(s3com)
-
-    select case (model_rttov)
-    case ("direct")
-       call rttov_direct_init(nprof, nchanprof, nlevels, cld)
-    case ("jacobian")
-       call rttov_k_init(nprof, nchanprof, nlevels, cld)
-    case ("TL")
-       call rttov_tl_init(nprof, nchanprof, nlevels, cld)
-    end select
-    ! ----------------------------------------------------------------------------------------------------
-
-
-    ! Build the list of profile/channel indices in chanprof
-    ! ----------------------------------------------------------------------------------------------------
-    nch = 0_jpim
-    do j = 1, nprof
-       do jch = 1, nchannels
-          nch = nch + 1_jpim
-          chanprof(nch)%prof = j
-          chanprof(nch)%chan = rttov_opt%channel_list(jch)
-       enddo
-    enddo
-    ! ----------------------------------------------------------------------------------------------------
-
-
-    !!--------------------------------------------------------------------------------------------------------------------!!
-    !! 5. Read profile data                                                                                               !!
-    !!--------------------------------------------------------------------------------------------------------------------!!
-
-    !!Gas units for profiles
-    profiles(1:nprof)%gas_units = rttov_opt%gas_units
-
-    !!Loop over all profiles and read data for each one
-    do iprof = 1, nprof
-
-       idx_prof = list_points(iprof)
-
-       !!Pressure (hPa), temperature (K) and water vapour (kg/kg)
-       profiles(iprof)%p(:) = rttov_atm%p(idx_prof,:)*1E-2
-       profiles(iprof)%t(:) = rttov_atm%t(idx_prof,:)
-       profiles(iprof)%q(:) = rttov_atm%q(idx_prof,:)
-
-       !!Air variables in 2 meters
-       profiles(iprof)%s2m%t = rttov_atm%t_2m(idx_prof)        !2m temperature (K)
-       profiles(iprof)%s2m%q = rttov_atm%q_2m(idx_prof)        !2m water vapour (kg/kg)
-       profiles(iprof)%s2m%p = rttov_atm%ps(idx_prof)*1E-2     !Surface pressure (hPa)
-       profiles(iprof)%s2m%u = rttov_atm%u_10m(idx_prof)       !10m zonal wind (m/s)
-       profiles(iprof)%s2m%v = rttov_atm%v_10m(idx_prof)       !10m meridional wind (m/s)
-       profiles(iprof)%s2m%wfetc = 100000                      !Used typical value given in documentation
-
-       !!Skin variables
-       profiles(iprof)%skin%t = rttov_atm%ts(idx_prof)
-       profiles(iprof)%skin%salinity = 0.0                        !tmp, use other typical value
-       profiles(iprof)%skin%fastem = (/3.0, 5.0, 15.0, 0.1, 0.3/) !Typical RTTOV default for land
-
-       !!Surface type and water type
-       if (rttov_atm%landmask(iprof) < 0.5) then
-          profiles(iprof)%skin%surftype = surftype_sea
-       else
-          profiles(iprof)%skin%surftype = surftype_land
-       endif
-
-       profiles(iprof)%skin%watertype = watertype_fresh_water !tmp, adapt this
-
-       !!Elevation (km), latitude (deg) and longitude (deg)
-       profiles(iprof)%elevation = rttov_atm%topography(idx_prof)*1E-3
-       profiles(iprof)%latitude  = rttov_atm%lat(idx_prof)
-       profiles(iprof)%longitude = rttov_atm%lon(idx_prof)
-
-       !!Satellite and solar angles (deg)
-       profiles(iprof)%zenangle    = rttov_opt%zenangle
-       profiles(iprof)%azangle     = rttov_opt%azangle
-       profiles(iprof)%sunzenangle = rttov_atm%sunzenangle(idx_prof)
-       profiles(iprof)%sunazangle  = rttov_atm%sunazangle(idx_prof)
-
-       profiles(iprof)%mmr_cldaer = rttov_opt%mmr_cldaer !Logical flag to set cloud and aerosol
-       !Units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
-
-       ! Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
-       profiles(iprof)%cfrac(:) = rttov_atm%clc(idx_prof,:)
-
-       ! call rttov_print_profile (profiles(iprof))
-       ! stop
-    end do
-
-    if(opts%rt_ir%user_cld_opt_param) then
-
-       ! Cloud variables for user defined cloud scheme
-       cld_opt_param%nmom = cld%mie%nmom
-       cld_opt_param%phangle(:) = cld%mie%angle(:)
-
-       ichanprof = 0_jpim
-       do iprof = 1, nprof
-          idx_prof = list_points(iprof)
-          do ichan = 1, nchannels
-             ichanprof = ichanprof + 1_jpim
-             do ilay = 1, rttov_atm%nlayers
-                if(rttov_atm%reff(idx_prof,ilay) > 0) then
-                   idx_reff = minloc(abs(cld%mie%radius(:) - rttov_atm%reff(idx_prof,ilay)), 1)
-                   cld_opt_param%abs(ilay, ichanprof) = cld%mie%Cabs(idx_reff, ichan) * 1E-12 * rttov_atm%cdnc(idx_prof,ilay) * 1E3 ! converting the absorption coefficient from cm2 to km-1
-                   cld_opt_param%sca(ilay, ichanprof) = cld%mie%Csca(idx_reff, ichan) * 1E-12 * rttov_atm%cdnc(idx_prof,ilay) * 1E3 ! converting the scattering coefficient from cm2 to km-1
-                   cld_opt_param%legcoef(1:nleg, ilay, ichanprof) = cld%mie%legcoef(1:nleg, idx_reff, ichan)
-                   cld_opt_param%pha(:, ilay, ichanprof) = cld%mie%pha(:, idx_reff, ichan)
-                end if
-             end do
-          enddo
-       enddo
-
-       if (opts % rt_ir % addsolar) then
-          call rttov_init_opt_param(errorstatus, opts, cld_opt_param)
-          call check_rttov_status(errorstatus, "rttov_init_opt_param")
-       end if
-
-    else
-
-       ! Cloud variables for parameterized cloud scheme
-       do iprof = 1, nprof
-          idx_prof = list_points(iprof)
-
-          ! Used by OPAC
-          profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3)
-
-          ! Ice cloud input profiles
-          profiles(iprof)%ice_scheme = rttov_opt%ice_scheme !Cloud ice water scheme: 1=Baum; 2=Baran 2014; 3=Baran 2018
-          profiles(iprof)%cloud(6,:) = rttov_atm%iwc(idx_prof,:)*1E3 !(kg/m3 -> g/m3)
-
-          ! Liquid cloud input profiles
-          profiles(:)%clw_scheme = rttov_opt%clw_scheme !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
-          profiles(iprof)%clwde(:) = rttov_atm%reff(idx_prof,:)*2.0 ! Need the diameter
-
-       end do
-    end if
-
-
-    !!--------------------------------------------------------------------------------------------------------------------!!
-    !! 6. Specify surface emissivity and reflectance                                                                      !!
-    !!--------------------------------------------------------------------------------------------------------------------!!
-
-    !!Use emissivity atlas
-    call rttov_get_emis( &
-         errorstatus,    &
-         opts,           &
-         chanprof,       &
-         profiles,       &
-         coefs,          &
-         emis_atlas,     &
-         emissivity(:)%emis_in)
-    call check_rttov_status(errorstatus, "rttov_get_emis")
-
-    !!Calculate emissivity within RTTOV where the atlas emissivity value is zero or less
-    calcemis(:) = (emissivity(:)%emis_in <= 0._jprb)
-
-    if (opts%rt_ir%addsolar) then
-
-       !!Use BRDF atlas
-       call rttov_get_brdf(         &
-            errorstatus,            &
-            opts,                   &
-            chanprof,               &
-            profiles,               &
-            coefs,                  &
-            brdf_atlas,             &
-            reflectance(:)%refl_in)
-       call check_rttov_status(errorstatus, "error reading BRDF atlas")
-
-       !!Calculate BRDF within RTTOV where the atlas BRDF value is zero or less
-       calcrefl(:) = (reflectance(:)%refl_in <= 0._jprb)
-    endif
-
-    !!Use the RTTOV emissivity and BRDF calculations over sea surfaces
-    do j = 1, size(chanprof)
-       if (profiles(chanprof(j)%prof)%skin%surftype == surftype_sea) then
-          calcemis(j) = .true.
-          calcrefl(j) = .true.
-       endif
-    enddo
-
-    !!Use default cloud top BRDF for simple cloud in VIS/NIR channels
-    reflectance(:)%refl_cloud_top = 0._jprb
-
-    ! Let RTTOV provide diffuse surface reflectances
-    reflectance(:)%diffuse_refl_in = 0._jprb
-
-    !!--------------------------------------------------------------------------------------------------------------------------!!
-    !! 7. Call RTTOV K, TL or direct model                                                                                      !!
-    !!--------------------------------------------------------------------------------------------------------------------------!!
-    select case (model_rttov)
-    case ("direct")
-       call rttov_direct_run(nthreads)
-    case ("jacobian")
-       ! Initialise RTTOV Jacobian structures to zero
-       call rttov_init_prof(profiles_k(:))
-       call rttov_init_rad(radiance_k)
-       call rttov_init_transmission(transmission_k)
-       call rttov_init_emis_refl(emissivity_k, reflectance_k)
-
-       ! Set input perturbation in radiance_k:
-       radiance_k%total(:) = 1._jprb
-       radiance_k%bt(:) = 1._jprb
-
-       call rttov_k_run(nthreads)
-    case ("tl")
-       write(6, *) "Warning: TL mode not well tested"
-       call rttov_init_prof(profiles_tl(:))
-       call rttov_init_rad(radiance_tl)
-       call rttov_init_transmission(transmission_tl)
-       call rttov_init_emis_refl(emissivity_tl, reflectance_tl)
-
-       do iprof = 1, nprof
-          idx_prof = list_points(iprof)
-          joff = (iprof-1_jpim) * nchannels
-          ichan = 1
-          do j = 1+joff, nchannels+joff
-             do ilev = 1, nlevels
-                profiles_tl(iprof)%t(ilev) = tl_perturbation * profiles(iprof)%t(ilev)
-
-                call rttov_tl_run(nthreads)
-
-                s3com%k_tl%t(idx_prof,ilev,ichan) = real(radiance_tl%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7, wp) / &
-                     real(profiles_tl(iprof)%t(ilev), wp)
-                write(6,*) s3com%k_tl%t(idx_prof,ilev,ichan)
-                stop
-                profiles_tl(iprof)%t(ilev) = 0._jprb
-             enddo
-             ichan = ichan + 1
-          enddo
-       enddo
-    end select
-
-    do iprof = 1, nprof
-       idx_prof = list_points(iprof)
-       joff = (iprof-1_jpim) * nchannels
-       ichan = 1
-
-       do j = 1+joff, nchannels+joff
-          ! Radiances, BTs and BRFs
-          s3com%rad%f_rad_total(idx_prof,ichan) = real(radiance%total(j) * coefs%coef%ff_cwn(chanprof(j)%chan)**2._wp * 1E-7, wp) !(W/m2/sr/um)
-          s3com%rad%f_rad_clear(idx_prof,ichan) = real(radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2._wp * 1E-7, wp) !(W/m2/sr/um)
-          s3com%rad%f_bt_total(idx_prof,ichan)  = real(radiance%bt(j), wp)
-          s3com%rad%f_bt_clear(idx_prof,ichan)  = real(radiance%bt_clear(j), wp)
-          s3com%rad%f_ref_total(idx_prof,ichan) = real(radiance%refl(j), wp)
-          s3com%rad%f_ref_clear(idx_prof,ichan) = real(radiance%refl_clear(j), wp)
-
-          if(s3com%jac%do_jacobian_calc) then
-             do ilev = 1, profiles_k(ichan)%nlevels
-                s3com%jac%t(idx_prof,ilev,ichan) = real(profiles_k(ichan)%t(ilev)*coefs%coef%ff_cwn(chanprof(j)%chan)**2*1E-7, wp)
-             enddo
-          end if
-
-          ichan = ichan + 1
-       enddo
-    enddo
-
-    ! Deallocate all RTTOV arrays and structures
-    select case (model_rttov)
-    case ("direct")
-       call rttov_direct_free(nprof, nchanprof, nlevels, cld)
-    case ("jacobian")
-       call rttov_k_free(nprof, nchanprof, nlevels, cld)
-    case ("tl")
-       call rttov_tl_free(nprof, nchanprof, nlevels, cld)
-    end select
-
-    deallocate(list_points)
-
+         ! call rttov_print_profile (profiles(iprof))
+         ! stop
+      end do
+      
+      if(opts%rt_ir%user_cld_opt_param) then
+         
+         ! Cloud variables for user defined cloud scheme
+         cld_opt_param%nmom = cld%mie%nmom
+         cld_opt_param%phangle(:) = cld%mie%angle(:)
+         
+         ichanprof = 0_jpim
+         
+         do iprof = 1, nprof
+            
+            idx_prof = list_points(iprof)
+            
+            do ichan = 1, nchannels
+               
+               ichanprof = ichanprof + 1_jpim
+               
+               do ilay = 1, rttov_atm%nlayers
+                  
+                  if(rttov_atm%reff(idx_prof,ilay) > 0) then
+                     
+                     idx_reff = minloc(abs(cld%mie%radius(:) - rttov_atm%reff(idx_prof,ilay)), 1)
+                     cld_opt_param%abs(ilay, ichanprof) = cld%mie%Cabs(idx_reff, ichan)*1E-12*rttov_atm%cdnc(idx_prof,ilay)*1E3 ! converting the absorption coefficient from cm2 to km-1
+                     cld_opt_param%sca(ilay, ichanprof) = cld%mie%Csca(idx_reff, ichan)*1E-12*rttov_atm%cdnc(idx_prof,ilay)*1E3 ! converting the scattering coefficient from cm2 to km-1
+                     cld_opt_param%legcoef(1:nleg, ilay, ichanprof) = cld%mie%legcoef(1:nleg, idx_reff, ichan)
+                     cld_opt_param%pha(:, ilay, ichanprof) = cld%mie%pha(:, idx_reff, ichan)
+                     
+                  endif
+                  
+               enddo
+               
+            enddo
+            !call rttov_print_profile (profiles(iprof))
+         enddo
+         
+         if (opts % rt_ir % addsolar) then
+            call rttov_init_opt_param(errorstatus, opts, cld_opt_param)
+            call check_rttov_status(errorstatus, "rttov_init_opt_param")
+         endif
+         
+      else
+         
+         ! Cloud variables for parameterized cloud scheme
+         do iprof = 1, nprof
+            
+            idx_prof = list_points(iprof)
+            
+            ! Used by OPAC
+            profiles(iprof)%cloud(1,:) = rttov_atm%lwc(idx_prof,:)*1E3 !(kg/m3 -> g/m3)
+            
+            ! Ice cloud input profiles
+            profiles(iprof)%ice_scheme = rttov_opt%ice_scheme !Cloud ice water scheme: 1=Baum; 2=Baran 2014; 3=Baran 2018
+            profiles(iprof)%cloud(6,:) = rttov_atm%iwc(idx_prof,:)*1E3 !(kg/m3 -> g/m3)
+            
+            ! Liquid cloud input profiles
+            profiles(:)%clw_scheme = rttov_opt%clw_scheme !Cloud liquid water scheme: 1=OPAC; 2=“Deff”
+            profiles(iprof)%clwde(:) = rttov_atm%reff(idx_prof,:)*2._wp ! Need the diameter
+            !call rttov_print_profile (profiles(iprof))
+         enddo
+         
+      endif
+      ! -------------------------------------------------------------------------------------------------------------------------
+      
+      ! Specify surface emissivity and reflectance
+      ! -------------------------------------------------------------------------------------------------------------------------
+      ! Use emissivity atlas
+      call rttov_get_emis( &
+           errorstatus,    &
+           opts,           &
+           chanprof,       &
+           profiles,       &
+           coefs,          &
+           emis_atlas,     &
+           emissivity(:)%emis_in)
+      call check_rttov_status(errorstatus, "rttov_get_emis")
+      
+      ! Calculate emissivity within RTTOV where the atlas emissivity value is zero or less
+      calcemis(:) = (emissivity(:)%emis_in <= 0._jprb)
+      
+      if (opts%rt_ir%addsolar) then
+         
+         ! Use BRDF atlas
+         call rttov_get_brdf(         &
+              errorstatus,            &
+              opts,                   &
+              chanprof,               &
+              profiles,               &
+              coefs,                  &
+              brdf_atlas,             &
+              reflectance(:)%refl_in)
+         call check_rttov_status(errorstatus, "error reading BRDF atlas")
+         
+         ! Calculate BRDF within RTTOV where the atlas BRDF value is zero or less
+         calcrefl(:) = (reflectance(:)%refl_in <= 0._jprb)
+         
+      endif
+      
+      ! Use the RTTOV emissivity and BRDF calculations over sea surfaces
+      do j = 1, size(chanprof)
+         if (profiles(chanprof(j)%prof)%skin%surftype == surftype_sea) then
+            calcemis(j) = .true.
+            calcrefl(j) = .true.
+         endif
+      enddo
+      
+      ! Use default cloud top BRDF for simple cloud in VIS/NIR channels
+      reflectance(:)%refl_cloud_top = 0._jprb
+      
+      ! Let RTTOV provide diffuse surface reflectances
+      reflectance(:)%diffuse_refl_in = 0._jprb
+      ! -------------------------------------------------------------------------------------------------------------------------
+      
+      ! Call RTTOV K, TL or direct model
+      ! -------------------------------------------------------------------------------------------------------------------------
+      select case (model_rttov)
+         case ("direct")
+            call rttov_direct_run(nthreads)
+         case ("jacobian")
+            ! Initialise RTTOV Jacobian structures to zero
+            call rttov_init_prof(profiles_k(:))
+            call rttov_init_rad(radiance_k)
+            call rttov_init_transmission(transmission_k)
+            call rttov_init_emis_refl(emissivity_k, reflectance_k)
+            
+            ! Set input perturbation in radiance_k:
+            radiance_k%total(:) = 1._jprb
+            radiance_k%bt(:) = 1._jprb
+            
+            call rttov_k_run(nthreads)
+         case ("tl")
+            write(6, *) "Warning: TL mode not well tested"
+            call rttov_init_prof(profiles_tl(:))
+            call rttov_init_rad(radiance_tl)
+            call rttov_init_transmission(transmission_tl)
+            call rttov_init_emis_refl(emissivity_tl, reflectance_tl)
+            
+            do iprof = 1, nprof
+               
+               idx_prof = list_points(iprof)
+               joff = (iprof-1_jpim) * nchannels
+               ichan = 1
+               
+               do j = 1+joff, nchannels+joff
+                  
+                  do ilev = 1, nlevels
+                     
+                     profiles_tl(iprof)%t(ilev) = tl_perturbation * profiles(iprof)%t(ilev)
+                     
+                     call rttov_tl_run(nthreads)
+                     
+                     s3com%k_tl%t(idx_prof,ichan,ilev) = &
+                     real((radiance_tl%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2._wp*1E-7 / &
+                     profiles_tl(iprof)%t(ilev)), wp)
+                     write(6,*) s3com%k_tl%t(idx_prof,ichan,ilev)
+                     !stop
+                     profiles_tl(iprof)%t(ilev) = 0._jprb
+                     
+                  enddo
+                  
+               ichan = ichan + 1
+               
+            enddo
+            
+         enddo
+         
+      end select
+      
+      do iprof = 1, nprof
+         
+         idx_prof = list_points(iprof)
+         joff = (iprof-1_jpim) * nchannels
+         ichan = 1
+         
+         do j = 1+joff, nchannels+joff
+            
+            ! Radiances, brightness temperatures, reflectances, surface albedo and emissivity
+            s3com%rad%f_rad_total(idx_prof,ichan) = real(radiance%total(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2._wp*1E-7, wp) ! converting radiances from mW/m2/sr/cm to W/m2/sr/um
+            s3com%rad%f_rad_clear(idx_prof,ichan) = real(radiance%clear(j)*coefs%coef%ff_cwn(chanprof(j)%chan)**2._wp*1E-7, wp) ! converting radiances from mW/m2/sr/cm to W/m2/sr/um
+            s3com%rad%f_bt_total(idx_prof,ichan)  = real(radiance%bt(j), wp)
+            s3com%rad%f_bt_clear(idx_prof,ichan)  = real(radiance%bt_clear(j), wp)
+            s3com%rad%f_ref_total(idx_prof,ichan) = real(radiance%refl(j), wp)
+            s3com%rad%f_ref_clear(idx_prof,ichan) = real(radiance%refl_clear(j), wp)
+            s3com%rad%brdf(idx_prof,ichan)        = real(reflectance(j)%refl_out, wp)
+            s3com%rad%emiss(idx_prof,ichan)       = real(emissivity(j)%emis_out, wp)
+            
+            if(s3com%jac%do_jacobian_calc) then
+               
+               ! Surface Jacobian
+               s3com%jac%brdf(idx_prof,ichan)  = real(reflectance_k(j)%refl_out, wp)
+               s3com%jac%emiss(idx_prof,ichan) = real(emissivity_k(j)%emis_out, wp)
+               
+               ! Atmospheric profile Jacobians
+               do ilev = 1, profiles_k(ichan)%nlevels
+                  s3com%jac%t(idx_prof,ichan,ilev) = &
+                  real(profiles_k(j)%t(ilev)*coefs%coef%ff_cwn(chanprof(j)%chan)**2._wp*1E-7, wp)
+                  s3com%jac%q(idx_prof,ichan,ilev) = &
+                  real(profiles_k(j)%q(ilev)*coefs%coef%ff_cwn(chanprof(j)%chan)**2._wp*1E-7, wp)
+               enddo
+               
+               ! Cloud profile Jacobians
+               do ilay = 1, profiles_k(ichan)%nlayers
+                  s3com%jac%cfrac(idx_prof,ichan,ilay) = &
+                  real(profiles_k(ichan)%cfrac(ilay)*coefs%coef%ff_cwn(chanprof(j)%chan)**2._wp*1E-7, wp)
+                  s3com%jac%clwde(idx_prof,ichan,ilay) = &
+                  real(profiles_k(ichan)%clwde(ilay)*coefs%coef%ff_cwn(chanprof(j)%chan)**2._wp*1E-7, wp)
+              enddo
+              
+            endif
+            
+            ichan = ichan + 1
+            
+         enddo
+         
+         ! Retrievals
+         s3com%ret%F = s3com%rad%f_rad_total
+         
+      enddo
+      
+      ! Deallocate all RTTOV arrays and structures
+      select case (model_rttov)
+         case ("direct")
+            call rttov_direct_free(nprof, nchanprof, nlevels, cld)
+         case ("jacobian")
+            call rttov_k_free(nprof, nchanprof, nlevels, cld)
+         case ("tl")
+            call rttov_tl_free(nprof, nchanprof, nlevels, cld)
+      end select
+      
+      deallocate(list_points)
+      
    end subroutine run_rttov
-
+   
 end module mod_rttov

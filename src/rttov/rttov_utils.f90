@@ -28,69 +28,113 @@
 !
 
 module mod_rttov_utils
-
-  use s3com_types, only: wp, type_s3com
-  use rttov_const, only: errorstatus_success
-  use rttov_unix_env, only: rttov_exit
-
-  implicit none
-
-  private
-  public :: find_idx_rttov, check_rttov_status, get_rttov_model
-
+   
+   use s3com_types,    only: wp, type_s3com
+   use rttov_const,    only: errorstatus_success
+   use rttov_unix_env, only: rttov_exit
+   
+   implicit none
+   
+   private
+   public :: find_idx_rttov, find_ret_idx_rttov, check_rttov_status, get_rttov_model
+   
 contains
-
-  function find_idx_rttov(s3com) result(idx_rttov)
-
-    type(type_s3com), intent(in) :: s3com
-    integer(kind=4), dimension(:), allocatable :: idx_rttov
-    integer(kind=4), dimension(s3com%npoints) :: idx_all
-    integer(kind=4) :: idx, i
-
-    idx_all = 0
-    idx = 1
-
-    do i = 1, s3com%npoints
-       if(s3com%flag_rttov(i)) then
-          idx_all(idx) = i
-          idx = idx + 1
-       end if
-    end do
-
-    idx = idx-1
-
-    allocate(idx_rttov(idx)); idx_rttov(1:idx) = idx_all(1:idx)
-
-    return
-
-  end function find_idx_rttov
-
-  subroutine check_rttov_status(status, location)
-
-    integer, intent(in) :: status
-    character(len=*), intent(in) :: location
-
-    if (status /= errorstatus_success) then
-       write(6,*) location
-       call rttov_exit(status)
-    endif
-  end subroutine check_rttov_status
-
-  function get_rttov_model(s3com) result(model)
-
-    type(type_s3com), intent(in) :: s3com
-    character(len=8) :: model
-
-    if(s3com%jac%do_jacobian_calc) then
-       model = "jacobian"
-    else if(s3com%k_tl%do_k_tl_calc) then
-       model = "TL"
-    else
-       model = "direct"
-    endif
-
-  end function get_rttov_model
-
-
-
+   
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   function find_idx_rttov(s3com) result(idx_rttov)
+      
+      ! Inputs
+      type(type_s3com), intent(in) :: s3com
+      
+      ! Internal
+      integer(kind=4), dimension(:), allocatable :: idx_rttov
+      integer(kind=4), dimension(s3com%npoints) :: idx_all
+      integer(kind=4) :: idx, i
+      
+      idx_all = 0
+      idx = 1
+      
+      do i = 1, s3com%npoints
+         if(s3com%flag_rttov(i)) then
+            idx_all(idx) = i
+            idx = idx + 1
+         end if
+      enddo
+      
+      idx = idx - 1
+      
+      allocate(idx_rttov(idx)); idx_rttov(1:idx) = idx_all(1:idx)
+      
+      return
+      
+   end function find_idx_rttov
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   function find_ret_idx_rttov(s3com) result(ret_idx_rttov)
+      
+      ! Inputs
+      type(type_s3com), intent(in) :: s3com
+      
+      ! Outputs
+      integer(kind=4), dimension(:), allocatable :: ret_idx_rttov
+      
+      ! Internal
+      integer(kind=4), dimension(s3com%ret%npoints) :: idx_all
+      integer(kind=4) :: idx, i
+      
+      idx_all = 0
+      idx = 1
+      
+      do i = 1, s3com%ret%npoints
+         if(s3com%ret%flag_rttov(i)) then
+            idx_all(idx) = i
+            idx = idx + 1
+         end if
+      enddo
+      
+      idx = idx - 1
+      
+      allocate(ret_idx_rttov(idx)); ret_idx_rttov(1:idx) = idx_all(1:idx)
+      
+      return
+      
+   end function find_ret_idx_rttov
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   subroutine check_rttov_status(status, location)
+      
+      ! Inputs
+      integer, intent(in) :: status
+      character(len=*), intent(in) :: location
+      
+      if (status /= errorstatus_success) then
+         write(6,*) location
+         call rttov_exit(status)
+      endif
+      
+   end subroutine check_rttov_status
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   function get_rttov_model(s3com) result(model)
+      
+      ! Inputs
+      type(type_s3com), intent(in) :: s3com
+      
+      ! Outputs
+      character(len=8) :: model
+      
+      if(s3com%jac%do_jacobian_calc) then
+         model = "jacobian"
+      else if(s3com%k_tl%do_k_tl_calc) then
+         model = "TL"
+      else
+         model = "direct"
+      endif
+      
+   end function get_rttov_model
+   ! ----------------------------------------------------------------------------------------------------------------------------
+   
 end module mod_rttov_utils
