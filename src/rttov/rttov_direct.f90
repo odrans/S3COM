@@ -27,157 +27,170 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
-! Initialize a few structures for RTTOV (opts, coefs, emis_atlas, brdf_atlas)
+!> Initialize the RTTOV direct model
 module mod_rttov_direct
-
-  use s3com_types,  only: wp, type_cld
-  use mod_rttov_utils, only: check_rttov_status
-  use mod_rttov_opts, only: opts
-  use mod_rttov_coefs, only: coefs
-  use mod_rttov_atlas, only: emis_atlas, brdf_atlas
-  use rttov_types, only: &
-       rttov_profile,      &!
-       rttov_transmission, &!
-       rttov_radiance,     &!
-       rttov_chanprof,     &!
-       rttov_emissivity,   &!
-       rttov_reflectance,  &!
-       rttov_opt_param!
-
-
-  use parkind1, only: jpim, jprb, jplm
-
-  implicit none
-
-  private
-  public :: rttov_direct_init, rttov_direct_run, rttov_direct_free, &
-       profiles, chanprof, transmission, &
-       radiance, calcemis, &
-       calcrefl, reflectance, cld_opt_param, emissivity
-
-
+   
+   use s3com_types,     only: wp, type_cld
+   use mod_rttov_utils, only: check_rttov_status
+   use mod_rttov_opts,  only: opts
+   use mod_rttov_coefs, only: coefs
+   use mod_rttov_atlas, only: emis_atlas, brdf_atlas
+   use rttov_types,     only: rttov_profile, rttov_transmission, rttov_radiance, rttov_chanprof, rttov_emissivity, &
+                              rttov_reflectance, rttov_opt_param
+   use parkind1, only: jpim, jprb, jplm
+   
+   implicit none
+   
+   private
+   public :: rttov_direct_init, rttov_direct_run, rttov_direct_free, profiles, chanprof, transmission, radiance, calcemis, &
+             calcrefl, reflectance, cld_opt_param, emissivity
+   
 #include "rttov_direct.interface"
 #include "rttov_parallel_direct.interface"
 #include "rttov_alloc_direct.interface"
-
-  type(rttov_chanprof),    pointer :: chanprof(:)      => null() ! Input channel/profile list
-  type(rttov_profile),     pointer :: profiles(:)      => null() ! Input profiles
-  type(rttov_transmission)         :: transmission               ! Output transmittances
-  type(rttov_radiance)             :: radiance                   ! Output radiances
-  logical(kind=jplm),      pointer :: calcemis(:)      => null() ! Flag to indicate calculation of emissivity within RTTOV
-  logical(kind=jplm),      pointer :: calcrefl(:)      => null() ! Flag to indicate calculation of BRDF within RTTOV
-  type(rttov_reflectance), pointer :: reflectance(:)   => null()
-  type(rttov_opt_param)            :: cld_opt_param              ! Input cloud optical parameters
-  type(rttov_emissivity),  pointer :: emissivity(:)    => null() ! Input/output surface emissivity
-
+   
+   type(rttov_chanprof),    pointer :: chanprof(:)    => null() !< input   channel/profile list
+   type(rttov_profile),     pointer :: profiles(:)    => null() !< input   profiles
+   type(rttov_emissivity),  pointer :: emissivity(:)  => null() !< inout   surface emissivities
+   logical(kind=jplm),      pointer :: calcemis(:)    => null() !< in      flag to indicate calculation of emissivity within RTTOV
+   logical(kind=jplm),      pointer :: calcrefl(:)    => null() !< in      flag to indicate calculation of BRDF within RTTOV
+   type(rttov_reflectance), pointer :: reflectance(:) => null() !< inout   reflectances
+   type(rttov_transmission)         :: transmission             !< inout   transmittances
+   type(rttov_radiance)             :: radiance                 !< inout   radiances
+   type(rttov_opt_param)            :: cld_opt_param            !< in      cloud optical parameters
+   
 contains
-
-  ! Initialize the emissivity and BRDF atlas
-  subroutine rttov_direct_init(nprof, nchanprof, nlevels, cld)
-
-    integer, intent(in) :: nprof, nchanprof, nlevels
-    type(type_cld), intent(in) :: cld
-
-    integer :: errorstatus
-
-       call rttov_alloc_direct(               &
-            errorstatus,                      &
-            1_jpim,                           & !1 => allocate
-            nprof,                            &
-            nchanprof,                        &
-            nlevels,                          &
-            chanprof,                         &
-            opts,                             &
-            profiles,                         &
-            coefs,                            &
-            transmission,                     &
-            radiance,                         &
-            calcemis      = calcemis,         &
-            emissivity    = emissivity,       &
-            calcrefl      = calcrefl,         &
-            reflectance   = reflectance,      &
-            cld_maxnmom   = cld%mie%nmom,     &
-            cld_nphangle  = cld%mie%nang,     &
-            cld_opt_param = cld_opt_param,    &
-            init          = .true._jplm)
-
-    call check_rttov_status(errorstatus, "rttov_alloc_direct")
-
-  end subroutine rttov_direct_init
-
-
-  ! Run the RTTOV direct model
-  subroutine rttov_direct_run(nthreads)
-
-    integer, intent(in) :: nthreads
-
-    integer :: errorstatus
-
-    if (nthreads <= 1) then
-       call rttov_direct(              &
-            errorstatus,               & ! out   error flag
-            chanprof,                  & ! in    channel and profile index structure
-            opts,                      & ! in    options structure
-            profiles,                  & ! in    profile array
-            coefs,                     & ! in    coefficients structure
-            transmission,              & ! inout computed transmittances
-            radiance,                  & ! inout computed radiances
-            calcemis    = calcemis,    & ! in    flag for internal emissivity calcs
-            emissivity  = emissivity,  & ! inout input/output emissivities per channel
-            calcrefl    = calcrefl,    & ! in    flag for internal BRDF calcs
-            cld_opt_param = cld_opt_param, &! in    cloud optical parameters
-            reflectance = reflectance)  ! inout input/output BRDFs per channel
-    else
-       call rttov_parallel_direct(     &
-            errorstatus,               & ! out   error flag
-            chanprof,                  & ! in    channel and profile index structure
-            opts,                      & ! in    options structure
-            profiles,                  & ! in    profile array
-            coefs,                     & ! in    coefficients structure
-            transmission,              & ! inout computed transmittances
-            radiance,                  & ! inout computed radiances
-            calcemis    = calcemis,    & ! in    flag for internal emissivity calcs
-            emissivity  = emissivity,  & ! inout input/output emissivities per channel
-            calcrefl    = calcrefl,    & ! in    flag for internal BRDF calcs
-            reflectance = reflectance, & ! inout input/output BRDFs per channel
-            cld_opt_param = cld_opt_param, &! in    cloud optical parameters
-            nthreads    = nthreads)      ! in    number of threads to use
-    endif
-
-    call check_rttov_status(errorstatus, "rttov_direct")
-
-  end subroutine rttov_direct_run
-
-  subroutine rttov_direct_free(nprof, nchanprof, nlevels, cld)
-
-    integer, intent(in) :: nprof, nchanprof, nlevels
-    type(type_cld), intent(in) :: cld
-
-    integer :: errorstatus
-
-    call rttov_alloc_direct(         &
-         errorstatus,                &
-         0_jpim,                     & !0 => deallocate
-         nprof,                      &
-         nchanprof,                  &
-         nlevels,                    &
-         chanprof,                   &
-         opts,                       &
-         profiles,                   &
-         coefs,                      &
-         transmission,               &
-         radiance,                   &
-         calcemis      = calcemis,   &
-         emissivity    = emissivity, &
-         calcrefl      = calcrefl,   &
-         reflectance   = reflectance, &
-         cld_maxnmom = cld%mie%nmom, &
-         cld_nphangle = cld%mie%nang,      &
-         cld_opt_param = cld_opt_param)
-
-    call check_rttov_status(errorstatus, "rttov_alloc_direct")
-
-  end subroutine rttov_direct_free
-
-
+   
+   ! ============================================================================================================================
+   !> @brief Initialize the RTTOV arrays and structrures for the direct model
+   !! @param[in] nprof       number of profiles per call to RTTOV
+   !! @param[in] nchanprof   number of channels simulated per call to RTTOV
+   !! @param[in] nlevels     number of profile levels
+   !! @param[in] cld         cloud data structure
+   subroutine rttov_direct_init(nprof, nchanprof, nlevels, cld)
+      
+      ! Input
+      integer, intent(in) :: nprof, nchanprof, nlevels
+      type(type_cld), intent(in) :: cld
+      
+      ! Internal
+      integer :: errorstatus
+      
+      ! Allocate the RTTOV arrays and structures for the direct model
+      call rttov_alloc_direct(            &
+           errorstatus,                   & !< out     error flag
+           1_jpim,                        & !< in      1 => allocate
+           nprof,                         & !< in      number of profiles per call to RTTOV
+           nchanprof,                     & !< in      number of channels simulated per call to RTTOV
+           nlevels,                       & !< in      number of profile levels
+           chanprof,                      & !< in      channel and profile index structure
+           opts,                          & !< in      options structure
+           profiles,                      & !< in      profile array
+           coefs,                         & !< in      coefficients structure
+           transmission,                  & !< inout   computed transmittances
+           radiance,                      & !< inout   computed radiances
+           calcemis      = calcemis,      & !< in      flag for internal emissivity calculations
+           emissivity    = emissivity,    & !< inout   surface emissivities per channel
+           calcrefl      = calcrefl,      & !< in      flag for internal BRDF calculations
+           reflectance   = reflectance,   & !< inout   BRDFs per channel
+           cld_maxnmom   = cld%mie%nmom,  & !< in      maximum number of coefficients in Legendre expansion of cloud phase functions
+           cld_nphangle  = cld%mie%nang,  & !< in      number of phase angles over which cloud phase functions are to be defined
+           cld_opt_param = cld_opt_param, & !< in      cloud optical parameters
+           init          = .true._jplm)     !< in      initialize the newly allocated structures
+      
+      call check_rttov_status(errorstatus, "rttov_alloc_direct")
+      
+   end subroutine rttov_direct_init
+   ! ============================================================================================================================
+   
+   ! ============================================================================================================================
+   !> @brief Run the RTTOV direct model
+   !! @param[in] nthreads   number of threads
+   subroutine rttov_direct_run(nthreads)
+      
+      ! Input
+      integer, intent(in) :: nthreads
+      
+      ! Internal
+      integer :: errorstatus
+      
+      ! Call the RTTOV direct model
+      if (nthreads <= 1) then
+         call rttov_direct(                  &
+              errorstatus,                   & !< out     error flag
+              chanprof,                      & !< in      channel and profile index structure
+              opts,                          & !< in      options structure
+              profiles,                      & !< in      profile array
+              coefs,                         & !< in      coefficients structure
+              transmission,                  & !< inout   computed transmittances
+              radiance,                      & !< inout   computed radiances
+              calcemis      = calcemis,      & !< in      flag for internal emissivity calcs
+              emissivity    = emissivity,    & !< inout   surface emissivities per channel
+              calcrefl      = calcrefl,      & !< in      flag for internal BRDF calcs
+              reflectance   = reflectance,   & !< inout   BRDFs per channel
+              cld_opt_param = cld_opt_param)   !< in      cloud optical parameters
+              
+      else
+         call rttov_parallel_direct(         &
+              errorstatus,                   & !< out     error flag
+              chanprof,                      & !< in      channel and profile index structure
+              opts,                          & !< in      options structure
+              profiles,                      & !< in      profile array
+              coefs,                         & !< in      coefficients structure
+              transmission,                  & !< inout   computed transmittances
+              radiance,                      & !< inout   computed radiances
+              calcemis      = calcemis,      & !< in      flag for internal emissivity calcs
+              emissivity    = emissivity,    & !< inout   surface emissivities per channel
+              calcrefl      = calcrefl,      & !< in      flag for internal BRDF calcs
+              reflectance   = reflectance,   & !< inout   BRDFs per channel
+              cld_opt_param = cld_opt_param, & !< in      cloud optical parameters
+              nthreads      = nthreads)        !< in      number of threads to use
+      endif
+      
+      call check_rttov_status(errorstatus, "rttov_direct")
+      
+   end subroutine rttov_direct_run
+   ! ============================================================================================================================
+   
+   ! ============================================================================================================================
+   !> @brief Free the RTTOV arrays and structures for the direct model
+   !! @param[in] nprof       number of profiles per call to RTTOV
+   !! @param[in] nchanprof   number of channels simulated per call to RTTOV
+   !! @param[in] nlevels     number of profile levels
+   !! @param[in] cld         cloud data structure
+   subroutine rttov_direct_free(nprof, nchanprof, nlevels, cld)
+      
+      ! Input
+      integer, intent(in) :: nprof, nchanprof, nlevels
+      type(type_cld), intent(in) :: cld
+      
+      ! Internal
+      integer :: errorstatus
+      
+      ! Deallocate the RTTOV arrays and structures for the direct model
+      call rttov_alloc_direct(           &
+           errorstatus,                  & !< out     error flag
+           0_jpim,                       & !< in      0 => deallocate
+           nprof,                        & !< in      number of profiles per call to RTTOV
+           nchanprof,                    & !< in      number of channels simulated per call to RTTOV
+           nlevels,                      & !< in      number of profile levels
+           chanprof,                     & !< in      channel and profile index structure
+           opts,                         & !< in      options structure
+           profiles,                     & !< in      profile array
+           coefs,                        & !< in      coefficients structure
+           transmission,                 & !< inout   computed transmittances
+           radiance,                     & !< inout   computed radiances
+           calcemis      = calcemis,     & !< in      flag for internal emissivity calculations
+           emissivity    = emissivity,   & !< inout   surface emissivities per channel
+           calcrefl      = calcrefl,     & !< in      flag for internal BRDF calculations
+           reflectance   = reflectance,  & !< inout   BRDFs per channel
+           cld_maxnmom   = cld%mie%nmom, & !< in      maximum number of coefficients in Legendre expansion of cloud phase functions
+           cld_nphangle  = cld%mie%nang, & !< in      number of phase angles over which cloud phase functions are to be defined
+           cld_opt_param = cld_opt_param)  !< in      cloud optical parameters
+      
+      call check_rttov_status(errorstatus, "rttov_alloc_direct")
+      
+   end subroutine rttov_direct_free
+   ! ============================================================================================================================
+   
 end module mod_rttov_direct

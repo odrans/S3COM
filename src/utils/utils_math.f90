@@ -29,7 +29,7 @@
 
 module mod_utils_math
    
-   use s3com_types, only: wp
+   use s3com_types, only: wp, wpi
    
    implicit none
    
@@ -38,28 +38,22 @@ module mod_utils_math
    
 contains
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Calculate the inverse of a matrix
+   !! @details The method is based on Doolittle LU factorization for Ax = b (Alex G. December 2009).
+   !! @note The original matrix a(n,n) will be destroyed during the calculation.
+   !! @param[in] n         dimension of matrix A
+   !! @param[in] a(n,n)    array of coefficients for matrix A
+   !! @param[out] c(n,n)   inverse matrix of A
    subroutine inverse(a, c, n)
-      
-      ! ======================================================
-      ! Inverse matrix
-      ! Method: Based on Doolittle LU factorization for Ax = b
-      ! Alex G. December 2009
-      ! ------------------------------------------------------
-      ! input ...
-      ! a(n,n) - array of coefficients for matrix A
-      ! n      - dimension
-      ! output ...
-      ! c(n,n) - inverse matrix of A
-      ! comments ...
-      ! the original matrix a(n,n) will be destroyed
-      ! during the calculation
-      ! ======================================================
       
       implicit none
       
-      integer n
+      ! Input
       real(wp) :: a(n,n), c(n,n)
+      integer n
+      
+      ! Internal
       real(wp) :: L(n,n), U(n,n), b(n), d(n), x(n)
       real(wp) :: coeff
       integer i, j, k
@@ -97,6 +91,7 @@ contains
       
       ! Step 3: compute columns of the inverse matrix C
       do k = 1, n
+         
          b(k) = 1.0_wp
          d(1) = b(1)
          
@@ -124,35 +119,50 @@ contains
          enddo
          
          b(k) = 0.0_wp
+         
       enddo
       
+      return
+      
    end subroutine inverse
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Return the number of chunks
+   !! @param[in] npoints      number of total data points
+   !! @param[in] npoints_it   number of simultaneous data points sent to RTTOV
+   !! @param[out] nchunks     number of chunks
    function n_chunks(npoints, npoints_it) result(nchunks)
       
-      ! Inputs
-      integer(kind=4), intent(in) :: npoints, npoints_it
+      ! Input
+      integer(wpi), intent(in) :: npoints, npoints_it
       
       ! Internal
-      integer(kind=4) :: nchunks
+      integer(wpi) :: nchunks
       
       nChunks = npoints / npoints_it
+      
       if (mod(npoints,npoints_it)/=0) nchunks = nchunks + 1
       if (npoints .eq. npoints_it) nChunks = 1
       
+      return
+      
    end function n_chunks
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Return the julian day
+   !! @param[in] day       day of the simulation
+   !! @param[in] month     month of the simulation
+   !! @param[in] year      year of the simulation
+   !! @param[out] julian   julian date
    subroutine day_number(day, month, year, julian)
       
-      ! Inputs
-      integer(kind=4), intent(in) :: day, month, year
+      ! Input
+      integer(wpi), intent(in) :: day, month, year
       
-      ! Outputs
-      integer(kind = 4), intent(out) :: julian
+      ! Output
+      integer(wpi), intent(out) :: julian
       
       if (month .le. 2) then
          julian = 31 * (month - 1) + day
@@ -165,11 +175,11 @@ contains
          julian = 31 * (month - 1) - ((month - 1) / 2) - 2 + day
       endif
       
-      if(year.ne.0 .and. mod(year,4).eq.0) julian = julian + 1
+      if (year .ne. 0 .and. mod(year,4) .eq. 0) julian = julian + 1
       
       return
       
    end subroutine day_number
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
 end module mod_utils_math

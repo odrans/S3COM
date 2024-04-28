@@ -27,9 +27,10 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
+!> Useful tools used for and by RTTOV
 module mod_rttov_utils
    
-   use s3com_types,    only: wp, type_s3com
+   use s3com_types,    only: wp, wpi, type_s3com
    use rttov_const,    only: errorstatus_success
    use rttov_unix_env, only: rttov_exit
    
@@ -40,25 +41,30 @@ module mod_rttov_utils
    
 contains
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Return the number of profiles to be processed in RTTOV
+   !! @param[in] s3com        s3com data structure
+   !! @param[out] idx_rttov   number of profiles to be processed
    function find_idx_rttov(s3com) result(idx_rttov)
       
-      ! Inputs
+      ! Input
       type(type_s3com), intent(in) :: s3com
       
+      ! Output
+      integer(wpi), dimension(:), allocatable :: idx_rttov
+      
       ! Internal
-      integer(kind=4), dimension(:), allocatable :: idx_rttov
-      integer(kind=4), dimension(s3com%npoints) :: idx_all
-      integer(kind=4) :: idx, i
+      integer(wpi), dimension(s3com%npoints) :: idx_all
+      integer(wpi) :: idx, i
       
       idx_all = 0
       idx = 1
       
       do i = 1, s3com%npoints
-         if(s3com%flag_rttov(i)) then
+         if (s3com%flag_rttov(i)) then
             idx_all(idx) = i
             idx = idx + 1
-         end if
+         endif
       enddo
       
       idx = idx - 1
@@ -68,29 +74,32 @@ contains
       return
       
    end function find_idx_rttov
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Return the number of profiles to be processed in RTTOV for the inversion of liquid cloud properties
+   !! @param[in] s3com            s3com data structure
+   !! @param[out] ret_idx_rttov   number of profiles to be processed
    function find_ret_idx_rttov(s3com) result(ret_idx_rttov)
       
-      ! Inputs
+      ! Input
       type(type_s3com), intent(in) :: s3com
       
-      ! Outputs
-      integer(kind=4), dimension(:), allocatable :: ret_idx_rttov
+      ! Output
+      integer(wpi), dimension(:), allocatable :: ret_idx_rttov
       
       ! Internal
-      integer(kind=4), dimension(s3com%ret%npoints) :: idx_all
-      integer(kind=4) :: idx, i
+      integer(wpi), dimension(s3com%ret%npoints) :: idx_all
+      integer(wpi) :: idx, i
       
       idx_all = 0
       idx = 1
       
       do i = 1, s3com%ret%npoints
-         if(s3com%ret%flag_rttov(i)) then
+         if (s3com%ret%flag_rttov(i)) then
             idx_all(idx) = i
             idx = idx + 1
-         end if
+         endif
       enddo
       
       idx = idx - 1
@@ -100,12 +109,15 @@ contains
       return
       
    end function find_ret_idx_rttov
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Return error status and location
+   !! @param[in] status     error status
+   !! @param[in] location   location of the error
    subroutine check_rttov_status(status, location)
       
-      ! Inputs
+      ! Input
       integer, intent(in) :: status
       character(len=*), intent(in) :: location
       
@@ -114,16 +126,21 @@ contains
          call rttov_exit(status)
       endif
       
+      return
+      
    end subroutine check_rttov_status
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Return the name of the RTTOV model to use (direct, K or TL)
+   !! @param[in] s3com    s3com data structure
+   !! @param[out] model   name of the RTTOV model
    function get_rttov_model(s3com) result(model)
       
-      ! Inputs
+      ! Input
       type(type_s3com), intent(in) :: s3com
       
-      ! Outputs
+      ! Output
       character(len=8) :: model
       
       if(s3com%jac%do_jacobian_calc) then
@@ -134,7 +151,9 @@ contains
          model = "direct"
       endif
       
+      return
+      
    end function get_rttov_model
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
 end module mod_rttov_utils

@@ -27,86 +27,107 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
+!> Initialize the RTTOV options structure
 module mod_rttov_coefs
-
-  use s3com_types,  only: wp, type_rttov_opt, type_nml, type_s3com
-  use mod_rttov_utils, only: check_rttov_status
-  use rttov_const, only: inst_name, platform_name
-  use mod_rttov_opts, only: opts
-  use rttov_types, only: rttov_coefs
-
-  use mod_io_verbose, only: verbose_rttov
-
-  implicit none
-
-  private
-  public :: rttov_coefs_init, rttov_coefs_deinit, coefs
-
+   
+   use s3com_types,     only: wp, wpi, type_rttov_opt, type_nml, type_s3com
+   use mod_rttov_utils, only: check_rttov_status
+   use rttov_const,     only: inst_name, platform_name
+   use mod_rttov_opts,  only: opts
+   use rttov_types,     only: rttov_coefs
+   
+   use mod_io_verbose, only: verbose_rttov
+   
+   implicit none
+   
+   private
+   public :: rttov_coefs_init, rttov_coefs_deinit, coefs
+   
 #include "rttov_dealloc_coefs.interface"
 #include "rttov_read_coefs.interface"
 #include "rttov_user_options_checkinput.interface"
 #include "rttov_print_opts.interface"
-
-  type(rttov_coefs)                :: coefs                      ! Coefficients structure
-
+   
+   type(rttov_coefs) :: coefs !< coefficients structure
+   
 contains
-
-  subroutine rttov_coefs_init(rttov_opt, s3com)
-
-    type(type_rttov_opt), intent(in) :: rttov_opt
-
-    type(type_s3com), intent(inout) :: s3com
-
-    !!Local variables
-    character(len=256) :: coef_filename, cld_coef_filename, sat, file_format
-    integer(kind=4) :: errorstatus, nchannels
-
-    nchannels = rttov_opt%nchannels
-
-    if (rttov_opt%satellite .ne. 0) then
-       write(sat,*) rttov_opt%satellite
-       sat="_"//trim(adjustl(sat))//"_"
-    end if
-    s3com%opt%rttov%sat_name = sat
-
-    file_format = ".dat"
-    if(trim(inst_name(rttov_opt%instrument)) == "iasi") file_format = ".H5"
-
-    coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/rttov13pred54L/rtcoef_"//&
-         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"_o3"//trim(file_format)
-
-    cld_coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/cldaer_visir/sccldcoef_"//&
-         trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//trim(file_format)
-
-    s3com%opt%rttov%platform_name = platform_name(rttov_opt%platform)
-    s3com%opt%rttov%inst_name = inst_name(rttov_opt%instrument)
-
-    ! Read optical depth and cloud coefficient files together
-    call rttov_read_coefs(errorstatus, coefs, opts, file_coef=coef_filename, file_sccld=cld_coef_filename)
-    call check_rttov_status(errorstatus, 'rttov_read_coefs')
-
-    ! Ensure input number of channels is not higher than number stored in coefficient file
-    if (nchannels > coefs%coef%fmv_chn) nchannels = coefs%coef%fmv_chn
-
-    ! Ensure the options and coefficients are consistent
-    call rttov_user_options_checkinput(errorstatus, opts, coefs)
-    call check_rttov_status(errorstatus, 'rttov_user_options_checkinput')
-
-    s3com%rad%wavelength = 10000._wp / real(coefs%coef%ff_cwn(rttov_opt%channel_list(:)), wp)
-
-    call verbose_rttov(s3com, rttov_opt, opts)
-
-    ! call rttov_print_info (coefs)
-
-  end subroutine rttov_coefs_init
-
-  subroutine rttov_coefs_deinit()
-
-    integer(kind=4) :: errorstatus
-
-    call rttov_dealloc_coefs(errorstatus, coefs)
-    call check_rttov_status(errorstatus, 'rttov_dealloc_coefs')
-
-  end subroutine rttov_coefs_deinit
-
+   
+   ! ============================================================================================================================
+   !> @brief Initialize the RTTOV coefficients structure
+   !! @param[in] rttov_opt   RTTOV options structure
+   !! @param[inout] s3com    s3com data structure
+   subroutine rttov_coefs_init(rttov_opt, s3com)
+      
+      ! Input
+      type(type_rttov_opt), intent(in) :: rttov_opt
+      
+      ! Input/output
+      type(type_s3com), intent(inout) :: s3com
+      
+      ! Internal
+      character(len=256) :: coef_filename, cld_coef_filename, sat, file_format
+      integer(wpi) :: errorstatus, nchannels
+      
+      ! Get the number of channels from the RTTOV options structure
+      nchannels = rttov_opt%nchannels
+      
+      if (rttov_opt%satellite .ne. 0) then
+         write(sat,*) rttov_opt%satellite
+         sat="_"//trim(adjustl(sat))//"_"
+      endif
+      
+      s3com%opt%rttov%sat_name = sat
+      
+      file_format = ".dat"
+      if(trim(inst_name(rttov_opt%instrument)) == "iasi") file_format = ".H5"
+      
+      ! Optical depth coefficient file name
+      coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/rttov13pred54L/rtcoef_"//&
+      trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//"_o3"//trim(file_format)
+      
+      ! Cloud optical property file name
+      cld_coef_filename = trim(s3com%nml%path_rttov)//"/rtcoef_rttov13/cldaer_visir/sccldcoef_"//&
+      trim(platform_name(rttov_opt%platform))//trim(sat)//trim(inst_name(rttov_opt%instrument))//trim(file_format)
+      
+      ! Get the satellite name
+      s3com%opt%rttov%platform_name = platform_name(rttov_opt%platform)
+      
+      ! Get the intrument name
+      s3com%opt%rttov%inst_name = inst_name(rttov_opt%instrument)
+      
+      ! Read optical depth and cloud coefficient files together
+      call rttov_read_coefs(errorstatus, coefs, opts, file_coef=coef_filename, file_sccld=cld_coef_filename)
+      call check_rttov_status(errorstatus, 'rttov_read_coefs')
+      
+      ! Ensure input number of channels is not higher than number stored in coefficient file
+      if (nchannels > coefs%coef%fmv_chn) nchannels = coefs%coef%fmv_chn
+      
+      ! Ensure the options and coefficients are consistent
+      call rttov_user_options_checkinput(errorstatus, opts, coefs)
+      call check_rttov_status(errorstatus, 'rttov_user_options_checkinput')
+      
+      ! Convert wavenumber in @units{cm-1} to wavelength in @units{um}
+      s3com%rad%wavelength = 10000._wp / real(coefs%coef%ff_cwn(rttov_opt%channel_list(:)), wp)
+      
+      ! Check input options
+      call verbose_rttov(s3com, rttov_opt, opts)
+      
+      !call rttov_print_info(coefs)
+      
+   end subroutine rttov_coefs_init
+   ! ============================================================================================================================
+   
+   ! ============================================================================================================================
+   !> @brief Free the RTTOV coefficients structure
+   subroutine rttov_coefs_deinit()
+      
+      ! Internal
+      integer(wpi) :: errorstatus
+      
+      call rttov_dealloc_coefs(errorstatus, coefs)
+      call check_rttov_status(errorstatus, 'rttov_dealloc_coefs')
+      
+   end subroutine rttov_coefs_deinit
+   ! ============================================================================================================================
+   
 end module mod_rttov_coefs

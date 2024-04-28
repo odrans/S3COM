@@ -62,7 +62,7 @@ endif
 
 # Let's start with setting up some paths
 # ---------------------------------------------------------------------------------------------------------------------------------------
-PATH_S3COM = $(HOME)/github_reff_cod/S3COM
+PATH_S3COM = $(HOME)/github/S3COM
 ifeq ($(F90),gfortran)
     PATH_RTTOV = /work/bb1036/rttov_share/rttov132-gcc
     PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-6qheqr
