@@ -118,7 +118,7 @@ program s3com_main
       call s3com_subset(idx_start, idx_end, s3com, s3com_chunk)
       
       ! Run RTTOV
-      s3com_chunk%flag_rttov(ichunk) = .true.
+      s3com_chunk%flag_rttov(:) = .true.
       call run_rttov(rttov_atm, rttov_opt, s3com_chunk, cld)
       
       ! Update the arrays saved for the output file
