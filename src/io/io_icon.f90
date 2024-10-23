@@ -113,6 +113,20 @@ contains
         endif
         lon = -1.0E30; lat = -1.0E30
         icon%mode = 2 ! Don't know yet if (lon,lat) or (lat,lon) at this point
+        
+        errst = nf90_inq_varid(ncid, 'lon', vid)
+        call check_netcdf_status(errst, 'nf90_inq_varid')
+        errst = nf90_get_var(ncid, vid, lon, start = (/1/), count = (/icon%nlon/))
+     	call check_netcdf_status(errst, 'nf90_get_var')
+
+     	errst = nf90_inq_varid(ncid, 'lat', vid)
+     	call check_netcdf_status(errst, 'nf90_inq_varid')
+     	errst = nf90_get_var(ncid, vid, lat, start = (/1/), count = (/icon%nlat/))
+     	call check_netcdf_status(errst, 'nf90_get_var')
+
+
+
+     	icon%lon_orig = lon; icon%lat_orig = lat
      else if (Lpoint) then ! 1D mode
         icon%nlon = npoints
         icon%nlat = npoints
@@ -121,16 +135,6 @@ contains
         errmsg = trim(fname)//' file contains wrong dimensions'
         call s3com_error(routine_name,errmsg)
      endif
-
-     errst = nf90_inq_varid(ncid, 'lon', vid)
-     call check_netcdf_status(errst, 'nf90_inq_varid')
-     errst = nf90_get_var(ncid, vid, lon, start = (/1/), count = (/icon%nlon/))
-     call check_netcdf_status(errst, 'nf90_get_var')
-
-     errst = nf90_inq_varid(ncid, 'lat', vid)
-     call check_netcdf_status(errst, 'nf90_inq_varid')
-     errst = nf90_get_var(ncid, vid, lat, start = (/1/), count = (/icon%nlat/))
-     call check_netcdf_status(errst, 'nf90_get_var')
 
      errst = nf90_inq_varid(ncid, 'height', vid)
      call check_netcdf_status(errst, 'nf90_inq_varid')
@@ -141,8 +145,7 @@ contains
      call check_netcdf_status(errst, 'nf90_inq_varid')
      errst = nf90_get_var(ncid, vid, icon%height_2, start = (/1/), count = (/icon%nlevels/))
      call check_netcdf_status(errst, 'nf90_get_var')
-
-     icon%lon_orig = lon; icon%lat_orig = lat
+     	
      ! ---------------------------------------------------------------------------------------------------------------
 
     !!========================================================================================================================!!
@@ -288,55 +291,55 @@ contains
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%q_ifc)
           endif
-       case ('pres') !Air pressure at full level center
+       case ('pres') !Air pressure
           if (Lpoint) then
              icon%p(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%p)
           endif
-       case ('ta') !Air temperature at full level center
+       case ('ta') !Air temperature
           if (Lpoint) then
              icon%T(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%T)
           endif
-       case ('hus') !Specific humidity at full level center
+       case ('hus') !Specific humidity
           if (Lpoint) then
              icon%q(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%q)
           endif
-       case ('clc') !Cloud cover at full level center
+       case ('clc') !Cloud cover
           if (Lpoint) then
              icon%clc(1:npoints,1:nlayers) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%clc)
           endif
-       case ('clw') !Specific cloud water content at full level center
+       case ('clw') !Specific cloud water content
           if (Lpoint) then
              icon%clw(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%clw)
           endif
-       case ('cli') !Specific cloud ice content at full level center
+       case ('cli') !Specific cloud ice content
           if (Lpoint) then
              icon%cli(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%cli)
           endif
-       case ('qnc') !Cloud droplet number concentration at full level center
+       case ('qnc') !Cloud droplet number concentration
           if (Lpoint) then
              icon%qnc(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%qnc)
           endif
-       case ('qr') !Rain mixing ratio at full level center
+       case ('qr') !Rain mixing ratio
           if (Lpoint) then
              icon%qr(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
              call map_ll_to_point(dim1,dim2,npoints,x3=x3,y2=icon%qr)
           endif
-       case ('qs') !Snow mixing ratio at full level center
+       case ('qs') !Snow mixing ratio
           if (Lpoint) then
              icon%qs(1:npoints,:) = x2(1:npoints,1:nlayers)
           else
