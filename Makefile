@@ -179,14 +179,14 @@ FLAGS_ALL = $(FLAGS_LOCAL) $(FLAGS_RTTOV) $(FLAG_HDF5) $(FLAGS_NCDF)
 # Make commands
 # -------------------------------------------------------------------------------------------------------------------------------
 install: $(LIST_OBJ)
-	ar r $(LIB_CONF) $(LIST_OBJ_CONF)
-	ar r $(LIB_UTILS) $(LIST_OBJ_UTILS)
-	ar r $(LIB_MAIN) $(LIST_OBJ_MAIN)
-	ar r $(LIB_CLD) $(LIST_OBJ_CLD)
-	ar r $(LIB_RET) $(LIST_OBJ_RET)
-	ar r $(LIB_MODELS) $(LIST_OBJ_MODELS)
-	ar r $(LIB_IO) $(LIST_OBJ_IO)
-	ar r $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
+	ar rcs $(LIB_CONF) $(LIST_OBJ_CONF)
+	ar rcs $(LIB_UTILS) $(LIST_OBJ_UTILS)
+	ar rcs $(LIB_MAIN) $(LIST_OBJ_MAIN)
+	ar rcs $(LIB_CLD) $(LIST_OBJ_CLD)
+	ar rcs $(LIB_RET) $(LIST_OBJ_RET)
+	ar rcs $(LIB_MODELS) $(LIST_OBJ_MODELS)
+	ar rcs $(LIB_IO) $(LIST_OBJ_IO)
+	ar rcs $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
 	$(F90) $(F90FLAGS) $(DIR_MAIN)/s3com.f90 -o s3com $(FLAGS_ALL)
 
 clean:
