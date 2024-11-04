@@ -70,7 +70,7 @@ program s3com_main
    
    ! Load atmospheric data from selected models (`model` created)
    call models_load(nml, model)
-   
+
    ! Initialize the s3com structure
    call s3com_init(nml, model, s3com)
    npoints = s3com%npoints
