@@ -43,23 +43,16 @@
  #    hdf5/1.12.1-openmpi-4.1.2-gcc-11.2.0 \
  #    eccodes/2.21.0-gcc-11.2.0
 
+
+# User configuration
+# ---------------------------------------------------------------------------------------------------------------------------------------
 # Compiler (supported: gfortran, ifort)
 F90 = ifort
+
 # Debug mode (true or false)
 DEBUG = true
 
-ifeq ($(F90),gfortran)
-    F90FLAGS_DEBUG = -g -Wall -Wextra -pedantic -std=f2008 -fbounds-check -fimplicit-none -ffpe-trap=invalid,zero,overflow
-    F90FLAGS = -J$(mod) -cpp -fopenmp -ffree-line-length-none $(if $(DEBUG), $(F90FLAGS_DEBUG))
-else ifeq ($(F90),ifort)
-    F90FLAGS_DEBUG = -g -debug extended  -fp-stack-check -warn all
-    F90FLAGS = -module $(mod) -fpp -qopenmp $(if $(DEBUG), $(F90FLAGS_DEBUG))
-else
-    $(error Unsupported compiler: $(F90))
-endif
-
-# Let's start with setting up some paths
-# ---------------------------------------------------------------------------------------------------------------------------------------
+# Path to S3COM, RTTOV, NETCDF, HDF5
 PATH_S3COM = $(HOME)/github/S3COM
 ifeq ($(F90),gfortran)
     PATH_RTTOV = /work/bb1036/rttov_share/rttov132-gcc
@@ -74,8 +67,20 @@ else ifeq ($(F90),ifort)
 endif
 # ---------------------------------------------------------------------------------------------------------------------------------------
 
-## Following up paths (do not edit!)
+## No need to edit below!
+
+# Following up paths
 # ---------------------------------------------------------------------------------------------------------------------------------------
+ifeq ($(F90),gfortran)
+    F90FLAGS_DEBUG = -g -Wall -Wextra -pedantic -std=f2008 -fbounds-check -fimplicit-none -ffpe-trap=invalid,zero,overflow
+    F90FLAGS = -J$(mod) -cpp -fopenmp -ffree-line-length-none $(if $(DEBUG), $(F90FLAGS_DEBUG))
+else ifeq ($(F90),ifort)
+    F90FLAGS_DEBUG = -g -debug extended  -fp-stack-check -warn all
+    F90FLAGS = -module $(mod) -fpp -qopenmp $(if $(DEBUG), $(F90FLAGS_DEBUG))
+else
+    $(error Unsupported compiler: $(F90))
+endif
+
 src = $(PATH_S3COM)/src
 obj = $(PATH_S3COM)/obj
 lib = $(PATH_S3COM)/lib
