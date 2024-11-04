@@ -28,25 +28,36 @@
 !
 
 module mod_utils_fort
-
-  implicit none
-
-  private
-  public :: s3com_error
-
+   
+   implicit none
+   
+   private
+   public :: s3com_error
+   
 contains
-
-  !! In case of error when running the program (inspired from COSPv2)
-  subroutine s3com_error(routine_name,message,errcode)
-    character(len = *), intent(in) :: routine_name
-    character(len = *), intent(in) :: message
-    integer,optional :: errcode
-
-    write(6, *) " ********** Failure in ", trim(routine_name)
-    write(6, *) " ********** ", trim(message)
-    if (present(errcode)) write(6, *) " ********** errcode: ", errcode
-    flush(6)
-    stop
-  end subroutine s3com_error
-
+   
+   ! ============================================================================================================================
+   !> @brief Print en error message when running the program and stop it (inspired from COSPv2)
+   !! @param[in] routine_name   name of the routine where is the error
+   !! @param[in] message        error message
+   !! @param[in] errcode        error code
+   subroutine s3com_error(routine_name, message, errcode)
+      
+      ! Input
+      character(len=*), intent(in) :: routine_name
+      character(len=*), intent(in) :: message
+      integer, optional :: errcode
+      
+      write(6,*) " ********** Failure in ", trim(routine_name)
+      write(6,*) " ********** ", trim(message)
+      
+      if (present(errcode)) write(6, *) " ********** errcode: ", errcode
+      
+      flush(6)
+      
+      stop
+      
+   end subroutine s3com_error
+   ! ============================================================================================================================
+   
 end module mod_utils_fort

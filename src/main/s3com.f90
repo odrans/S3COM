@@ -27,10 +27,11 @@
 ! Jan 2022 - O. Sourdeval - Original version
 !
 
+!> Main program
 program s3com_main
    
-   use s3com_types,         only: wp, type_rttov_opt, type_nml, type_model, type_s3com, type_cld
-   use s3com_config,        only: nstates, apriori_cod, apriori_reff
+   use s3com_types,         only: wp, wpi, type_rttov_opt, type_nml, type_model, type_s3com, type_cld
+   use s3com_config,        only: lwp_apriori, cdnc_apriori, nstates
    use mod_io_namelist,     only: namelist_load
    use mod_rttov_atlas,     only: rttov_atlas_init, rttov_atlas_deinit
    use mod_rttov_opts,      only: rttov_opts_init
@@ -44,22 +45,22 @@ program s3com_main
    use mod_rttov_utils,     only: find_idx_rttov, find_ret_idx_rttov
    use mod_cld_mie,         only: cld_mie_load
    use mod_ret_cloud_model, only: init_cloud_z, init_cloud_prof
-   use mod_ret_utils,       only: ret_init, ret_free, idx_liq
+   use mod_ret_utils,       only: ret_init, ret_free, idx_liq, find_ret_idx_liq, find_ret_idx_cld_liq
    use mod_ret_run,         only: ret_run
    
    implicit none
    
-   type(type_model)     :: model, rttov_atm, rttov_atm_ret
+   type(type_model) :: model, rttov_atm, rttov_atm_ret
    type(type_rttov_opt) :: rttov_opt
-   type(type_s3com)     :: s3com, s3com_chunk
-   type(type_nml)       :: nml
-   type(type_cld)       :: cld
+   type(type_s3com) :: s3com, s3com_chunk
+   type(type_nml) :: nml
+   type(type_cld) :: cld
    
-   real(kind=wp) :: zenangle, azangle
+   real(wp) :: zenangle, azangle
    
-   integer(kind=4), dimension(:), allocatable :: idx_lwp, idx_ret
-   integer(kind=4) :: nchunks, idx_start, idx_end, ichunk
-   integer(kind=4) :: nlayers, npoints
+   integer(wpi), dimension(:), allocatable :: idx_lwp, idx_ret
+   integer(wpi) :: nchunks, idx_start, idx_end, ichunk
+   integer(wpi) :: nlayers, npoints, nmeas
    
    ! Read namelist file
    nml = namelist_load()
@@ -70,10 +71,11 @@ program s3com_main
    ! Load atmospheric data from selected models (`model` created)
    call models_load(nml, model)
    
-   ! Initialise the s3com structure
+   ! Initialize the s3com structure
    call s3com_init(nml, model, s3com)
    npoints = s3com%npoints
    nlayers = s3com%nlayers
+   nmeas   = s3com%nmeas
    
    ! Setup the RTTOV options (`rttov_opt` created)
    call rttov_setup_opt(nml, zenangle, azangle, rttov_opt, s3com)
@@ -85,25 +87,29 @@ program s3com_main
    call rttov_atlas_init(rttov_opt, s3com)
    
    ! Load cloud optical properties
-   if (rttov_opt%user_cld_opt_param) then
-      call cld_mie_load(s3com, cld)
+   if (rttov_opt%user_cld_opt_param) call cld_mie_load(s3com, cld)
+   
+   ! Initialize the retrieval arrays
+   if (nml%flag_retrievals) then
+      call ret_init(s3com)
+      allocate(idx_lwp(npoints), source=0); allocate(idx_ret(npoints), source=0)
    endif
    
    ! Loop over data points, by chunks
-   nChunks = n_chunks(npoints, nml%npoints_it)
+   nchunks = n_chunks(npoints, nml%npoints_it)
    
-   loop_chunks : do iChunk = 1, nChunks
+   do ichunk = 1, nchunks
       
       write(6,*) ichunk, "/", nchunks
       
-      ! Compute starting and end points for the chunk
-      if (nChunks .EQ. 1) then
+      ! Compute starting and ending points for the chunk
+      if (nchunks .eq. 1) then
          idx_start = 1; idx_end = npoints
       else
-         idx_start = (iChunk-1)* nml%npoints_it + 1
-         idx_end = iChunk * nml%npoints_it
+         idx_start = (ichunk-1) * nml%npoints_it + 1
+         idx_end = ichunk * nml%npoints_it
          if (idx_end .gt. npoints) idx_end = npoints
-      end if
+      endif
       
       ! Subset the atmosphere for RTTOV
       call rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
@@ -115,65 +121,61 @@ program s3com_main
       s3com_chunk%flag_rttov(:) = .true.
       call run_rttov(rttov_atm, rttov_opt, s3com_chunk, cld)
       
-      !
+      ! Update the arrays saved for the output file
       call s3com_update(s3com, s3com_chunk)
       
-      ! Calculate the radiance corresponding to the "true synthetic" cloud
+      ! Get the satellite measurement vector (useful for retrievals)
       s3com%ret%Y = s3com%rad%f_rad_total
+      write(6,*) "Y=", s3com%ret%Y(:,1)
       
       ! Retrievals
       if (nml%flag_retrievals) then
          
-         ! Initialize the retrieval arrays
-         call ret_init(s3com)
-         
          ! Subset the atmosphere for RTTOV
          call rttov_setup_atm(idx_start, idx_end, model, rttov_atm_ret)
          
-         ! Extract cloud top and base altitudes for the liquid phase only
+         ! Extract cloud top and base altitudes for single-layer homogeneous liquid clouds only
          call init_cloud_z(rttov_atm_ret, s3com)
-         
-         ! Set conditions to use RTTOV for the liquid clouds only
+         write(6,*) "n_slopes=", s3com%ret%n_slope_liq
+         ! Set conditions to use RTTOV for single-layer homogeneous liquid clouds only
+         !call find_ret_idx_cld_liq(s3com, .true.)
          idx_lwp = idx_liq(s3com, .true.)
          s3com%ret%flag_rttov(idx_lwp) = .true.
          
-         ! Calculate the corresponding index, i.e., the number of pixels with liquid clouds only
+         ! Find the corresponding index
          idx_ret = find_ret_idx_rttov(s3com)
          
          if (size(idx_ret) .eq. 0) then
             cycle
          endif
          
-         ! Define the apriori values
-         s3com%ret%Xa(:,1) = apriori_cod  ! Xa(1): COD
-         s3com%ret%Xa(:,2) = apriori_reff ! Xa(2): reff - Deff maximum is 52 um when using "Deff scheme"
+         ! Set the a priori values
+         s3com%ret%Xa(:,1) = lwp_apriori  !< Cloud liquid water path (LWP)
+         s3com%ret%Xa(:,2) = cdnc_apriori !< Cloud droplet number concentration at cloud top (CDNC_ztop)
          
-         ! Set Xi = Xa
-         s3com%ret%Xi(:,:) = s3com%ret%Xa(:,:)
+         ! Set first guess as the a priori knowledge
+         s3com%ret%Xi = s3com%ret%Xa
          
-         ! Update the cloud profiles in rttov_atm_ret using parameters from S3COM
-         call init_cloud_prof(rttov_atm_ret, s3com)
-         
-         ! Run RTTOV
+         ! Set flag to run RTTOV
          s3com%ret%flag_ret = nml%flag_retrievals
-         call run_rttov(rttov_atm_ret, rttov_opt, s3com, cld)
          
          ! Perform the retrievals
          call ret_run(rttov_atm_ret, rttov_opt, s3com, cld)
          
-         ! Free the retrieval arrays
-         call ret_free(s3com)
-         
       endif
       
-   enddo loop_chunks
+   enddo
    
    ! Write output file
    call write_output(s3com, model, nml)
    
    ! Deallocate arrays
-   call models_free(model)
+   call models_free(model) !< Free the model arrays
    
+   ! Deallocate retrieval arrays
+   if (nml%flag_retrievals) call ret_free(s3com) !< Free the retrieval arrays
+   
+   ! Deallocate RTTOV coefficients
    call rttov_coefs_deinit()
    call rttov_atlas_deinit()
    

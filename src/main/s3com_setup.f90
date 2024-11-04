@@ -29,7 +29,7 @@
 
 module mod_s3com_setup
    
-   use s3com_types,  only: wp, type_nml, type_icon, type_model, type_s3com
+   use s3com_types,  only: wp, wpi, type_nml, type_icon, type_model, type_s3com
    use s3com_config, only: nstates
    
    implicit none
@@ -38,18 +38,22 @@ module mod_s3com_setup
    
 contains
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Initialize the s3com structure
+   !! @param[in] nml      namelist structure
+   !! @param[in] model    model structure
+   !! @param[out] s3com   s3com structure
    subroutine s3com_init(nml, model, s3com)
       
-      ! Inputs
-      type(type_nml),   intent(in)  :: nml
-      type(type_model), intent(in)  :: model
+      ! Input
+      type(type_nml), intent(in) :: nml
+      type(type_model), intent(in) :: model
       
-      ! Outputs
+      ! Output
       type(type_s3com), intent(out) :: s3com
       
       ! Internal
-      integer(kind=4) :: npoints, nlayers, nlevels, nmeas
+      integer(wpi) :: npoints, nlayers, nlevels, nmeas
       
       npoints = model%npoints
       nlevels = model%nlevels
@@ -68,6 +72,7 @@ contains
       allocate(s3com%rad%wavelength(nmeas), source = 0._wp)
       
       ! Radiation data
+      ! -------------------------------------------------------------------------------------------------------------------------
       allocate(s3com%rad%f_rad_total(npoints, nmeas), source = 0._wp)
       allocate(s3com%rad%f_rad_clear(npoints, nmeas), source = 0._wp)
       allocate(s3com%rad%f_ref_total(npoints, nmeas), source = 0._wp)
@@ -76,8 +81,10 @@ contains
       allocate(s3com%rad%f_bt_clear(npoints, nmeas), source = 0._wp)
       allocate(s3com%rad%emiss(npoints, nmeas), source = 0._wp)
       allocate(s3com%rad%brdf(npoints, nmeas), source = 0._wp)
+      ! -------------------------------------------------------------------------------------------------------------------------
       
       ! Jacobian data (K model)
+      ! -------------------------------------------------------------------------------------------------------------------------
       allocate(s3com%jac%emiss(npoints, nmeas), source = 0._wp)
       allocate(s3com%jac%brdf(npoints, nmeas), source = 0._wp)
       
@@ -87,26 +94,32 @@ contains
       
       allocate(s3com%jac%cfrac(npoints, nmeas, nlayers), source = 0._wp)
       allocate(s3com%jac%clwde(npoints, nmeas, nlayers), source = 0._wp)
+      ! -------------------------------------------------------------------------------------------------------------------------
       
       ! Jacobian data (TL model)
+      ! -------------------------------------------------------------------------------------------------------------------------
       allocate(s3com%k_tl%t(npoints, nmeas, nlevels), source = 0._wp)
       allocate(s3com%k_tl%q(npoints, nmeas, nlevels), source = 0._wp)
+      ! -------------------------------------------------------------------------------------------------------------------------
       
       s3com%nml = nml
       
-      return
-      
    end subroutine s3com_init
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Subset the relevant part of the s3com structure
+   !! @param[in] idx_start      starting index
+   !! @param[in] idx_end        ending index
+   !! @param[in] s3com          s3com structure
+   !! @param[out] s3com_chunk   s3com structure
    subroutine s3com_subset(idx_start, idx_end, s3com, s3com_chunk)
       
-      ! Inputs
-      type(type_s3com), intent(in)  :: s3com
-      integer(kind=4),  intent(in)  :: idx_start, idx_end
+      ! Input
+      type(type_s3com), intent(in) :: s3com
+      integer(wpi), intent(in) :: idx_start, idx_end
       
-      ! Outputs
+      ! Output
       type(type_s3com), intent(out) :: s3com_chunk
       
       s3com_chunk%idx_start = idx_start
@@ -121,6 +134,7 @@ contains
       s3com_chunk%nstates = s3com%nstates
       
       ! Radiation data
+      ! -------------------------------------------------------------------------------------------------------------------------
       allocate(s3com_chunk%rad%f_rad_total(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
       allocate(s3com_chunk%rad%f_rad_clear(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
       allocate(s3com_chunk%rad%f_ref_total(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
@@ -129,8 +143,10 @@ contains
       allocate(s3com_chunk%rad%f_bt_clear(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
       allocate(s3com_chunk%rad%emiss(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
       allocate(s3com_chunk%rad%brdf(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
+      ! -------------------------------------------------------------------------------------------------------------------------
       
       ! Jacobian data (K model)
+      ! -------------------------------------------------------------------------------------------------------------------------
       s3com_chunk%jac%do_jacobian_calc = s3com%nml%do_jacobian_calc
       
       allocate(s3com_chunk%jac%emiss(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)
@@ -142,27 +158,31 @@ contains
       
       allocate(s3com_chunk%jac%cfrac(s3com_chunk%npoints, s3com_chunk%nmeas, s3com_chunk%nlayers), source = 0._wp)
       allocate(s3com_chunk%jac%clwde(s3com_chunk%npoints, s3com_chunk%nmeas, s3com_chunk%nlayers), source = 0._wp)
+      ! -------------------------------------------------------------------------------------------------------------------------
       
       ! Jacobian data (TL model)
+      ! -------------------------------------------------------------------------------------------------------------------------
       s3com_chunk%k_tl%do_k_tl_calc = s3com%nml%do_k_tl_calc
       
       allocate(s3com_chunk%k_tl%t(s3com_chunk%npoints, s3com_chunk%nmeas, s3com_chunk%nlevels), source = 0._wp)
       allocate(s3com_chunk%k_tl%q(s3com_chunk%npoints, s3com_chunk%nmeas, s3com_chunk%nlevels), source = 0._wp)
-      
-      return
+      ! -------------------------------------------------------------------------------------------------------------------------
       
    end subroutine s3com_subset
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
+   !> @brief Update
+   !! @param[inout] s3com         s3com structure
+   !! @param[inout] s3com_chunk   s3com structure
    subroutine s3com_update(s3com, s3com_chunk)
       
-      ! Inputs/outputs
+      ! Input/output
       type(type_s3com), intent(inout) :: s3com
       type(type_s3com), intent(inout) :: s3com_chunk
       
       ! Internal
-      integer(kind=4) :: idx_start, idx_end, npoints, nlevels, nlayers, nmeas, nstates
+      integer(wpi) :: idx_start, idx_end, npoints, nlevels, nlayers, nmeas, nstates
       
       idx_start = s3com_chunk%idx_start
       idx_end   = s3com_chunk%idx_end
@@ -173,6 +193,7 @@ contains
       nstates   = s3com_chunk%nstates
       
       ! Radiation data
+      ! -------------------------------------------------------------------------------------------------------------------------
       s3com%rad%f_rad_total(idx_start:idx_end, 1:nmeas) = s3com_chunk%rad%f_rad_total(1:npoints, 1:nmeas)
       s3com%rad%f_rad_clear(idx_start:idx_end, 1:nmeas) = s3com_chunk%rad%f_rad_clear(1:npoints, 1:nmeas)
       s3com%rad%f_ref_total(idx_start:idx_end, 1:nmeas) = s3com_chunk%rad%f_ref_total(1:npoints, 1:nmeas)
@@ -185,8 +206,10 @@ contains
       deallocate(s3com_chunk%rad%f_rad_total, s3com_chunk%rad%f_rad_clear, s3com_chunk%rad%f_ref_total, &
                  s3com_chunk%rad%f_ref_clear, s3com_chunk%rad%f_bt_total, s3com_chunk%rad%f_bt_clear, s3com_chunk%rad%emiss, &
                  s3com_chunk%rad%brdf)
+      ! -------------------------------------------------------------------------------------------------------------------------
       
       ! Jacobian data (K model)
+      ! -------------------------------------------------------------------------------------------------------------------------
       s3com%jac%brdf(idx_start:idx_end, 1:nmeas)  = s3com_chunk%jac%brdf(1:npoints, 1:nmeas)
       s3com%jac%emiss(idx_start:idx_end, 1:nmeas) = s3com_chunk%jac%emiss(1:npoints, 1:nmeas)
       
@@ -201,21 +224,24 @@ contains
       
       deallocate(s3com_chunk%jac%brdf, s3com_chunk%jac%emiss, s3com_chunk%jac%p, s3com_chunk%jac%t, s3com_chunk%jac%q, &
                  s3com_chunk%jac%cfrac, s3com_chunk%jac%clwde)
+      ! -------------------------------------------------------------------------------------------------------------------------
       
       ! Jacobian data (TL model)
+      ! -------------------------------------------------------------------------------------------------------------------------
       s3com%k_tl%t(idx_start:idx_end, 1:nmeas, 1:nlevels) = s3com_chunk%k_tl%t(1:npoints, 1:nmeas, 1:nlevels)
       s3com%k_tl%q(idx_start:idx_end, 1:nmeas, 1:nlevels) = s3com_chunk%k_tl%q(1:npoints, 1:nmeas, 1:nlevels)
       
       s3com%k_tl%do_k_tl_calc = s3com_chunk%k_tl%do_k_tl_calc
       
       deallocate(s3com_chunk%k_tl%t, s3com_chunk%k_tl%q)
+      ! -------------------------------------------------------------------------------------------------------------------------
       
-      !! General
+      ! General
+      ! -------------------------------------------------------------------------------------------------------------------------
       deallocate(s3com_chunk%flag_rttov)
-      
-      return
+      ! -------------------------------------------------------------------------------------------------------------------------
       
    end subroutine s3com_update
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
 end module mod_s3com_setup

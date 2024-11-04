@@ -31,7 +31,7 @@
 !> @brief Ensemble of subroutines loading model data
 module mod_models
    
-   use s3com_types,    only: wp, type_icon, type_model, type_nml, type_nwpsaf
+   use s3com_types,    only: wp, wpi, type_icon, type_model, type_nml, type_nwpsaf
    use mod_icon,       only: icon_load, icon_free
    use mod_nwpsaf,     only: nwpsaf_load, nwpsaf_free
    use mod_utils_phys, only: solar_angles
@@ -44,24 +44,24 @@ module mod_models
    
 contains
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    !> @brief Load model simulations to be used in S3COM
-   !> @details This subroutine loads model data from their respective netCDF files and stores them consistently in the `model` structure.
-   !> This subroutine is currently set up for the ICON and NWPSAF models.
-   !> @param[in] nml Namelist data, containing the name of the model and path to its simulation outputs
-   !> @param[out] model Model data structure containing all necessary variables for S3COM
+   !! @details This subroutine loads model data from their respective netCDF files and stores them consistently in the `model` 
+   !! structure. This subroutine is currently set up for the ICON and NWPSAF models.
+   !! @param[in] nml      namelist data containing the name of the model and path to its simulation outputs
+   !! @param[out] model   model data structure containing all necessary variables for S3COM
    subroutine models_load(nml, model)
       
-      ! Inputs
+      ! Input
       type(type_nml), intent(in) :: nml
       
-      ! Output variables
+      ! Output
       type(type_model), intent(out) :: model
       
       ! Internal
       type(type_icon) :: icon
       type(type_nwpsaf) :: nwpsaf
-      integer(kind=4) :: nlayers, npoints
+      integer(wpi) :: nlayers, npoints
       
       ! Load input data
       select case (nml%model_name)
@@ -101,40 +101,43 @@ contains
       call verbose_model(nml, model)
       
    end subroutine models_load
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    !> @brief Initialize the `model` data structure
-   !> @details This subroutine initializes the `model` structure by allocating the required arrays.
-   !> All arrays are initialized to zero.
-   !> @param[in] npoints Number of points in the model simulation
-   !> @param[in] nlayers Number of layers in the model simulation
-   !> @param[out] model Model data structure containing all necessary variables for S3COM
+   !! @details This subroutine initializes the `model` structure by allocating the required arrays.
+   !! All arrays are initialized to zero.
+   !! @param[in] npoints   number of points in the model simulation
+   !! @param[in] nlayers   number of layers in the model simulation
+   !! @param[out] model    model data structure containing all necessary variables for S3COM
    subroutine models_init(model, npoints, nlayers)
       
-      ! Inputs
-      integer(kind = 4), intent(in) :: npoints, nlayers
+      ! Input
+      integer(wpi), intent(in) :: npoints, nlayers
       
-      ! Outputs
+      ! Output
       type(type_model), intent(out) :: model
       
       ! Internal
-      integer(kind = 4) :: nlevels
+      integer(wpi) :: nlevels
       
       nlevels = nlayers + 1
       
-      model%npoints   =  npoints
-      model%nlayers   =  nlayers
-      model%nlevels   =  nlevels
+      model%npoints = npoints
+      model%nlayers = nlayers
+      model%nlevels = nlevels
       
       model%date = (/0, 0, 0/)
       model%time = (/0, 0, 0/)
       
+      ! 1D fields
       allocate(model%height(nlayers), source = 0)
       allocate(model%height_2(nlevels), source = 0)
+      
+      ! 2D fields (integer)
       allocate(model%point(npoints), source = 0)
       
-      ! 2D fields
+      ! 2D fields (real)
       allocate(model%lat(npoints), source = 0._wp)
       allocate(model%lon(npoints), source = 0._wp)
       allocate(model%lat_orig(npoints), source = 0._wp)
@@ -149,6 +152,7 @@ contains
       allocate(model%v_10m(npoints), source = 0._wp)
       allocate(model%iwp(npoints), source = 0._wp)
       allocate(model%lwp(npoints), source = 0._wp)
+      allocate(model%lwp_stratocumulus_filter(npoints), source = 0._wp)
       allocate(model%cod(npoints), source = 0._wp)
       allocate(model%reff_top(npoints), source = 0._wp)
       allocate(model%cdnc_top(npoints), source = 0._wp)
@@ -178,23 +182,25 @@ contains
       allocate(model%beta_ext(npoints, nlayers), source = 0._wp)
       
    end subroutine models_init
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    !> @brief Free the `model` data structure
-   !> @details This subroutine frees the `model` structure by deallocating the arrays.
-   !> @param[inout] model Model data structure containing all necessary variables for S3COM
+   !! @details This subroutine frees the `model` structure by deallocating the arrays.
+   !! @param[inout] model   model data structure containing all necessary variables for S3COM
    subroutine models_free(model)
       
-      ! Inputs/outputs
+      ! Input/output
       type(type_model), intent(inout) :: model
       
-      deallocate(model%height, model%height_2, model%point)
+      ! 1D fields
+      deallocate(model%height, model%height_2)
       
       ! 2D fields
+      deallocate(model%point)
       deallocate(model%lat, model%lon, model%lat_orig, model%lon_orig, model%topography, model%landmask, model%ps, model%ts, &
                  model%t_2m, model%q_2m, model%u_10m, model%v_10m, model%iwp, model%lwp, model%cod, model%cdnc_top, &
-                 model%reff_top, model%sunzenangle, model%sunazangle)
+                 model%reff_top, model%sunzenangle, model%sunazangle, model%lwp_stratocumulus_filter)
       
       ! 3D fields at atmospheric levels
       deallocate(model%zh, model%p, model%t, model%q, model%co2, model%ch4, model%n2o, model%s2o, model%co, model%o3)
@@ -203,18 +209,18 @@ contains
       deallocate(model%z, model%dz, model%clc, model%reff, model%cdnc, model%iwc, model%lwc, model%beta_ext)
       
    end subroutine models_free
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    !> @brief Set up the `model` data structure by importing the ICON data
-   !> @param[inout] model Model data structure containing all necessary variables for S3COM
-   !> @param[in] icon structure containing the ICON data
+   !! @param[inout] model   model data structure containing all necessary variables for S3COM
+   !! @param[in] icon       structure containing the ICON data
    subroutine models_setup_icon(model, icon)
       
-      ! Inputs
+      ! Input
       type(type_icon), intent(in) :: icon
       
-      ! Inputs/outputs
+      ! Input/output
       type(type_model), intent(inout) :: model
       
       ! Internal
@@ -233,14 +239,14 @@ contains
       read(icon_date(7:8), "(I2)") model%date(1)
       ! -----------------------------------------------------------------------------
       
-      model%nlat     = icon%nlat
-      model%nlon     = icon%nlon
-      model%mode     = icon%mode
+      model%nlat = icon%nlat
+      model%nlon = icon%nlon
+      model%mode = icon%mode
+      model%npoints = icon%npoints
+      model%nlevels = icon%nlevels
+      model%nlayers = icon%nlayers
       
-      model%npoints  = icon%npoints
-      model%nlevels  = icon%nlevels
-      model%nlayers  = icon%nlayers
-      
+      ! 1D fields
       model%height   = icon%height
       model%height_2 = icon%height_2
       
@@ -258,6 +264,7 @@ contains
       model%u_10m      = icon%u_10m
       model%v_10m      = icon%v_10m
       model%lwp        = icon%lwp
+      model%lwp_stratocumulus_filter = icon%lwp_stratocumulus_filter
       model%iwp        = icon%iwp
       model%cod        = icon%cod
       model%cdnc_top   = icon%cdnc_top
@@ -280,19 +287,19 @@ contains
       model%beta_ext = icon%beta_ext
       
    end subroutine models_setup_icon
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    !> @brief Set up the `model` data structure by importing the NWPSAF data
-   !> @warning The time for the NWPSAF data is set to 12:00:00
-   !> @param[inout] model Model data structure containing all necessary variables for S3COM
-   !> @param[in] nwpsaf structure containing the NWPSAF data
+   !! @warning The time for the NWPSAF data is set to 12:00:00
+   !! @param[inout] model    model data structure containing all necessary variables for S3COM
+   !! @param[in] nwpsaf      structure containing the NWPSAF data
    subroutine models_setup_nwpsaf(model, nwpsaf)
       
-      ! Inputs
+      ! Input
       type(type_nwpsaf), intent(in) :: nwpsaf
       
-      ! Outputs
+      ! Input/output
       type(type_model), intent(inout) :: model
       
       ! Internal
@@ -314,35 +321,37 @@ contains
       model%nlat       = nwpsaf%nlat
       model%nlon       = nwpsaf%nlon
       model%mode       = nwpsaf%mode
-      
       model%npoints    = nwpsaf%npoints
       model%nlevels    = nwpsaf%nlevels
       model%nlayers    = nwpsaf%nlayers
-      
       model%point      = nwpsaf%point
       
-      model%lat_orig   = nwpsaf%lat_orig
-      model%lon_orig   = nwpsaf%lon_orig
-      
+      ! 1D fields
       model%height     = nwpsaf%height
       model%height_2   = nwpsaf%height_2
       
+      ! 2D variables (real)
       model%lat        = nwpsaf%lat
       model%lon        = nwpsaf%lon
+      model%lat_orig   = nwpsaf%lat_orig
+      model%lon_orig   = nwpsaf%lon_orig
       model%topography = nwpsaf%elevation
+      model%landmask   = nwpsaf%lsm
+      model%ps         = nwpsaf%psurf
+      model%ts         = nwpsaf%tsurf
+      model%t_2m       = nwpsaf%t2m
+      model%q_2m       = nwpsaf%q2m
       model%u_10m      = nwpsaf%u10
       model%v_10m      = nwpsaf%v10
-      model%ts         = nwpsaf%tsurf
-      model%ps         = nwpsaf%psurf
-      model%q_2m       = nwpsaf%q2m
-      model%t_2m       = nwpsaf%t2m
-      model%landmask   = nwpsaf%lsm
       
+      ! 3D fields on atmospheric levels
       model%p          = nwpsaf%paph
-      model%z          = nwpsaf%altitudeh
-      model%dz         = nwpsaf%dz
       model%t          = nwpsaf%temph
       model%q          = nwpsaf%humh
+      model%z          = nwpsaf%altitudeh
+      
+      ! 3D fields in atmospheric layers
+      model%dz         = nwpsaf%dz
       model%clc        = nwpsaf%cc
       model%iwc        = nwpsaf%iwc
       model%lwc        = nwpsaf%lwc
@@ -350,21 +359,22 @@ contains
       model%cdnc       = nwpsaf%cdnc
       
    end subroutine models_setup_nwpsaf
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    !> @brief Compute the solar angles corresponding to model simualtions
-   !> @details The solar zenith and azimuth angles are computed using the `solar_angles` function using
-   !> the latitude, longitude, date and time of the model simulation.
-   !> @todo RTTOV v13.2 has a function to compute the solar angles. This function should be used instead.
+   !! @details The solar zenith and azimuth angles are computed using the `solar_angles` function using the latitude, longitude, 
+   !! date and time of the model simulation.
+   !! @todo RTTOV v13.2 has a function to compute the solar angles. This function should be used instead.
+   !! @param[inout] model   model data structure
    subroutine models_setup_solar(model)
       
-      ! Inputs/outputs
+      ! Input/output
       type(type_model), intent(inout) :: model
       
       ! Internal
       real(wp) :: lon
-      integer(kind = 4) :: i
+      integer(wpi) :: i
       
       do i = 1, model%npoints
          
@@ -378,6 +388,6 @@ contains
       enddo
       
    end subroutine models_setup_solar
-   ! ----------------------------------------------------------------------------------------------------------------------------
+   ! ============================================================================================================================
    
 end module mod_models
