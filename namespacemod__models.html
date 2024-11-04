@@ -154,7 +154,7 @@ Functions/Subroutines</h2></td></tr>
 <p>Free the <code>model</code> data structure. </p>
 <p >This subroutine frees the <code>model</code> structure by deallocating the arrays. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">model</td><td>Model data structure containing all necessary variables for S3COM </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">model</td><td>model data structure containing all necessary variables for S3COM </td></tr>
   </table>
   </dd>
 </dl>
@@ -179,13 +179,13 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">integer(kind = 4), intent(in)&#160;</td>
+          <td class="paramtype">integer(wpi), intent(in)&#160;</td>
           <td class="paramname"><em>npoints</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">integer(kind = 4), intent(in)&#160;</td>
+          <td class="paramtype">integer(wpi), intent(in)&#160;</td>
           <td class="paramname"><em>nlayers</em>&#160;</td>
         </tr>
         <tr>
@@ -204,9 +204,9 @@ Functions/Subroutines</h2></td></tr>
 <p>Initialize the <code>model</code> data structure. </p>
 <p >This subroutine initializes the <code>model</code> structure by allocating the required arrays. All arrays are initialized to zero. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">npoints</td><td>Number of points in the model simulation </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nlayers</td><td>Number of layers in the model simulation </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">model</td><td>Model data structure containing all necessary variables for S3COM </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">npoints</td><td>number of points in the model simulation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nlayers</td><td>number of layers in the model simulation </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">model</td><td>model data structure containing all necessary variables for S3COM </td></tr>
   </table>
   </dd>
 </dl>
@@ -242,8 +242,8 @@ Functions/Subroutines</h2></td></tr>
 <p>Load model simulations to be used in S3COM. </p>
 <p >This subroutine loads model data from their respective netCDF files and stores them consistently in the <code>model</code> structure. This subroutine is currently set up for the ICON and NWPSAF models. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nml</td><td>Namelist data, containing the name of the model and path to its simulation outputs </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">model</td><td>Model data structure containing all necessary variables for S3COM </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nml</td><td>namelist data containing the name of the model and path to its simulation outputs </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">model</td><td>model data structure containing all necessary variables for S3COM </td></tr>
   </table>
   </dd>
 </dl>
@@ -287,7 +287,7 @@ Functions/Subroutines</h2></td></tr>
 <p>Set up the <code>model</code> data structure by importing the ICON data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">model</td><td>Model data structure containing all necessary variables for S3COM </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">model</td><td>model data structure containing all necessary variables for S3COM </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">icon</td><td>structure containing the ICON data </td></tr>
   </table>
   </dd>
@@ -333,7 +333,7 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section warning"><dt>Warning</dt><dd>The time for the NWPSAF data is set to 12:00:00 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">model</td><td>Model data structure containing all necessary variables for S3COM </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">model</td><td>model data structure containing all necessary variables for S3COM </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">nwpsaf</td><td>structure containing the NWPSAF data </td></tr>
   </table>
   </dd>
@@ -367,6 +367,12 @@ Functions/Subroutines</h2></td></tr>
 
 <p>Compute the solar angles corresponding to model simualtions. </p>
 <p >The solar zenith and azimuth angles are computed using the <code>solar_angles</code> function using the latitude, longitude, date and time of the model simulation. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>RTTOV v13.2 has a function to compute the solar angles. This function should be used instead. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">model</td><td>model data structure </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -114,11 +114,11 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
 <tr class="memitem:a19f47110e46215077d252cce9bbdcc2c"><td class="memItemLeft" align="right" valign="top">real(wp) function, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__cld__phys__sb.html#a19f47110e46215077d252cce9bbdcc2c">re_sb</a> (L, N, hydro_class)</td></tr>
-<tr class="memdesc:a19f47110e46215077d252cce9bbdcc2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the effective radius for any hydrometeor class given the water content and the number concentration.  <a href="namespacemod__cld__phys__sb.html#a19f47110e46215077d252cce9bbdcc2c">More...</a><br /></td></tr>
+<tr class="memdesc:a19f47110e46215077d252cce9bbdcc2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the effective radius for any hydrometeor class given the water content and the number concentration.  <a href="namespacemod__cld__phys__sb.html#a19f47110e46215077d252cce9bbdcc2c">More...</a><br /></td></tr>
 <tr class="separator:a19f47110e46215077d252cce9bbdcc2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73d4c263848e2764d10297b1b9438fa0"><td class="memItemLeft" align="right" valign="top">real(wp) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__cld__phys__sb.html#a73d4c263848e2764d10297b1b9438fa0">re_sb_all</a> (L, N, a, b, nu, mu)</td></tr>
-<tr class="memdesc:a73d4c263848e2764d10297b1b9438fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the effective radius of a cloud particle consistent with the Seifert-Beheng microphysics scheme.  <a href="namespacemod__cld__phys__sb.html#a73d4c263848e2764d10297b1b9438fa0">More...</a><br /></td></tr>
-<tr class="separator:a73d4c263848e2764d10297b1b9438fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ca71a1ac8cb0209c2494fd11bbf071d"><td class="memItemLeft" align="right" valign="top">real(wp) function, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__cld__phys__sb.html#a1ca71a1ac8cb0209c2494fd11bbf071d">re_sb_all</a> (L, N, a, b, nu, mu)</td></tr>
+<tr class="memdesc:a1ca71a1ac8cb0209c2494fd11bbf071d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the effective radius of a cloud particle consistent with the Seifert-Beheng microphysics scheme.  <a href="namespacemod__cld__phys__sb.html#a1ca71a1ac8cb0209c2494fd11bbf071d">More...</a><br /></td></tr>
+<tr class="separator:a1ca71a1ac8cb0209c2494fd11bbf071d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Compute physical parameters consistent with the Seifert-Beheng microphysics scheme. </p>
@@ -148,7 +148,7 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">integer(kind = 4)&#160;</td>
+          <td class="paramtype">integer(wpi)&#160;</td>
           <td class="paramname"><em>hydro_class</em>&#160;</td>
         </tr>
         <tr>
@@ -159,30 +159,27 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the effective radius for any hydrometeor class given the water content and the number concentration. </p>
+<p>Return the effective radius for any hydrometeor class given the water content and the number concentration. </p>
 <p >Compute the effective radius of a cloud particle consistent with assumptions the Seifert-Beheng microphysics scheme for a given hydrometeor class, as introduced in ICON </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">L</td><td>Hydrometeor liquid water content <span class="units">kg m-3</span> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">N</td><td>Hydrometeor number concentration <span class="units"># m-3</span> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">hydro_class</td><td>Hydrometeor class (1: droplet; 2: ice crystal; 3: rain; 4: snow crystal; 5: graupel; 6: hail) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">L</td><td>hydrometeor liquid water content <span class="units">kg m-3</span> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">N</td><td>hydrometeor number concentration <span class="units"># m-3</span> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">hydro_class</td><td>hydrometeor class (1: droplet; 2: ice crystal; 3: rain; 4: snow crystal; 5: graupel; 6: hail) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">re</td><td>effective radius <span class="units">m</span> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>re Effective radius <span class="units">m</span> </dd></dl>
 
 </div>
 </div>
-<a id="a73d4c263848e2764d10297b1b9438fa0" name="a73d4c263848e2764d10297b1b9438fa0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73d4c263848e2764d10297b1b9438fa0">&#9670;&#160;</a></span>re_sb_all()</h2>
+<a id="a1ca71a1ac8cb0209c2494fd11bbf071d" name="a1ca71a1ac8cb0209c2494fd11bbf071d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ca71a1ac8cb0209c2494fd11bbf071d">&#9670;&#160;</a></span>re_sb_all()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">real(wp) function mod_cld_phys_sb::re_sb_all </td>
+          <td class="memname">real(wp) function, public mod_cld_phys_sb::re_sb_all </td>
           <td>(</td>
           <td class="paramtype">real(wp), intent(in)&#160;</td>
           <td class="paramname"><em>L</em>, </td>
@@ -223,26 +220,21 @@ Functions/Subroutines</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Compute the effective radius of a cloud particle consistent with the Seifert-Beheng microphysics scheme. </p>
 <p >Use the overall equation for all hydrometeor classes based on Seifert and Beheng (2005) doi:10.1007/s00703-005-0112-4 Hydrometeors have masses that follow a gamma-modified gamma distribution of parameters nu and mu: f(m) = A * m^nu * exp(- lambda * m^mu) The mass is related to the diameter by the dimension-mass relation: D = a * m^b. a and b therefore carry information on the particle shape and density. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">L</td><td>Hydrometeor liquid water content <span class="units">kg m-3</span> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">N</td><td>Hydrometeor number concentration <span class="units"># m-3</span> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>Parameter a of the dimension-mass relation </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>Parameter b of the dimension-mass relation </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nu</td><td>Parameter nu of the mass gamma-modified distribution </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mu</td><td>Parameter mu of the mass gamma-modified distribution </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">L</td><td>hydrometeor liquid water content <span class="units">kg m-3</span> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">N</td><td>hydrometeor number concentration <span class="units"># m-3</span> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>parameter a of the dimension-mass relation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>parameter b of the dimension-mass relation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nu</td><td>parameter nu of the mass gamma-modified distribution </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mu</td><td>parameter mu of the mass gamma-modified distribution </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">re</td><td>effective radius <span class="units">m</span> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>re Effective radius <span class="units">m</span> </dd></dl>
 
 </div>
 </div>

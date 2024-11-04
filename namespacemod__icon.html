@@ -116,12 +116,12 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:a6cbf518ab4864c72f98804270bfde89b"><td class="memItemLeft" align="right" valign="top">subroutine, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__icon.html#a6cbf518ab4864c72f98804270bfde89b">icon_load</a> (fname, icon)</td></tr>
 <tr class="memdesc:a6cbf518ab4864c72f98804270bfde89b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load ICON model simulations.  <a href="namespacemod__icon.html#a6cbf518ab4864c72f98804270bfde89b">More...</a><br /></td></tr>
 <tr class="separator:a6cbf518ab4864c72f98804270bfde89b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a643091b127fab3797b3b87910dfaf3a4"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__icon.html#a643091b127fab3797b3b87910dfaf3a4">icon_process</a> (icon)</td></tr>
-<tr class="memdesc:a643091b127fab3797b3b87910dfaf3a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process ICON data structure.  <a href="namespacemod__icon.html#a643091b127fab3797b3b87910dfaf3a4">More...</a><br /></td></tr>
-<tr class="separator:a643091b127fab3797b3b87910dfaf3a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f39934ffaccaed8733b57d81cc1bf85"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__icon.html#a3f39934ffaccaed8733b57d81cc1bf85">icon_init</a> (npoints, nlayers, icon)</td></tr>
 <tr class="memdesc:a3f39934ffaccaed8733b57d81cc1bf85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize ICON data structure.  <a href="namespacemod__icon.html#a3f39934ffaccaed8733b57d81cc1bf85">More...</a><br /></td></tr>
 <tr class="separator:a3f39934ffaccaed8733b57d81cc1bf85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a643091b127fab3797b3b87910dfaf3a4"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__icon.html#a643091b127fab3797b3b87910dfaf3a4">icon_process</a> (icon)</td></tr>
+<tr class="memdesc:a643091b127fab3797b3b87910dfaf3a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process ICON data structure.  <a href="namespacemod__icon.html#a643091b127fab3797b3b87910dfaf3a4">More...</a><br /></td></tr>
+<tr class="separator:a643091b127fab3797b3b87910dfaf3a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a951f32419a1be2c08b07377b01576fd1"><td class="memItemLeft" align="right" valign="top">subroutine, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__icon.html#a951f32419a1be2c08b07377b01576fd1">icon_free</a> (icon)</td></tr>
 <tr class="memdesc:a951f32419a1be2c08b07377b01576fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free ICON data structure.  <a href="namespacemod__icon.html#a951f32419a1be2c08b07377b01576fd1">More...</a><br /></td></tr>
 <tr class="separator:a951f32419a1be2c08b07377b01576fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,13 +167,13 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="memname">subroutine mod_icon::icon_init </td>
           <td>(</td>
-          <td class="paramtype">integer(kind=4), intent(in)&#160;</td>
+          <td class="paramtype">integer(wpi), intent(in)&#160;</td>
           <td class="paramname"><em>npoints</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">integer(kind=4), intent(in)&#160;</td>
+          <td class="paramtype">integer(wpi), intent(in)&#160;</td>
           <td class="paramname"><em>nlayers</em>, </td>
         </tr>
         <tr>
@@ -196,11 +196,10 @@ Functions/Subroutines</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize ICON data structure. </p>
-<p >This subroutine initializes the ICON data structure by allocating the required arrays. All arrays are initialized to zero. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Not all arrays are initialized to zero. Redo following the NWPSAF procedure. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
+<p >This subroutine initializes the ICON data structure by allocating the required arrays. All arrays are initialized to zero. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">npoints</td><td>Number of grid points </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nlayers</td><td>Number of vertical layers </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">npoints</td><td>number of grid points </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nlayers</td><td>number of vertical layers </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">icon</td><td>ICON data structure </td></tr>
   </table>
   </dd>
@@ -237,7 +236,7 @@ Functions/Subroutines</h2></td></tr>
 <p>Load ICON model simulations. </p>
 <p >This subroutine loads ICON model simulations from a NetCDF file and processes them to obtain the required variables for S3COM. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">fname</td><td>Input NetCDF file name containing ICON simulations </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fname</td><td>input NetCDF file name containing ICON simulations </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">icon</td><td>ICON data structure </td></tr>
   </table>
   </dd>
@@ -270,8 +269,13 @@ Functions/Subroutines</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Process ICON data structure. </p>
-<p >This subroutine processes the ICON data structure to obtain the required variables for S3COM. </p><dl class="section note"><dt>Note</dt><dd>Current processing steps: </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Why not compute dz from ifc(i+1) - ifc(i)? </dd></dl>
+<p >This subroutine processes the ICON data structure to obtain the required variables for S3COM. </p><dl class="section note"><dt>Note</dt><dd>Current processing steps:<ul>
+<li>The layer depth is computed as the difference between two successive levels enclosing the layer.</li>
+<li>The moist air density is computed from the pressure and virtual temperature. Used to convert cloud properties from <span class="units">kg kg-1</span> to <span class="units">kg m-3</span>.</li>
+<li>The effective radius is computed from the water content and number concentration consistently with the Seifert and Beheng (2005) scheme used in ICON.</li>
+<li>All quantities are in SI units except for the effective radius which is in <span class="units">um</span>. </li>
+</ul>
+</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">icon</td><td>ICON data structure </td></tr>

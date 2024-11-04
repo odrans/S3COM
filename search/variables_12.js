@@ -3,7 +3,7 @@ var searchData=
   ['s2o_0',['s2o',['../structs3com__types_1_1type__model.html#af0f1e8dc60b4b35077c6d9741804cebb',1,'s3com_types::type_model']]],
   ['sa_1',['sa',['../structs3com__types_1_1type__s3com__ret.html#ac7425db99de4555ae0972dda8794f776',1,'s3com_types::type_s3com_ret']]],
   ['sa_5finv_2',['sa_inv',['../structs3com__types_1_1type__s3com__ret.html#a4ae737f44ab41df6a7149bc51faf0d88',1,'s3com_types::type_s3com_ret']]],
-  ['sat_5fname_3',['sat_name',['../structs3com__types_1_1type__rttov__opt.html#a59385b7a7a671793016898dcebc1c5d2',1,'s3com_types::type_rttov_opt']]],
+  ['sat_5fname_3',['sat_name',['../structs3com__types_1_1type__rttov__opt.html#a9a79c2ec65dae6817b9b58f5f8366b24',1,'s3com_types::type_rttov_opt']]],
   ['satellite_4',['satellite',['../structs3com__types_1_1type__nml.html#a668625e9abf22e79e26fe6a6139d49c7',1,'s3com_types::type_nml::satellite()'],['../structs3com__types_1_1type__rttov__opt.html#a74f213ef0fde5ddedab870b0c6344a48',1,'s3com_types::type_rttov_opt::satellite()']]],
   ['sb_5',['sb',['../structs3com__types_1_1type__s3com__ret.html#a43f999e41f36e112f93f45c7e133e1df',1,'s3com_types::type_s3com_ret']]],
   ['se_6',['se',['../structs3com__types_1_1type__s3com__ret.html#a1684cdb43ea59dbc0d6920768c610c20',1,'s3com_types::type_s3com_ret']]],

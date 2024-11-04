@@ -126,7 +126,7 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:a0a72bcd6ff9c0de761b8916aa6afce16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the Legendre polynomials expansion coefficients to a netCDF file.  <a href="namespacemod__cld__legcoef.html#a0a72bcd6ff9c0de761b8916aa6afce16">More...</a><br /></td></tr>
 <tr class="separator:a0a72bcd6ff9c0de761b8916aa6afce16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0d3b1f031a490d3fa29465382536ce5"><td class="memItemLeft" align="right" valign="top">character(len=:) function, allocatable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod__cld__legcoef.html#ae0d3b1f031a490d3fa29465382536ce5">fn_legcoef</a> (fn, nmom)</td></tr>
-<tr class="memdesc:ae0d3b1f031a490d3fa29465382536ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the name of the netCDF file containing the Legendre coefficients.  <a href="namespacemod__cld__legcoef.html#ae0d3b1f031a490d3fa29465382536ce5">More...</a><br /></td></tr>
+<tr class="memdesc:ae0d3b1f031a490d3fa29465382536ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the name of the netCDF file containing the Legendre coefficients.  <a href="namespacemod__cld__legcoef.html#ae0d3b1f031a490d3fa29465382536ce5">More...</a><br /></td></tr>
 <tr class="separator:ae0d3b1f031a490d3fa29465382536ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -165,7 +165,7 @@ Functions/Subroutines</h2></td></tr>
 <p>Compute the Legendre polynomials expansion coefficients from the phase function. </p>
 <p >The internal RTTOV function <code>rttov_legcoef_calc</code> is used to compute the coefficients from the phase function in <code>cld_mie</code>. The coefficients are then stored in <code>cld_mielegcoef</code>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">cld_mie</td><td>Structure containing Mie optical properties </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">cld_mie</td><td>structure containing Mie optical properties </td></tr>
   </table>
   </dd>
 </dl>
@@ -191,7 +191,7 @@ Functions/Subroutines</h2></td></tr>
 <p>Export the coefficients of Legendre polynomials expansion of the phase function. </p>
 <p >This subroutine writes the coefficients of Legendre polynomials expansion of the phase function in the cld_mie structure. The coefficients are either computed from the phase function or read from a netCDF file. If that files does not exist, it is created. The new netcdf file has the same name as <code>fn_mie</code> but with the extension "_legcoef_nmom_.nc", with nmom the number of Legendre polynomials used. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">cld_mie</td><td>Structure containing Mie optical properties </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">cld_mie</td><td>structure containing Mie optical properties </td></tr>
   </table>
   </dd>
 </dl>
@@ -225,7 +225,7 @@ Functions/Subroutines</h2></td></tr>
 <p>Read the Legendre polynomials expansion coefficients from a netCDF file. </p>
 <p >Legendre expansion coefficients are read from the netCDF file <code>cld_miefn_legcoef</code> and stored in <code>cld_mielegcoef</code>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">cld_mie</td><td>Structure containing Mie optical properties </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">cld_mie</td><td>structure containing Mie optical properties </td></tr>
   </table>
   </dd>
 </dl>
@@ -259,7 +259,7 @@ Functions/Subroutines</h2></td></tr>
 <p>Write the Legendre polynomials expansion coefficients to a netCDF file. </p>
 <p >Legendre expansion coefficients created by <code>cld_legcoef_compute</code> are written to the netCDF file <code>cld_miefn_legcoef</code>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">cld_mie</td><td>Structure containing Mie optical properties </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cld_mie</td><td>structure containing Mie optical properties </td></tr>
   </table>
   </dd>
 </dl>
@@ -300,15 +300,15 @@ Functions/Subroutines</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Finds the name of the netCDF file containing the Legendre coefficients. </p>
+<p>Find the name of the netCDF file containing the Legendre coefficients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">fn</td><td>Name of the netCDF file containing the Mie coefficients </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nmom</td><td>Number of Legendre moments </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fn</td><td>name of the netCDF file containing the Mie coefficients </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nmom</td><td>number of Legendre moments </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">fn_new</td><td>name of the netCDF file containing the Legendre coefficients </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Name of the netCDF file containing the Legendre coefficients </dd></dl>
 
 </div>
 </div>

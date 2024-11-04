@@ -226,6 +226,10 @@ real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="b
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwp</b></td></tr>
 <tr class="memdesc:ac2f1d93093f9d24fbe05ca1660dec197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Liquid water path <span class="units">kg m-2</span> <br /></td></tr>
 <tr class="separator:ac2f1d93093f9d24fbe05ca1660dec197"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9057703a0df13263a448e9a83faf81df"><td class="memItemLeft" align="right" valign="top"><a id="a9057703a0df13263a448e9a83faf81df" name="a9057703a0df13263a448e9a83faf81df"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwp_stratocumulus_filter</b></td></tr>
+<tr class="memdesc:a9057703a0df13263a448e9a83faf81df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Liquid water path of filtered stratocumulus <span class="units">kg m-2</span> <br /></td></tr>
+<tr class="separator:a9057703a0df13263a448e9a83faf81df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33f13f2294f6f69ca8ba1f748205c177"><td class="memItemLeft" align="right" valign="top"><a id="a33f13f2294f6f69ca8ba1f748205c177" name="a33f13f2294f6f69ca8ba1f748205c177"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cod</b></td></tr>
 <tr class="memdesc:a33f13f2294f6f69ca8ba1f748205c177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud optical depth <span class="units">-</span> <br /></td></tr>
@@ -321,7 +325,7 @@ real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign=
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >General structure for all atmospheric data from model outputs. </p>
-<p >It is used to store model outputs consistently and completed with other variables. </p>
+<p >It is used to store model outputs consistently and completed with other variables. This is the structure that is used in the main program and passed for radiation calculations. </p>
 </div><hr/>The documentation for this type was generated from the following file:<ul>
 <li>src/conf/types.f90</li>
 </ul>

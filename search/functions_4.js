@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['nwpsaf_5ffree_0',['nwpsaf_free',['../namespacemod__nwpsaf.html#a8558cf9e47c24201864e285d606f0f11',1,'mod_nwpsaf']]],
-  ['nwpsaf_5finit_1',['nwpsaf_init',['../namespacemod__nwpsaf.html#a480f75302887b6e10a66f9723c11bde5',1,'mod_nwpsaf']]],
-  ['nwpsaf_5fload_2',['nwpsaf_load',['../namespacemod__nwpsaf.html#aa5652141f725943e9a67ceddb24530bb',1,'mod_nwpsaf']]],
-  ['nwpsaf_5fprocess_3',['nwpsaf_process',['../namespacemod__nwpsaf.html#abe8b207bb0254132f0c4f41578cc6a0e',1,'mod_nwpsaf']]]
+  ['models_5ffree_0',['models_free',['../namespacemod__models.html#af4dd664e3d5d6319cc63ef0478283973',1,'mod_models']]],
+  ['models_5finit_1',['models_init',['../namespacemod__models.html#ad5af6704929fde58c81a3f945c038e5c',1,'mod_models']]],
+  ['models_5fload_2',['models_load',['../namespacemod__models.html#a770cd8e72ffb3015916d16e6f4307e60',1,'mod_models']]],
+  ['models_5fsetup_5ficon_3',['models_setup_icon',['../namespacemod__models.html#af71f662271030870564c4656779f4a0a',1,'mod_models']]],
+  ['models_5fsetup_5fnwpsaf_4',['models_setup_nwpsaf',['../namespacemod__models.html#a5b5731aa8e392c73044fe197efe41944',1,'mod_models']]],
+  ['models_5fsetup_5fsolar_5',['models_setup_solar',['../namespacemod__models.html#a80d4eac735218c71f718fecf34642235',1,'mod_models']]]
 ];

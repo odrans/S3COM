@@ -162,10 +162,22 @@ integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valig
 integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>zbase_liq_idx</b></td></tr>
 <tr class="memdesc:aa8da43bf306a12d4d3ae3c472e5f9d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of cloud base altitude. <br /></td></tr>
 <tr class="separator:aa8da43bf306a12d4d3ae3c472e5f9d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a571a4e04319039ef3c7a8994b10d83da"><td class="memItemLeft" align="right" valign="top"><a id="a571a4e04319039ef3c7a8994b10d83da" name="a571a4e04319039ef3c7a8994b10d83da"></a>
+integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>n_slope_liq</b></td></tr>
+<tr class="memdesc:a571a4e04319039ef3c7a8994b10d83da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of slope changes in the cloud liquid water content vertical profile. <br /></td></tr>
+<tr class="separator:a571a4e04319039ef3c7a8994b10d83da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ac39efbfacff31e684d1949e77df2fd"><td class="memItemLeft" align="right" valign="top"><a id="a6ac39efbfacff31e684d1949e77df2fd" name="a6ac39efbfacff31e684d1949e77df2fd"></a>
 integer(wpi), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>n_iter</b></td></tr>
 <tr class="memdesc:a6ac39efbfacff31e684d1949e77df2fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of iteration in optimal estimation. <br /></td></tr>
 <tr class="separator:a6ac39efbfacff31e684d1949e77df2fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af751b366b6603f2d8d7853a586f27a78"><td class="memItemLeft" align="right" valign="top"><a id="af751b366b6603f2d8d7853a586f27a78" name="af751b366b6603f2d8d7853a586f27a78"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>gamma</b></td></tr>
+<tr class="memdesc:af751b366b6603f2d8d7853a586f27a78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverse of step size. <br /></td></tr>
+<tr class="separator:af751b366b6603f2d8d7853a586f27a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9b36a5c6c3b52ab71a06179fcc5db2c"><td class="memItemLeft" align="right" valign="top"><a id="aa9b36a5c6c3b52ab71a06179fcc5db2c" name="aa9b36a5c6c3b52ab71a06179fcc5db2c"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>j</b></td></tr>
+<tr class="memdesc:aa9b36a5c6c3b52ab71a06179fcc5db2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cost function @output. <br /></td></tr>
+<tr class="separator:aa9b36a5c6c3b52ab71a06179fcc5db2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d87b2ef13712fda3cc875b5440c26c8"><td class="memItemLeft" align="right" valign="top"><a id="a9d87b2ef13712fda3cc875b5440c26c8" name="a9d87b2ef13712fda3cc875b5440c26c8"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>ji</b></td></tr>
 <tr class="memdesc:a9d87b2ef13712fda3cc875b5440c26c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cost function at step i. <br /></td></tr>
@@ -178,14 +190,22 @@ real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="b
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>ji_meas</b></td></tr>
 <tr class="memdesc:a75847ef8ca17667729a755d310e1aa4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cost function (contribution from measurements) <br /></td></tr>
 <tr class="separator:a75847ef8ca17667729a755d310e1aa4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5416fcd3da31ca077f6df1128fb90694"><td class="memItemLeft" align="right" valign="top"><a id="a5416fcd3da31ca077f6df1128fb90694" name="a5416fcd3da31ca077f6df1128fb90694"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>ji_state</b></td></tr>
+<tr class="memdesc:a5416fcd3da31ca077f6df1128fb90694"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cost function (contribution from a priori) <br /></td></tr>
+<tr class="separator:a5416fcd3da31ca077f6df1128fb90694"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5add896629335354dbac37418307e9a"><td class="memItemLeft" align="right" valign="top"><a id="ad5add896629335354dbac37418307e9a" name="ad5add896629335354dbac37418307e9a"></a>
 real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>y</b></td></tr>
 <tr class="memdesc:ad5add896629335354dbac37418307e9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement vector. <br /></td></tr>
 <tr class="separator:ad5add896629335354dbac37418307e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e48128da241c2aa9cfb0b1e94a76f9d"><td class="memItemLeft" align="right" valign="top"><a id="a9e48128da241c2aa9cfb0b1e94a76f9d" name="a9e48128da241c2aa9cfb0b1e94a76f9d"></a>
 real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>f</b></td></tr>
-<tr class="memdesc:a9e48128da241c2aa9cfb0b1e94a76f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward model simulation. <br /></td></tr>
+<tr class="memdesc:a9e48128da241c2aa9cfb0b1e94a76f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward model simulation vector. <br /></td></tr>
 <tr class="separator:a9e48128da241c2aa9cfb0b1e94a76f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20ae26736fdab247df479caf40ce2ce8"><td class="memItemLeft" align="right" valign="top"><a id="a20ae26736fdab247df479caf40ce2ce8" name="a20ae26736fdab247df479caf40ce2ce8"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>x</b></td></tr>
+<tr class="memdesc:a20ae26736fdab247df479caf40ce2ce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">State vector best estimate @output. <br /></td></tr>
+<tr class="separator:a20ae26736fdab247df479caf40ce2ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7396c1a5b1baddee58803c828f84b68f"><td class="memItemLeft" align="right" valign="top"><a id="a7396c1a5b1baddee58803c828f84b68f" name="a7396c1a5b1baddee58803c828f84b68f"></a>
 real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>xa</b></td></tr>
 <tr class="memdesc:a7396c1a5b1baddee58803c828f84b68f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A priori state vector. <br /></td></tr>
@@ -306,22 +326,38 @@ real(wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valig
 real(wp), dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>sb</b></td></tr>
 <tr class="memdesc:a43f999e41f36e112f93f45c7e133e1df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-retrieved parameters forward model error variance-covariance matrix. <br /></td></tr>
 <tr class="separator:a43f999e41f36e112f93f45c7e133e1df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a978907d97d302df70652cb16f27129c3"><td class="memItemLeft" align="right" valign="top"><a id="a978907d97d302df70652cb16f27129c3" name="a978907d97d302df70652cb16f27129c3"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwc</b></td></tr>
-<tr class="memdesc:a978907d97d302df70652cb16f27129c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud liquid water content in layers <span class="units">kg m-3</span> <br /></td></tr>
-<tr class="separator:a978907d97d302df70652cb16f27129c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf68335aa8131ff08bfbc814cf9cd372"><td class="memItemLeft" align="right" valign="top"><a id="abf68335aa8131ff08bfbc814cf9cd372" name="abf68335aa8131ff08bfbc814cf9cd372"></a>
 real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>clc</b></td></tr>
 <tr class="memdesc:abf68335aa8131ff08bfbc814cf9cd372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud fraction in layers <span class="units">-</span> <br /></td></tr>
 <tr class="separator:abf68335aa8131ff08bfbc814cf9cd372"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ac63a921fbbd4f05d23924449f79dd3"><td class="memItemLeft" align="right" valign="top"><a id="a8ac63a921fbbd4f05d23924449f79dd3" name="a8ac63a921fbbd4f05d23924449f79dd3"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>reff</b></td></tr>
-<tr class="memdesc:a8ac63a921fbbd4f05d23924449f79dd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud droplet effective radius in layers <span class="units">um</span> <br /></td></tr>
-<tr class="separator:a8ac63a921fbbd4f05d23924449f79dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa598203788b995d0d3e5e87cf371a058"><td class="memItemLeft" align="right" valign="top"><a id="aa598203788b995d0d3e5e87cf371a058" name="aa598203788b995d0d3e5e87cf371a058"></a>
-real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cdnc</b></td></tr>
-<tr class="memdesc:aa598203788b995d0d3e5e87cf371a058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud droplet number concentration in layers <span class="units"># m-3</span> <br /></td></tr>
-<tr class="separator:aa598203788b995d0d3e5e87cf371a058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3268d986e09bf65cc3930a8b66a42ac"><td class="memItemLeft" align="right" valign="top"><a id="ad3268d986e09bf65cc3930a8b66a42ac" name="ad3268d986e09bf65cc3930a8b66a42ac"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwc_ad</b></td></tr>
+<tr class="memdesc:ad3268d986e09bf65cc3930a8b66a42ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adiabatic cloud liquid water content in layers <span class="units">kg m-3</span> <br /></td></tr>
+<tr class="separator:ad3268d986e09bf65cc3930a8b66a42ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96f9b217679cfc4779fc7a43c60912c9"><td class="memItemLeft" align="right" valign="top"><a id="a96f9b217679cfc4779fc7a43c60912c9" name="a96f9b217679cfc4779fc7a43c60912c9"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwc_corr</b></td></tr>
+<tr class="memdesc:a96f9b217679cfc4779fc7a43c60912c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Corrected cloud liquid water content in layers <span class="units">kg m-3</span> <br /></td></tr>
+<tr class="separator:a96f9b217679cfc4779fc7a43c60912c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb2a58b002423929112db6535c83c9a5"><td class="memItemLeft" align="right" valign="top"><a id="acb2a58b002423929112db6535c83c9a5" name="acb2a58b002423929112db6535c83c9a5"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwc_hom</b></td></tr>
+<tr class="memdesc:acb2a58b002423929112db6535c83c9a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Homogeneous cloud liquid water content in layers <span class="units">kg m-3</span> <br /></td></tr>
+<tr class="separator:acb2a58b002423929112db6535c83c9a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21e19ed62775b0cfcedac7fbe96e6a74"><td class="memItemLeft" align="right" valign="top"><a id="a21e19ed62775b0cfcedac7fbe96e6a74" name="a21e19ed62775b0cfcedac7fbe96e6a74"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>re_ad</b></td></tr>
+<tr class="memdesc:a21e19ed62775b0cfcedac7fbe96e6a74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adiabatic cloud droplet effective radius in layers <span class="units">um</span> <br /></td></tr>
+<tr class="separator:a21e19ed62775b0cfcedac7fbe96e6a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a751b2dca712c0d503f12023e6dc6acc9"><td class="memItemLeft" align="right" valign="top"><a id="a751b2dca712c0d503f12023e6dc6acc9" name="a751b2dca712c0d503f12023e6dc6acc9"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>re_hom</b></td></tr>
+<tr class="memdesc:a751b2dca712c0d503f12023e6dc6acc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Homogeneous cloud droplet effective radius in layers <span class="units">um</span> <br /></td></tr>
+<tr class="separator:a751b2dca712c0d503f12023e6dc6acc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f1607137e09c54b8ded8768601941a1"><td class="memItemLeft" align="right" valign="top"><a id="a9f1607137e09c54b8ded8768601941a1" name="a9f1607137e09c54b8ded8768601941a1"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cdnc_ad</b></td></tr>
+<tr class="memdesc:a9f1607137e09c54b8ded8768601941a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adiabatic cloud droplet number concentration in layers <span class="units"># m-3</span> <br /></td></tr>
+<tr class="separator:a9f1607137e09c54b8ded8768601941a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19f3b66aac08e91e3001cb12e17033cc"><td class="memItemLeft" align="right" valign="top"><a id="a19f3b66aac08e91e3001cb12e17033cc" name="a19f3b66aac08e91e3001cb12e17033cc"></a>
+real(wp), dimension(:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cdnc_hom</b></td></tr>
+<tr class="memdesc:a19f3b66aac08e91e3001cb12e17033cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Homogeneous cloud droplet number concentration in layers <span class="units"># m-3</span> <br /></td></tr>
+<tr class="separator:a19f3b66aac08e91e3001cb12e17033cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af304b2d81dc740581881d814583207d3"><td class="memItemLeft" align="right" valign="top"><a id="af304b2d81dc740581881d814583207d3" name="af304b2d81dc740581881d814583207d3"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>ztop_liq</b></td></tr>
 <tr class="memdesc:af304b2d81dc740581881d814583207d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud top altitude <span class="units">m</span> <br /></td></tr>
@@ -330,10 +366,30 @@ real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="b
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>zbase_liq</b></td></tr>
 <tr class="memdesc:aa95b2956fbf4cd4cd6d9bec1ba6bf9b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud base altitude <span class="units">m</span> <br /></td></tr>
 <tr class="separator:aa95b2956fbf4cd4cd6d9bec1ba6bf9b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a245f7ac0f407db2fe7467f88bc062a0f"><td class="memItemLeft" align="right" valign="top"><a id="a245f7ac0f407db2fe7467f88bc062a0f" name="a245f7ac0f407db2fe7467f88bc062a0f"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>h</b></td></tr>
+<tr class="memdesc:a245f7ac0f407db2fe7467f88bc062a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud geometric height <span class="units">m</span> <br /></td></tr>
+<tr class="separator:a245f7ac0f407db2fe7467f88bc062a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a1f5e05589e90378c6413dae6121135"><td class="memItemLeft" align="right" valign="top"><a id="a5a1f5e05589e90378c6413dae6121135" name="a5a1f5e05589e90378c6413dae6121135"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>fad</b></td></tr>
+<tr class="memdesc:a5a1f5e05589e90378c6413dae6121135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adiabacity factor <span class="units">-</span> <br /></td></tr>
+<tr class="separator:a5a1f5e05589e90378c6413dae6121135"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf291c9b98430ef65a183c1a294f9a2b"><td class="memItemLeft" align="right" valign="top"><a id="aaf291c9b98430ef65a183c1a294f9a2b" name="aaf291c9b98430ef65a183c1a294f9a2b"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwp</b></td></tr>
 <tr class="memdesc:aaf291c9b98430ef65a183c1a294f9a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Liquid water path <span class="units">kg m-2</span> <br /></td></tr>
 <tr class="separator:aaf291c9b98430ef65a183c1a294f9a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b64fb71dfd438e9b1231590060c26cb"><td class="memItemLeft" align="right" valign="top"><a id="a2b64fb71dfd438e9b1231590060c26cb" name="a2b64fb71dfd438e9b1231590060c26cb"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwp_ad</b></td></tr>
+<tr class="memdesc:a2b64fb71dfd438e9b1231590060c26cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adiabatic liquid water path <span class="units">kg m-2</span> <br /></td></tr>
+<tr class="separator:a2b64fb71dfd438e9b1231590060c26cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace20bdbdce66475ec3130df69f150b59"><td class="memItemLeft" align="right" valign="top"><a id="ace20bdbdce66475ec3130df69f150b59" name="ace20bdbdce66475ec3130df69f150b59"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>lwp_hom</b></td></tr>
+<tr class="memdesc:ace20bdbdce66475ec3130df69f150b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Homogeneous liquid water path <span class="units">kg m-2</span> <br /></td></tr>
+<tr class="separator:ace20bdbdce66475ec3130df69f150b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d9fa52baca79a70f79a8059b2b31fb7"><td class="memItemLeft" align="right" valign="top"><a id="a6d9fa52baca79a70f79a8059b2b31fb7" name="a6d9fa52baca79a70f79a8059b2b31fb7"></a>
+real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>iwp</b></td></tr>
+<tr class="memdesc:a6d9fa52baca79a70f79a8059b2b31fb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ice water path <span class="units">kg m-2</span> <br /></td></tr>
+<tr class="separator:a6d9fa52baca79a70f79a8059b2b31fb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae184a0c89667406046442f10738f5811"><td class="memItemLeft" align="right" valign="top"><a id="ae184a0c89667406046442f10738f5811" name="ae184a0c89667406046442f10738f5811"></a>
 real(wp), dimension(:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><b>cod</b></td></tr>
 <tr class="memdesc:ae184a0c89667406046442f10738f5811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cloud optical depth <span class="units">-</span> <br /></td></tr>

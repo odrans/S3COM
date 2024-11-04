@@ -1,11 +1,19 @@
 var searchData=
 [
   ['rad_0',['rad',['../structs3com__types_1_1type__s3com.html#a5c799233d3e10b8b5eea4e25a6d48a11',1,'s3com_types::type_s3com']]],
-  ['radius_1',['radius',['../structs3com__types_1_1type__cld__mie.html#ace8080816dd3feb65baf5041deb200bf',1,'s3com_types::type_cld_mie']]],
-  ['reff_2',['reff',['../structs3com__types_1_1type__nwpsaf.html#afec77e15896b127febf3e1f3cb6590f9',1,'s3com_types::type_nwpsaf::reff()'],['../structs3com__types_1_1type__icon.html#a3e08cccd65d110687f424f2f73b2fb00',1,'s3com_types::type_icon::reff()'],['../structs3com__types_1_1type__model.html#a443a63b6ef78bb032ef4706a5b5499a4',1,'s3com_types::type_model::reff()'],['../structs3com__types_1_1type__s3com__atm.html#af2653797433ff8945527f17166747489',1,'s3com_types::type_s3com_atm::reff()'],['../structs3com__types_1_1type__s3com__ret.html#a8ac63a921fbbd4f05d23924449f79dd3',1,'s3com_types::type_s3com_ret::reff()']]],
-  ['reff_5ftop_3',['reff_top',['../structs3com__types_1_1type__icon.html#a4adf36c0fa8207206120177af7184c2c',1,'s3com_types::type_icon::reff_top()'],['../structs3com__types_1_1type__model.html#ab9aa660fb07096b8b5741e028606b27d',1,'s3com_types::type_model::reff_top()']]],
-  ['ret_4',['ret',['../structs3com__types_1_1type__s3com.html#af048ab8a8fe89cee78a1e953101bd419',1,'s3com_types::type_s3com']]],
-  ['rho_5',['rho',['../structs3com__types_1_1type__nwpsaf.html#a6c11877e3089b53e16a3a9f3821db9b3',1,'s3com_types::type_nwpsaf::rho()'],['../structs3com__types_1_1type__icon.html#a4e6e5bd35a76fc4f5bdb70a045205a56',1,'s3com_types::type_icon::rho()']]],
-  ['rttov_6',['rttov',['../structs3com__types_1_1type__s3com__opt.html#aeedc59049e51b8ce128257b484bfa254',1,'s3com_types::type_s3com_opt']]],
-  ['rttov_5fnthreads_7',['rttov_nthreads',['../structs3com__types_1_1type__nml.html#a5e0851b813f9435328d864fdae5be6df',1,'s3com_types::type_nml']]]
+  ['radiance_1',['radiance',['../namespacemod__rttov__direct.html#af93ec85098021a345b3e2b34f2739a20',1,'mod_rttov_direct']]],
+  ['radiance_5fk_2',['radiance_k',['../namespacemod__rttov__k.html#aba71916738dc74b8113395bfc713d655',1,'mod_rttov_k']]],
+  ['radiance_5ftl_3',['radiance_tl',['../namespacemod__rttov__tl.html#a1ad1276c14eddbb53bbf9c685d81f00a',1,'mod_rttov_tl']]],
+  ['radius_4',['radius',['../structs3com__types_1_1type__cld__mie.html#a714abcac48f05359887e597e3cd32e98',1,'s3com_types::type_cld_mie']]],
+  ['re_5fad_5',['re_ad',['../structs3com__types_1_1type__s3com__ret.html#a21e19ed62775b0cfcedac7fbe96e6a74',1,'s3com_types::type_s3com_ret']]],
+  ['re_5fhom_6',['re_hom',['../structs3com__types_1_1type__s3com__ret.html#a751b2dca712c0d503f12023e6dc6acc9',1,'s3com_types::type_s3com_ret']]],
+  ['reff_7',['reff',['../structs3com__types_1_1type__nwpsaf.html#afec77e15896b127febf3e1f3cb6590f9',1,'s3com_types::type_nwpsaf::reff()'],['../structs3com__types_1_1type__icon.html#a3e08cccd65d110687f424f2f73b2fb00',1,'s3com_types::type_icon::reff()'],['../structs3com__types_1_1type__model.html#a443a63b6ef78bb032ef4706a5b5499a4',1,'s3com_types::type_model::reff()'],['../structs3com__types_1_1type__s3com__atm.html#af2653797433ff8945527f17166747489',1,'s3com_types::type_s3com_atm::reff()']]],
+  ['reff_5ftop_8',['reff_top',['../structs3com__types_1_1type__icon.html#a4adf36c0fa8207206120177af7184c2c',1,'s3com_types::type_icon::reff_top()'],['../structs3com__types_1_1type__model.html#ab9aa660fb07096b8b5741e028606b27d',1,'s3com_types::type_model::reff_top()']]],
+  ['reflectance_9',['reflectance',['../namespacemod__rttov__direct.html#adce5ba1b90ff8732e6df305efc4c791f',1,'mod_rttov_direct']]],
+  ['reflectance_5fk_10',['reflectance_k',['../namespacemod__rttov__k.html#a14b22d8883494d8bf2550cc7135e643b',1,'mod_rttov_k']]],
+  ['reflectance_5ftl_11',['reflectance_tl',['../namespacemod__rttov__tl.html#a24c8ae7bc126814eab4c0d1aef230837',1,'mod_rttov_tl']]],
+  ['ret_12',['ret',['../structs3com__types_1_1type__s3com.html#af048ab8a8fe89cee78a1e953101bd419',1,'s3com_types::type_s3com']]],
+  ['rho_13',['rho',['../structs3com__types_1_1type__icon.html#a4e6e5bd35a76fc4f5bdb70a045205a56',1,'s3com_types::type_icon::rho()'],['../structs3com__types_1_1type__nwpsaf.html#a6c11877e3089b53e16a3a9f3821db9b3',1,'s3com_types::type_nwpsaf::rho()']]],
+  ['rttov_14',['rttov',['../structs3com__types_1_1type__s3com__opt.html#aeedc59049e51b8ce128257b484bfa254',1,'s3com_types::type_s3com_opt']]],
+  ['rttov_5fnthreads_15',['rttov_nthreads',['../structs3com__types_1_1type__nml.html#a5e0851b813f9435328d864fdae5be6df',1,'s3com_types::type_nml']]]
 ];
