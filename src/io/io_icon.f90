@@ -75,7 +75,7 @@ contains
       
       ! Get the number of points, atmospheric levels and layers from the ICON data structure
       npoints = icon%npoints; nlevels = icon%nlevels; nlayers = icon%nlayers
-      
+
       ! Open the ICON NetCDF file
       errst = nf90_open(fname, nf90_nowrite, ncid)
       call check_netcdf_status(errst, 'nf90_open')
@@ -116,17 +116,16 @@ contains
       
       ! Extract coordinates
       ! -------------------------------------------------------------------------------------------------------------------------
-      if (Llon .and. Llat) then ! 2D mode
+      if (Lpoint) then ! 1D mode
+         icon%nlon = npoints
+         icon%nlat = npoints
+         icon%mode = 1
+      else if (Llon .and. Llat) then ! 2D mode
          if (npoints /= icon%nlon * icon%nlat) then
             errmsg = 'Number of points selected is different from indicated in input file '//trim(fname)
             call s3com_error(routine_name,errmsg)
          endif
-         lon = -1.0E30; lat = -1.0E30
          icon%mode = 2 ! Don't know yet if (lon, lat) or (lat, lon) at this point
-      else if (Lpoint) then ! 1D mode
-         icon%nlon = npoints
-         icon%nlat = npoints
-         icon%mode = 1
       else
          errmsg = trim(fname)//' file contains wrong dimensions'
          call s3com_error(routine_name,errmsg)
