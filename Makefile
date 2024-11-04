@@ -43,8 +43,6 @@
  #    hdf5/1.12.1-openmpi-4.1.2-gcc-11.2.0 \
  #    eccodes/2.21.0-gcc-11.2.0
 
-prog = s3com
-
 # Compiler (supported: gfortran, ifort)
 F90 = ifort
 # Debug mode (true or false)
@@ -74,8 +72,6 @@ else ifeq ($(F90),ifort)
     PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g
     PATH_HDF5 = /sw/spack-levante/hdf5-1.12.1-tvymb5
 endif
-
-
 # ---------------------------------------------------------------------------------------------------------------------------------------
 
 ## Following up paths (do not edit!)
@@ -147,7 +143,7 @@ LIST_OBJ_IO = $(obj)/io_utils.o \
 LIST_OBJ_RET = $(obj)/ret_cloud_model.o \
 	$(obj)/ret_utils.o \
 	$(obj)/ret_run.o
-	
+
 LIST_OBJ_UTILS = $(obj)/utils_fort.o \
 		 $(obj)/utils_math.o \
 		 $(obj)/utils_phys.o
@@ -186,7 +182,7 @@ install: $(LIST_OBJ)
 	ar r $(LIB_MODELS) $(LIST_OBJ_MODELS)
 	ar r $(LIB_IO) $(LIST_OBJ_IO)
 	ar r $(LIB_RTTOVML) $(LIST_OBJ_RTTOVML)
-	$(F90) $(F90FLAGS) $(DIR_MAIN)/$(prog).f90 -o $(prog) $(FLAGS_ALL)
+	$(F90) $(F90FLAGS) $(DIR_MAIN)/s3com.f90 -o s3com $(FLAGS_ALL)
 
 clean:
 	rm -f $(obj)/*.o $(mod)/*.mod $(lib)/*.a s3com
