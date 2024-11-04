@@ -126,8 +126,7 @@ program s3com_main
       
       ! Get the satellite measurement vector (useful for retrievals)
       s3com%ret%Y = s3com%rad%f_rad_total
-      write(6,*) "Y=", s3com%ret%Y(:,1)
-      
+
       ! Retrievals
       if (nml%flag_retrievals) then
          
@@ -136,7 +135,7 @@ program s3com_main
          
          ! Extract cloud top and base altitudes for single-layer homogeneous liquid clouds only
          call init_cloud_z(rttov_atm_ret, s3com)
-         write(6,*) "n_slopes=", s3com%ret%n_slope_liq
+
          ! Set conditions to use RTTOV for single-layer homogeneous liquid clouds only
          !call find_ret_idx_cld_liq(s3com, .true.)
          idx_lwp = idx_liq(s3com, .true.)
