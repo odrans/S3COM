@@ -18,7 +18,7 @@ cd S3COM
 make
 ```
 
-More details in the [intall section](docs/install.md)
+More details on [this page](https://odrans.github.io/S3COM/md_docs_install.html)
 
 <details>
   <summary> <b>Click here</b> for more details on S3COM dependencies and environment.</summary>
@@ -57,8 +57,7 @@ S3COM requires the path to a namelist file as main argument:
 ```bash
 ./s3com config_default.nml
 ```
-The namelist contains information on input and output files as well as important options to run S3COM. Refer to the [namelist section](docs/namelist.md) for a detailed description.
-
+The namelist contains information on input and output files as well as important options to run S3COM. Refer to [namelist section](https://odrans.github.io/S3COM/md_docs_namelist.html) for a detailed description.
 
 **S3COM outputs** are 3 files containing satellite simulations, retrievals and atmospheric data. See the [output section](docs/outputs.md).
 
