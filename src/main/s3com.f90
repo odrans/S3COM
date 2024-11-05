@@ -60,7 +60,7 @@ program s3com_main
    
    integer(wpi), dimension(:), allocatable :: idx_lwp, idx_ret
    integer(wpi) :: nchunks, idx_start, idx_end, ichunk
-   integer(wpi) :: nlayers, npoints, nmeas
+   integer(wpi) :: nlayers, npoints, nmeas, ipoint
    
    ! Read namelist file
    nml = namelist_load()
@@ -70,6 +70,17 @@ program s3com_main
    
    ! Load atmospheric data from selected models (`model` created)
    call models_load(nml, model)
+
+   write(6,*) "Loaded models"
+   write(6,*) "npoints = ", model%npoints
+   do ipoint = 1, model%npoints
+      write(6,*) "point ", ipoint
+      write(6,*) "  lat = ", model%lat(ipoint)
+      write(6,*) "  lon = ", model%lon(ipoint)
+      write(6,*) "  lat_orig = ", model%lat_orig(ipoint)
+      write(6,*) "  lon_orig = ", model%lon_orig(ipoint)
+   end do
+
 
    ! Initialize the s3com structure
    call s3com_init(nml, model, s3com)
@@ -164,7 +175,8 @@ program s3com_main
       endif
       
    enddo
-   
+   write(6,*) "Done"
+
    ! Write output file
    call write_output(s3com, model, nml)
    

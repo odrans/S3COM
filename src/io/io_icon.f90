@@ -150,6 +150,9 @@ contains
       call check_netcdf_status(errst, 'nf90_inq_varid')
       errst = nf90_get_var(ncid, vid, icon%height_2, start = (/1/), count = (/icon%nlevels/))
       call check_netcdf_status(errst, 'nf90_get_var')
+
+      icon%lon_orig(1:npoints) = lon
+      icon%lat_orig(1:npoints) = lat
       ! -------------------------------------------------------------------------------------------------------------------------
       
       ! Extract all variables
@@ -370,9 +373,9 @@ contains
 
       if (icon%mode == 1) then !< (point)
          ! lon and lat are already in the right format
-         icon%lon(1:npoints) = lon(1:npoints)
-         icon%lat(1:npoints) = lat(1:npoints)
-      else if (icon%mode == 2) then !< (lon, lat)
+          icon%lon(1:npoints) = lon(1:npoints)
+          icon%lat(1:npoints) = lat(1:npoints)
+       else if (icon%mode == 2) then !< (lon, lat)
          ll = lat
          do j = 1, dim2
             do i = 1, dim1
