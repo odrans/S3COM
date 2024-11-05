@@ -50,9 +50,10 @@ contains
       implicit none
       
       ! Input
-      real(wp) :: a(n,n), c(n,n)
       integer, intent(in) :: n
-      
+      real(wp), intent(in) :: a(n,n)
+      real(wp), intent(inout) :: c(n,n)
+
       ! Internal
       real(wp) :: L(n,n), U(n,n), b(n), d(n), x(n)
       real(wp) :: coeff
