@@ -51,12 +51,12 @@ contains
       
       ! Input
       real(wp) :: a(n,n), c(n,n)
-      integer n
+      integer, intent(in) :: n
       
       ! Internal
       real(wp) :: L(n,n), U(n,n), b(n), d(n), x(n)
       real(wp) :: coeff
-      integer i, j, k
+      integer :: i, j, k
       
       ! step 0: initialization for matrices L and U and b
       ! Fortran 90/95 aloows such operations on matrices
