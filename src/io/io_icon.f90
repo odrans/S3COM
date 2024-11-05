@@ -65,8 +65,8 @@ contains
       integer(wpi) :: ncid, ndims, nvars, ngatts, recdim, errst, vid, vrank
       integer(wpi) :: dim1, dim2, dim3, dim4, dim5, i, j, k
       integer(wpi) :: npoints, nlevels, nlayers
-      integer, dimension(:), allocatable :: plon, plat
-      
+      integer, dimension(:), allocatable :: plon, plat, point
+
       real(wp), dimension(:), allocatable :: lat, lon, ll
       real(wp), allocatable :: x1(:), x2(:,:), x3(:,:,:), x4(:,:,:,:), x5(:,:,:,:,:) !< temporary arrays
       real(dp), dimension(1) :: x0
@@ -113,7 +113,7 @@ contains
          
       enddo
 
-      allocate(lon(icon%nlon), lat(icon%nlat))
+      allocate(point(icon%npoints), lon(icon%nlon), lat(icon%nlat))
       ! --------------------------------------------------------------------------------------------------------------------------
 
       ! Extract coordinates
@@ -132,7 +132,14 @@ contains
          errmsg = trim(fname)//' file contains wrong dimensions'
          call s3com_error(routine_name,errmsg)
       endif
-      
+
+      if (Lpoint) then
+         errst = nf90_inq_varid(ncid, 'point', vid)
+         call check_netcdf_status(errst, 'nf90_inq_varid')
+         errst = nf90_get_var(ncid, vid, point, start = (/1/), count = (/icon%npoints/))
+         call check_netcdf_status(errst, 'nf90_get_var')
+      end if
+
       errst = nf90_inq_varid(ncid, 'lon', vid)
       call check_netcdf_status(errst, 'nf90_inq_varid')
       errst = nf90_get_var(ncid, vid, lon, start = (/1/), count = (/icon%nlon/))
@@ -155,6 +162,7 @@ contains
 
       icon%lon_orig(1:npoints) = lon
       icon%lat_orig(1:npoints) = lat
+      icon%point_orig(1:npoints) = point
       ! -------------------------------------------------------------------------------------------------------------------------
       
       ! Extract all variables

@@ -112,6 +112,7 @@ contains
       allocate(icon%lat(npoints), source = 0._wp)
       allocate(icon%lon_orig(npoints), source = 0._wp)
       allocate(icon%lat_orig(npoints), source = 0._wp)
+      allocate(icon%point_orig(npoints), source = 0)
       allocate(icon%topography(npoints), source = 0._wp)
       allocate(icon%landmask(npoints), source = 0._wp)
       allocate(icon%ps(npoints), source = 0._wp)
@@ -374,7 +375,7 @@ contains
       
       ! 2D variables
       deallocate(icon%ztop_liq_idx, icon%zbase_liq_idx)
-      deallocate(icon%lon, icon%lat, icon%lon_orig, icon%lat_orig, icon%topography, icon%landmask, icon%ps, icon%ts, icon%t_2m, &
+      deallocate(icon%lon, icon%lat, icon%lon_orig, icon%lat_orig, icon%point_orig, icon%topography, icon%landmask, icon%ps, icon%ts, icon%t_2m, &
                  icon%q_2m, icon%u_10m, icon%v_10m, icon%cod, icon%lwp, icon%iwp, icon%ztop_liq, icon%zbase_liq, icon%reff_top, &
                  icon%cdnc_top, icon%lwp_stratocumulus, icon%lwp_stratocumulus_filter, icon%cod_stratocumulus)
       

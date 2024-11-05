@@ -104,6 +104,7 @@ module s3com_types
          height_2                !< Index of vertical levels                                         @input
       integer(wpi), dimension(:), allocatable :: &
          point,              &   !< Index of grid points                                             @input
+         point_orig,         &   !< Original point index                                             @input
          day,                &   !< Day of the simulation                                            @input
          month,              &   !< Month of the simulation                                          @input
          year                    !< Year of the simulation                                           @input
@@ -154,6 +155,7 @@ module s3com_types
       real(dp) ::                                &
          time                                      !< Time of the simulation (format is \%Y\%m\%d.\%f UTC)                @input
       integer(wpi), dimension(:), allocatable :: &
+         point_orig,                             & !< Original point index                                                @input
          height,                                 & !< Index of vertical layers                                            @input
          height_2,                               & !< Index of vertical levels                                            @input
          ztop_liq_idx,                           & !< Index of cloud top height                                           @output
@@ -228,7 +230,8 @@ module s3com_types
          time,                                   &   !< Time of the day, UTC @units{/hour, minute, second/}
          date                                        !< Day of the year @units{/day, month, year/}
       integer(wpi), dimension(:), allocatable :: &
-         point                                       !< Point index
+         point,                                  &   !< Point index
+         point_orig                                  !< Original point index
       real(wp), dimension(:), allocatable ::     &
          lon,                                    &   !< Longitude @units{degrees East}
          lat,                                    &   !< Latitude @units{degrees North}

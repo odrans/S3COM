@@ -137,6 +137,7 @@ contains
       allocate(nwpsaf%lat(npoints), source = 0._wp)
       allocate(nwpsaf%lat_orig(npoints), source = 0._wp)
       allocate(nwpsaf%lon_orig(npoints), source = 0._wp)
+      allocate(nwpsaf%point_orig(npoints), source = 0)
       allocate(nwpsaf%elevation(npoints), source = 0._wp)
       allocate(nwpsaf%lsm(npoints), source = 0._wp)
       allocate(nwpsaf%psurf(npoints), source = 0._wp)
@@ -177,7 +178,7 @@ contains
       
       type(type_nwpsaf), intent(inout) :: nwpsaf
       
-      deallocate(nwpsaf%height, nwpsaf%height_2, nwpsaf%lon, nwpsaf%lat, nwpsaf%lon_orig, nwpsaf%lat_orig, &
+      deallocate(nwpsaf%height, nwpsaf%height_2, nwpsaf%lon, nwpsaf%lat, nwpsaf%lon_orig, nwpsaf%lat_orig, nwpsaf%point_orig, &
                  nwpsaf%elevation, nwpsaf%lsm, nwpsaf%psurf, nwpsaf%tsurf, nwpsaf%t2m, nwpsaf%q2m, nwpsaf%u10, nwpsaf%v10, &
                  nwpsaf%pap, nwpsaf%altitude, nwpsaf%altitudeh, nwpsaf%paph, nwpsaf%temph, nwpsaf%humh, &
                  nwpsaf%temp, nwpsaf%hum, nwpsaf%cc, nwpsaf%dz, &

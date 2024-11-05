@@ -142,6 +142,7 @@ contains
       allocate(model%lon(npoints), source = 0._wp)
       allocate(model%lat_orig(npoints), source = 0._wp)
       allocate(model%lon_orig(npoints), source = 0._wp)
+      allocate(model%point_orig(npoints), source = 0)
       allocate(model%topography(npoints), source = 0._wp)
       allocate(model%landmask(npoints), source = 0._wp)
       allocate(model%ps(npoints), source = 0._wp)
@@ -198,7 +199,7 @@ contains
       
       ! 2D fields
       deallocate(model%point)
-      deallocate(model%lat, model%lon, model%lat_orig, model%lon_orig, model%topography, model%landmask, model%ps, model%ts, &
+      deallocate(model%lat, model%lon, model%lat_orig, model%lon_orig, model%point_orig, model%topography, model%landmask, model%ps, model%ts, &
                  model%t_2m, model%q_2m, model%u_10m, model%v_10m, model%iwp, model%lwp, model%cod, model%cdnc_top, &
                  model%reff_top, model%sunzenangle, model%sunazangle, model%lwp_stratocumulus_filter)
       
@@ -255,6 +256,7 @@ contains
       model%lon        = icon%lon
       model%lat_orig   = icon%lat_orig
       model%lon_orig   = icon%lon_orig
+      model%point_orig = icon%point_orig
       model%topography = icon%topography
       model%landmask   = icon%landmask
       model%ps         = icon%ps

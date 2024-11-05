@@ -164,7 +164,9 @@ contains
          errst = nf90_def_var(ncid, "rad_total", NF90_REAL, dimid_latlonchan, varid_rad_total)
          errst = nf90_def_var(ncid, "rad_clear", NF90_REAL, dimid_latlonchan, varid_rad_clear)
       else
-         errst = nf90_def_var(ncid, "point",     NF90_REAL, dimid_pnt,     varid_pnt)
+         errst = nf90_def_var(ncid, "point",     NF90_INT,  dimid_pnt,     varid_pnt)
+         errst = nf90_def_var(ncid, "lon",       NF90_REAL, dimid_lon,     varid_lon)
+         errst = nf90_def_var(ncid, "lat",       NF90_REAL, dimid_lat,     varid_lat)
          errst = nf90_def_var(ncid, "lon",       NF90_REAL, dimid_pnt,     varid_lon)
          errst = nf90_def_var(ncid, "lat",       NF90_REAL, dimid_pnt,     varid_lat)
          errst = nf90_def_var(ncid, "chan",      NF90_REAL, dimid_chan,    varid_chan)
@@ -211,11 +213,11 @@ contains
       errst = nf90_put_att(ncid, nf90_global, 'RTTOV_instrument', trim(attr_instrument))
       
       errst = nf90_enddef(ncid)
-      
+
       errst = nf90_put_var(ncid, varid_lon,  model%lon_orig)
       errst = nf90_put_var(ncid, varid_lat,  model%lat_orig)
       errst = nf90_put_var(ncid, varid_chan, s3com%rad%wavelength)
-      
+
       if (model%mode > 1) then
          errst = nf90_put_var(ncid, varid_ref_total, gridded_f_ref_total)
          errst = nf90_put_var(ncid, varid_ref_clear, gridded_f_ref_clear)
@@ -224,7 +226,7 @@ contains
          errst = nf90_put_var(ncid, varid_rad_total, gridded_f_rad_total)
          errst = nf90_put_var(ncid, varid_rad_clear, gridded_f_rad_clear)
       else
-         errst = nf90_put_var(ncid, varid_pnt, model%point)
+         errst = nf90_put_var(ncid, varid_pnt, model%point_orig)
          errst = nf90_put_var(ncid, varid_ref_total, s3com%rad%f_ref_total)
          errst = nf90_put_var(ncid, varid_ref_clear, s3com%rad%f_ref_clear)
          errst = nf90_put_var(ncid, varid_bt_total,  s3com%rad%f_bt_total)
