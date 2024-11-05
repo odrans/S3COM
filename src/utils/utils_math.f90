@@ -51,7 +51,7 @@ contains
       
       ! Input
       integer, intent(in) :: n
-      real(wp), intent(in) :: a(n,n)
+      real(wp), intent(inout) :: a(n,n)
       real(wp), intent(inout) :: c(n,n)
 
       ! Internal
