@@ -60,7 +60,7 @@ program s3com_main
    
    integer(wpi), dimension(:), allocatable :: idx_lwp, idx_ret
    integer(wpi) :: nchunks, idx_start, idx_end, ichunk
-   integer(wpi) :: nlayers, npoints, nmeas, ipoint
+   integer(wpi) :: nlayers, npoints, nmeas
    
    ! Read namelist file
    nml = namelist_load()
@@ -71,48 +71,37 @@ program s3com_main
    ! Load atmospheric data from selected models (`model` created)
    call models_load(nml, model)
 
-   write(6,*) "Loaded models"
-   write(6,*) "npoints = ", model%npoints
-   do ipoint = 1, model%npoints
-      write(6,*) "point ", ipoint
-      write(6,*) "  lat = ", model%lat(ipoint)
-      write(6,*) "  lon = ", model%lon(ipoint)
-      write(6,*) "  lat_orig = ", model%lat_orig(ipoint)
-      write(6,*) "  lon_orig = ", model%lon_orig(ipoint)
-   end do
-
-
    ! Initialize the s3com structure
    call s3com_init(nml, model, s3com)
    npoints = s3com%npoints
    nlayers = s3com%nlayers
    nmeas   = s3com%nmeas
-   
+
    ! Setup the RTTOV options (`rttov_opt` created)
    call rttov_setup_opt(nml, zenangle, azangle, rttov_opt, s3com)
-   
+
    ! Initialize RTTOV (loading surface data and optical properties)
    ! Structures are created and allocated internally, no outputs here
    call rttov_opts_init(rttov_opt, s3com)
    call rttov_coefs_init(rttov_opt, s3com)
    call rttov_atlas_init(rttov_opt, s3com)
-   
+
    ! Load cloud optical properties
    if (rttov_opt%user_cld_opt_param) call cld_mie_load(s3com, cld)
-   
+
    ! Initialize the retrieval arrays
    if (nml%flag_retrievals) then
       call ret_init(s3com)
       allocate(idx_lwp(npoints), source=0); allocate(idx_ret(npoints), source=0)
    endif
-   
+
    ! Loop over data points, by chunks
    nchunks = n_chunks(npoints, nml%npoints_it)
-   
+
    do ichunk = 1, nchunks
-      
+
       write(6,*) ichunk, "/", nchunks
-      
+
       ! Compute starting and ending points for the chunk
       if (nchunks .eq. 1) then
          idx_start = 1; idx_end = npoints
@@ -121,29 +110,29 @@ program s3com_main
          idx_end = ichunk * nml%npoints_it
          if (idx_end .gt. npoints) idx_end = npoints
       endif
-      
+
       ! Subset the atmosphere for RTTOV
       call rttov_setup_atm(idx_start, idx_end, model, rttov_atm)
-      
+
       ! Subset the relevant part of the s3com structure
       call s3com_subset(idx_start, idx_end, s3com, s3com_chunk)
-      
+
       ! Run RTTOV
       s3com_chunk%flag_rttov(:) = .true.
       call run_rttov(rttov_atm, rttov_opt, s3com_chunk, cld)
-      
+
       ! Update the arrays saved for the output file
       call s3com_update(s3com, s3com_chunk)
-      
+
       ! Get the satellite measurement vector (useful for retrievals)
       s3com%ret%Y = s3com%rad%f_rad_total
 
       ! Retrievals
       if (nml%flag_retrievals) then
-         
+
          ! Subset the atmosphere for RTTOV
          call rttov_setup_atm(idx_start, idx_end, model, rttov_atm_ret)
-         
+
          ! Extract cloud top and base altitudes for single-layer homogeneous liquid clouds only
          call init_cloud_z(rttov_atm_ret, s3com)
 
@@ -151,43 +140,45 @@ program s3com_main
          !call find_ret_idx_cld_liq(s3com, .true.)
          idx_lwp = idx_liq(s3com, .true.)
          s3com%ret%flag_rttov(idx_lwp) = .true.
-         
+
          ! Find the corresponding index
          idx_ret = find_ret_idx_rttov(s3com)
-         
+
          if (size(idx_ret) .eq. 0) then
             cycle
          endif
-         
+
          ! Set the a priori values
          s3com%ret%Xa(:,1) = lwp_apriori  !< Cloud liquid water path (LWP)
          s3com%ret%Xa(:,2) = cdnc_apriori !< Cloud droplet number concentration at cloud top (CDNC_ztop)
-         
+
          ! Set first guess as the a priori knowledge
          s3com%ret%Xi = s3com%ret%Xa
-         
+
          ! Set flag to run RTTOV
          s3com%ret%flag_ret = nml%flag_retrievals
-         
+
          ! Perform the retrievals
          call ret_run(rttov_atm_ret, rttov_opt, s3com, cld)
-         
+
       endif
-      
+
    enddo
-   write(6,*) "Done"
 
    ! Write output file
    call write_output(s3com, model, nml)
-   
+
    ! Deallocate arrays
    call models_free(model) !< Free the model arrays
-   
+
    ! Deallocate retrieval arrays
    if (nml%flag_retrievals) call ret_free(s3com) !< Free the retrieval arrays
-   
+
+   ! Deallocate RTTOV atlas
+   call rttov_atlas_deinit()
+
    ! Deallocate RTTOV coefficients
    call rttov_coefs_deinit()
-   call rttov_atlas_deinit()
-   
+
+
 end program s3com_main

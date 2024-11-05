@@ -85,20 +85,22 @@ contains
       call check_netcdf_status(errst, 'nf90_inquire')
       
       Llat = .false.; Llon = .false.; Lpoint = .false.
-      
+
       ! Get the dimension IDs and names
       ! -------------------------------------------------------------------------------------------------------------------------
       do idim = 1,ndims
-         
+
          errst = nf90_Inquire_Dimension(ncid, idim, name=dimname(idim), len=dimsize(idim))
          call check_netcdf_status(errst, 'nf90_Inquire_Dimension')
-         
+
          if (trim(dimname(idim)) .eq. 'point') then
             Lpoint = .true.
             if (npoints /= dimsize(idim)) then
                errmsg = 'Number of points selected is greater than in input file '//trim(fname)
                call s3com_error(routine_name,errmsg)
             endif
+            icon%nlon = npoints
+            icon%nlat = npoints
          endif
          
          if (trim(dimname(idim)) .eq. 'lon') then
@@ -110,10 +112,10 @@ contains
          endif
          
       enddo
-      
+
       allocate(lon(icon%nlon), lat(icon%nlat))
       ! --------------------------------------------------------------------------------------------------------------------------
-      
+
       ! Extract coordinates
       ! -------------------------------------------------------------------------------------------------------------------------
       if (Lpoint) then ! 1D mode
