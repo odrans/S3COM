@@ -11,9 +11,10 @@ var searchData=
   ['platform_8',['platform',['../structs3com__types_1_1type__nml.html#ae582104ea7397eeab121d011d8f3f220',1,'s3com_types::type_nml::platform()'],['../structs3com__types_1_1type__rttov__opt.html#aab75345458a5383ec0de15da4f1066f7',1,'s3com_types::type_rttov_opt::platform()']]],
   ['platform_5fname_9',['platform_name',['../structs3com__types_1_1type__rttov__opt.html#a2e1241f05e746fd8b24cb5f71b02f396',1,'s3com_types::type_rttov_opt']]],
   ['point_10',['point',['../structs3com__types_1_1type__nwpsaf.html#a5d79c59446b4f5b0f76ed18000c0d5cd',1,'s3com_types::type_nwpsaf::point()'],['../structs3com__types_1_1type__model.html#ab67733ed28bb84d0cd7711591596dffe',1,'s3com_types::type_model::point()']]],
-  ['profiles_11',['profiles',['../namespacemod__rttov__direct.html#a2c6fb98e0f7c12829a734ab0cfd20d7c',1,'mod_rttov_direct']]],
-  ['profiles_5fk_12',['profiles_k',['../namespacemod__rttov__k.html#a81ad63a2d839ab9957ba4d8acdb347e6',1,'mod_rttov_k']]],
-  ['profiles_5ftl_13',['profiles_tl',['../namespacemod__rttov__tl.html#ae4cf3c3b8d90fa3efaab6cb857f004ac',1,'mod_rttov_tl']]],
-  ['ps_14',['ps',['../structs3com__types_1_1type__icon.html#a0540cddd6ba363397abd0795c388eb5c',1,'s3com_types::type_icon::ps()'],['../structs3com__types_1_1type__model.html#aef5182f962b4fcc6cca1db9adfa381d7',1,'s3com_types::type_model::ps()']]],
-  ['psurf_15',['psurf',['../structs3com__types_1_1type__nwpsaf.html#aaa7bb28378d4eb51bb2ffd3794236efc',1,'s3com_types::type_nwpsaf']]]
+  ['point_5forig_11',['point_orig',['../structs3com__types_1_1type__nwpsaf.html#a0d9c54301e093c40f919f5d4d4549b47',1,'s3com_types::type_nwpsaf::point_orig()'],['../structs3com__types_1_1type__icon.html#ad3c0037f6ec56e473ce71e7119b8de49',1,'s3com_types::type_icon::point_orig()'],['../structs3com__types_1_1type__model.html#ad83942da8d78ed0fa8f20947a8d2f944',1,'s3com_types::type_model::point_orig()']]],
+  ['profiles_12',['profiles',['../namespacemod__rttov__direct.html#a2c6fb98e0f7c12829a734ab0cfd20d7c',1,'mod_rttov_direct']]],
+  ['profiles_5fk_13',['profiles_k',['../namespacemod__rttov__k.html#a81ad63a2d839ab9957ba4d8acdb347e6',1,'mod_rttov_k']]],
+  ['profiles_5ftl_14',['profiles_tl',['../namespacemod__rttov__tl.html#ae4cf3c3b8d90fa3efaab6cb857f004ac',1,'mod_rttov_tl']]],
+  ['ps_15',['ps',['../structs3com__types_1_1type__icon.html#a0540cddd6ba363397abd0795c388eb5c',1,'s3com_types::type_icon::ps()'],['../structs3com__types_1_1type__model.html#aef5182f962b4fcc6cca1db9adfa381d7',1,'s3com_types::type_model::ps()']]],
+  ['psurf_16',['psurf',['../structs3com__types_1_1type__nwpsaf.html#aaa7bb28378d4eb51bb2ffd3794236efc',1,'s3com_types::type_nwpsaf']]]
 ];
