@@ -165,8 +165,8 @@ contains
          errst = nf90_def_var(ncid, "rad_clear", NF90_REAL, dimid_latlonchan, varid_rad_clear)
       else
          errst = nf90_def_var(ncid, "point",     NF90_INT,  dimid_pnt,     varid_pnt)
-         errst = nf90_def_var(ncid, "lon",       NF90_REAL, dimid_lon,     varid_lon)
-         errst = nf90_def_var(ncid, "lat",       NF90_REAL, dimid_lat,     varid_lat)
+         errst = nf90_def_var(ncid, "lon",       NF90_REAL, dimid_pnt,     varid_lon)
+         errst = nf90_def_var(ncid, "lat",       NF90_REAL, dimid_pnt,     varid_lat)
          errst = nf90_def_var(ncid, "lon",       NF90_REAL, dimid_pnt,     varid_lon)
          errst = nf90_def_var(ncid, "lat",       NF90_REAL, dimid_pnt,     varid_lat)
          errst = nf90_def_var(ncid, "chan",      NF90_REAL, dimid_chan,    varid_chan)
