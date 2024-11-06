@@ -414,13 +414,14 @@ contains
       type(type_model) :: rttov_atm_pert
       real(wp), dimension(rttov_atm%npoints, rttov_opt%nchannels) :: Fp1dx, Fp2dx, Fm1dx, Fm2dx
       integer(wpi), dimension(:), allocatable :: idx_ret
-      integer(wpi) :: ipoint, idx, imeas
+      integer(wpi) :: ipoint, idx, imeas, n_true
       real(wp), parameter ::           &
          lwp_delta_pert  = 1.0E-01_wp, & !< Input perturbation of 10 %
          cdnc_delta_pert = 1.0E-01_wp    !< Input perturbation of 10 %
       
       s3com_pert = s3com; rttov_atm_pert = rttov_atm
-      
+
+      n_true = count(s3com%ret%flag_rttov); allocate(idx_ret(n_true))
       idx_ret = find_ret_idx_rttov(s3com)
       
       ! Jacobian of the cloud liquid water path (LWP)
@@ -566,14 +567,15 @@ contains
       ! Internal
       integer(wpi), dimension(:), allocatable :: idx_ret
       integer(wpi) :: npoints, nlevels, nlayers, nmeas
-      integer(wpi) :: ipoint, idx, imeas, ilayer, ilevel
+      integer(wpi) :: ipoint, idx, imeas, ilayer, ilevel, n_true
       integer(wpi) :: idx_t, idx_q, idx_clc, idx_surf_alb, idx_surf_emiss, idx_cld_top, idx_cld_base
       
       npoints = rttov_atm%npoints
       nlevels = rttov_atm%nlevels
       nlayers = rttov_atm%nlayers
       nmeas   = rttov_opt%nchannels
-      
+
+      n_true = count(s3com%ret%flag_rttov); allocate(idx_ret(n_true))
       idx_ret = find_ret_idx_rttov(s3com)
       
       ! Jacobian matrix Kb

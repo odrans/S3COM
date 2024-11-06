@@ -31,7 +31,7 @@
 program s3com_main
    
    use s3com_types,         only: wp, wpi, type_rttov_opt, type_nml, type_model, type_s3com, type_cld
-   use s3com_config,        only: lwp_apriori, cdnc_apriori, nstates
+   use s3com_config,        only: lwp_apriori, cdnc_apriori
    use mod_io_namelist,     only: namelist_load
    use mod_rttov_atlas,     only: rttov_atlas_init, rttov_atlas_deinit
    use mod_rttov_opts,      only: rttov_opts_init
@@ -47,7 +47,7 @@ program s3com_main
    use mod_ret_cloud_model, only: init_cloud_z, init_cloud_prof
    use mod_ret_utils,       only: ret_init, ret_free, idx_liq, find_ret_idx_liq, find_ret_idx_cld_liq
    use mod_ret_run,         only: ret_run
-   
+
    implicit none
    
    type(type_model) :: model, rttov_atm, rttov_atm_ret
@@ -64,7 +64,7 @@ program s3com_main
    
    ! Read namelist file
    nml = namelist_load()
-   
+
    ! Temporary: setting the viewing satellite angles
    zenangle = 0._wp; azangle = 0._wp
    
@@ -87,7 +87,13 @@ program s3com_main
    call rttov_atlas_init(rttov_opt, s3com)
 
    ! Load cloud optical properties
-   if (rttov_opt%user_cld_opt_param) call cld_mie_load(s3com, cld)
+   if (rttov_opt%user_cld_opt_param) then
+      call cld_mie_load(s3com, cld)
+   else
+      cld%mie%nmom = 0
+      cld%mie%nang = 0
+   end if
+
 
    ! Initialize the retrieval arrays
    if (nml%flag_retrievals) then
@@ -161,7 +167,7 @@ program s3com_main
          ! Perform the retrievals
          call ret_run(rttov_atm_ret, rttov_opt, s3com, cld)
 
-      endif
+       endif
 
    enddo
 

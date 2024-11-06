@@ -121,18 +121,20 @@ contains
       
       ! Output
       type(type_s3com), intent(out) :: s3com_chunk
-      
+
       s3com_chunk%idx_start = idx_start
       s3com_chunk%idx_end   = idx_end
       s3com_chunk%npoints   = idx_end - idx_start + 1
-      
+
       allocate(s3com_chunk%flag_rttov(s3com_chunk%npoints)); s3com_chunk%flag_rttov = .true.
-      
+
       s3com_chunk%nlevels = s3com%nlevels
       s3com_chunk%nlayers = s3com%nlayers
       s3com_chunk%nmeas   = s3com%nmeas
       s3com_chunk%nstates = s3com%nstates
-      
+
+      s3com_chunk%nml%flag_retrievals = s3com%nml%flag_retrievals
+
       ! Radiation data
       ! -------------------------------------------------------------------------------------------------------------------------
       allocate(s3com_chunk%rad%f_rad_total(s3com_chunk%npoints, s3com_chunk%nmeas), source = 0._wp)

@@ -75,7 +75,7 @@ contains
       
       ! Internal
       integer :: errorstatus
-      
+
       ! Allocate the RTTOV arrays and structures for the direct model
       call rttov_alloc_direct(            &
            errorstatus,                   & !< out     error flag

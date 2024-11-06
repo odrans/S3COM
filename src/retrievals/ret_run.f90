@@ -60,9 +60,10 @@ contains
       type(type_s3com), intent(inout)  :: s3com
       
       ! Internal
-      integer(wpi) :: iter, ipoint, imeas
+      integer(wpi) :: iter, ipoint, imeas, n_true
       integer(wpi), dimension(:), allocatable :: idx_ret
-      
+
+      n_true = count(s3com%ret%flag_rttov); allocate(idx_ret(n_true))
       idx_ret = find_ret_idx_rttov(s3com)
       
       s3com%ret%flag_conv_test(idx_ret) = .false.

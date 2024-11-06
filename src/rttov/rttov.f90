@@ -139,15 +139,16 @@ contains
       character(len=8) :: model_rttov
       
       errorstatus = 0_jpim
-      
+
       ! Find how many profiles are to be processed
-      if (s3com%ret%flag_ret) then
+      if (s3com%nml%flag_retrievals) then
+         n_true = count(s3com%ret%flag_rttov); allocate(list_points(n_true))
          list_points = find_ret_idx_rttov(s3com) !< Inversion of liquid cloud properties only
       else
          n_true = count(s3com%flag_rttov); allocate(list_points(n_true))
          list_points = find_idx_rttov(s3com)     !< In general
       endif
-      
+
       ! Set up a few useful dimensions
       nthreads  = rttov_opt%nthreads
       max_mom   = cld%mie%nmom
@@ -159,13 +160,13 @@ contains
       nchanprof = nchannels * nprof
       
       if (nprof == 0) return
-      
+
       ! Allocate RTTOV input and output structures depending on the model that will be called
       ! Current options are direct, jacobian (K) and tangent linear (TL). K and TL also include the direct call.
       ! Note that there are no outputs to these functions, all arrays are allocated internally.
       ! -------------------------------------------------------------------------------------------------------------------------
       model_rttov = get_rttov_model(s3com)
-      
+
       select case (model_rttov)
          case ("direct")
             call rttov_direct_init(nprof, nchanprof, nlevels, cld)
@@ -187,12 +188,12 @@ contains
          enddo
       enddo
       ! -------------------------------------------------------------------------------------------------------------------------
-      
+
       ! Read profile data
       ! -------------------------------------------------------------------------------------------------------------------------
       ! Gas units for profiles
       profiles(1:nprof)%gas_units = rttov_opt%gas_units
-      
+
       ! Loop over all profiles and read data for each one
       do iprof = 1, nprof
          
@@ -235,62 +236,62 @@ contains
          profiles(iprof)%azangle     = rttov_opt%azangle
          profiles(iprof)%sunzenangle = rttov_atm%sunzenangle(idx_prof)
          profiles(iprof)%sunazangle  = rttov_atm%sunazangle(idx_prof)
-         
+
          profiles(iprof)%mmr_cldaer = rttov_opt%mmr_cldaer !< Logical flag to set cloud and aerosol
                                                            !< Units: true => kg/kg (cld+aer); false => g/m3 (cld), cm-3 (aer)
-         
+
          ! Cloud variables for simple cloud scheme, set cfraction to 0. to turn this off (VIS/IR only)
          profiles(iprof)%cfrac(:) = rttov_atm%clc(idx_prof,:)
          
-         !call rttov_print_profile (profiles(iprof))
+         ! call rttov_print_profile (profiles(iprof))
          
       enddo
-      
+
       if (opts%rt_ir%user_cld_opt_param) then
-         
+
          ! Cloud variables for user defined cloud scheme
          cld_opt_param%nmom = cld%mie%nmom
          cld_opt_param%phangle(:) = cld%mie%angle(:)
-         
+
          ichanprof = 0_jpim
-         
+
          do iprof = 1, nprof
-            
+
             idx_prof = list_points(iprof)
-            
+
             do ichan = 1, nchannels
-               
+
                ichanprof = ichanprof + 1_jpim
-               
+
                do ilay = 1, rttov_atm%nlayers
-                  
+
                   if(rttov_atm%reff(idx_prof,ilay) > 0) then
-                     
+
                      idx_reff = minloc(abs(cld%mie%radius(:) - rttov_atm%reff(idx_prof,ilay)), 1)
                      ! Converting the absorption coefficient from @units{cm^2} to @units{km-1}
                      cld_opt_param%abs(ilay,ichanprof) = cld%mie%Cabs(idx_reff,ichan)*1.0E-12_wp * &
-                                                         rttov_atm%cdnc(idx_prof,ilay)*1.0E+03_wp
-                     ! Cnverting the scattering coefficient from @units{cm^2} to @units{km-1}
+                          rttov_atm%cdnc(idx_prof,ilay)*1.0E+03_wp
+                     ! Converting the scattering coefficient from @units{cm^2} to @units{km-1}
                      cld_opt_param%sca(ilay,ichanprof) = cld%mie%Csca(idx_reff,ichan)*1.0E-12_wp * &
-                                                         rttov_atm%cdnc(idx_prof,ilay)*1.0E+03_wp
+                          rttov_atm%cdnc(idx_prof,ilay)*1.0E+03_wp
                      cld_opt_param%legcoef(1:nleg,ilay,ichanprof) = cld%mie%legcoef(1:nleg,idx_reff,ichan)
                      cld_opt_param%pha(:,ilay,ichanprof) = cld%mie%pha(:,idx_reff,ichan)
-                     
+
                   endif
-                  
+
                enddo
-               
+
             enddo
             !call rttov_print_profile (profiles(iprof))
          enddo
-         
+
          if (opts%rt_ir%addsolar) then
             call rttov_init_opt_param(errorstatus, opts, cld_opt_param)
             call check_rttov_status(errorstatus, "rttov_init_opt_param")
          endif
          
       else
-         
+
          ! Cloud variables for parameterized cloud scheme
          do iprof = 1, nprof
             
@@ -315,7 +316,7 @@ contains
          
       endif
       ! -------------------------------------------------------------------------------------------------------------------------
-      
+
       ! Specify surface emissivity and reflectance
       ! -------------------------------------------------------------------------------------------------------------------------
       ! Use emissivity atlas
@@ -364,7 +365,7 @@ contains
       ! Let RTTOV provide diffuse surface reflectances
       reflectance(:)%diffuse_refl_in = 0._jprb
       ! -------------------------------------------------------------------------------------------------------------------------
-      
+
       ! Call RTTOV direct, K or TL model
       ! -------------------------------------------------------------------------------------------------------------------------
       select case (model_rttov)

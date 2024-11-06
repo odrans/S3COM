@@ -65,7 +65,8 @@ contains
       type(type_s3com), intent(inout) :: s3com
       
       ! Internal
-      character(len=256) :: coef_filename, cld_coef_filename, sat, file_format
+      character(len=256) :: coef_filename, cld_coef_filename, file_format
+      character(len=32) :: sat
       integer(wpi) :: errorstatus, nchannels
       
       ! Get the number of channels from the RTTOV options structure

@@ -161,10 +161,11 @@ contains
       
       ! Internal
       integer(wpi), dimension(:), allocatable :: idx_ret
-      integer(wpi) :: idx, ipoint, ilayer
+      integer(wpi) :: idx, ipoint, ilayer, n_true
       logical :: adiab_cld_model ! If true, uses the adiabatic cloud model
       
       ! Get the index of single-layer homogeneous liquid cloud pixels
+      n_true = count(s3com%ret%flag_rttov); allocate(idx_ret(n_true))
       idx_ret = find_ret_idx_rttov(s3com)
       
       adiab_cld_model = .true.

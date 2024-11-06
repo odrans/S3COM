@@ -89,10 +89,10 @@ contains
       ! Namelist definition
       ! -------------------------------------------------------------------------------------------------------------------------
       namelist /general/   &
-         fname_in,         &
-         path_out,         &
          path_s3com,       &
+         path_out,         &
          suffix_out,       &
+         fname_in,         &
          flag_retrievals,  &
          flag_output_atm,  &
          flag_output_jac,  &
@@ -110,7 +110,6 @@ contains
       
       namelist /rttov_init/  &
          path_rttov,         &
-         rttov_nthreads,     &
          do_jacobian_calc,   &
          do_opdep_calc,      &
          ir_scatt_model,     &
@@ -118,14 +117,15 @@ contains
          dom_nstreams,       &
          dom_nmoments,       &
          dom_rayleigh,       &
+         rttov_nthreads,     &
          user_cld_opt_param, &
          ice_scheme,         &
          clw_scheme,         &
          mmr_cldaer,         &
          ozone_data,         &
-         add_refrac,         &
          add_aerosols,       &
-         add_clouds
+         add_clouds,         &
+         add_refrac
       ! -------------------------------------------------------------------------------------------------------------------------
       
       ! Open the namelist file
