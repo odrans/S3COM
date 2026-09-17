@@ -53,14 +53,17 @@ F90 = ifort
 DEBUG = true
 
 # Path to S3COM, RTTOV, NETCDF, HDF5
+# RTTOV is licensed to each user, so there is no shared build: select your own, made with the same compiler
+# as S3COM, before running make. With the chezmoi software recipe on levante, for ifort:
+#   eval "$(software env rttov --variant site)"
+# which sets RTTOV_ROOT.
 PATH_S3COM = $(HOME)/github/S3COM
+PATH_RTTOV = $(or $(RTTOV_ROOT),$(error RTTOV_ROOT is not set: select your own RTTOV build first))
 ifeq ($(F90),gfortran)
-    PATH_RTTOV = /work/bb1036/rttov_share/rttov132-gcc
     PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-6qheqr
     PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-jlxcfz
     PATH_HDF5 = /sw/spack-levante/hdf5-1.12.1-kxfaux
 else ifeq ($(F90),ifort)
-    PATH_RTTOV = /work/bb1036/rttov_share/rttov132-ifort
     PATH_NETCDF_C = /sw/spack-levante/netcdf-c-4.8.1-2k3cmu
     PATH_NETCDF_F = /sw/spack-levante/netcdf-fortran-4.5.3-k6xq5g
     PATH_HDF5 = /sw/spack-levante/hdf5-1.12.1-tvymb5
